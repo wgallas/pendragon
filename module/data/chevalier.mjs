@@ -117,6 +117,8 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
       })),
       // Passions déjà invoquées aujourd'hui (une fois par jour chacune), par nom.
       invokedToday: new fields.ArrayField(new fields.StringField()),
+      // Jour (compteur du monde) auquel se rapportent invokedToday et inspirations.
+      passionDay: int(0),
 
       glory: new fields.SchemaField({
         session: int(0),

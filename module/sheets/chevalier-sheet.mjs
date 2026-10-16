@@ -159,8 +159,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }))
     };
     const targets = actor.listRollables().filter(r => PDVF.inspirableKinds.includes(r.kind));
-    context.inspirations = system.inspirations.map((x, index) => ({
-      ...x, index,
+    context.inspirations = actor.activeInspirations().map((x) => ({
+      ...x,
       text: `${x.source} : ${L(`PDVF.Passion.${x.state}Short`)} ${signed(x.bonus)}`,
       targets: targets.map(r => ({ key: r.key, label: r.label, selected: r.key === x.target }))
     }));
@@ -193,7 +193,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       };
     });
     context.directedTraits = system.directedTraits.map((t, i) => ({ ...t, index: i }));
-    const invokedNames = system.invokedToday ?? [];
+    const invokedNames = actor.invokedToday();
     context.honor = {
       invoked: invokedNames.some(n => samePassion(n, L("PDVF.Honor"))),
       value: system.honor.value, display: formatValue(system.honor.value), xp: system.honor.xp,
@@ -304,6 +304,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!incoming || Array.isArray(incoming)) continue;
       const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
       for (const [i, row] of Object.entries(incoming)) {
+        // Une inspiration close entre-temps (nouveau jour, « Fin ») ne doit pas renaître d'un formulaire périmé.
+        if (path === "system.inspirations" && !rows[Number(i)]) continue;
         rows[Number(i)] = foundry.utils.mergeObject(rows[Number(i)] ?? {}, row, { inplace: false });
       }
       foundry.utils.setProperty(data, path, rows);

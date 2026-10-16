@@ -3,7 +3,7 @@ import { SYSTEM_ID } from "../config.mjs";
 /**
  * « Nouveau jour » du MJ : chaque passion peut de nouveau être invoquée
  * et les inspirations en cours prennent fin, pour tous les chevaliers
- * (acteurs du monde et jetons non liés des scènes).
+ * (acteurs du monde comme jetons non liés), en avançant le jour du monde.
  */
 export async function newDayForAll({ confirm = true } = {}) {
   if (!game.user.isGM) return;
@@ -16,13 +16,9 @@ export async function newDayForAll({ confirm = true } = {}) {
     });
     if (!ok) return;
   }
-  const actors = new Set(game.actors.filter(a => a.type === "chevalier"));
-  for (const scene of game.scenes) {
-    for (const token of scene.tokens) {
-      if (!token.actorLink && token.actor?.type === "chevalier") actors.add(token.actor);
-    }
-  }
-  for (const actor of actors) await actor.newDay();
+  // Avancer le jour du monde suffit : les invocations notées un autre jour ne comptent plus.
+  const day = (Number(game.settings.get(SYSTEM_ID, "currentDay")) || 1) + 1;
+  await game.settings.set(SYSTEM_ID, "currentDay", day);
   await ChatMessage.implementation.create({
     content: `<div class="pdvf-card"><div class="pdvf-verdict victory"><i class="fa-solid fa-sun" aria-hidden="true"></i> ${L("PDVF.Invoke.NewDayChat")}</div></div>`,
     speaker: { alias: L("PDVF.Invoke.NewDay") },

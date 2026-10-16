@@ -40,6 +40,18 @@ Hooks.once("init", () => {
     }
   });
 
+  // Jour en cours (compteur avancé par « Nouveau jour » ; sert à l'usage quotidien des passions)
+  game.settings.register(SYSTEM_ID, "currentDay", {
+    scope: "world",
+    config: false,
+    type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 1 }),
+    onChange: () => {
+      for (const app of foundry.applications.instances?.values?.() ?? []) {
+        if (app instanceof ChevalierSheet) app.render();
+      }
+    }
+  });
+
   // Fiches
   const DSC = foundry.applications.apps.DocumentSheetConfig;
   DSC.registerSheet(Actor, SYSTEM_ID, ChevalierSheet, {

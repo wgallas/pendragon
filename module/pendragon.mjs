@@ -63,5 +63,18 @@ Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(m
 Hooks.on("createActor", (actor, options, userId) => {
   if (userId !== game.user.id || actor.type !== "chevalier" || options.pdvfSkipWizard) return;
   const fresh = !actor.system.chronicle?.length && !actor.getFlag(SYSTEM_ID, "creation")?.done;
-  if (fresh) setTimeout(() => new CreationWizard(actor).render({ force: true }), 200);
+  if (!fresh) return;
+  // La fiche s'ouvre en même temps : on attend qu'elle soit affichée, puis on place l'assistant devant.
+  setTimeout(async () => {
+    const wizard = new CreationWizard(actor);
+    await wizard.render({ force: true });
+    wizard.bringToFront?.();
+  }, 600);
+});
+
+// L'assistant reste devant la fiche quand celle-ci se redessine.
+Hooks.on("renderChevalierSheet", (sheet) => {
+  for (const app of foundry.applications.instances?.values?.() ?? []) {
+    if (app instanceof CreationWizard && app.actor === sheet.document && app.rendered) app.bringToFront?.();
+  }
 });

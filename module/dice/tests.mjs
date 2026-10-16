@@ -67,11 +67,10 @@ async function postCard(actor, view, rolls, flags = {}) {
     flags: { [SYSTEM_ID]: flags }
   };
   try {
-    const mode = game.settings.get("core", "rollMode");
-    // v14 : applyMode ; applyRollMode reste pour les versions antérieures.
-    if (typeof ChatMessage.applyMode === "function") ChatMessage.applyMode(data, mode);
-    else if (typeof ChatMessage.applyRollMode === "function") ChatMessage.applyRollMode(data, mode);
-  } catch (err) { /* réglage absent : visibilité par défaut */ }
+    // v14 : applyMode prend de lui-même le mode choisi dans le chat ; applyRollMode avant la v14.
+    if (typeof ChatMessage.applyMode === "function") ChatMessage.applyMode(data);
+    else if (typeof ChatMessage.applyRollMode === "function") ChatMessage.applyRollMode(data, game.settings.get("core", "rollMode"));
+  } catch (err) { /* visibilité par défaut */ }
   return ChatMessage.implementation.create(data);
 }
 

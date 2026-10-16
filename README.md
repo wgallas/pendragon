@@ -12,7 +12,7 @@ Système non officiel pour Pendragon 6e édition en français. Version 0.1.0 : p
 ## Contenu de la version 0.1.0
 
 - Fiche de chevalier : bandeau (écusson, Gloire, Honneur, jauge de PV), onglets Chevalier, Traits & passions, Lignée et Chronique.
-- Mode jeu (valeurs cliquables) et mode édition (bouton dans le bandeau).
+- Mode jeu (valeurs cliquables) et mode édition (bouton dans le bandeau), avec boutons − et + pour les caractéristiques, compétences, traits, passions et l'Honneur.
 - Jets : clic = test de d20 avec le modificateur choisi ; Maj + clic = options (modificateur, opposition fixe, test opposé contre le jeton ciblé avec modificateur réfléchi).
 - Règles automatisées : critique, échec critique, bonus de critique au-delà de 20, valeurs négatives, tests opposés et succès partiel, procédure des traits (trait Célèbre testé en premier, trait opposé en cas d'échec), passions (Inspiré, Enflammé, crise, Mélancolie, Folie, perte de point), test de Gloire, croix d'expérience cochées automatiquement sur critique.
 - Caractéristiques dérivées, Gloire totale tirée de la chronique, récompenses de prestige, Gloire passive (traits, passions, Attrait).

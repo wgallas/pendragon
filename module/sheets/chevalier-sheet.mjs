@@ -48,7 +48,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       deleteRow: ChevalierSheet.#onDeleteRow,
       recordSession: ChevalierSheet.#onRecordSession,
       editHeraldry: ChevalierSheet.#onEditHeraldry,
-      endInspiration: ChevalierSheet.#onEndInspiration
+      endInspiration: ChevalierSheet.#onEndInspiration,
+      step: ChevalierSheet.#onStep
     }
   };
 
@@ -348,6 +349,20 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       callback: (path) => this.document.update({ "system.heraldry.img": path })
     });
     return picker.browse();
+  }
+
+  /**
+   * Boutons − et + du mode édition : modifient le champ voisin puis
+   * déclenchent l'enregistrement normal du formulaire.
+   */
+  static #onStep(event, target) {
+    const input = target.closest(".pdvf-stepper")?.querySelector("input");
+    if (!input) return;
+    let value = (Number(input.value) || 0) + (Number(target.dataset.step) || 0);
+    if (input.min !== "") value = Math.max(Number(input.min), value);
+    if (input.max !== "") value = Math.min(Number(input.max), value);
+    input.value = value;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   static async #onEndInspiration() {

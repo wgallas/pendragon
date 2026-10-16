@@ -4,7 +4,7 @@
   <span class="pdvf-row-label">{{label}}
     {{#if hasSpecialty}}<input type="text" class="pdvf-specialty" name="system.skillSpecialties.{{id}}" value="{{specialty}}" placeholder="{{localize 'PDVF.Sheet.Specialty'}}">{{/if}}
   </span>
-  <input type="number" class="pdvf-row-input" name="system.skills.{{id}}.value" value="{{value}}" step="1" aria-label="{{label}}">
+  {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=(concat "system.skills." id ".value") value=value min="0" label=label}}
   {{else}}
   <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">
     <span class="pdvf-row-label">{{label}}{{#if specialty}} <em>({{specialty}})</em>{{/if}}</span>

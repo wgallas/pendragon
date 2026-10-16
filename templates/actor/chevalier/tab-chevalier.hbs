@@ -4,11 +4,11 @@
       <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Characteristics"}}</h2>
       {{#each characteristics}}
       {{#if @root.editMode}}
-      <label class="pdvf-char">
+      <div class="pdvf-char editing">
         <span class="pdvf-char-abbr">{{abbr}}</span>
         <span class="pdvf-char-long">{{long}}</span>
-        <input type="number" class="pdvf-char-box" name="{{name}}" value="{{value}}" step="1" min="0">
-      </label>
+        {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" cls="char" name=name value=value min="0" label=long}}
+      </div>
       {{else}}
       <button type="button" class="pdvf-char" data-action="roll" data-key="{{key}}">
         <span class="pdvf-char-abbr">{{abbr}}</span>
@@ -85,7 +85,7 @@
           <input type="checkbox" class="pdvf-xp" name="system.extraSkills.{{index}}.xp" {{checked xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{name}}">
           {{#if @root.editMode}}
           <input type="text" class="pdvf-row-text" name="system.extraSkills.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Sheet.SkillName'}}">
-          <input type="number" class="pdvf-row-input" name="system.extraSkills.{{index}}.value" value="{{value}}" step="1" aria-label="{{name}}">
+          {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=(concat "system.extraSkills." index ".value") value=value min="0" label=name}}
           <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.extraSkills" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
           {{else}}
           <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">

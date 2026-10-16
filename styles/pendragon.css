@@ -376,6 +376,34 @@
 }
 .pendragon-vf .pdvf-icon-btn:hover { border-color: var(--pdvf-vermilion); }
 
+/* Boutons − et + (mode édition) */
+.pendragon-vf .pdvf-stepper { display: inline-flex; align-items: stretch; flex: none; }
+.pendragon-vf .pdvf-stepper input {
+  width: 42px; min-height: 28px; padding: 0 2px;
+  border-radius: 0; border-left: 0; border-right: 0;
+  text-align: center; -moz-appearance: textfield; appearance: textfield;
+}
+.pendragon-vf .pdvf-stepper input::-webkit-inner-spin-button,
+.pendragon-vf .pdvf-stepper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.pendragon-vf .pdvf-step {
+  width: 26px; min-height: 28px; height: auto; flex: none;
+  padding: 0; margin: 0;
+  background: var(--pdvf-parchment);
+  border: 1px solid var(--pdvf-rule-strong); border-radius: 0;
+  font-family: var(--pdvf-font-body); font-size: 17px; line-height: 1;
+  color: var(--pdvf-ink); cursor: pointer; box-shadow: none;
+}
+.pendragon-vf .pdvf-step:first-child { border-radius: 2px 0 0 2px; }
+.pendragon-vf .pdvf-step:last-child { border-radius: 0 2px 2px 0; }
+.pendragon-vf .pdvf-step:hover { background: var(--pdvf-vermilion); border-color: var(--pdvf-vermilion); color: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-stepper.char input {
+  width: 46px; min-height: 36px;
+  border: 1.5px solid var(--pdvf-ink); border-left: 0; border-right: 0;
+  background: var(--pdvf-parchment);
+  font-size: 22px; font-weight: 600;
+}
+.pendragon-vf .pdvf-stepper.char .pdvf-step { border-color: var(--pdvf-ink); border-width: 1.5px; width: 28px; }
+
 /* --------------------------------------------------------------------------
    Traits
    -------------------------------------------------------------------------- */
@@ -405,7 +433,9 @@
 .pendragon-vf button.pdvf-shield:hover { background: #F0DFC0; }
 .pendragon-vf .pdvf-trait-side.famous .pdvf-shield { background: var(--pdvf-vermilion); border-color: var(--pdvf-vermilion-dark); color: var(--pdvf-parchment-light); }
 .pendragon-vf .pdvf-trait-side.famous .pdvf-trait-label { color: var(--pdvf-vermilion); }
-.pendragon-vf .pdvf-shield-input { width: 52px; flex: none; }
+.pendragon-vf .pdvf-trait-side:has(.pdvf-stepper) { gap: 6px; }
+.pendragon-vf .pdvf-trait-side .pdvf-stepper input { width: 34px; }
+.pendragon-vf .pdvf-trait-side .pdvf-step { width: 22px; }
 .pendragon-vf .pdvf-under-traits { margin-top: 16px; }
 
 /* --------------------------------------------------------------------------

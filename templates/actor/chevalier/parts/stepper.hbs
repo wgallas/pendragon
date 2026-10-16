@@ -1,0 +1,5 @@
+<span class="pdvf-stepper {{cls}}">
+  <button type="button" class="pdvf-step" data-action="step" data-step="-1" aria-label="{{localize 'PDVF.Sheet.Decrease'}} {{label}}" tabindex="-1">−</button>
+  <input type="number" name="{{name}}" value="{{value}}" step="1" {{#if min}}min="{{min}}"{{/if}} aria-label="{{label}}">
+  <button type="button" class="pdvf-step" data-action="step" data-step="1" aria-label="{{localize 'PDVF.Sheet.Increase'}} {{label}}" tabindex="-1">+</button>
+</span>

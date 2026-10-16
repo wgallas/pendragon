@@ -6,7 +6,7 @@
       <div class="pdvf-trait">
         <div class="pdvf-trait-side left {{#if left.famous}}famous{{/if}} {{#if left.virtue}}virtue{{/if}}">
           {{#if @root.editMode}}
-          <input type="number" class="pdvf-shield-input" name="{{left.inputName}}" value="{{left.value}}" step="1" aria-label="{{left.label}}">
+          {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=left.inputName value=left.value min="0" label=left.label}}
           {{else}}
           <button type="button" class="pdvf-shield" data-action="roll" data-key="{{left.key}}">{{left.display}}</button>
           {{/if}}
@@ -18,7 +18,7 @@
           <span class="pdvf-trait-label" {{#if right.virtue}}data-tooltip="{{localize 'PDVF.Sheet.Virtue'}}"{{/if}}>{{right.label}}</span>
           <input type="checkbox" class="pdvf-xp" name="{{right.xpName}}" {{checked right.xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{right.label}}">
           {{#if @root.editMode}}
-          <input type="number" class="pdvf-shield-input" name="{{right.inputName}}" value="{{right.value}}" step="1" aria-label="{{right.label}}">
+          {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=right.inputName value=right.value min="0" label=right.label}}
           {{else}}
           <button type="button" class="pdvf-shield" data-action="roll" data-key="{{right.key}}">{{right.display}}</button>
           {{/if}}
@@ -37,7 +37,7 @@
       <div class="pdvf-row">
         {{#if @root.editMode}}
         <input type="text" class="pdvf-row-text" name="system.directedTraits.{{index}}.name" value="{{name}}" placeholder="{{localize 'PDVF.Sheet.DirectedPlaceholder'}}">
-        <input type="number" class="pdvf-row-input" name="system.directedTraits.{{index}}.value" value="{{value}}" step="1" aria-label="{{name}}">
+        {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=(concat "system.directedTraits." index ".value") value=value label=name}}
         <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.directedTraits" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
         {{else}}
         <span class="pdvf-row-label">{{name}}</span>
@@ -60,7 +60,7 @@
       <input type="checkbox" class="pdvf-xp" name="system.honor.xp" {{checked honor.xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{localize 'PDVF.Honor'}}">
       {{#if editMode}}
       <span class="pdvf-row-label">{{localize "PDVF.Honor"}}</span>
-      <input type="number" class="pdvf-row-input" name="system.honor.value" value="{{honor.value}}" step="1" aria-label="{{localize 'PDVF.Honor'}}">
+      {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name="system.honor.value" value=honor.value min="0" label=(localize "PDVF.Honor")}}
       {{else}}
       <button type="button" class="pdvf-row-roll" data-action="roll" data-key="honor">
         <span class="pdvf-row-label">{{localize "PDVF.Honor"}}</span>
@@ -83,7 +83,7 @@
           <input type="checkbox" class="pdvf-xp" name="system.passions.{{index}}.xp" {{checked xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{name}}">
           {{#if @root.editMode}}
           <input type="text" class="pdvf-row-text" name="system.passions.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Sheet.PassionName'}}">
-          <input type="number" class="pdvf-row-input" name="system.passions.{{index}}.value" value="{{value}}" step="1" aria-label="{{name}}">
+          {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=(concat "system.passions." index ".value") value=value min="0" label=name}}
           <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.passions" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
           {{else}}
           <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">

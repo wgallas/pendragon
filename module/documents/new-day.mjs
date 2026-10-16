@@ -42,7 +42,7 @@ export function addNewDayControl(controls) {
     order: 99,
     button: true,
     visible: true,
-    onChange: () => newDayForAll()
+    onChange: (event) => { console.log(`${SYSTEM_ID} | Outil Nouveau jour`); newDayForAll(); }
   };
   // v13+ : objet indexé par nom ; versions plus anciennes : tableau.
   if (Array.isArray(controls)) {
@@ -52,4 +52,22 @@ export function addNewDayControl(controls) {
     const tokens = controls.tokens ?? controls.token;
     if (tokens?.tools) tokens.tools[tool.name] = tool;
   }
+}
+
+/**
+ * Bouton du MJ en haut de l'onglet Acteurs, toujours accessible
+ * (les outils de la barre de gauche ne répondent pas sans scène active).
+ */
+export function addNewDayDirectoryButton(app, html) {
+  if (!game.user.isGM) return;
+  const root = html instanceof HTMLElement ? html : html?.[0];
+  if (!root || root.querySelector(".pdvf-newday-dir")) return;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "pdvf-newday-dir";
+  button.innerHTML = `<i class="fa-solid fa-sun" aria-hidden="true"></i> ${game.i18n.localize("PDVF.Invoke.NewDay")}`;
+  button.dataset.tooltip = game.i18n.localize("PDVF.Invoke.NewDayControl");
+  button.addEventListener("click", (event) => { event.preventDefault(); newDayForAll(); });
+  const actions = root.querySelector(".header-actions") ?? root.querySelector(".directory-header") ?? root;
+  actions.append(button);
 }

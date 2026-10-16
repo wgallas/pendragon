@@ -9,7 +9,7 @@ import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
 import { CREATION } from "./creation/data.mjs";
 import { CreationWizard, openCreationWizard } from "./creation/wizard.mjs";
-import { newDayForAll, addNewDayControl } from "./documents/new-day.mjs";
+import { newDayForAll, addNewDayControl, addNewDayDirectoryButton } from "./documents/new-day.mjs";
 
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initialisation du système Pendragon (VF)`);
@@ -75,6 +75,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(m
 
 // « Nouveau jour » du MJ (outils des jetons, barre de gauche)
 Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));
+Hooks.on("renderActorDirectory", (app, html) => addNewDayDirectoryButton(app, html));
 
 // Assistant de création : s'ouvre pour un chevalier tout neuf créé par cet utilisateur.
 Hooks.on("createActor", (actor, options, userId) => {

@@ -846,3 +846,7 @@
 .pdvf-card .pdvf-card-prelude-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.8; }
 .pdvf-card .pdvf-verdict.small { font-size: 13px; padding: 2px 4px; margin-top: 2px; }
 .pendragon-vf .pdvf-inspired-badge { font-size: 12px; font-weight: 700; color: var(--pdvf-parchment-light, #fff); background: var(--pdvf-vermilion); border-radius: 8px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
+
+/* « Nouveau jour » dans l'onglet Acteurs (hors de la fiche : styles indépendants) */
+.pdvf-newday-dir { flex: 1 1 100%; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.pdvf-newday-dir i { color: #E0A526; }

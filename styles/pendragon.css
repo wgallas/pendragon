@@ -81,10 +81,37 @@
   box-shadow: none;
 }
 .pendragon-vf input[type="number"] { text-align: right; font-variant-numeric: tabular-nums; }
-.pendragon-vf input[type="checkbox"] {
-  accent-color: var(--pdvf-vermilion);
-  width: 16px; height: 16px; margin: 0; flex: none;
+/* Cases à cocher dessinées par le système (Foundry les remplace sinon par
+   les cases de son thème, pleines et sombres même quand elles sont vides). */
+.pendragon-vf input[type="checkbox"],
+.pdvf-dialog input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px; height: 16px; min-width: 16px;
+  margin: 0; padding: 0; flex: none;
+  display: inline-block; vertical-align: middle;
+  background: var(--pdvf-parchment-light) no-repeat center / 12px 12px;
+  border: 1.5px solid var(--pdvf-ink-faint);
+  border-radius: 2px;
+  box-shadow: none;
+  cursor: pointer;
+  font-size: 0;
 }
+.pendragon-vf input[type="checkbox"]::before,
+.pendragon-vf input[type="checkbox"]::after,
+.pdvf-dialog input[type="checkbox"]::before,
+.pdvf-dialog input[type="checkbox"]::after {
+  content: none !important;
+  display: none !important;
+}
+.pendragon-vf input[type="checkbox"]:hover { border-color: var(--pdvf-vermilion); }
+.pendragon-vf input[type="checkbox"]:checked,
+.pdvf-dialog input[type="checkbox"]:checked {
+  background-color: var(--pdvf-vermilion);
+  border-color: var(--pdvf-vermilion-dark);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 L5 8.6 L9.6 3.4' fill='none' stroke='%23FBF6E9' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.pendragon-vf input[type="checkbox"]:disabled { opacity: 0.5; cursor: default; }
 .pendragon-vf input[readonly] { background: transparent; border-color: transparent; }
 .pendragon-vf button {
   font-family: var(--pdvf-font-body);

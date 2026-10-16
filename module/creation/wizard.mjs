@@ -384,13 +384,23 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const delta = Number(target.dataset.delta) || 0;
     const min = target.dataset.min !== undefined ? Number(target.dataset.min) : 0;
     const max = target.dataset.max !== undefined ? Number(target.dataset.max) : Infinity;
-    const current = Number(foundry.utils.getProperty(this.draft, path)) || 0;
-    const next = Math.max(min, Math.min(max, current + delta));
-    // Les points de trait sont rangés par « id.côté » : on évite de créer un sous-objet.
-    if (path.startsWith("traits.points.")) this.draft.traits.points[path.slice("traits.points.".length)] = next;
-    else if (path.startsWith("apprentice.traits.")) this.draft.apprentice.traits[path.slice("apprentice.traits.".length)] = next;
-    else if (path.startsWith("passions.points.")) this.draft.passions.points[path.slice("passions.points.".length)] = next;
-    else foundry.utils.setProperty(this.draft, path, next);
+    const clamp = (v) => Math.max(min, Math.min(max, v));
+    // Ces points sont rangés sous des clés qui contiennent elles-mêmes un point
+    // (« chaste.left », « base.1 », « trait.valorous.left ») : on les lit et on les
+    // écrit directement dans leur objet, sans passer par un chemin pointé.
+    const flat = [
+      ["traits.points.", this.draft.traits.points],
+      ["apprentice.traits.", this.draft.apprentice.traits],
+      ["passions.points.", this.draft.passions.points]
+    ];
+    const hit = flat.find(([prefix]) => path.startsWith(prefix));
+    if (hit) {
+      const [prefix, store] = hit;
+      const key = path.slice(prefix.length);
+      store[key] = clamp((Number(store[key]) || 0) + delta);
+    } else {
+      foundry.utils.setProperty(this.draft, path, clamp((Number(foundry.utils.getProperty(this.draft, path)) || 0) + delta));
+    }
     this.render({ parts: ["body"] });
   }
 

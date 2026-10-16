@@ -68,7 +68,7 @@
         {{#each charRows}}
         <tr>
           <th scope="row"><span class="pdvf-char-abbr">{{abbr}}</span> {{long}}</th>
-          <td>{{#if ../isBuilt}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=base min=min max=maxBuilt label=long}}{{else}}{{base}} <span class="pdvf-wiz-dice">({{dice}})</span>{{/if}}</td>
+          <td>{{#if ../isBuilt}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=base min=min label=long}}{{else}}{{base}} <span class="pdvf-wiz-dice">({{dice}})</span>{{/if}}</td>
           <td>{{mod}}</td>
           <td class="pdvf-wiz-final">{{final}}</td>
           <td class="pdvf-wiz-faint">{{max}}</td>
@@ -231,9 +231,9 @@
       <label class="pdvf-field"><span>{{localize "PDVF.Wizard.Apprentice.years"}}</span>
         <select data-bind="apprentice.years" data-type="number">{{#each yearChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
       <div class="pdvf-wiz-alloc">
-        <span>{{localize "PDVF.Wizard.Apprentice.allocSkills"}} {{> "systems/pendragon-vf/templates/creation/stepper.hbs" path="apprentice.alloc.skills" value=alloc.skills max=years label="skills"}}</span>
-        <span>{{localize "PDVF.Wizard.Apprentice.allocTraits"}} {{> "systems/pendragon-vf/templates/creation/stepper.hbs" path="apprentice.alloc.traits" value=alloc.traits max=years label="traits"}}</span>
-        <span>{{localize "PDVF.Wizard.Apprentice.allocChars"}} {{> "systems/pendragon-vf/templates/creation/stepper.hbs" path="apprentice.alloc.chars" value=alloc.chars max=years label="chars"}}</span>
+        <span>{{localize "PDVF.Wizard.Apprentice.allocSkills"}} {{> "systems/pendragon-vf/templates/creation/stepper.hbs" path="apprentice.alloc.skills" value=alloc.skills label="skills"}}</span>
+        <span>{{localize "PDVF.Wizard.Apprentice.allocTraits"}} {{> "systems/pendragon-vf/templates/creation/stepper.hbs" path="apprentice.alloc.traits" value=alloc.traits label="traits"}}</span>
+        <span>{{localize "PDVF.Wizard.Apprentice.allocChars"}} {{> "systems/pendragon-vf/templates/creation/stepper.hbs" path="apprentice.alloc.chars" value=alloc.chars label="chars"}}</span>
         <span class="pdvf-wiz-faint">{{allocated}} / {{years}}</span>
       </div>
     </div>

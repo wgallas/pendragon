@@ -269,6 +269,96 @@ export function skillRows(state, C = CREATION) {
 }
 
 /* -------------------------------------------- */
+/*  Plafonds des boutons +                       */
+/* -------------------------------------------- */
+
+/**
+ * Nombre maximal de points que chaque compteur de l'assistant peut recevoir,
+ * compte tenu du budget restant et des plafonds des règles (15 pour une compétence
+ * ou un trait à la création, ATT pour les compétences liées à l'ATT, 19 et 20 pour
+ * l'apprentissage, maximum culturel des caractéristiques).
+ * @returns {Record<string, number>} clé = chemin du compteur
+ */
+export function pointCaps(state, C = CREATION) {
+  const b = C.budgets;
+  const caps = {};
+  const cap = (points, ...limits) => Math.max(0, Math.min(...limits.map(l => points + l).filter(Number.isFinite)));
+  const { culture } = resolveOrigin(state, C);
+
+  // Caractéristiques (méthode construite)
+  const charLeft = b.characteristics - sum(state.chars.built);
+  for (const c of CHARS) {
+    const v = Number(state.chars.built[c]) || 0;
+    caps[`chars.built.${c}`] = Math.min(b.characteristicMax, v + Math.max(0, charLeft));
+  }
+
+  // Traits (méthode construite) : 15 au plus, rien sur le trait à 16 ni sur son opposé
+  const after = traitsAfterCreation(state, C);
+  const traitLeft = b.traitPoints - sum(state.traits.points);
+  const famousId = state.traits.famous?.split(".")[0];
+  for (const id of PDVF.traits) {
+    for (const side of ["left", "right"]) {
+      const key = `${id}.${side}`;
+      const pts = Number(state.traits.points[key]) || 0;
+      if (!after || id === famousId) { caps[`traits.points.${key}`] = 0; continue; }
+      const value = traitPair(after[id])[side];
+      caps[`traits.points.${key}`] = cap(pts, traitLeft, b.traitMax - value);
+    }
+  }
+
+  // Passions
+  const passionLeft = passionPool(state, C) - sum(state.passions.points);
+  const rows = passionRows(state, C);
+  for (const r of rows) {
+    caps[`passions.points.${r.key}`] = cap(r.points, passionLeft, r.afterCreation === null ? Infinity : b.passionMax - r.afterCreation);
+  }
+
+  // Compétences : 15 au plus ; ATT au plus (hors bonus) pour celles qui en dépendent
+  const att = characteristicsAt14(state, C)?.app ?? 0;
+  const skills = skillRows(state, C);
+  const skillLeft = b.skillPoints - sum(state.skills.points);
+  const a = state.apprentice;
+  const appSkillLeft = (Number(a.alloc.skills) || 0) * b.apprenticeSkillPoints - sum(a.skills);
+  for (const s of skills) {
+    const attRoom = s.attLinked ? att - (s.start + s.points + s.apprentice) : Infinity;
+    caps[`skills.points.${s.id}`] = s.start === 0 ? 0 : cap(s.points, skillLeft, b.skillMax - s.final, attRoom);
+    caps[`apprentice.skills.${s.id}`] = s.start === 0 ? 0 : cap(s.apprentice, appSkillLeft, b.skillMax - s.final, attRoom);
+  }
+
+  // Années d'apprentissage
+  const years = Number(a.years) || 0;
+  for (const k of ["skills", "traits", "chars"]) {
+    caps[`apprentice.alloc.${k}`] = cap(Number(a.alloc[k]) || 0, years - sum(a.alloc));
+  }
+
+  // Traits et passions pendant l'apprentissage : 19 et 20
+  const finalT = finalTraits(state, C);
+  const appTraitLeft = (Number(a.alloc.traits) || 0) - sum(a.traits);
+  for (const id of PDVF.traits) {
+    for (const side of ["left", "right"]) {
+      const key = `trait.${id}.${side}`;
+      const pts = Number(a.traits[key]) || 0;
+      const value = finalT ? traitPair(finalT[id])[side] : 0;
+      caps[`apprentice.traits.${key}`] = cap(pts, appTraitLeft, b.apprenticeTraitMax - value);
+    }
+  }
+  for (const r of rows) {
+    caps[`apprentice.traits.passion.${r.key}`] = cap(r.apprentice, appTraitLeft, r.final === null ? Infinity : b.apprenticePassionMax - r.final);
+  }
+
+  // Caractéristiques pendant l'apprentissage : maximum culturel
+  const at14 = characteristicsAt14(state, C);
+  const appCharLeft = (Number(a.alloc.chars) || 0) - sum(a.chars);
+  for (const c of CHARS) {
+    const pts = Number(a.chars[c]) || 0;
+    const room = at14 && culture.maxima?.[c] !== undefined ? culture.maxima[c] - (at14[c] + pts) : Infinity;
+    caps[`apprentice.chars.${c}`] = cap(pts, appCharLeft, room);
+  }
+
+  return caps;
+}
+
+/* -------------------------------------------- */
 /*  Apprentissage et âge                         */
 /* -------------------------------------------- */
 

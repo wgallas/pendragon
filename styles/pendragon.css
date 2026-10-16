@@ -422,7 +422,8 @@
 }
 .pendragon-vf .pdvf-step:first-child { border-radius: 2px 0 0 2px; }
 .pendragon-vf .pdvf-step:last-child { border-radius: 0 2px 2px 0; }
-.pendragon-vf .pdvf-step:hover { background: var(--pdvf-vermilion); border-color: var(--pdvf-vermilion); color: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-step:hover:not(:disabled) { background: var(--pdvf-vermilion); border-color: var(--pdvf-vermilion); color: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-step:disabled { opacity: 0.35; cursor: default; }
 .pendragon-vf .pdvf-stepper.char input {
   width: 46px; min-height: 36px;
   border: 1.5px solid var(--pdvf-ink); border-left: 0; border-right: 0;

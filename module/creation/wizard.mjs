@@ -96,6 +96,8 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       step: { [stepId]: true }
     });
     Object.assign(context, this[`_ctx_${stepId}`](s, C, o));
+    // Plafond de chaque bouton + (en texte : un plafond de 0 doit rester visible pour Handlebars)
+    context.caps = Object.fromEntries(Object.entries(R.pointCaps(s, C)).map(([k, v]) => [k, String(v)]));
     return context;
   }
 
@@ -306,6 +308,12 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
   _onRender(context, options) {
     super._onRender?.(context, options);
+    // Bouton + grisé quand le plafond est atteint (budget épuisé ou valeur maximale des règles)
+    for (const btn of this.element.querySelectorAll('.pdvf-step[data-delta="1"][data-max]')) {
+      const shown = btn.parentElement?.querySelector(".pdvf-wiz-stepper-value")?.textContent;
+      const value = Number(shown);
+      if (Number.isFinite(value) && value >= Number(btn.dataset.max)) btn.disabled = true;
+    }
     for (const el of this.element.querySelectorAll("[data-bind]")) {
       const typed = el.tagName === "TEXTAREA" || (el.tagName === "INPUT" && ["text", "number"].includes(el.type));
       if (typed) {

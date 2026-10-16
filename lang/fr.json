@@ -563,13 +563,15 @@
         "traitsPassions": "Traits et passions"
       },
       "Knight": {
-        "ok": "Conditions de l'adoubement remplies",
-        "notYet": "Conditions de l'adoubement non remplies",
+        "ok": "Prêt à être adoubé",
+        "notYet": "Pas encore prêt à être adoubé",
         "age": "Âge",
         "others": "Deux autres compétences de chevalier à 10",
-        "required": "requis",
-        "missing": "Il manque :",
-        "back": "Revenir aux années d'écuyer"
+        "othersShort": "Autres compétences de chevalier à 10",
+        "groupRequired": "Exigées pour l'adoubement",
+        "groupChoice": "Adoubement : {n} au choix",
+        "groupOther": "Autres compétences",
+        "minTip": "Minimum pour être adoubé"
       },
       "Details": {
         "positive": "Signe positif",

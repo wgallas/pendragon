@@ -1,0 +1,12 @@
+{{!-- Indicateur d'adoubement, mis à jour en direct. Paramètre : knight --}}
+<div class="pdvf-wiz-knight {{#if knight.eligible}}ok{{/if}}" role="status" aria-live="polite">
+  <span class="pdvf-wiz-knight-state">
+    <i class="fa-solid {{#if knight.eligible}}fa-circle-check{{else}}fa-circle-xmark{{/if}}" aria-hidden="true"></i>
+    {{#if knight.eligible}}{{localize "PDVF.Wizard.Knight.ok"}}{{else}}{{localize "PDVF.Wizard.Knight.notYet"}}{{/if}}
+  </span>
+  <span class="pdvf-wiz-knight-items">
+    {{#each knight.items}}
+    <span class="pdvf-wiz-knight-item {{#if ok}}ok{{else}}ko{{/if}}">{{label}} <strong>{{value}}</strong>&#8239;/&#8239;{{need}}</span>
+    {{/each}}
+  </span>
+</div>

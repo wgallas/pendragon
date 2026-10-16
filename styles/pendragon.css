@@ -785,12 +785,32 @@
 .pendragon-vf .pdvf-wiz-alloc { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin-bottom: 8px; }
 .pendragon-vf .pdvf-wiz-alloc > span { display: inline-flex; align-items: center; gap: 6px; }
 .pendragon-vf .pdvf-wiz-knight {
-  display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline;
-  margin: 10px 0 14px; padding: 8px 12px; border: 1px solid #8A6A1A; background: #F3E6C4; font-size: 15px;
+  position: sticky; top: -16px; z-index: 2;
+  display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center;
+  margin: 10px -22px 14px; padding: 9px 22px;
+  border-block: 1px solid #8A6A1A; background: #F3E6C4; font-size: 15px;
+  box-shadow: 0 2px 4px rgba(40, 25, 10, 0.12);
 }
 .pendragon-vf .pdvf-wiz-knight.ok { border-color: var(--pdvf-green); background: #E7EDD8; }
-.pendragon-vf .pdvf-wiz-knight .ok { color: #3F5C26; }
-.pendragon-vf .pdvf-wiz-knight .ko { color: var(--pdvf-vermilion-dark); font-weight: 600; }
+.pendragon-vf .pdvf-wiz-knight-state { font-weight: 700; color: var(--pdvf-vermilion-dark); white-space: nowrap; }
+.pendragon-vf .pdvf-wiz-knight.ok .pdvf-wiz-knight-state { color: #3F5C26; }
+.pendragon-vf .pdvf-wiz-knight-items { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.pendragon-vf .pdvf-wiz-knight-item { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pendragon-vf .pdvf-wiz-knight-item.ok { color: #3F5C26; }
+.pendragon-vf .pdvf-wiz-knight-item.ok::before { content: "✓ "; }
+.pendragon-vf .pdvf-wiz-knight-item.ko { color: var(--pdvf-vermilion-dark); }
+.pendragon-vf .pdvf-wiz-knight-item.ko::before { content: "✗ "; }
+.pendragon-vf .pdvf-wiz-group {
+  margin: 10px 0 2px; font-family: var(--pdvf-font-heading); font-size: 14px; font-weight: normal;
+  color: var(--pdvf-lapis); border-bottom: 1px solid var(--pdvf-rule-strong);
+}
+.pendragon-vf .pdvf-wiz-group:first-of-type { margin-top: 2px; }
+.pendragon-vf .pdvf-wiz-need {
+  font-size: 12px; padding: 0 5px; border-radius: 8px; white-space: nowrap;
+  border: 1px solid currentColor; font-variant-numeric: tabular-nums;
+}
+.pendragon-vf .pdvf-wiz-line.ko .pdvf-wiz-need, .pendragon-vf .pdvf-wiz-line.ko .val { color: var(--pdvf-vermilion-dark); }
+.pendragon-vf .pdvf-wiz-line.ok .pdvf-wiz-need { color: #3F5C26; }
 .pendragon-vf .pdvf-wiz-line { display: flex; align-items: center; gap: 8px; min-height: 30px; border-bottom: 1px dotted var(--pdvf-rule); font-size: 15px; }
 .pendragon-vf .pdvf-wiz-line .lbl { flex: 1; min-width: 0; }
 .pendragon-vf .pdvf-wiz-line .val { min-width: 24px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }

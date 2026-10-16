@@ -52,7 +52,8 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/skill-row.hbs`,
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/stepper.hbs`,
     `systems/${SYSTEM_ID}/templates/family/history.hbs`,
-    `systems/${SYSTEM_ID}/templates/creation/stepper.hbs`
+    `systems/${SYSTEM_ID}/templates/creation/stepper.hbs`,
+    `systems/${SYSTEM_ID}/templates/creation/knight-status.hbs`
   ]);
 });
 

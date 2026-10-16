@@ -201,6 +201,7 @@
       {{#if familyResult}}<strong>{{familyResult}}</strong>{{else}}<button type="button" class="pdvf-btn" data-action="roll" data-what="familyTrait">{{localize "PDVF.Wizard.RollFamilyTrait"}}</button>{{/if}}
       {{/if}}
     </div>
+    {{> "systems/pendragon-vf/templates/creation/knight-status.hbs" knight=knight}}
     <p class="pdvf-wiz-budget {{#if skillLeft}}open{{/if}}">{{localize "PDVF.Wizard.PointsLeft"}} : <strong>{{skillLeft}}</strong> / {{skillBudget}} · {{localize "PDVF.Wizard.SkillRules"}}</p>
     <div class="pdvf-wiz-grid2 top">
       {{#each skillTables}}
@@ -238,19 +239,19 @@
       </div>
     </div>
 
-    <div class="pdvf-wiz-knight {{#if knight.eligible}}ok{{/if}}">
-      <strong>{{#if knight.eligible}}{{localize "PDVF.Wizard.Knight.ok"}}{{else}}{{localize "PDVF.Wizard.Knight.notYet"}}{{/if}}</strong>
-      <span class="{{#if knight.ageOk}}ok{{else}}ko{{/if}}">{{localize "PDVF.Wizard.Knight.age"}} {{knight.age}}</span>
-      {{#each knight.weapons}}<span class="{{#if ok}}ok{{else}}ko{{/if}}">{{label}} {{value}}</span>{{/each}}
-      <span class="{{#if knight.othersOk}}ok{{else}}ko{{/if}}">{{localize "PDVF.Wizard.Knight.others"}} ({{knight.othersCount}} / {{knight.othersNeeded}})</span>
-    </div>
+    {{> "systems/pendragon-vf/templates/creation/knight-status.hbs" knight=knight}}
 
     <div class="pdvf-wiz-grid3">
       <section>
         <h3 class="pdvf-h3">{{localize "PDVF.Section.Skills"}} <small>{{skillUsed}} / {{skillPool}}</small></h3>
-        {{#each appSkills}}
-        <div class="pdvf-wiz-line {{#if knight}}knight{{/if}}"><span class="lbl">{{label}}</span><span class="val">{{value}}</span>
+        {{#each skillGroups}}
+        <h4 class="pdvf-wiz-group">{{title}}</h4>
+        {{#each rows}}
+        <div class="pdvf-wiz-line {{#if need}}knight{{/if}} {{state}}"><span class="lbl">{{label}}</span>
+          {{#if need}}<span class="pdvf-wiz-need" data-tooltip="{{localize 'PDVF.Wizard.Knight.minTip'}}">≥&#8239;{{need}}</span>{{/if}}
+          <span class="val">{{value}}</span>
           {{#if locked}}<span class="pdvf-wiz-faint">—</span>{{else}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=points label=label}}{{/if}}</div>
+        {{/each}}
         {{/each}}
       </section>
       <section>
@@ -300,12 +301,7 @@
         {{#if eligible}}
         <label class="pdvf-field pdvf-field-check"><input type="checkbox" data-bind="details.knighted" {{#if state.details.knighted}}checked{{/if}}> <span>{{localize "PDVF.Wizard.Details.knightNow"}}</span></label>
         {{else}}
-        <div class="pdvf-wiz-warning">
-          <p>{{localize "PDVF.Wizard.Details.notEligible"}}</p>
-          <p>{{localize "PDVF.Wizard.Knight.missing"}}</p>
-          <ul>{{#each knightMissing}}<li>{{this}}</li>{{/each}}</ul>
-          <button type="button" class="pdvf-btn" data-action="goto" data-step="{{apprenticeStep}}">{{localize "PDVF.Wizard.Knight.back"}}</button>
-        </div>
+        <p class="pdvf-wiz-warning">{{localize "PDVF.Wizard.Details.notEligible"}}</p>
         {{/if}}
         {{#if knighted}}
         <label class="pdvf-field pdvf-wiz-narrow"><span>{{localize "PDVF.Wizard.Details.lordGlory"}}</span>

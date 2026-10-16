@@ -228,17 +228,29 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       })),
       familyResult: family ? `${family.label}${family.skills.length ? ` : +${C.familyTraitBonus} en ${family.skills.map(id => L(`PDVF.Skill.${id}`)).join(" et ")}` : ""}` : "",
       skillSpent: spent, skillBudget: C.budgets.skillPoints, skillLeft: C.budgets.skillPoints - spent,
-      skillMax: C.budgets.skillMax
+      skillMax: C.budgets.skillMax,
+      knight: this._knightView(s, C)
     };
   }
 
   _ctx_apprentice(s, C, o) {
     const a = s.apprentice;
     const b = C.budgets;
+    const kn = C.knighthood;
     const skills = R.skillRows(s, C).map(r => ({
       id: r.id, label: L(`PDVF.Skill.${r.id}`), value: r.final, points: a.skills[r.id] ?? 0,
-      path: `apprentice.skills.${r.id}`, locked: r.start === 0, knight: r.knight
-    })).sort((x, y) => (y.knight - x.knight) || x.label.localeCompare(y.label, "fr"));
+      path: `apprentice.skills.${r.id}`, locked: r.start === 0,
+      need: kn.weapons.includes(r.id) || kn.others.includes(r.id) ? kn.minValue : null,
+      ok: r.final >= kn.minValue
+    })).sort((x, y) => x.label.localeCompare(y.label, "fr"));
+    // Une fois les deux compétences « au choix » atteintes, les autres ne sont plus signalées en rouge.
+    const othersOk = skills.filter(r => kn.others.includes(r.id) && r.ok).length >= kn.othersNeeded;
+    for (const r of skills) r.state = r.need === null ? "" : r.ok ? "ok" : (othersOk && kn.others.includes(r.id) ? "" : "ko");
+    const skillGroups = [
+      { title: L("PDVF.Wizard.Knight.groupRequired"), rows: skills.filter(r => kn.weapons.includes(r.id)) },
+      { title: game.i18n.format("PDVF.Wizard.Knight.groupChoice", { n: kn.othersNeeded }), rows: skills.filter(r => kn.others.includes(r.id)) },
+      { title: L("PDVF.Wizard.Knight.groupOther"), rows: skills.filter(r => r.need === null) }
+    ];
     const traits = R.finalTraits(s, C);
     const traitItems = PDVF.traits.flatMap(id => ["left", "right"].map(side => ({
       label: L(`PDVF.Trait.${id}.${side}`), value: traits ? traitPair(traits[id])[side] : "—",
@@ -252,7 +264,6 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       label: L(`PDVF.Char.${c}.long`), value: finalCh?.[c] ?? "—", max: o.culture.maxima?.[c],
       points: a.chars[c] ?? 0, path: `apprentice.chars.${c}`
     }));
-    const k = R.knighthoodCheck(s, C);
     const used = (obj) => Object.values(obj).reduce((x, v) => x + (Number(v) || 0), 0);
     return {
       yearChoices: Array.from({ length: b.apprenticeYears + 1 }, (_, i) => ({ value: i, label: `${i} (${14 + i} ans)`, selected: Number(a.years) === i })),
@@ -261,28 +272,22 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       skillPool: (Number(a.alloc.skills) || 0) * b.apprenticeSkillPoints, skillUsed: used(a.skills),
       traitPool: Number(a.alloc.traits) || 0, traitUsed: used(a.traits),
       charPool: Number(a.alloc.chars) || 0, charUsed: used(a.chars),
-      appSkills: skills, appTraits: traitItems, appPassions: passionItems, appChars: charItems,
-      knight: {
-        ...k,
-        othersCount: k.others.filter(x => x.ok).length, othersNeeded: C.knighthood.othersNeeded,
-        weapons: k.weapons.map(w => ({ ...w, label: L(`PDVF.Skill.${w.id}`) })),
-        others: k.others.map(w => ({ ...w, label: L(`PDVF.Skill.${w.id}`) }))
-      }
+      skillGroups, appTraits: traitItems, appPassions: passionItems, appChars: charItems,
+      knight: this._knightView(s, C)
     };
   }
 
-  /** Conditions d'adoubement non remplies, en clair. */
-  _knightMissing(k, C) {
+  /** Indicateur d'adoubement, mis à jour à chaque clic (étapes Compétences et Années d'écuyer). */
+  _knightView(s, C) {
     const kn = C.knighthood;
-    const out = [];
-    if (!k.ageOk) out.push(`${L("PDVF.Wizard.Knight.age")} ${k.age} (${kn.minAge} ${L("PDVF.Wizard.Knight.required")})`);
-    for (const w of k.weapons) if (!w.ok) out.push(`${L(`PDVF.Skill.${w.id}`)} ${w.value} (${kn.minValue} ${L("PDVF.Wizard.Knight.required")})`);
-    if (!k.othersOk) {
-      const best = [...k.others].sort((a, b) => b.value - a.value).slice(0, 4)
-        .map(o => `${L(`PDVF.Skill.${o.id}`)} ${o.value}`).join(", ");
-      out.push(`${L("PDVF.Wizard.Knight.others")} : ${k.others.filter(o => o.ok).length} / ${kn.othersNeeded} (${best}…)`);
-    }
-    return out;
+    const k = R.knighthoodCheck(s, C);
+    const othersCount = k.others.filter(o => o.ok).length;
+    const items = [
+      { label: L("PDVF.Wizard.Knight.age"), value: k.age, need: kn.minAge, ok: k.ageOk },
+      ...k.weapons.map(w => ({ label: L(`PDVF.Skill.${w.id}`), value: w.value, need: kn.minValue, ok: w.ok })),
+      { label: L("PDVF.Wizard.Knight.othersShort"), value: othersCount, need: kn.othersNeeded, ok: k.othersOk }
+    ];
+    return { eligible: k.eligible, items, minValue: kn.minValue, othersNeeded: kn.othersNeeded };
   }
 
   _ctx_details(s, C, o) {
@@ -302,8 +307,6 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       featureNeed: need, features, featureExamples: C.featureExamples,
       eligible: k.eligible,
-      knightMissing: this._knightMissing(k, C),
-      apprenticeStep: R.STEPS.indexOf("apprentice"),
       knighted: s.details.knighted && k.eligible,
       kg,
       ideals: [{ value: "", label: L("PDVF.Wizard.Details.noIdeal"), selected: !s.details.ideal },

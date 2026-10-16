@@ -1,0 +1,15 @@
+<div class="pdvf-row">
+  <input type="checkbox" class="pdvf-xp" name="system.skills.{{id}}.xp" {{checked xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{label}}" data-tooltip="{{localize 'PDVF.Sheet.XpTip'}}">
+  {{#if @root.editMode}}
+  <span class="pdvf-row-label">{{label}}
+    {{#if hasSpecialty}}<input type="text" class="pdvf-specialty" name="system.skillSpecialties.{{id}}" value="{{specialty}}" placeholder="{{localize 'PDVF.Sheet.Specialty'}}">{{/if}}
+  </span>
+  <input type="number" class="pdvf-row-input" name="system.skills.{{id}}.value" value="{{value}}" step="1" aria-label="{{label}}">
+  {{else}}
+  <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">
+    <span class="pdvf-row-label">{{label}}{{#if specialty}} <em>({{specialty}})</em>{{/if}}</span>
+    <i class="pdvf-die-icon" aria-hidden="true"></i>
+    <span class="pdvf-row-value">{{display}}</span>
+  </button>
+  {{/if}}
+</div>

@@ -1,0 +1,64 @@
+<header class="pdvf-header">
+  <div class="pdvf-header-main">
+    <button type="button" class="pdvf-heraldry" data-action="editHeraldry" aria-label="{{localize 'PDVF.Sheet.EditHeraldry'}}" {{#unless editMode}}tabindex="-1"{{/unless}}>
+      {{#if header.heraldryImg}}
+      <img src="{{header.heraldryImg}}" alt="{{localize 'PDVF.Sheet.Heraldry'}}">
+      {{else}}
+      <svg viewBox="0 0 100 120" aria-hidden="true">
+        <path d="M5 5 H95 V55 C95 90 70 108 50 116 C30 108 5 90 5 55 Z" fill="#FBF6E9" stroke="#2B2118" stroke-width="3" stroke-dasharray="6 4"></path>
+        <text x="50" y="62" text-anchor="middle" font-size="12" fill="#6B5A45">{{localize "PDVF.Sheet.Heraldry"}}</text>
+      </svg>
+      {{/if}}
+    </button>
+
+    <div class="pdvf-identity">
+      {{#if editMode}}
+      <div class="pdvf-name-edit">
+        <select name="system.biography.title" aria-label="{{localize 'PDVF.Bio.title'}}">
+          {{selectOptions titleChoices selected=system.biography.title valueAttr="value" labelAttr="label"}}
+        </select>
+        <input type="text" name="name" value="{{actor.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      </div>
+      {{else}}
+      <h1 class="pdvf-name">{{header.fullTitle}}</h1>
+      {{/if}}
+      {{#if header.line1}}<div class="pdvf-line1">{{header.line1}}</div>{{/if}}
+      {{#if header.line2}}<div class="pdvf-line2">{{header.line2}}</div>{{/if}}
+    </div>
+
+    <div class="pdvf-medallions">
+      <div class="pdvf-medallion">
+        <div class="pdvf-medallion-label">{{localize "PDVF.Glory"}}</div>
+        <button type="button" class="pdvf-medallion-value pdvf-plain" data-action="roll" data-key="glory" data-tooltip="{{localize 'PDVF.Sheet.GloryTestTip'}}">{{header.glory}}</button>
+        <label class="pdvf-medallion-sub">{{localize "PDVF.Sheet.Session"}}
+          <input type="number" name="system.glory.session" value="{{system.glory.session}}" step="1" class="pdvf-session">
+        </label>
+      </div>
+      <div class="pdvf-medallion">
+        <div class="pdvf-medallion-label">{{localize "PDVF.Honor"}}</div>
+        <button type="button" class="pdvf-medallion-value pdvf-plain" data-action="roll" data-key="honor">{{header.honor}}</button>
+        <div class="pdvf-medallion-sub">{{header.honorLevel}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdvf-hp">
+    <div class="pdvf-hp-label">{{localize "PDVF.Health.hp"}}</div>
+    <div class="pdvf-hp-gauge">
+      <div class="pdvf-hp-bar" role="img" aria-label="{{header.hp.value}} / {{header.hp.max}}">
+        <div class="pdvf-hp-fill status-{{header.status}}" style="width: {{header.hp.pct}}%"></div>
+        <div class="pdvf-hp-mark" style="left: {{header.hp.unconsciousPct}}%"></div>
+      </div>
+      <div class="pdvf-hp-legend" style="--mark: {{header.hp.unconsciousPct}}%">{{localize "PDVF.Sheet.UnconsciousBelow"}} {{header.hp.unconscious}}</div>
+    </div>
+    <div class="pdvf-hp-value">
+      <input type="number" name="system.health.hp.value" value="{{header.hp.value}}" step="1" aria-label="{{localize 'PDVF.Health.current'}}">
+      <span>/ {{header.hp.max}}</span>
+    </div>
+    <div class="pdvf-status status-{{header.status}}">{{header.statusLabel}}</div>
+    {{#each header.afflictions}}<div class="pdvf-status affliction">{{this}}</div>{{/each}}
+    <button type="button" class="pdvf-mode-toggle" data-action="toggleEdit" aria-pressed="{{#if editMode}}true{{else}}false{{/if}}">
+      {{#if editMode}}{{localize "PDVF.Sheet.PlayMode"}}{{else}}{{localize "PDVF.Sheet.EditMode"}}{{/if}}
+    </button>
+  </div>
+</header>

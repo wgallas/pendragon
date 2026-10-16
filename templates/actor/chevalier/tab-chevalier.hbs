@@ -1,0 +1,106 @@
+<section class="tab pdvf-tab-body pdvf-grid-main {{tab.cssClass}}" data-group="primary" data-tab="chevalier">
+  <div class="pdvf-col-left">
+    <section>
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Characteristics"}}</h2>
+      {{#each characteristics}}
+      {{#if @root.editMode}}
+      <label class="pdvf-char">
+        <span class="pdvf-char-abbr">{{abbr}}</span>
+        <span class="pdvf-char-long">{{long}}</span>
+        <input type="number" class="pdvf-char-box" name="{{name}}" value="{{value}}" step="1" min="0">
+      </label>
+      {{else}}
+      <button type="button" class="pdvf-char" data-action="roll" data-key="{{key}}">
+        <span class="pdvf-char-abbr">{{abbr}}</span>
+        <span class="pdvf-char-long">{{long}}</span>
+        <span class="pdvf-char-box">{{value}}</span>
+      </button>
+      {{/if}}
+      {{/each}}
+    </section>
+
+    <section>
+      <h3 class="pdvf-h3">{{localize "PDVF.Section.Derived"}}</h3>
+      {{#each derived}}
+      <div class="pdvf-derived">
+        <span class="pdvf-derived-label">{{label}}</span>
+        <span class="pdvf-derived-formula">{{formula}}</span>
+        <span class="pdvf-derived-value">{{value}}</span>
+      </div>
+      {{/each}}
+    </section>
+
+    <section class="pdvf-boxed">
+      <h3 class="pdvf-h3 red">{{localize "PDVF.Section.NextModifier"}}</h3>
+      <div class="pdvf-mods" role="group" aria-label="{{localize 'PDVF.Section.NextModifier'}}">
+        {{#each quickModifiers}}
+        <button type="button" class="pdvf-mod {{#if selected}}selected{{/if}}" data-action="setModifier" data-value="{{value}}" aria-pressed="{{#if selected}}true{{else}}false{{/if}}">{{label}}</button>
+        {{/each}}
+      </div>
+      <p class="pdvf-hint">{{modifierHint}}</p>
+    </section>
+
+    {{#if inspiration.active}}
+    <section class="pdvf-boxed pdvf-inspiration">
+      <h3 class="pdvf-h3 red">{{inspiration.text}}</h3>
+      <label class="pdvf-field">
+        <span>{{localize "PDVF.Inspiration.Target"}}</span>
+        <select name="system.inspiration.target">
+          <option value="">{{localize "PDVF.Inspiration.Choose"}}</option>
+          {{#each inspiration.targets}}
+          <option value="{{key}}" {{#if (eq key ../inspiration.target)}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </label>
+      <button type="button" class="pdvf-btn" data-action="endInspiration">{{localize "PDVF.Inspiration.End"}}</button>
+    </section>
+    {{/if}}
+  </div>
+
+  <div class="pdvf-col-right">
+    <section>
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Skills"}}</h2>
+      <div class="pdvf-two-cols">
+        {{#each skillsGeneral}}
+        <div>{{#each this}}{{> "systems/pendragon-vf/templates/actor/chevalier/parts/skill-row.hbs"}}{{/each}}</div>
+        {{/each}}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.CombatSkills"}}</h2>
+      <div class="pdvf-two-cols">
+        {{#each skillsCombat}}
+        <div>{{#each this}}{{> "systems/pendragon-vf/templates/actor/chevalier/parts/skill-row.hbs"}}{{/each}}</div>
+        {{/each}}
+      </div>
+    </section>
+
+    {{#if (or extraSkills.length editMode)}}
+    <section>
+      <h3 class="pdvf-h3">{{localize "PDVF.Section.OtherSkills"}}</h3>
+      <div class="pdvf-two-cols">
+        {{#each extraSkills}}
+        <div class="pdvf-row">
+          <input type="checkbox" class="pdvf-xp" name="system.extraSkills.{{index}}.xp" {{checked xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{name}}">
+          {{#if @root.editMode}}
+          <input type="text" class="pdvf-row-text" name="system.extraSkills.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Sheet.SkillName'}}">
+          <input type="number" class="pdvf-row-input" name="system.extraSkills.{{index}}.value" value="{{value}}" step="1" aria-label="{{name}}">
+          <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.extraSkills" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
+          {{else}}
+          <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">
+            <span class="pdvf-row-label">{{name}}</span>
+            <i class="pdvf-die-icon" aria-hidden="true"></i>
+            <span class="pdvf-row-value">{{display}}</span>
+          </button>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{#if editMode}}
+      <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.extraSkills">{{localize "PDVF.Sheet.AddSkill"}}</button>
+      {{/if}}
+    </section>
+    {{/if}}
+  </div>
+</section>

@@ -1,0 +1,359 @@
+{
+  "TYPES": {
+    "Actor": {
+      "chevalier": "Chevalier"
+    }
+  },
+  "PDVF": {
+    "Glory": "Gloire",
+    "GloryTest": "Test de Gloire",
+    "Honor": "Honneur",
+    "SheetLabel": { "chevalier": "Fiche de chevalier (Pendragon VF)" },
+    "Settings": {
+      "currentYear": {
+        "name": "Année de jeu en cours",
+        "hint": "Sert à calculer l'âge des personnages et à dater les entrées de la chronique."
+      }
+    },
+    "Tab": {
+      "chevalier": "Chevalier",
+      "traits": "Traits & passions",
+      "combat": "Combat & équipement",
+      "suite": "Suite & domaine",
+      "lignee": "Lignée",
+      "chronique": "Chronique"
+    },
+    "Char": {
+      "siz": { "abbr": "TAI", "long": "Taille" },
+      "dex": { "abbr": "DEX", "long": "Dextérité" },
+      "str": { "abbr": "FOR", "long": "Force" },
+      "con": { "abbr": "CON", "long": "Constitution" },
+      "app": { "abbr": "ATT", "long": "Attrait" }
+    },
+    "Derived": {
+      "knockdown": { "label": "Chute", "formula": "TAI" },
+      "majorWound": { "label": "Blessure majeure", "formula": "CON" },
+      "damage": { "label": "Dégâts d'arme", "formula": "(FOR+TAI)/6" },
+      "brawlDamage": { "label": "Dégâts de rixe", "formula": "(FOR+TAI)/6" },
+      "move": { "label": "Mouvement", "formula": "(FOR+DEX)/2+5" },
+      "hpMax": { "label": "Total de points de vie", "formula": "CON+TAI" },
+      "unconscious": { "label": "Inconscience", "formula": "PV/4" },
+      "healRate": { "label": "Taux de guérison", "formula": "CON/5" }
+    },
+    "Skill": {
+      "awareness": "Vigilance",
+      "chirurgery": "Chirurgie",
+      "compose": "Composition",
+      "courtesy": "Courtoisie",
+      "dancing": "Danse",
+      "falconry": "Fauconnerie",
+      "fashion": "Mode",
+      "firstAid": "Premiers soins",
+      "flirting": "Romance",
+      "folklore": "Folklore",
+      "gaming": "Jeu",
+      "hunting": "Chasse",
+      "industry": "Industrie",
+      "intrigue": "Intrigue",
+      "literacy": "Lettres",
+      "orate": "Éloquence",
+      "playInstrument": "Instrument",
+      "recognize": "Identification",
+      "religion": "Religion",
+      "singing": "Chant",
+      "stewardship": "Gestion",
+      "battle": "Bataille",
+      "horsemanship": "Équitation",
+      "bow": "Arc",
+      "brawling": "Rixe",
+      "charge": "Charge",
+      "crossbow": "Arbalète",
+      "greatWeapon": "Armes longues",
+      "hafted": "Haches et masses",
+      "spear": "Lance",
+      "sword": "Épée",
+      "thrown": "Arme lancée"
+    },
+    "Trait": {
+      "chaste": { "left": "Chaste", "right": "Luxurieux" },
+      "trusting": { "left": "Confiant", "right": "Méfiant" },
+      "spiritual": { "left": "Croyant", "right": "Matérialiste" },
+      "energetic": { "left": "Énergique", "right": "Paresseux" },
+      "generous": { "left": "Généreux", "right": "Égoïste" },
+      "honest": { "left": "Honnête", "right": "Trompeur" },
+      "forgiving": { "left": "Indulgent", "right": "Rancunier" },
+      "just": { "left": "Juste", "right": "Arbitraire" },
+      "merciful": { "left": "Miséricordieux", "right": "Cruel" },
+      "modest": { "left": "Modeste", "right": "Fier" },
+      "prudent": { "left": "Prudent", "right": "Téméraire" },
+      "temperate": { "left": "Sobre", "right": "Bon-vivant" },
+      "valorous": { "left": "Valeureux", "right": "Couard" },
+      "PlayerChoice": "Les deux tests échouent : le joueur choisit le comportement.",
+      "Acts": "Agit selon : {label}",
+      "ActsStrongly": "Agit pleinement selon : {label}"
+    },
+    "Court": {
+      "fidelitas": "Fidelitas",
+      "fervor": "Fervor",
+      "adoratio": "Adoratio",
+      "civilitas": "Civilitas"
+    },
+    "DefaultPassion": {
+      "homage": "Hommage (Seigneur)",
+      "loveFamily": "Amour (Famille)",
+      "devotion": "Dévotion (Déité)",
+      "station": "Rang",
+      "hospitality": "Hospitalité"
+    },
+    "Level": {
+      "unknown": "Inconnu",
+      "normal": "Normal",
+      "famous": "Célèbre",
+      "exalted": "Exalté"
+    },
+    "Title": { "sire": "Sire", "dame": "Dame" },
+    "Religion": { "christian": "Chrétien", "pagan": "Païen" },
+    "Class": {
+      "squire": "Écuyer",
+      "household": "Chevalier de maisonnée",
+      "mercenary": "Chevalier mercenaire",
+      "vassal": "Chevalier vassal",
+      "banneret": "Chevalier banneret"
+    },
+    "Living": {
+      "destitute": "Démuni",
+      "poor": "Pauvre",
+      "ordinary": "Ordinaire",
+      "rich": "Riche",
+      "sumptuous": "Somptueux",
+      "superlative": "Superlatif"
+    },
+    "Bio": {
+      "title": "Titre",
+      "name": "Nom",
+      "born": "Année de naissance",
+      "heir": "Héritier",
+      "homeland": "Région natale",
+      "lord": "Seigneur",
+      "class": "Classe",
+      "culture": "Culture",
+      "religion": "Religion",
+      "features": "Signes distinctifs"
+    },
+    "Dates": {
+      "squired": "Fait écuyer",
+      "knighted": "Adoubé",
+      "landed": "Reçu des terres",
+      "roundTable": "Table Ronde",
+      "ennobled": "Anobli",
+      "died": "Décédé"
+    },
+    "Heraldry": { "blazon": "Héraldique", "motto": "Devise" },
+    "Family": {
+      "parent": "Parent",
+      "characteristic": "Particularité familiale",
+      "notes": "Notes sur la famille"
+    },
+    "Health": {
+      "hp": "Points de vie",
+      "current": "Points de vie actuels",
+      "debilitated": "Affaibli",
+      "melancholy": "Mélancolique",
+      "madness": "Fou",
+      "aggravation": "Dégâts d'aggravation",
+      "deterioration": "Dégâts de détérioration"
+    },
+    "Status": {
+      "unhurt": "Indemne",
+      "wounded": "Blessé",
+      "unconscious": "Inconscient",
+      "dead": "Mort"
+    },
+    "Section": {
+      "Characteristics": "Caractéristiques",
+      "Derived": "Caractéristiques dérivées",
+      "NextModifier": "Modificateur du prochain jet",
+      "Skills": "Compétences",
+      "CombatSkills": "Compétences de combat",
+      "OtherSkills": "Autres compétences",
+      "Traits": "Traits",
+      "DirectedTraits": "Traits dirigés",
+      "Passions": "Passions",
+      "Health": "Santé",
+      "Attacks": "Attaques",
+      "Personal": "Informations personnelles",
+      "Dates": "Évènements de chevalerie",
+      "Notes": "Notes",
+      "Heraldry": "Écusson",
+      "Family": "Famille",
+      "Chronicle": "Historique et évènements",
+      "PassiveGlory": "Gloire passive",
+      "Prestige": "Récompenses de prestige"
+    },
+    "ModifierHint": {
+      "-10": "Difficulté élevée, en défaveur : situation dramatique",
+      "-5": "Difficulté ordinaire, en défaveur",
+      "0": "Aucun modificateur",
+      "5": "Difficulté ordinaire, en faveur",
+      "10": "Avantage élevé : situation dramatique"
+    },
+    "Inspiration": {
+      "Active": "{source} : {bonus}",
+      "Target": "Compétence ou trait inspiré",
+      "Choose": "— Choisir —",
+      "End": "Fin de l'inspiration"
+    },
+    "Sheet": {
+      "Tabs": "Onglets de la fiche",
+      "PlayMode": "Mode jeu",
+      "EditMode": "Mode édition",
+      "Heraldry": "Écusson",
+      "EditHeraldry": "Changer l'écusson",
+      "ChooseHeraldry": "Cliquer pour choisir l'image de l'écusson",
+      "ServesLord": "Au service de {lord}",
+      "BornIn": "Né en {year}",
+      "Age": "{age} ans",
+      "Heir": "Héritier",
+      "Session": "Session",
+      "GloryTestTip": "Cliquer pour un test de Gloire",
+      "UnconsciousBelow": "Inconscient sous",
+      "XpFor": "Croix d'expérience :",
+      "XpTip": "Croix d'expérience pour la Phase d'hiver",
+      "Specialty": "précision",
+      "SkillName": "Nom de la compétence",
+      "UnnamedSkill": "Compétence sans nom",
+      "UnnamedPassion": "Passion sans nom",
+      "NewSkill": "Nouvelle compétence",
+      "NewPassion": "Nouvelle passion",
+      "AddSkill": "Ajouter une compétence",
+      "Delete": "Supprimer",
+      "Virtue": "Vertu de la religion du personnage",
+      "Ideal": "Idéal",
+      "DirectedPlaceholder": "Ex. : Méfiant (Saxons)",
+      "NoDirected": "Aucun trait dirigé.",
+      "AddDirected": "Ajouter un trait dirigé",
+      "CourtTip": "La somme des passions d'une cour ne doit pas dépasser 40.",
+      "PassionName": "Nom de la passion",
+      "Court": "Cour",
+      "NoPassion": "Aucune passion.",
+      "AddPassion": "Ajouter une passion"
+    },
+    "Chronicle": {
+      "year": "Année",
+      "event": "Évènement",
+      "living": "Niveau de vie",
+      "new": "Gloire",
+      "total": "Total",
+      "Empty": "Aucune entrée. Commencez par la Gloire héritée et celle de l'adoubement.",
+      "Add": "Ajouter une entrée",
+      "RecordSession": "Inscrire la Gloire de la session",
+      "SessionEvent": "Gloire de la session"
+    },
+    "Passive": {
+      "traits": "Traits célèbres et exaltés",
+      "passions": "Passions célèbres et exaltées",
+      "appearance": "Attrait",
+      "living": "Niveau de vie",
+      "ideals": "Idéaux",
+      "holdings": "Propriétés",
+      "other": "Autre",
+      "total": "Total annuel",
+      "Hint": "Traits, passions et Attrait sont calculés d'après la fiche (15 par valeur Célèbre, 25 par valeur Exaltée, 100 au plus par catégorie)."
+    },
+    "Prestige": {
+      "earned": "Obtenues (une par tranche de 1000)",
+      "used": "Déjà dépensées",
+      "available": "Disponibles"
+    },
+    "Upcoming": {
+      "Combat": "Les armes, armures et boucliers à glisser sur la fiche, ainsi que la table des blessures, arrivent à la prochaine étape.",
+      "Suite": "Les liens vers les fiches de montures, d'écuyer et de domaine arrivent à une prochaine étape."
+    },
+    "Footer": {
+      "Click": "Clic sur une valeur : jet de d20",
+      "Shift": "Maj + clic : options et jet opposé",
+      "Xp": "Case cochée : croix d'expérience",
+      "Edit": "Mode édition : modifiez les valeurs, puis repassez en mode jeu pour lancer les dés."
+    },
+    "Kind": {
+      "characteristic": "Test de caractéristique",
+      "skill": "Test de compétence",
+      "trait": "Test de trait",
+      "passion": "Test de passion",
+      "glory": "Test de Gloire"
+    },
+    "Outcome": {
+      "critical": "Critique",
+      "success": "Succès",
+      "failure": "Échec",
+      "fumble": "Échec critique"
+    },
+    "Opposed": {
+      "victory": "Victoire",
+      "partial": "Succès partiel",
+      "defeat": "Défaite",
+      "tie": "Égalité",
+      "failure": "Échec"
+    },
+    "Verdict": {
+      "victory": "Victoire de {name}",
+      "tie": "Égalité",
+      "mutualFailure": "Échec mutuel : rien ne se passe",
+      "fixed": {
+        "victory": "L'obstacle est surmonté",
+        "defeat": "L'obstacle résiste"
+      }
+    },
+    "Passion": {
+      "impassioned": "Enflammé : +10 à une compétence ou un trait",
+      "inspired": "Inspiré : +5 à une compétence ou un trait",
+      "crisis": "Crise de passion !",
+      "loss": "Échec critique : la passion perd 1 point"
+    },
+    "Crisis": {
+      "madness": "Folie : le personnage devient Fou et passe hors-jeu",
+      "melancholy": "Mélancolie",
+      "none": "Aucun effet",
+      "loss": "La passion perd 1 point"
+    },
+    "CrisisMod": {
+      "0": "Aucune circonstance particulière (+0)",
+      "5": "Inspiré actuellement, ou échec en étant Enflammé (+5)",
+      "10": "Crise causée par le personnage, ou Enflammé actuellement (+10)"
+    },
+    "Card": {
+      "Die": "Résultat du dé",
+      "Opposed": "Test opposé",
+      "FixedOpposition": "Opposition fixe de {value}",
+      "Reflected": "Modificateur réfléchi : {a} / {b}",
+      "InspirationApplied": "Inspiration appliquée : {bonus}",
+      "XpMarked": "Croix d'expérience cochée pour {name} : {label}",
+      "FamousFirst": "{label} est Célèbre ou Exalté : il est testé en premier.",
+      "ChooseInspirationTarget": "Choisissez sur la fiche la compétence ou le trait qui bénéficie du bonus.",
+      "PassionLoss": "{label} perd 1 point.",
+      "RollCrisis": "Test de crise de passion",
+      "Crisis": "Crise de passion",
+      "Duration": "Durée : {duration}"
+    },
+    "Dialog": {
+      "Title": "Test : {label}",
+      "Roll": "Lancer",
+      "Cancel": "Annuler",
+      "Modifier": "Modificateur",
+      "Opposition": "Opposition",
+      "OppNone": "Aucune",
+      "OppFixed": "Valeur fixe",
+      "FixedValue": "Valeur de l'opposition fixe",
+      "OppTarget": "Contre la cible :",
+      "TargetAttribute": "Attribut de la cible",
+      "Reflected": "Modificateur réfléchi",
+      "NoReflected": "Aucun",
+      "TargetHint": "Ciblez un jeton pour faire un test opposé contre lui.",
+      "Circumstance": "Circonstances"
+    },
+    "Notify": {
+      "NotOwner": "Vous ne contrôlez pas ce personnage.",
+      "NoSessionGlory": "Aucune Gloire de session à inscrire."
+    }
+  }
+}

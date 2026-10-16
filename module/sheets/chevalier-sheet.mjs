@@ -1,0 +1,356 @@
+import { PDVF, SYSTEM_ID } from "../config.mjs";
+import { traitPair, attributeLevel, formatValue } from "../rules/resolution.mjs";
+import { rollAttribute, promptTestOptions, signed } from "../dice/tests.mjs";
+
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ActorSheetV2 } = foundry.applications.sheets;
+
+const TPL = `systems/${SYSTEM_ID}/templates/actor/chevalier`;
+const TAB_IDS = ["chevalier", "traits", "combat", "suite", "lignee", "chronique"];
+/** Chemins des tableaux du modèle, dont les lignes sont éditées dans le formulaire. */
+const ARRAY_PATHS = ["system.passions", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents"];
+
+const L = (k) => game.i18n.localize(k);
+
+/** Champs qui acceptent d'être vides. */
+const NULLABLE_KEYS = new Set(["born", "squired", "knighted", "landed", "roundTable", "ennobled", "died", "img"]);
+
+function replaceNulls(obj) {
+  if (!obj || typeof obj !== "object") return;
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === null && !NULLABLE_KEYS.has(k)) obj[k] = 0;
+    else if (typeof v === "object") replaceNulls(v);
+  }
+}
+
+/**
+ * Fiche du chevalier.
+ */
+export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+
+  /** Mode édition (champs modifiables) ou mode jeu (valeurs cliquables). */
+  _editMode = false;
+  /** Modificateur choisi pour le prochain jet. */
+  _modifier = 0;
+
+  tabGroups = { primary: "chevalier" };
+
+  static DEFAULT_OPTIONS = {
+    classes: [SYSTEM_ID, "pdvf-sheet", "pdvf-chevalier"],
+    position: { width: 980, height: 940 },
+    window: { resizable: true },
+    form: { submitOnChange: true },
+    actions: {
+      toggleEdit: ChevalierSheet.#onToggleEdit,
+      roll: ChevalierSheet.#onRoll,
+      setModifier: ChevalierSheet.#onSetModifier,
+      addRow: ChevalierSheet.#onAddRow,
+      deleteRow: ChevalierSheet.#onDeleteRow,
+      recordSession: ChevalierSheet.#onRecordSession,
+      editHeraldry: ChevalierSheet.#onEditHeraldry,
+      endInspiration: ChevalierSheet.#onEndInspiration
+    }
+  };
+
+  static PARTS = {
+    header: { template: `${TPL}/header.hbs` },
+    tabs: { template: `${TPL}/tabs.hbs` },
+    chevalier: { template: `${TPL}/tab-chevalier.hbs`, scrollable: [""] },
+    traits: { template: `${TPL}/tab-traits.hbs`, scrollable: [""] },
+    combat: { template: `${TPL}/tab-combat.hbs`, scrollable: [""] },
+    suite: { template: `${TPL}/tab-suite.hbs`, scrollable: [""] },
+    lignee: { template: `${TPL}/tab-lignee.hbs`, scrollable: [""] },
+    chronique: { template: `${TPL}/tab-chronique.hbs`, scrollable: [""] },
+    footer: { template: `${TPL}/footer.hbs` }
+  };
+
+  get title() {
+    return this.document.name;
+  }
+
+  /* -------------------------------------------- */
+  /*  Contexte                                     */
+  /* -------------------------------------------- */
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const actor = this.document;
+    const system = actor.system;
+    const editMode = this._editMode && this.isEditable;
+    const year = game.settings.get(SYSTEM_ID, "currentYear");
+
+    Object.assign(context, {
+      actor, system, editMode, year,
+      tabs: this.#getTabs()
+    });
+
+    // Bandeau
+    const hp = system.health.hp;
+    const max = Math.max(1, hp.max);
+    const religion = system.biography.religion;
+    context.header = {
+      heraldryImg: system.heraldry.img,
+      fullTitle: `${L(`PDVF.Title.${system.biography.title}`)} ${actor.name}`,
+      line1: [
+        this.#classLabel(system.biography.knightClass),
+        system.biography.lord ? game.i18n.format("PDVF.Sheet.ServesLord", { lord: system.biography.lord }) : ""
+      ].filter(Boolean).join(" · "),
+      line2: [
+        system.biography.born ? game.i18n.format("PDVF.Sheet.BornIn", { year: system.biography.born }) : "",
+        system.age !== null && system.age >= 0 ? game.i18n.format("PDVF.Sheet.Age", { age: system.age }) : "",
+        system.biography.culture,
+        PDVF.religions[religion] ? L(`PDVF.Religion.${religion}`) : religion,
+        system.biography.heir ? L("PDVF.Sheet.Heir") : ""
+      ].filter(Boolean).join(" · "),
+      glory: system.gloryTotal.toLocaleString("fr-FR"),
+      honor: formatValue(system.honor.value),
+      honorLevel: L(`PDVF.Level.${system.honorLevel}`),
+      hp: {
+        value: hp.value, max: hp.max,
+        pct: Math.max(0, Math.min(100, Math.round(100 * hp.value / max))),
+        unconscious: system.derived.unconscious,
+        unconsciousPct: Math.round(100 * system.derived.unconscious / max)
+      },
+      status: system.derived.status,
+      statusLabel: L(`PDVF.Status.${system.derived.status}`),
+      afflictions: [
+        system.health.debilitated ? L("PDVF.Health.debilitated") : null,
+        system.health.melancholy ? L("PDVF.Health.melancholy") : null,
+        system.health.madness ? L("PDVF.Health.madness") : null
+      ].filter(Boolean)
+    };
+
+    // Onglet Chevalier
+    context.characteristics = PDVF.characteristics.map(id => ({
+      id, key: `char.${id}`,
+      abbr: L(`PDVF.Char.${id}.abbr`), long: L(`PDVF.Char.${id}.long`),
+      value: system.characteristics[id].value,
+      name: `system.characteristics.${id}.value`
+    }));
+    const d = system.derived;
+    context.derived = [
+      ["knockdown", d.knockdown], ["majorWound", d.majorWound], ["damage", d.damage],
+      ["brawlDamage", d.brawlDamage], ["move", d.move], ["hpMax", d.hpMax],
+      ["unconscious", d.unconscious], ["healRate", d.healRate]
+    ].map(([id, value]) => ({ label: L(`PDVF.Derived.${id}.label`), formula: L(`PDVF.Derived.${id}.formula`), value }));
+
+    context.quickModifiers = PDVF.quickModifiers.map(v => ({ value: v, label: signed(v), selected: v === this._modifier }));
+    context.modifierHint = L(`PDVF.ModifierHint.${this._modifier}`);
+
+    const insp = system.inspiration;
+    context.inspiration = {
+      active: insp.bonus > 0,
+      text: game.i18n.format("PDVF.Inspiration.Active", { source: insp.source, bonus: signed(insp.bonus) }),
+      target: insp.target,
+      targets: actor.listRollables().filter(r => r.kind === "skill" || r.kind === "trait")
+    };
+
+    const skills = Object.entries(PDVF.skills).map(([id, cfg]) => {
+      const label = L(`PDVF.Skill.${id}`);
+      return {
+        id, key: `skill.${id}`, group: cfg.group, label,
+        value: system.skills[id].value, display: formatValue(system.skills[id].value), xp: system.skills[id].xp,
+        hasSpecialty: id in system.skillSpecialties, specialty: system.skillSpecialties[id] ?? ""
+      };
+    }).sort((a, b) => a.label.localeCompare(b.label, "fr"));
+    const general = skills.filter(s => s.group === "general");
+    const combat = skills.filter(s => s.group === "combat");
+    context.skillsGeneral = this.#splitColumns(general);
+    context.skillsCombat = this.#splitColumns(combat);
+    context.extraSkills = system.extraSkills.map((s, i) => ({
+      ...s, index: i, key: `extra.${i}`, display: formatValue(s.value)
+    }));
+
+    // Onglet Traits & passions
+    const virtues = new Set(PDVF.religions[religion]?.virtues ?? []);
+    context.traits = PDVF.traits.map(id => {
+      const pair = traitPair(system.traits[id].value);
+      return {
+        id,
+        left: this.#traitSide(id, "left", pair.left, system.traits[id].xpLeft, virtues),
+        right: this.#traitSide(id, "right", pair.right, system.traits[id].xpRight, virtues)
+      };
+    });
+    context.directedTraits = system.directedTraits.map((t, i) => ({ ...t, index: i }));
+    context.honor = {
+      value: system.honor.value, display: formatValue(system.honor.value), xp: system.honor.xp,
+      level: system.honorLevel, levelLabel: L(`PDVF.Level.${system.honorLevel}`)
+    };
+    context.courts = PDVF.passionCourts.map(court => ({
+      court,
+      label: L(`PDVF.Court.${court}`),
+      total: system.courtTotals[court],
+      max: PDVF.passionCourtMax,
+      over: system.courtTotals[court] > PDVF.passionCourtMax,
+      passions: system.passions
+        .map((p, index) => ({ ...p, index, key: `passion.${index}`, display: formatValue(p.value), level: attributeLevel(p.value) }))
+        .filter(p => p.court === court)
+    }));
+    context.courtChoices = PDVF.passionCourts.map(c => ({ value: c, label: L(`PDVF.Court.${c}`) }));
+
+    // Onglet Lignée
+    context.titleChoices = ["sire", "dame"].map(v => ({ value: v, label: L(`PDVF.Title.${v}`) }));
+    context.religionChoices = Object.keys(PDVF.religions).map(v => ({ value: v, label: L(`PDVF.Religion.${v}`) }));
+    context.classChoices = PDVF.knightClasses.map(v => ({ value: v, label: L(`PDVF.Class.${v}`) }));
+    context.dates = ["squired", "knighted", "landed", "roundTable", "ennobled", "died"].map(id => ({
+      id, label: L(`PDVF.Dates.${id}`), value: system.dates[id] || "", name: `system.dates.${id}`
+    }));
+    context.parents = system.family.parents.map((p, i) => ({ ...p, index: i }));
+
+    // Onglet Chronique
+    context.chronicle = system.chronicleRows;
+    context.livingChoices = PDVF.livingStandards.map(v => ({ value: L(`PDVF.Living.${v}`), label: L(`PDVF.Living.${v}`) }));
+    context.passive = system.passive;
+    context.prestige = {
+      earned: system.prestigeEarned,
+      used: system.glory.prestigeUsed,
+      available: Math.max(0, system.prestigeEarned - system.glory.prestigeUsed)
+    };
+    return context;
+  }
+
+  async _preparePartContext(partId, context, options) {
+    context = await super._preparePartContext(partId, context, options);
+    if (TAB_IDS.includes(partId)) context.tab = context.tabs[partId];
+    return context;
+  }
+
+  #getTabs() {
+    const active = this.tabGroups.primary ?? "chevalier";
+    return Object.fromEntries(TAB_IDS.map(id => [id, {
+      id, group: "primary", active: id === active, cssClass: id === active ? "active" : "",
+      label: L(`PDVF.Tab.${id}`)
+    }]));
+  }
+
+  #splitColumns(list) {
+    const half = Math.ceil(list.length / 2);
+    return [list.slice(0, half), list.slice(half)];
+  }
+
+  #traitSide(id, side, value, xp, virtues) {
+    const level = attributeLevel(value);
+    return {
+      key: `trait.${id}.${side}`,
+      label: L(`PDVF.Trait.${id}.${side}`),
+      value, display: formatValue(value), xp,
+      xpName: `system.traits.${id}.${side === "left" ? "xpLeft" : "xpRight"}`,
+      inputName: side === "left" ? `system.traits.${id}.value` : `traitsRight.${id}`,
+      virtue: virtues.has(`${id}.${side}`),
+      level, famous: level === "famous" || level === "exalted"
+    };
+  }
+
+  #classLabel(value) {
+    return PDVF.knightClasses.includes(value) ? L(`PDVF.Class.${value}`) : value;
+  }
+
+  /* -------------------------------------------- */
+  /*  Formulaire                                   */
+  /* -------------------------------------------- */
+
+  /** Convertit les lignes de tableaux et la saisie du côté droit des traits. */
+  _processFormData(event, form, formData) {
+    const data = super._processFormData(event, form, formData);
+
+    // Saisie du trait de droite : la valeur stockée est celle de gauche (somme 20).
+    const changed = event?.target?.name ?? "";
+    if (data.traitsRight) {
+      if (changed.startsWith("traitsRight.")) {
+        const id = changed.split(".")[1];
+        foundry.utils.setProperty(data, `system.traits.${id}.value`, 20 - Number(data.traitsRight[id] || 0));
+      }
+      delete data.traitsRight;
+    }
+
+    // Un champ numérique vidé arrive à null : on le ramène à 0, sauf pour les années.
+    replaceNulls(data.system);
+
+    // Les lignes des tableaux arrivent sous forme d'objets indexés : on les fusionne.
+    for (const path of ARRAY_PATHS) {
+      const incoming = foundry.utils.getProperty(data, path);
+      if (!incoming || Array.isArray(incoming)) continue;
+      const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
+      for (const [i, row] of Object.entries(incoming)) {
+        rows[Number(i)] = foundry.utils.mergeObject(rows[Number(i)] ?? {}, row, { inplace: false });
+      }
+      foundry.utils.setProperty(data, path, rows);
+    }
+    return data;
+  }
+
+  /* -------------------------------------------- */
+  /*  Actions                                      */
+  /* -------------------------------------------- */
+
+  static #onToggleEdit() {
+    this._editMode = !this._editMode;
+    this.render();
+  }
+
+  static async #onRoll(event, target) {
+    const key = target.dataset.key;
+    const rollable = this.document.getRollable(key);
+    if (!rollable) return;
+    let options = { modifier: this._modifier };
+    if (event.shiftKey) {
+      options = await promptTestOptions(this.document, rollable, this._modifier);
+      if (!options) return;
+    }
+    await rollAttribute(this.document, key, options);
+    if (this._modifier !== 0) {
+      this._modifier = 0;
+      this.render({ parts: ["chevalier"] });
+    }
+  }
+
+  static #onSetModifier(event, target) {
+    this._modifier = Number(target.dataset.value) || 0;
+    this.render({ parts: ["chevalier"] });
+  }
+
+  static async #onAddRow(event, target) {
+    const path = target.dataset.path;
+    const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
+    const defaults = {
+      "system.passions": { court: target.dataset.court ?? "fervor", name: L("PDVF.Sheet.NewPassion"), value: 10, xp: false },
+      "system.extraSkills": { name: L("PDVF.Sheet.NewSkill"), group: "general", value: 0, xp: false },
+      "system.directedTraits": { name: "", value: 1 },
+      "system.chronicle": { year: game.settings.get(SYSTEM_ID, "currentYear"), event: "", living: "", glory: 0 }
+    };
+    if (!(path in defaults)) return;
+    rows.push(defaults[path]);
+    await this.document.update({ [path]: rows });
+  }
+
+  static async #onDeleteRow(event, target) {
+    const { path, index } = target.dataset;
+    const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
+    rows.splice(Number(index), 1);
+    await this.document.update({ [path]: rows });
+  }
+
+  static async #onRecordSession() {
+    const system = this.document.system;
+    const glory = system.glory.session;
+    if (!glory) return ui.notifications.info(L("PDVF.Notify.NoSessionGlory"));
+    const rows = foundry.utils.deepClone(this.document._source.system.chronicle);
+    rows.push({ year: game.settings.get(SYSTEM_ID, "currentYear"), event: L("PDVF.Chronicle.SessionEvent"), living: "", glory });
+    await this.document.update({ "system.chronicle": rows, "system.glory.session": 0 });
+  }
+
+  static async #onEditHeraldry() {
+    if (!this.isEditable) return;
+    const FP = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
+    const picker = new FP({
+      type: "image",
+      current: this.document.system.heraldry.img ?? "",
+      callback: (path) => this.document.update({ "system.heraldry.img": path })
+    });
+    return picker.browse();
+  }
+
+  static async #onEndInspiration() {
+    await this.document.update({ "system.inspiration": { source: "", bonus: 0, target: "" } });
+  }
+}

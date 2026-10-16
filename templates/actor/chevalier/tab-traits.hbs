@@ -1,0 +1,106 @@
+<section class="tab pdvf-tab-body pdvf-grid-traits {{tab.cssClass}}" data-group="primary" data-tab="traits">
+  <div class="pdvf-traits-col">
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Traits"}}</h2>
+    <div class="pdvf-traits">
+      {{#each traits}}
+      <div class="pdvf-trait">
+        <div class="pdvf-trait-side left {{#if left.famous}}famous{{/if}} {{#if left.virtue}}virtue{{/if}}">
+          {{#if @root.editMode}}
+          <input type="number" class="pdvf-shield-input" name="{{left.inputName}}" value="{{left.value}}" step="1" aria-label="{{left.label}}">
+          {{else}}
+          <button type="button" class="pdvf-shield" data-action="roll" data-key="{{left.key}}">{{left.display}}</button>
+          {{/if}}
+          <input type="checkbox" class="pdvf-xp" name="{{left.xpName}}" {{checked left.xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{left.label}}">
+          <span class="pdvf-trait-label" {{#if left.virtue}}data-tooltip="{{localize 'PDVF.Sheet.Virtue'}}"{{/if}}>{{left.label}}</span>
+        </div>
+        <div class="pdvf-trait-bar" aria-hidden="true"></div>
+        <div class="pdvf-trait-side right {{#if right.famous}}famous{{/if}} {{#if right.virtue}}virtue{{/if}}">
+          <span class="pdvf-trait-label" {{#if right.virtue}}data-tooltip="{{localize 'PDVF.Sheet.Virtue'}}"{{/if}}>{{right.label}}</span>
+          <input type="checkbox" class="pdvf-xp" name="{{right.xpName}}" {{checked right.xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{right.label}}">
+          {{#if @root.editMode}}
+          <input type="number" class="pdvf-shield-input" name="{{right.inputName}}" value="{{right.value}}" step="1" aria-label="{{right.label}}">
+          {{else}}
+          <button type="button" class="pdvf-shield" data-action="roll" data-key="{{right.key}}">{{right.display}}</button>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+    <div class="pdvf-under-traits">
+      <label class="pdvf-field">
+        <span>{{localize "PDVF.Sheet.Ideal"}}</span>
+        <input type="text" name="system.ideal" value="{{system.ideal}}" {{#unless editMode}}readonly{{/unless}}>
+      </label>
+      <h3 class="pdvf-h3">{{localize "PDVF.Section.DirectedTraits"}}</h3>
+      {{#each directedTraits}}
+      <div class="pdvf-row">
+        {{#if @root.editMode}}
+        <input type="text" class="pdvf-row-text" name="system.directedTraits.{{index}}.name" value="{{name}}" placeholder="{{localize 'PDVF.Sheet.DirectedPlaceholder'}}">
+        <input type="number" class="pdvf-row-input" name="system.directedTraits.{{index}}.value" value="{{value}}" step="1" aria-label="{{name}}">
+        <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.directedTraits" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
+        {{else}}
+        <span class="pdvf-row-label">{{name}}</span>
+        <span class="pdvf-row-value">{{numberFormat value sign=true}}</span>
+        {{/if}}
+      </div>
+      {{else}}
+      <p class="pdvf-hint">{{localize "PDVF.Sheet.NoDirected"}}</p>
+      {{/each}}
+      {{#if editMode}}
+      <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.directedTraits">{{localize "PDVF.Sheet.AddDirected"}}</button>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="pdvf-passions-col">
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Passions"}}</h2>
+
+    <div class="pdvf-honor-row">
+      <input type="checkbox" class="pdvf-xp" name="system.honor.xp" {{checked honor.xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{localize 'PDVF.Honor'}}">
+      {{#if editMode}}
+      <span class="pdvf-row-label">{{localize "PDVF.Honor"}}</span>
+      <input type="number" class="pdvf-row-input" name="system.honor.value" value="{{honor.value}}" step="1" aria-label="{{localize 'PDVF.Honor'}}">
+      {{else}}
+      <button type="button" class="pdvf-row-roll" data-action="roll" data-key="honor">
+        <span class="pdvf-row-label">{{localize "PDVF.Honor"}}</span>
+        <span class="pdvf-level">{{honor.levelLabel}}</span>
+        <i class="pdvf-die-icon" aria-hidden="true"></i>
+        <span class="pdvf-row-value">{{honor.display}}</span>
+      </button>
+      {{/if}}
+    </div>
+
+    <div class="pdvf-courts {{#if editMode}}editing{{/if}}">
+      {{#each courts}}
+      <section class="pdvf-court">
+        <h3 class="pdvf-court-title">
+          <span>{{label}}</span>
+          <span class="pdvf-court-total {{#if over}}over{{/if}}" data-tooltip="{{localize 'PDVF.Sheet.CourtTip'}}">{{total}} / {{max}}</span>
+        </h3>
+        {{#each passions}}
+        <div class="pdvf-row level-{{level}}">
+          <input type="checkbox" class="pdvf-xp" name="system.passions.{{index}}.xp" {{checked xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{name}}">
+          {{#if @root.editMode}}
+          <input type="text" class="pdvf-row-text" name="system.passions.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Sheet.PassionName'}}">
+          <input type="number" class="pdvf-row-input" name="system.passions.{{index}}.value" value="{{value}}" step="1" aria-label="{{name}}">
+          <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.passions" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
+          {{else}}
+          <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">
+            <span class="pdvf-row-label">{{name}}</span>
+            <i class="pdvf-die-icon" aria-hidden="true"></i>
+            <span class="pdvf-row-value">{{display}}</span>
+          </button>
+          {{/if}}
+        </div>
+        {{else}}
+        <p class="pdvf-hint">{{localize "PDVF.Sheet.NoPassion"}}</p>
+        {{/each}}
+        {{#if @root.editMode}}
+        <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.passions" data-court="{{court}}">{{localize "PDVF.Sheet.AddPassion"}}</button>
+        {{/if}}
+      </section>
+      {{/each}}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+<div class="pdvf-card">
+  <header class="pdvf-card-header">
+    <h3 class="pdvf-card-title">{{title}}</h3>
+    {{#if subtitle}}<div class="pdvf-card-subtitle">{{subtitle}}</div>{{/if}}
+  </header>
+
+  <div class="pdvf-card-participants {{#if participants.[1]}}two{{/if}}">
+    {{#each participants}}
+    <div class="pdvf-participant {{cls}}">
+      <div class="pdvf-participant-name">{{name}}</div>
+      <div class="pdvf-participant-value">{{totalLabel}}</div>
+      <div class="pdvf-participant-roll">
+        <span class="pdvf-die" aria-label="{{localize 'PDVF.Card.Die'}}">{{die}}</span>
+        {{#if critBonus}}<span class="pdvf-critbonus">{{critBonus}}</span>{{/if}}
+        <span class="pdvf-outcome">{{outcomeLabel}}</span>
+      </div>
+      {{#if opposed}}<div class="pdvf-opposed">{{opposed}}</div>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+
+  {{#if verdict}}
+  <div class="pdvf-verdict {{verdict.cls}}">{{verdict.text}}</div>
+  {{/if}}
+
+  {{#if notes.length}}
+  <ul class="pdvf-card-notes">
+    {{#each notes}}<li>{{this}}</li>{{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if buttons.length}}
+  <div class="pdvf-card-buttons">
+    {{#each buttons}}
+    <button type="button" data-pdvf-action="{{action}}" data-actor="{{actor}}" data-key="{{key}}">{{label}}</button>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

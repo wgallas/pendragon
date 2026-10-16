@@ -1,0 +1,41 @@
+<div class="pdvf-test-options">
+  <div class="form-group">
+    <label for="pdvf-mod">{{localize "PDVF.Dialog.Modifier"}}</label>
+    <input id="pdvf-mod" type="number" name="modifier" value="{{modifier}}" step="1">
+  </div>
+
+  <fieldset>
+    <legend>{{localize "PDVF.Dialog.Opposition"}}</legend>
+    <label class="pdvf-radio">
+      <input type="radio" name="opposition" value="none" {{checked (eq opposition "none")}}>
+      {{localize "PDVF.Dialog.OppNone"}}
+    </label>
+    <label class="pdvf-radio">
+      <input type="radio" name="opposition" value="fixed" {{checked (eq opposition "fixed")}}>
+      {{localize "PDVF.Dialog.OppFixed"}}
+      <input type="number" name="fixedValue" value="15" step="1" class="pdvf-inline-number" aria-label="{{localize 'PDVF.Dialog.FixedValue'}}">
+    </label>
+    {{#if hasTarget}}
+    <label class="pdvf-radio">
+      <input type="radio" name="opposition" value="actor" {{checked (eq opposition "actor")}}>
+      {{localize "PDVF.Dialog.OppTarget"}} <strong>{{targetName}}</strong>
+    </label>
+    <div class="form-group">
+      <label for="pdvf-target-key">{{localize "PDVF.Dialog.TargetAttribute"}}</label>
+      <select id="pdvf-target-key" name="targetKey">
+        {{#each targetRollables}}
+        <option value="{{key}}" {{#if (eq key ../targetKey)}}selected{{/if}}>{{label}} ({{value}})</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="pdvf-reflected">{{localize "PDVF.Dialog.Reflected"}}</label>
+      <select id="pdvf-reflected" name="reflected">
+        {{#each reflectedChoices}}<option value="{{value}}">{{label}}</option>{{/each}}
+      </select>
+    </div>
+    {{else}}
+    <p class="hint">{{localize "PDVF.Dialog.TargetHint"}}</p>
+    {{/if}}
+  </fieldset>
+</div>

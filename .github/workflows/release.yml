@@ -1,0 +1,41 @@
+# Publie une version du système à chaque « Release » créée sur GitHub.
+# Le tag (ex. v0.1.0) donne le numéro de version ; system.json reçoit
+# automatiquement les adresses manifest et download.
+name: Publier une version
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Renseigner version et adresses dans system.json
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          VERSION="${TAG#v}"
+          jq --arg v "$VERSION" \
+             --arg url "https://github.com/$REPO" \
+             --arg manifest "https://github.com/$REPO/releases/latest/download/system.json" \
+             --arg download "https://github.com/$REPO/releases/download/$TAG/system.zip" \
+             '.version = $v | .url = $url | .manifest = $manifest | .download = $download' \
+             system.json > system.tmp && mv system.tmp system.json
+          cat system.json
+
+      - name: Construire l'archive
+        run: zip -r system.zip system.json LICENSE.txt README.md module templates styles lang fonts
+
+      - name: Joindre system.json et system.zip à la version
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            system.json
+            system.zip

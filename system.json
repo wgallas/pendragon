@@ -1,0 +1,45 @@
+{
+  "id": "pendragon-vf",
+  "title": "Pendragon (VF)",
+  "description": "Système non officiel pour jouer à Pendragon 6e édition en français : fiches enluminées, jets automatisés, traits et passions, Gloire et chronique.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.369"
+  },
+  "authors": [
+    {
+      "name": "William Gallas"
+    }
+  ],
+  "esmodules": [
+    "module/pendragon.mjs"
+  ],
+  "styles": [
+    "styles/pendragon.css"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/fr.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "chevalier": {}
+    }
+  },
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  },
+  "primaryTokenAttribute": "health.hp",
+  "socket": true,
+  "license": "LICENSE.txt"
+}

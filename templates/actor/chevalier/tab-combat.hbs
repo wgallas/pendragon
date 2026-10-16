@@ -1,0 +1,46 @@
+<section class="tab pdvf-tab-body pdvf-grid-main {{tab.cssClass}}" data-group="primary" data-tab="combat">
+  <div class="pdvf-col-left">
+    <section>
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Health"}}</h2>
+      <div class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Derived.majorWound.label"}}</span>
+        <span class="pdvf-derived-value">{{system.derived.majorWound}}</span>
+      </div>
+      <div class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Derived.knockdown.label"}}</span>
+        <span class="pdvf-derived-value">{{system.derived.knockdown}}</span>
+      </div>
+      <div class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Derived.unconscious.label"}}</span>
+        <span class="pdvf-derived-value">{{system.derived.unconscious}}</span>
+      </div>
+      <label class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Health.aggravation"}}</span>
+        <input type="number" class="pdvf-row-input" name="system.health.aggravation" value="{{system.health.aggravation}}" step="1" min="0">
+      </label>
+      <label class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Health.deterioration"}}</span>
+        <input type="number" class="pdvf-row-input" name="system.health.deterioration" value="{{system.health.deterioration}}" step="1" min="0">
+      </label>
+      <div class="pdvf-checks">
+        <label><input type="checkbox" name="system.health.debilitated" {{checked system.health.debilitated}}> {{localize "PDVF.Health.debilitated"}}</label>
+        <label><input type="checkbox" name="system.health.melancholy" {{checked system.health.melancholy}}> {{localize "PDVF.Health.melancholy"}}</label>
+        <label><input type="checkbox" name="system.health.madness" {{checked system.health.madness}}> {{localize "PDVF.Health.madness"}}</label>
+      </div>
+    </section>
+  </div>
+  <div class="pdvf-col-right">
+    <section>
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Attacks"}}</h2>
+      <div class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Derived.damage.label"}}</span>
+        <span class="pdvf-derived-value">{{system.derived.damage}}</span>
+      </div>
+      <div class="pdvf-derived">
+        <span class="pdvf-derived-label">{{localize "PDVF.Derived.brawlDamage.label"}}</span>
+        <span class="pdvf-derived-value">{{system.derived.brawlDamage}}</span>
+      </div>
+      <p class="pdvf-upcoming">{{localize "PDVF.Upcoming.Combat"}}</p>
+    </section>
+  </div>
+</section>

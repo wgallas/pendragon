@@ -1,0 +1,63 @@
+<section class="tab pdvf-tab-body pdvf-grid-chronicle {{tab.cssClass}}" data-group="primary" data-tab="chronique">
+  <div>
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Chronicle"}}</h2>
+    <datalist id="pdvf-living-{{actor.id}}">
+      {{#each livingChoices}}<option value="{{value}}"></option>{{/each}}
+    </datalist>
+    <table class="pdvf-chronicle">
+      <thead>
+        <tr>
+          <th scope="col" class="year">{{localize "PDVF.Chronicle.year"}}</th>
+          <th scope="col">{{localize "PDVF.Chronicle.event"}}</th>
+          <th scope="col" class="living">{{localize "PDVF.Chronicle.living"}}</th>
+          <th scope="col" class="num">{{localize "PDVF.Chronicle.new"}}</th>
+          <th scope="col" class="num">{{localize "PDVF.Chronicle.total"}}</th>
+          {{#if editMode}}<th scope="col" class="del"><span class="visually-hidden">{{localize "PDVF.Sheet.Delete"}}</span></th>{{/if}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each chronicle}}
+        <tr>
+          <td class="year"><input type="number" name="system.chronicle.{{index}}.year" value="{{year}}" step="1" aria-label="{{localize 'PDVF.Chronicle.year'}}"></td>
+          <td><input type="text" name="system.chronicle.{{index}}.event" value="{{event}}" aria-label="{{localize 'PDVF.Chronicle.event'}}"></td>
+          <td class="living"><input type="text" name="system.chronicle.{{index}}.living" value="{{living}}" list="pdvf-living-{{@root.actor.id}}" aria-label="{{localize 'PDVF.Chronicle.living'}}"></td>
+          <td class="num"><input type="number" name="system.chronicle.{{index}}.glory" value="{{glory}}" step="1" aria-label="{{localize 'PDVF.Chronicle.new'}}"></td>
+          <td class="num total">{{total}}</td>
+          {{#if @root.editMode}}
+          <td class="del"><button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.chronicle" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button></td>
+          {{/if}}
+        </tr>
+        {{else}}
+        <tr><td colspan="5" class="pdvf-hint">{{localize "PDVF.Chronicle.Empty"}}</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="pdvf-chronicle-actions">
+      <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.chronicle">{{localize "PDVF.Chronicle.Add"}}</button>
+      <button type="button" class="pdvf-btn" data-action="recordSession">{{localize "PDVF.Chronicle.RecordSession"}} ({{system.glory.session}})</button>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.PassiveGlory"}}</h2>
+    <div class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.traits"}}</span><span class="pdvf-derived-value">{{passive.traits}}</span></div>
+    <div class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.passions"}}</span><span class="pdvf-derived-value">{{passive.passions}}</span></div>
+    <div class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.appearance"}}</span><span class="pdvf-derived-value">{{passive.appearance}}</span></div>
+    <label class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.living"}}</span>
+      <input type="number" class="pdvf-row-input" name="system.glory.passiveLiving" value="{{system.glory.passiveLiving}}" step="1"></label>
+    <label class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.ideals"}}</span>
+      <input type="number" class="pdvf-row-input" name="system.glory.passiveIdeals" value="{{system.glory.passiveIdeals}}" step="1"></label>
+    <label class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.holdings"}}</span>
+      <input type="number" class="pdvf-row-input" name="system.glory.passiveHoldings" value="{{system.glory.passiveHoldings}}" step="1"></label>
+    <label class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Passive.other"}}</span>
+      <input type="number" class="pdvf-row-input" name="system.glory.passiveOther" value="{{system.glory.passiveOther}}" step="1"></label>
+    <div class="pdvf-derived pdvf-total"><span class="pdvf-derived-label">{{localize "PDVF.Passive.total"}}</span><span class="pdvf-derived-value">{{passive.total}}</span></div>
+    <p class="pdvf-hint">{{localize "PDVF.Passive.Hint"}}</p>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Section.Prestige"}}</h3>
+    <div class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Prestige.earned"}}</span><span class="pdvf-derived-value">{{prestige.earned}}</span></div>
+    <label class="pdvf-derived"><span class="pdvf-derived-label">{{localize "PDVF.Prestige.used"}}</span>
+      <input type="number" class="pdvf-row-input" name="system.glory.prestigeUsed" value="{{prestige.used}}" step="1" min="0"></label>
+    <div class="pdvf-derived pdvf-total"><span class="pdvf-derived-label">{{localize "PDVF.Prestige.available"}}</span><span class="pdvf-derived-value">{{prestige.available}}</span></div>
+  </div>
+</section>

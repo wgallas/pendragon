@@ -1,0 +1,63 @@
+<section class="tab pdvf-tab-body pdvf-grid-lignee {{tab.cssClass}}" data-group="primary" data-tab="lignee">
+  <div>
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Personal"}}</h2>
+    <div class="pdvf-form-grid">
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.born"}}</span>
+        <input type="number" name="system.biography.born" value="{{#if system.biography.born}}{{system.biography.born}}{{/if}}" step="1"></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.biography.heir" {{checked system.biography.heir}}> <span>{{localize "PDVF.Bio.heir"}}</span></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.homeland"}}</span>
+        <input type="text" name="system.biography.homeland" value="{{system.biography.homeland}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.lord"}}</span>
+        <input type="text" name="system.biography.lord" value="{{system.biography.lord}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.class"}}</span>
+        <select name="system.biography.knightClass">{{selectOptions classChoices selected=system.biography.knightClass valueAttr="value" labelAttr="label"}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.culture"}}</span>
+        <input type="text" name="system.biography.culture" value="{{system.biography.culture}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.religion"}}</span>
+        <select name="system.biography.religion">{{selectOptions religionChoices selected=system.biography.religion valueAttr="value" labelAttr="label"}}</select></label>
+      <label class="pdvf-field pdvf-span2"><span>{{localize "PDVF.Bio.features"}}</span>
+        <input type="text" name="system.biography.distinctiveFeatures" value="{{system.biography.distinctiveFeatures}}"></label>
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Section.Dates"}}</h3>
+    <div class="pdvf-dates">
+      {{#each dates}}
+      <label class="pdvf-date"><span>{{label}}</span>
+        <input type="number" name="{{name}}" value="{{value}}" step="1" placeholder="—"></label>
+      {{/each}}
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Section.Notes"}}</h3>
+    <textarea name="system.notes" rows="6" class="pdvf-notes">{{system.notes}}</textarea>
+  </div>
+
+  <div>
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Heraldry"}}</h2>
+    <div class="pdvf-heraldry-block">
+      <button type="button" class="pdvf-heraldry large" data-action="editHeraldry" aria-label="{{localize 'PDVF.Sheet.EditHeraldry'}}">
+        {{#if system.heraldry.img}}<img src="{{system.heraldry.img}}" alt="{{localize 'PDVF.Sheet.Heraldry'}}">
+        {{else}}<span>{{localize "PDVF.Sheet.ChooseHeraldry"}}</span>{{/if}}
+      </button>
+      <div class="pdvf-heraldry-fields">
+        <label class="pdvf-field"><span>{{localize "PDVF.Heraldry.blazon"}}</span>
+          <input type="text" name="system.heraldry.blazon" value="{{system.heraldry.blazon}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Heraldry.motto"}}</span>
+          <input type="text" name="system.heraldry.motto" value="{{system.heraldry.motto}}"></label>
+      </div>
+    </div>
+
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Family"}}</h2>
+    {{#each parents}}
+    <div class="pdvf-parent">
+      <label class="pdvf-field"><span>{{localize "PDVF.Family.parent"}}</span>
+        <input type="text" name="system.family.parents.{{index}}.name" value="{{name}}"></label>
+      <label class="pdvf-field pdvf-narrow"><span>{{localize "PDVF.Glory"}}</span>
+        <input type="number" name="system.family.parents.{{index}}.glory" value="{{glory}}" step="1"></label>
+    </div>
+    {{/each}}
+    <label class="pdvf-field"><span>{{localize "PDVF.Family.characteristic"}}</span>
+      <input type="text" name="system.family.characteristic" value="{{system.family.characteristic}}"></label>
+    <label class="pdvf-field"><span>{{localize "PDVF.Family.notes"}}</span>
+      <textarea name="system.family.notes" rows="4">{{system.family.notes}}</textarea></label>
+  </div>
+</section>

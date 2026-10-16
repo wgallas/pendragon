@@ -58,7 +58,7 @@ export async function applyFamilyHistory(actor, result, selection) {
   for (const t of result.traits) {
     if (!wantedTraits.has(t.name.toLowerCase())) continue;
     directedTraits = directedTraits.filter(x => !sameName(x.name, t.name));
-    directedTraits.push({ name: t.name, value: t.value });
+    directedTraits.push({ name: t.name, value: t.inherited ?? Math.floor(t.value / 2 + 0.5) });
     applied.traits.push(t.name);
   }
 

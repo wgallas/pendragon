@@ -476,7 +476,8 @@
       "HasHistory": "Ce personnage a déjà un historique : le nouveau choix le remplacera.",
       "ReplaceTitle": "Remplacer l'historique familial",
       "ReplaceText": "Le personnage a déjà un historique familial. Ses effets (Gloire héritée, bonus de passions, traits dirigés) seront retirés puis remplacés par ceux de la nouvelle famille. Continuer ?",
-      "Applied": "Historique familial appliqué à {name}."
+      "Applied": "Historique familial appliqué à {name}.",
+      "TraitTip": "Règle de la 6e : le personnage hérite de la moitié de la valeur de son parent, qui était de"
     },
     "Wizard": {
       "Title": "Création du personnage",

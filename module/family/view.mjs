@@ -58,7 +58,10 @@ export function familyView(result, index = 0) {
       usable: p.bonus > 0,
       bonusLabel: p.bonus > 0 ? `+${p.bonus}` : String(p.bonus)
     })),
-    traits: result.traits.map((t, j) => ({ ...t, j })),
+    traits: result.traits.map((t, j) => ({
+      ...t, j,
+      inheritedValue: t.inherited ?? Math.floor(t.value / 2 + 0.5)
+    })),
     legacy: result.legacy,
     motherLabel,
     siblings: fam.siblings.map(r => relativeLabel(r, "Frère cadet", "Sœur cadette")),

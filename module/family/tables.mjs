@@ -11,6 +11,8 @@
  * 483–507 sont écrites pour ce système d'après la chronologie de la 6e édition
  * et la Table 3.1 (Évènements héroïques) du Livre du joueur.
  * Les intitulés sont de brefs résumés ; il faut les livres pour le détail.
+ * Les valeurs indiquées ici sont celles de l'ancêtre ; le personnage en hérite
+ * selon la 6e (passions : valeur − 15, +5 au plus ; traits dirigés : la moitié).
  *
  * Convention : r = [min, max] sur 1d20 ; glory = Gloire gagnée ;
  * end = mort de l'ancêtre ; glorious = mort glorieuse (+1000) ;

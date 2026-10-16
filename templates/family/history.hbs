@@ -63,11 +63,11 @@
         <label>
           <input type="checkbox" data-kind="trait" value="{{name}}" checked>
           <span class="name">{{name}}</span>
-          <span class="bonus">+{{value}}</span>
+          <span class="bonus" data-tooltip="{{localize 'PDVF.FamilyApp.TraitTip'}} +{{value}}">+{{inheritedValue}}</span>
         </label>
         {{else}}
         <span class="name">{{name}}</span>
-        <span class="bonus">+{{value}}</span>
+        <span class="bonus" data-tooltip="{{localize 'PDVF.FamilyApp.TraitTip'}} +{{value}}">+{{inheritedValue}}</span>
         {{/if}}
       </li>
       {{/each}}

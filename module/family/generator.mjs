@@ -381,6 +381,11 @@ function livingFamily(state) {
 /*  Résultat                                     */
 /* -------------------------------------------- */
 
+/** Trait dirigé hérité selon la 6e : la moitié de la valeur du parent (arrondi du livre). */
+export function inheritedDirectedTrait(value) {
+  return Math.floor((Number(value) || 0) / 2 + 0.5);
+}
+
 /** Bonus de passion héritée selon la 6e : valeur du parent − 15, +5 au plus. */
 export function inheritedPassionBonus(value) {
   return Math.min(5, Math.round(value) - 15);
@@ -405,7 +410,8 @@ function finalize(state) {
   const passions = [...state.passions.values()].map(p => ({
     ...p, bonus: inheritedPassionBonus(p.value)
   })).sort((a, b) => b.value - a.value);
-  const traits = [...state.traits.values()];
+  // Trait dirigé hérité : la moitié de la valeur du parent (Livre du joueur, « Traits dirigés »).
+  const traits = [...state.traits.values()].map(t => ({ ...t, inherited: inheritedDirectedTrait(t.value) }));
 
   return {
     version: 1,

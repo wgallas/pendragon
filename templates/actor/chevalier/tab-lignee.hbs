@@ -1,5 +1,11 @@
 <section class="tab pdvf-tab-body pdvf-grid-lignee {{tab.cssClass}}" data-group="primary" data-tab="lignee">
   <div>
+    {{#if editMode}}
+    <div class="pdvf-wizard-callout">
+      <p>{{localize "PDVF.Sheet.WizardHint"}}</p>
+      <button type="button" class="pdvf-choose" data-action="openWizard">{{localize "PDVF.Sheet.OpenWizard"}}</button>
+    </div>
+    {{/if}}
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Personal"}}</h2>
     <div class="pdvf-form-grid">
       <label class="pdvf-field"><span>{{localize "PDVF.Bio.born"}}</span>

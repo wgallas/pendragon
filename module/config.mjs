@@ -66,10 +66,24 @@ PDVF.passionCourtMax = 40;
  */
 PDVF.religions = {
   christian: {
+    label: "PDVF.Religion.christian",
+    deity: "Dévotion (Dieu)",
     virtues: ["chaste.left", "spiritual.left", "forgiving.left", "merciful.left", "modest.left", "temperate.left"]
   },
   pagan: {
+    label: "PDVF.Religion.pagan",
+    deity: "Dévotion (Dieux)",
     virtues: ["spiritual.left", "energetic.left", "modest.right", "generous.left", "honest.left", "chaste.right"]
+  },
+  odinist: {
+    label: "PDVF.Religion.odinist",
+    deity: "Dévotion (Dieux)",
+    virtues: ["temperate.right", "modest.right", "generous.left", "spiritual.right", "prudent.right", "valorous.left"]
+  },
+  barbarian: {
+    label: "PDVF.Religion.barbarian",
+    deity: "Dévotion (Dieux)",
+    virtues: ["just.right", "spiritual.left", "modest.right", "honest.left", "trusting.right", "forgiving.right"]
   }
 };
 

@@ -7,12 +7,16 @@ import { PendragonActor } from "./documents/actor.mjs";
 import { ChevalierSheet } from "./sheets/chevalier-sheet.mjs";
 import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
+import { CREATION } from "./creation/data.mjs";
+import { CreationWizard, openCreationWizard } from "./creation/wizard.mjs";
 
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initialisation du système Pendragon (VF)`);
 
   CONFIG.PDVF = PDVF;
-  game.pendragon = { config: PDVF, tests, rules };
+  // Données de création : les suppléments peuvent les compléter dans leur propre hook « init ».
+  PDVF.creation = CREATION;
+  game.pendragon = { config: PDVF, tests, rules, openCreationWizard };
 
   // Documents et modèles de données
   CONFIG.Actor.documentClass = PendragonActor;
@@ -47,9 +51,17 @@ Hooks.once("init", () => {
   foundry.applications.handlebars.loadTemplates([
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/skill-row.hbs`,
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/stepper.hbs`,
-    `systems/${SYSTEM_ID}/templates/family/history.hbs`
+    `systems/${SYSTEM_ID}/templates/family/history.hbs`,
+    `systems/${SYSTEM_ID}/templates/creation/stepper.hbs`
   ]);
 });
 
 // Boutons des cartes de chat (crise de passion…)
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));
+
+// Assistant de création : s'ouvre pour un chevalier tout neuf créé par cet utilisateur.
+Hooks.on("createActor", (actor, options, userId) => {
+  if (userId !== game.user.id || actor.type !== "chevalier" || options.pdvfSkipWizard) return;
+  const fresh = !actor.system.chronicle?.length && !actor.getFlag(SYSTEM_ID, "creation")?.done;
+  if (fresh) setTimeout(() => new CreationWizard(actor).render({ force: true }), 200);
+});

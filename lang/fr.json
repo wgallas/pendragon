@@ -197,7 +197,9 @@
     },
     "Religion": {
       "christian": "Chrétien",
-      "pagan": "Païen"
+      "pagan": "Païen",
+      "odinist": "Odiniste",
+      "barbarian": "Barbare"
     },
     "Class": {
       "squire": "Écuyer",
@@ -332,7 +334,9 @@
       "DrawFamily": "Tirer l'historique familial",
       "RedrawFamily": "Tirer un autre historique familial",
       "NoFamilyHistory": "Aucun historique familial. Passez en mode édition pour en tirer un.",
-      "NoFamilyHistoryEdit": "Tirez trois historiques au hasard et choisissez celui qui vous plaît : Gloire héritée, passions et traits de famille, parents vivants et défunts."
+      "NoFamilyHistoryEdit": "Tirez trois historiques au hasard et choisissez celui qui vous plaît : Gloire héritée, passions et traits de famille, parents vivants et défunts.",
+      "OpenWizard": "Assistant de création",
+      "WizardHint": "L'assistant guide la création du personnage pas à pas, comme au chapitre 3 du Livre du joueur. Il remplace les valeurs actuelles de la fiche."
     },
     "Chronicle": {
       "year": "Année",
@@ -473,6 +477,124 @@
       "ReplaceTitle": "Remplacer l'historique familial",
       "ReplaceText": "Le personnage a déjà un historique familial. Ses effets (Gloire héritée, bonus de passions, traits dirigés) seront retirés puis remplacés par ceux de la nouvelle famille. Continuer ?",
       "Applied": "Historique familial appliqué à {name}."
+    },
+    "Wizard": {
+      "Title": "Création du personnage",
+      "TitleFor": "Création du personnage — {name}",
+      "Steps": "Étapes de la création",
+      "Step": {
+        "origin": "Origines",
+        "characteristics": "Caractéristiques",
+        "traits": "Traits",
+        "passions": "Passions",
+        "family": "Famille",
+        "skills": "Compétences",
+        "apprentice": "Années d'écuyer",
+        "details": "Adoubement"
+      },
+      "Intro": {
+        "origin": "Choisissez la méthode de création, puis les origines du personnage. Une méthode choisie doit être suivie jusqu'au bout : on ne mélange pas les deux.",
+        "charsBuilt": "Répartissez 60 points entre les cinq caractéristiques, chacune entre 8 et 15. Le modificateur culturel s'ajoute ensuite.",
+        "charsRandom": "Lancez les dés de votre culture pour chaque caractéristique. Le modificateur culturel s'ajoute ensuite.",
+        "traitsBuilt": "Tous les traits partent de 10, les vertus de la religion de 13, Valeureux de 15. Cochez le trait porté à 16, puis répartissez 6 points sans dépasser 15.",
+        "traitsRandom": "Chaque trait de gauche est tiré à 2D6+3 (Valeureux 2D6+8), +3 s'il est une vertu de la religion, −3 si c'est son opposé qui l'est.",
+        "passionsBuilt": "Les passions de départ ont leur valeur fixe. Répartissez 15 points entre elles ou de nouvelles passions, sans dépasser 15.",
+        "passionsRandom": "Lancez les dés pour les passions de départ, puis répartissez 4D6+1 points entre elles ou de nouvelles passions, sans dépasser 15.",
+        "family": "La Gloire héritée vaut le quart de celle du parent, 4000 au plus. Choisissez un historique familial complet, ou seulement la Gloire du parent.",
+        "skills": "Valeurs de départ de la Table 3.5, modificateurs culturels, particularité familiale, puis 10 points personnels.",
+        "apprentice": "Jusqu'à sept années d'écuyer avant l'adoubement. Chaque année : 5 points de compétences, ou +1 à un trait (19 au plus) ou à une passion (20 au plus), ou +1 à une caractéristique (maximum culturel). Les caractéristiques ainsi augmentées ne changent pas les compétences."
+      },
+      "Method": "Méthode de création",
+      "MethodBuilt": "Personnage construit",
+      "MethodBuiltHint": "Des points à répartir : le personnage correspond à votre idée.",
+      "MethodRandom": "Personnage aléatoire",
+      "MethodRandomHint": "Les dés décident : des personnages plus surprenants, parfois difficiles à jouer.",
+      "Origin": {
+        "fn": "Fonction"
+      },
+      "Home": "Foyer",
+      "NamePlaceholder": "Prénom du personnage",
+      "RandomName": "Prénom au hasard",
+      "RollTable32": "Tirer (Table 3.2)",
+      "Col": {
+        "points": "Points",
+        "roll": "Jet",
+        "culture": "Culture",
+        "final": "Total",
+        "max": "Max.",
+        "passion": "Passion",
+        "base": "Départ",
+        "start": "Départ",
+        "bonus": "Bonus"
+      },
+      "PointsLeft": "Points restants",
+      "RollChars": "Lancer les caractéristiques",
+      "RollTraits": "Lancer les traits",
+      "RollPassions": "Lancer les passions",
+      "VirtuesOf": "Vertus soulignées :",
+      "FamousTip": "Porter ce trait à 16",
+      "FamousLegend": "la case ronde porte un trait à 16",
+      "PassionPlaceholder": "Ex. : Amour (Dame X), Haine (Pictes)",
+      "PassionMax": "maximum par répartition :",
+      "RollFamilyTrait": "Tirer la particularité (Table 3.6)",
+      "SkillRules": "15 au plus ; pas de point dans une compétence de départ 0 ; une compétence liée à l'ATT ne dépasse pas l'ATT (hors bonus).",
+      "KnightSkill": "Compétence de chevalier",
+      "Formula": {
+        "app-5": "ATT − 5",
+        "dex/2": "DEX / 2",
+        "str/2": "FOR / 2"
+      },
+      "Family": {
+        "history": "Historique familial complet (trois propositions)",
+        "quick": "Gloire du parent au hasard (6D6 × 100 + 2000)",
+        "manual": "Gloire du parent fixée par le MJ",
+        "quickHint": "La Gloire du parent est tirée au hasard ; le personnage en hérite le quart.",
+        "rollQuick": "Lancer la Gloire du parent",
+        "parentGlory": "Gloire du parent",
+        "chosen": "Famille retenue ✓",
+        "ageMismatch": "L'historique familial suppose un personnage né en 487 (21 ans en 508). Avec moins de sept années d'écuyer, les dates ne coïncideront pas tout à fait."
+      },
+      "Apprentice": {
+        "years": "Années d'écuyer",
+        "allocSkills": "Compétences (5 pts/an)",
+        "allocTraits": "Traits ou passions (+1/an)",
+        "allocChars": "Caractéristiques (+1/an)",
+        "traitsPassions": "Traits et passions"
+      },
+      "Knight": {
+        "ok": "Conditions de l'adoubement remplies",
+        "notYet": "Conditions de l'adoubement non remplies",
+        "age": "Âge",
+        "others": "Deux autres compétences de chevalier à 10"
+      },
+      "Details": {
+        "positive": "Signe positif",
+        "negative": "Signe négatif",
+        "positivePl": "positif(s)",
+        "negativePl": "négatif(s)",
+        "noIdeal": "Aucun idéal",
+        "knighting": "Adoubement",
+        "knightNow": "Le personnage est adoubé maintenant",
+        "notEligible": "Le personnage ne remplit pas les conditions : il reste écuyer (le MJ peut l'adouber plus tard).",
+        "lordGlory": "Gloire du seigneur qui l'adoube",
+        "ofLord": "du seigneur",
+        "household": "de maisonnée",
+        "jump": "Saut en selle",
+        "rollJump": "Tenter le saut en selle (test de DEX)",
+        "luck": "Chance du débutant (Table 3.9)",
+        "rollLuck": "Tirer l'objet de famille",
+        "summary": "Récapitulatif",
+        "overwrite": "Créer le personnage remplace les valeurs actuelles de la fiche."
+      },
+      "Prev": "Précédent",
+      "Next": "Suivant",
+      "Finish": "Créer le personnage",
+      "Reset": "Recommencer",
+      "ResetTitle": "Recommencer la création",
+      "ResetText": "Effacer tout ce qui a été choisi dans l'assistant et repartir de zéro ?",
+      "FinishTitle": "Créer le personnage",
+      "FinishText": "Les valeurs actuelles de la fiche (caractéristiques, compétences, traits, passions, chronique) seront remplacées par celles de l'assistant. Continuer ?",
+      "Done": "{name} est prêt à servir son seigneur."
     }
   }
 }

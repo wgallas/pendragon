@@ -1,0 +1,5 @@
+<span class="pdvf-wiz-stepper">
+  <button type="button" class="pdvf-step" data-action="inc" data-path="{{path}}" data-delta="-1" data-min="{{#if min}}{{min}}{{else}}0{{/if}}"{{#if max}} data-max="{{max}}"{{/if}} aria-label="{{localize 'PDVF.Sheet.Decrease'}} {{label}}">−</button>
+  <span class="pdvf-wiz-stepper-value">{{value}}</span>
+  <button type="button" class="pdvf-step" data-action="inc" data-path="{{path}}" data-delta="1" data-min="{{#if min}}{{min}}{{else}}0{{/if}}"{{#if max}} data-max="{{max}}"{{/if}} aria-label="{{localize 'PDVF.Sheet.Increase'}} {{label}}">+</button>
+</span>

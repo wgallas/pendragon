@@ -4,6 +4,7 @@ import { rollAttribute, promptTestOptions, signed } from "../dice/tests.mjs";
 import { FamilyHistoryApp } from "../family/family-app.mjs";
 import { familyView } from "../family/view.mjs";
 import { getFamilyHistory } from "../family/apply.mjs";
+import { CreationWizard } from "../creation/wizard.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -53,7 +54,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       editHeraldry: ChevalierSheet.#onEditHeraldry,
       endInspiration: ChevalierSheet.#onEndInspiration,
       step: ChevalierSheet.#onStep,
-      openFamily: ChevalierSheet.#onOpenFamily
+      openFamily: ChevalierSheet.#onOpenFamily,
+      openWizard: ChevalierSheet.#onOpenWizard
     }
   };
 
@@ -104,7 +106,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         system.biography.born ? game.i18n.format("PDVF.Sheet.BornIn", { year: system.biography.born }) : "",
         system.age !== null && system.age >= 0 ? game.i18n.format("PDVF.Sheet.Age", { age: system.age }) : "",
         system.biography.culture,
-        PDVF.religions[religion] ? L(`PDVF.Religion.${religion}`) : religion,
+        PDVF.religions[religion] ? L(PDVF.religions[religion].label ?? `PDVF.Religion.${religion}`) : religion,
         system.biography.heir ? L("PDVF.Sheet.Heir") : ""
       ].filter(Boolean).join(" · "),
       glory: system.gloryTotal.toLocaleString("fr-FR"),
@@ -195,7 +197,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     // Onglet Lignée
     context.titleChoices = ["sire", "dame"].map(v => ({ value: v, label: L(`PDVF.Title.${v}`) }));
-    context.religionChoices = Object.keys(PDVF.religions).map(v => ({ value: v, label: L(`PDVF.Religion.${v}`) }));
+    context.religionChoices = Object.entries(PDVF.religions).map(([v, r]) => ({ value: v, label: L(r.label ?? `PDVF.Religion.${v}`) }));
     context.classChoices = PDVF.knightClasses.map(v => ({ value: v, label: L(`PDVF.Class.${v}`) }));
     context.dates = ["squired", "knighted", "landed", "roundTable", "ennobled", "died"].map(id => ({
       id, label: L(`PDVF.Dates.${id}`), value: system.dates[id] || "", name: `system.dates.${id}`
@@ -369,6 +371,10 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (input.max !== "") value = Math.min(Number(input.max), value);
     input.value = value;
     input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  static #onOpenWizard() {
+    new CreationWizard(this.document).render({ force: true });
   }
 
   static #onOpenFamily() {

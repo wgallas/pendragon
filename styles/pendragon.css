@@ -810,3 +810,5 @@
 @media (max-width: 860px) {
   .pendragon-vf .pdvf-wiz-grid2, .pendragon-vf .pdvf-wiz-grid3, .pendragon-vf .pdvf-wiz-methods { grid-template-columns: minmax(0, 1fr); }
 }
+.pendragon-vf .pdvf-wiz-warning p { margin: 0 0 4px; }
+.pendragon-vf .pdvf-wiz-warning ul { margin: 0 0 8px; padding-left: 20px; }

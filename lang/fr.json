@@ -566,7 +566,10 @@
         "ok": "Conditions de l'adoubement remplies",
         "notYet": "Conditions de l'adoubement non remplies",
         "age": "Âge",
-        "others": "Deux autres compétences de chevalier à 10"
+        "others": "Deux autres compétences de chevalier à 10",
+        "required": "requis",
+        "missing": "Il manque :",
+        "back": "Revenir aux années d'écuyer"
       },
       "Details": {
         "positive": "Signe positif",

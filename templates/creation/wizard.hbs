@@ -242,7 +242,7 @@
       <strong>{{#if knight.eligible}}{{localize "PDVF.Wizard.Knight.ok"}}{{else}}{{localize "PDVF.Wizard.Knight.notYet"}}{{/if}}</strong>
       <span class="{{#if knight.ageOk}}ok{{else}}ko{{/if}}">{{localize "PDVF.Wizard.Knight.age"}} {{knight.age}}</span>
       {{#each knight.weapons}}<span class="{{#if ok}}ok{{else}}ko{{/if}}">{{label}} {{value}}</span>{{/each}}
-      <span class="{{#if knight.othersOk}}ok{{else}}ko{{/if}}">{{localize "PDVF.Wizard.Knight.others"}}</span>
+      <span class="{{#if knight.othersOk}}ok{{else}}ko{{/if}}">{{localize "PDVF.Wizard.Knight.others"}} ({{knight.othersCount}} / {{knight.othersNeeded}})</span>
     </div>
 
     <div class="pdvf-wiz-grid3">
@@ -300,7 +300,12 @@
         {{#if eligible}}
         <label class="pdvf-field pdvf-field-check"><input type="checkbox" data-bind="details.knighted" {{#if state.details.knighted}}checked{{/if}}> <span>{{localize "PDVF.Wizard.Details.knightNow"}}</span></label>
         {{else}}
-        <p class="pdvf-wiz-warning">{{localize "PDVF.Wizard.Details.notEligible"}}</p>
+        <div class="pdvf-wiz-warning">
+          <p>{{localize "PDVF.Wizard.Details.notEligible"}}</p>
+          <p>{{localize "PDVF.Wizard.Knight.missing"}}</p>
+          <ul>{{#each knightMissing}}<li>{{this}}</li>{{/each}}</ul>
+          <button type="button" class="pdvf-btn" data-action="goto" data-step="{{apprenticeStep}}">{{localize "PDVF.Wizard.Knight.back"}}</button>
+        </div>
         {{/if}}
         {{#if knighted}}
         <label class="pdvf-field pdvf-wiz-narrow"><span>{{localize "PDVF.Wizard.Details.lordGlory"}}</span>

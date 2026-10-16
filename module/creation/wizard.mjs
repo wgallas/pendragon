@@ -264,10 +264,25 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       appSkills: skills, appTraits: traitItems, appPassions: passionItems, appChars: charItems,
       knight: {
         ...k,
+        othersCount: k.others.filter(x => x.ok).length, othersNeeded: C.knighthood.othersNeeded,
         weapons: k.weapons.map(w => ({ ...w, label: L(`PDVF.Skill.${w.id}`) })),
         others: k.others.map(w => ({ ...w, label: L(`PDVF.Skill.${w.id}`) }))
       }
     };
+  }
+
+  /** Conditions d'adoubement non remplies, en clair. */
+  _knightMissing(k, C) {
+    const kn = C.knighthood;
+    const out = [];
+    if (!k.ageOk) out.push(`${L("PDVF.Wizard.Knight.age")} ${k.age} (${kn.minAge} ${L("PDVF.Wizard.Knight.required")})`);
+    for (const w of k.weapons) if (!w.ok) out.push(`${L(`PDVF.Skill.${w.id}`)} ${w.value} (${kn.minValue} ${L("PDVF.Wizard.Knight.required")})`);
+    if (!k.othersOk) {
+      const best = [...k.others].sort((a, b) => b.value - a.value).slice(0, 4)
+        .map(o => `${L(`PDVF.Skill.${o.id}`)} ${o.value}`).join(", ");
+      out.push(`${L("PDVF.Wizard.Knight.others")} : ${k.others.filter(o => o.ok).length} / ${kn.othersNeeded} (${best}…)`);
+    }
+    return out;
   }
 
   _ctx_details(s, C, o) {
@@ -287,6 +302,8 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       featureNeed: need, features, featureExamples: C.featureExamples,
       eligible: k.eligible,
+      knightMissing: this._knightMissing(k, C),
+      apprenticeStep: R.STEPS.indexOf("apprentice"),
       knighted: s.details.knighted && k.eligible,
       kg,
       ideals: [{ value: "", label: L("PDVF.Wizard.Details.noIdeal"), selected: !s.details.ideal },

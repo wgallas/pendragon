@@ -414,8 +414,23 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static async #onNewDay() {
-    if (!game.user.isGM) return;
-    await this.document.newDay();
-    ui.notifications.info(game.i18n.format("PDVF.Invoke.NewDayOne", { name: this.document.name }));
+    const actor = this.document;
+    console.log(`${SYSTEM_ID} | Nouveau jour (fiche)`, { actor: actor.name, isGM: game.user.isGM,
+      day: PendragonActorDay(), passionDay: actor.system.passionDay, invokedToday: [...(actor.system.invokedToday ?? [])] });
+    if (!game.user.isGM) return ui.notifications.warn(game.i18n.localize("PDVF.Invoke.GMOnly"));
+    try {
+      await actor.newDay();
+      this.render();
+      console.log(`${SYSTEM_ID} | Nouveau jour appliqué`, { passionDay: actor.system.passionDay, invokedToday: [...(actor.system.invokedToday ?? [])] });
+      ui.notifications.info(game.i18n.format("PDVF.Invoke.NewDayOne", { name: actor.name }));
+    } catch (err) {
+      console.error(`${SYSTEM_ID} | Nouveau jour impossible`, err);
+      ui.notifications.error(`${game.i18n.localize("PDVF.Invoke.NewDay")} : ${err.message}`);
+    }
   }
+}
+
+/** Jour en cours du monde (pour le journal de la console). */
+function PendragonActorDay() {
+  try { return game.settings.get(SYSTEM_ID, "currentDay"); } catch (err) { return `réglage illisible : ${err.message}`; }
 }

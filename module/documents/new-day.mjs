@@ -17,8 +17,14 @@ export async function newDayForAll({ confirm = true } = {}) {
     if (!ok) return;
   }
   // Avancer le jour du monde suffit : les invocations notées un autre jour ne comptent plus.
-  const day = (Number(game.settings.get(SYSTEM_ID, "currentDay")) || 1) + 1;
-  await game.settings.set(SYSTEM_ID, "currentDay", day);
+  try {
+    const day = (Number(game.settings.get(SYSTEM_ID, "currentDay")) || 1) + 1;
+    await game.settings.set(SYSTEM_ID, "currentDay", day);
+    console.log(`${SYSTEM_ID} | Nouveau jour : jour ${day}`);
+  } catch (err) {
+    console.error(`${SYSTEM_ID} | Nouveau jour impossible`, err);
+    return ui.notifications.error(`${L("PDVF.Invoke.NewDay")} : ${err.message}`);
+  }
   await ChatMessage.implementation.create({
     content: `<div class="pdvf-card"><div class="pdvf-verdict victory"><i class="fa-solid fa-sun" aria-hidden="true"></i> ${L("PDVF.Invoke.NewDayChat")}</div></div>`,
     speaker: { alias: L("PDVF.Invoke.NewDay") },

@@ -23,6 +23,18 @@ function scored(initial) {
  */
 export class ChevalierData extends foundry.abstract.TypeDataModel {
 
+  /** Ancienne inspiration unique → liste d'inspirations. */
+  static migrateData(source) {
+    const old = source.inspiration;
+    if (old && typeof old === "object" && !Array.isArray(source.inspirations)) {
+      source.inspirations = Number(old.bonus) > 0
+        ? [{ source: old.source ?? "", state: Number(old.bonus) >= 10 ? "impassioned" : "inspired", bonus: Number(old.bonus), target: old.target ?? "" }]
+        : [];
+    }
+    delete source.inspiration;
+    return super.migrateData(source);
+  }
+
   static defineSchema() {
     const skills = {};
     for (const id of Object.keys(PDVF.skills)) skills[id] = scored(0);
@@ -96,11 +108,15 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         xp: new fields.BooleanField({ initial: false })
       })),
 
-      inspiration: new fields.SchemaField({
+      // Bonus de passion en cours (Inspiré +5, Enflammé +10), un par compétence ou trait choisi.
+      inspirations: new fields.ArrayField(new fields.SchemaField({
         source: new fields.StringField({ initial: "" }),
-        bonus: int(0),
+        state: new fields.StringField({ initial: "inspired", choices: ["inspired", "impassioned"] }),
+        bonus: int(5),
         target: new fields.StringField({ initial: "" })
-      }),
+      })),
+      // Passions déjà invoquées aujourd'hui (une fois par jour chacune), par nom.
+      invokedToday: new fields.ArrayField(new fields.StringField()),
 
       glory: new fields.SchemaField({
         session: int(0),

@@ -9,6 +9,7 @@ import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
 import { CREATION } from "./creation/data.mjs";
 import { CreationWizard, openCreationWizard } from "./creation/wizard.mjs";
+import { newDayForAll, addNewDayControl } from "./documents/new-day.mjs";
 
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initialisation du système Pendragon (VF)`);
@@ -16,7 +17,7 @@ Hooks.once("init", () => {
   CONFIG.PDVF = PDVF;
   // Données de création : les suppléments peuvent les compléter dans leur propre hook « init ».
   PDVF.creation = CREATION;
-  game.pendragon = { config: PDVF, tests, rules, openCreationWizard };
+  game.pendragon = { config: PDVF, newDay: newDayForAll, tests, rules, openCreationWizard };
 
   // Documents et modèles de données
   CONFIG.Actor.documentClass = PendragonActor;
@@ -59,6 +60,9 @@ Hooks.once("init", () => {
 
 // Boutons des cartes de chat (crise de passion…)
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));
+
+// « Nouveau jour » du MJ (outils des jetons, barre de gauche)
+Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));
 
 // Assistant de création : s'ouvre pour un chevalier tout neuf créé par cet utilisateur.
 Hooks.on("createActor", (actor, options, userId) => {

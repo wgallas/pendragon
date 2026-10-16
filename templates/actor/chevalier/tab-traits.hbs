@@ -54,7 +54,9 @@
   </div>
 
   <div class="pdvf-passions-col">
-    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Passions"}}</h2>
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Passions"}}
+      {{#if isGM}}<button type="button" class="pdvf-btn pdvf-newday" data-action="newDay" data-tooltip="{{localize 'PDVF.Invoke.NewDayTip'}}"><i class="fa-solid fa-sun" aria-hidden="true"></i> {{localize "PDVF.Invoke.NewDay"}}</button>{{/if}}
+    </h2>
 
     <div class="pdvf-honor-row">
       <input type="checkbox" class="pdvf-xp" name="system.honor.xp" {{checked honor.xp}} aria-label="{{localize 'PDVF.Sheet.XpFor'}} {{localize 'PDVF.Honor'}}">
@@ -63,7 +65,7 @@
       {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name="system.honor.value" value=honor.value min="0" label=(localize "PDVF.Honor")}}
       {{else}}
       <button type="button" class="pdvf-row-roll" data-action="roll" data-key="honor">
-        <span class="pdvf-row-label">{{localize "PDVF.Honor"}}</span>
+        <span class="pdvf-row-label">{{localize "PDVF.Honor"}}{{#if honor.invoked}} <i class="fa-solid fa-sun pdvf-invoked" data-tooltip="{{localize 'PDVF.Invoke.UsedTodayTip'}}" aria-label="{{localize 'PDVF.Invoke.UsedToday'}}"></i>{{/if}}</span>
         <span class="pdvf-level">{{honor.levelLabel}}</span>
         <i class="pdvf-die-icon" aria-hidden="true"></i>
         <span class="pdvf-row-value">{{honor.display}}</span>
@@ -87,7 +89,7 @@
           <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.passions" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
           {{else}}
           <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">
-            <span class="pdvf-row-label">{{name}}</span>
+            <span class="pdvf-row-label">{{name}}{{#if invoked}} <i class="fa-solid fa-sun pdvf-invoked" data-tooltip="{{localize 'PDVF.Invoke.UsedTodayTip'}}" aria-label="{{localize 'PDVF.Invoke.UsedToday'}}"></i>{{/if}}</span>
             <i class="pdvf-die-icon" aria-hidden="true"></i>
             <span class="pdvf-row-value">{{display}}</span>
           </button>

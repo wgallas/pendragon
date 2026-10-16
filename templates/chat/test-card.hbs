@@ -4,6 +4,22 @@
     {{#if subtitle}}<div class="pdvf-card-subtitle">{{subtitle}}</div>{{/if}}
   </header>
 
+  {{#if prelude}}
+  <div class="pdvf-card-prelude">
+    <div class="pdvf-card-prelude-title">{{prelude.title}}</div>
+    <div class="pdvf-participant {{prelude.participant.cls}}">
+      <div class="pdvf-participant-value">{{prelude.participant.totalLabel}}</div>
+      <div class="pdvf-participant-roll">
+        <span class="pdvf-die" aria-label="{{localize 'PDVF.Card.Die'}}">{{prelude.participant.die}}</span>
+        {{#if prelude.participant.critBonus}}<span class="pdvf-critbonus">{{prelude.participant.critBonus}}</span>{{/if}}
+        <span class="pdvf-outcome">{{prelude.participant.outcomeLabel}}</span>
+      </div>
+    </div>
+    <div class="pdvf-verdict small {{prelude.verdict.cls}}">{{prelude.verdict.text}}</div>
+  </div>
+  {{/if}}
+
+  {{#if participants.length}}
   <div class="pdvf-card-participants {{#if participants.[1]}}two{{/if}}">
     {{#each participants}}
     <div class="pdvf-participant {{cls}}">
@@ -18,6 +34,7 @@
     </div>
     {{/each}}
   </div>
+  {{/if}}
 
   {{#if verdict}}
   <div class="pdvf-verdict {{verdict.cls}}">{{verdict.text}}</div>

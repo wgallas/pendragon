@@ -1,5 +1,5 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
-import { traitPair, attributeLevel, formatValue } from "../rules/resolution.mjs";
+import { traitPair, attributeLevel, formatValue, samePassion } from "../rules/resolution.mjs";
 import { rollAttribute, promptTestOptions, signed } from "../dice/tests.mjs";
 import { FamilyHistoryApp } from "../family/family-app.mjs";
 import { familyView } from "../family/view.mjs";
@@ -12,7 +12,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 const TPL = `systems/${SYSTEM_ID}/templates/actor/chevalier`;
 const TAB_IDS = ["chevalier", "traits", "combat", "suite", "lignee", "chronique"];
 /** Chemins des tableaux du modèle, dont les lignes sont éditées dans le formulaire. */
-const ARRAY_PATHS = ["system.passions", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents"];
+const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents"];
 
 const L = (k) => game.i18n.localize(k);
 
@@ -37,6 +37,9 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** Modificateur choisi pour le prochain jet. */
   _modifier = 0;
 
+  /** Passion invoquée pour le prochain test (clé), choisie dans « Prochain test ». */
+  _invoke = "";
+
   tabGroups = { primary: "chevalier" };
 
   static DEFAULT_OPTIONS = {
@@ -53,6 +56,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       recordSession: ChevalierSheet.#onRecordSession,
       editHeraldry: ChevalierSheet.#onEditHeraldry,
       endInspiration: ChevalierSheet.#onEndInspiration,
+      newDay: ChevalierSheet.#onNewDay,
       step: ChevalierSheet.#onStep,
       openFamily: ChevalierSheet.#onOpenFamily,
       openWizard: ChevalierSheet.#onOpenWizard
@@ -144,18 +148,28 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.quickModifiers = PDVF.quickModifiers.map(v => ({ value: v, label: signed(v), selected: v === this._modifier }));
     context.modifierHint = L(`PDVF.ModifierHint.${this._modifier}`);
 
-    const insp = system.inspiration;
-    context.inspiration = {
-      active: insp.bonus > 0,
-      text: game.i18n.format("PDVF.Inspiration.Active", { source: insp.source, bonus: signed(insp.bonus) }),
-      target: insp.target,
-      targets: actor.listRollables().filter(r => r.kind === "skill" || r.kind === "trait")
+    // Passion à invoquer pour le prochain test, et inspirations en cours
+    const invokable = actor.listInvokable();
+    if (this._invoke && !invokable.some(p => p.key === this._invoke && !p.invoked)) this._invoke = "";
+    context.invoke = {
+      value: this._invoke,
+      choices: invokable.map(p => ({
+        key: p.key, label: `${p.label} ${formatValue(p.value)}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}`,
+        disabled: p.invoked, selected: p.key === this._invoke
+      }))
     };
+    const targets = actor.listRollables().filter(r => PDVF.inspirableKinds.includes(r.kind));
+    context.inspirations = system.inspirations.map((x, index) => ({
+      ...x, index,
+      text: `${x.source} : ${L(`PDVF.Passion.${x.state}Short`)} ${signed(x.bonus)}`,
+      targets: targets.map(r => ({ key: r.key, label: r.label, selected: r.key === x.target }))
+    }));
+    context.isGM = game.user.isGM;
 
     const skills = Object.entries(PDVF.skills).map(([id, cfg]) => {
       const label = L(`PDVF.Skill.${id}`);
       return {
-        id, key: `skill.${id}`, group: cfg.group, label,
+        id, key: `skill.${id}`, group: cfg.group, label, inspired: actor.inspirationBonus(`skill.${id}`) ? signed(actor.inspirationBonus(`skill.${id}`)) : "",
         value: system.skills[id].value, display: formatValue(system.skills[id].value), xp: system.skills[id].xp,
         hasSpecialty: id in system.skillSpecialties, specialty: system.skillSpecialties[id] ?? ""
       };
@@ -179,7 +193,9 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       };
     });
     context.directedTraits = system.directedTraits.map((t, i) => ({ ...t, index: i }));
+    const invokedNames = system.invokedToday ?? [];
     context.honor = {
+      invoked: invokedNames.some(n => samePassion(n, L("PDVF.Honor"))),
       value: system.honor.value, display: formatValue(system.honor.value), xp: system.honor.xp,
       level: system.honorLevel, levelLabel: L(`PDVF.Level.${system.honorLevel}`)
     };
@@ -190,7 +206,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       max: PDVF.passionCourtMax,
       over: system.courtTotals[court] > PDVF.passionCourtMax,
       passions: system.passions
-        .map((p, index) => ({ ...p, index, key: `passion.${index}`, display: formatValue(p.value), level: attributeLevel(p.value) }))
+        .map((p, index) => ({ ...p, index, key: `passion.${index}`, display: formatValue(p.value), level: attributeLevel(p.value),
+          invoked: invokedNames.some(n => samePassion(n, p.name)) }))
         .filter(p => p.court === court)
     }));
     context.courtChoices = PDVF.passionCourts.map(c => ({ value: c, label: L(`PDVF.Court.${c}`) }));
@@ -272,6 +289,12 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       delete data.traitsRight;
     }
 
+    // Choix de la passion du prochain test : état de la fiche, pas une donnée de l'acteur.
+    if ("pdvfInvoke" in data) {
+      this._invoke = data.pdvfInvoke ?? "";
+      delete data.pdvfInvoke;
+    }
+
     // Un champ numérique vidé arrive à null : on le ramène à 0, sauf pour les années.
     replaceNulls(data.system);
 
@@ -301,15 +324,18 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const key = target.dataset.key;
     const rollable = this.document.getRollable(key);
     if (!rollable) return;
-    let options = { modifier: this._modifier };
+    const canInvoke = PDVF.inspirableKinds.includes(rollable.kind);
+    let options = { modifier: this._modifier, invoke: canInvoke ? this._invoke : "" };
     if (event.shiftKey) {
-      options = await promptTestOptions(this.document, rollable, this._modifier);
+      options = await promptTestOptions(this.document, rollable, this._modifier, options.invoke);
       if (!options) return;
     }
     await rollAttribute(this.document, key, options);
-    if (this._modifier !== 0) {
+    // Le modificateur et la passion choisis ne valent que pour un test.
+    if (this._modifier !== 0 || (options.invoke && this._invoke)) {
       this._modifier = 0;
-      this.render({ parts: ["chevalier"] });
+      if (options.invoke) this._invoke = "";
+      this.render();
     }
   }
 
@@ -381,7 +407,13 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     new FamilyHistoryApp(this.document).render({ force: true });
   }
 
-  static async #onEndInspiration() {
-    await this.document.update({ "system.inspiration": { source: "", bonus: 0, target: "" } });
+  static async #onEndInspiration(event, target) {
+    await this.document.endInspiration(Number(target.dataset.index));
+  }
+
+  static async #onNewDay() {
+    if (!game.user.isGM) return;
+    await this.document.newDay();
+    ui.notifications.info(game.i18n.format("PDVF.Invoke.NewDayOne", { name: this.document.name }));
   }
 }

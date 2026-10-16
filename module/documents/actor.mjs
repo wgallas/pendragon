@@ -1,5 +1,5 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
-import { traitPair, gloryTestValue } from "../rules/resolution.mjs";
+import { traitPair, gloryTestValue, samePassion } from "../rules/resolution.mjs";
 
 /**
  * Document Acteur du système.
@@ -94,11 +94,58 @@ export class PendragonActor extends Actor {
     return keys.map(k => this.getRollable(k)).filter(Boolean);
   }
 
-  /** Bonus d'Inspiration applicable à un Attribut donné. */
+  /** Bonus d'Inspiration applicable à un Attribut donné (le plus fort s'il y en a plusieurs). */
   inspirationBonus(key) {
-    const insp = this.system.inspiration;
-    if (!insp?.bonus || !insp.target) return 0;
-    return insp.target === key ? insp.bonus : 0;
+    const list = this.system.inspirations ?? [];
+    return list.filter(i => i.target && i.target === key).reduce((m, i) => Math.max(m, Number(i.bonus) || 0), 0);
+  }
+
+  /** Inspiration en cours sur un Attribut, s'il y en a une. */
+  inspirationFor(key) {
+    return (this.system.inspirations ?? []).find(i => i.target === key) ?? null;
+  }
+
+  /** Passions pouvant être invoquées : Honneur et passions de la fiche, avec l'usage du jour. */
+  listInvokable() {
+    if (this.type !== "chevalier") return [];
+    const used = this.system.invokedToday ?? [];
+    const keys = ["honor", ...this.system.passions.map((_, i) => `passion.${i}`)];
+    return keys.map(k => this.getRollable(k)).filter(Boolean)
+      .map(r => ({ ...r, invoked: used.some(n => samePassion(n, r.label)) }));
+  }
+
+  /** Note qu'une passion a servi aujourd'hui et ajoute le bonus obtenu. */
+  async addInspiration({ source, state, bonus, target = "" }) {
+    const inspirations = [...(this.system.inspirations ?? [])];
+    // Une nouvelle invocation sur le même Attribut remplace l'ancienne si elle est plus forte.
+    const same = target ? inspirations.findIndex(i => i.target === target) : -1;
+    const row = { source, state, bonus, target };
+    if (same >= 0) { if (bonus >= inspirations[same].bonus) inspirations[same] = row; }
+    else inspirations.push(row);
+    const invokedToday = [...(this.system.invokedToday ?? [])];
+    if (!invokedToday.some(n => samePassion(n, source))) invokedToday.push(source);
+    return this.update({ "system.inspirations": inspirations, "system.invokedToday": invokedToday });
+  }
+
+  /** Note l'usage du jour sans bonus (passion invoquée mais ratée). */
+  async markInvoked(source) {
+    const invokedToday = [...(this.system.invokedToday ?? [])];
+    if (invokedToday.some(n => samePassion(n, source))) return;
+    invokedToday.push(source);
+    return this.update({ "system.invokedToday": invokedToday });
+  }
+
+  async endInspiration(index) {
+    const inspirations = [...(this.system.inspirations ?? [])];
+    inspirations.splice(index, 1);
+    return this.update({ "system.inspirations": inspirations });
+  }
+
+  /** Nouveau jour : chaque passion peut de nouveau être invoquée ; les situations passées sont closes. */
+  async newDay() {
+    if (this.type !== "chevalier") return;
+    if (!this.system.invokedToday?.length && !this.system.inspirations?.length) return;
+    return this.update({ "system.invokedToday": [], "system.inspirations": [] });
   }
 
   /** Coche la croix d'expérience d'un Attribut. */

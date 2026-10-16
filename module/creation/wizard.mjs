@@ -535,7 +535,8 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       ...out.system,
       extraSkills: [],
       directedTraits: [],
-      inspiration: { source: "", bonus: 0, target: "" },
+      inspirations: [],
+      invokedToday: [],
       family: { ...out.system.family, parents: [{ name: "", glory: parentGlory }, { name: "", glory: 0 }] }
     };
 

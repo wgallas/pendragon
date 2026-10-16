@@ -139,10 +139,10 @@ export function traitProcedure(first, second = null) {
 }
 
 /** Effets d'un test de passion sans opposition (Table 4.2). */
-export function passionEffect(outcome) {
+export function passionEffect(outcome, { inspiredBonus = 5, impassionedBonus = 10 } = {}) {
   switch (outcome) {
-    case OUTCOME.CRITICAL: return { state: "impassioned", bonus: 10, xp: true, loss: 0, crisis: false };
-    case OUTCOME.SUCCESS: return { state: "inspired", bonus: 5, xp: true, loss: 0, crisis: false };
+    case OUTCOME.CRITICAL: return { state: "impassioned", bonus: impassionedBonus, xp: true, loss: 0, crisis: false };
+    case OUTCOME.SUCCESS: return { state: "inspired", bonus: inspiredBonus, xp: true, loss: 0, crisis: false };
     case OUTCOME.FAILURE: return { state: "crisis", bonus: 0, xp: false, loss: 0, crisis: true };
     default: return { state: "loss", bonus: 0, xp: false, loss: 1, crisis: false };
   }
@@ -192,4 +192,26 @@ export function passiveGloryFromAppearance(app) {
 /** Valeur du test de Gloire : Gloire / 1000 arrondie. */
 export function gloryTestValue(glory) {
   return roundPendragon(Number(glory || 0) / 1000);
+}
+
+/**
+ * Bonus d'une passion invoquée, selon son nom. Les règles particulières sont des données
+ * (CONFIG.PDVF.passionBonuses) : l'Adoration donne +10 même en cas de simple succès.
+ * @param {string} name
+ * @param {{pattern: string, inspired?: number, impassioned?: number}[]} rules
+ */
+export function passionBonuses(name, rules = []) {
+  const out = { inspiredBonus: 5, impassionedBonus: 10 };
+  for (const r of rules) {
+    if (new RegExp(r.pattern, "i").test(String(name ?? "").trim())) {
+      if (r.inspired !== undefined) out.inspiredBonus = r.inspired;
+      if (r.impassioned !== undefined) out.impassionedBonus = r.impassioned;
+    }
+  }
+  return out;
+}
+
+/** Comparaison de noms de passions (casse et espaces ignorés). */
+export function samePassion(a, b) {
+  return String(a ?? "").trim().toLowerCase() === String(b ?? "").trim().toLowerCase();
 }

@@ -7,7 +7,7 @@
   {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=(concat "system.skills." id ".value") value=value min="0" label=label}}
   {{else}}
   <button type="button" class="pdvf-row-roll" data-action="roll" data-key="{{key}}">
-    <span class="pdvf-row-label">{{label}}{{#if specialty}} <em>({{specialty}})</em>{{/if}}</span>
+    <span class="pdvf-row-label">{{label}}{{#if specialty}} <em>({{specialty}})</em>{{/if}}{{#if inspired}} <span class="pdvf-inspired-badge" data-tooltip="{{localize 'PDVF.Inspiration.Title'}}">{{inspired}}</span>{{/if}}</span>
     <i class="pdvf-die-icon" aria-hidden="true"></i>
     <span class="pdvf-row-value">{{display}}</span>
   </button>

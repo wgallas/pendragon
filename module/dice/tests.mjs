@@ -1,8 +1,9 @@
 import { SYSTEM_ID } from "../config.mjs";
 import {
   OUTCOME, resolveTest, compareOpposed, resolveFixed, traitProcedure, attributeLevel,
-  passionEffect, crisisEffect, afflictionDuration, formatValue
+  passionEffect, crisisEffect, afflictionDuration, formatValue, passionBonuses
 } from "../rules/resolution.mjs";
+import { PDVF } from "../config.mjs";
 
 const CARD_TEMPLATE = `systems/${SYSTEM_ID}/templates/chat/test-card.hbs`;
 const DIALOG_TEMPLATE = `systems/${SYSTEM_ID}/templates/dialog/test-options.hbs`;
@@ -16,6 +17,12 @@ export function signed(n) {
   if (v > 0) return `+${v}`;
   if (v < 0) return `−${Math.abs(v)}`;
   return "0";
+}
+
+/** « Inspiré par Hommage (Seigneur) : +5 ». */
+function inspirationNote(actor, key) {
+  const i = actor.inspirationFor(key);
+  return F("PDVF.Card.InspirationApplied", { source: i?.source ?? "", bonus: signed(actor.inspirationBonus(key)) });
 }
 
 /** Lance 1d20 et renvoie le Roll évalué. */
@@ -81,13 +88,21 @@ async function maybeXp(actor, key) {
  * @param {object} rollable
  * @param {number} defaultModifier
  */
-export async function promptTestOptions(actor, rollable, defaultModifier = 0) {
+export async function promptTestOptions(actor, rollable, defaultModifier = 0, defaultInvoke = "") {
   const targetToken = [...(game.user.targets ?? [])][0];
   const target = targetToken?.actor;
   const targetRollables = target?.listRollables?.() ?? [];
   const sameKey = targetRollables.find(r => r.key === rollable.key)?.key;
+  const canInvoke = PDVF.inspirableKinds.includes(rollable.kind) && typeof actor.listInvokable === "function";
+  const current = canInvoke ? actor.inspirationFor(rollable.key) : null;
   const content = await foundry.applications.handlebars.renderTemplate(DIALOG_TEMPLATE, {
     modifier: defaultModifier,
+    canInvoke,
+    invokeChoices: canInvoke ? actor.listInvokable().map(p => ({
+      key: p.key, label: `${p.label} ${formatValue(p.value)}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}`,
+      disabled: p.invoked, selected: p.key === defaultInvoke && !p.invoked
+    })) : [],
+    currentInspiration: current ? F("PDVF.Invoke.Already", { source: current.source, bonus: signed(current.bonus) }) : "",
     hasTarget: !!target && targetRollables.length > 0,
     targetName: target?.name,
     targetRollables,
@@ -118,7 +133,8 @@ export async function promptTestOptions(actor, rollable, defaultModifier = 0) {
     opposition: result.opposition ?? "none",
     fixedValue: Number(result.fixedValue) || 0,
     target: result.opposition === "actor" ? target : null,
-    targetKey: result.targetKey
+    targetKey: result.targetKey,
+    invoke: canInvoke ? (result.invoke ?? "") : ""
   };
 }
 
@@ -138,6 +154,9 @@ export async function rollAttribute(actor, key, options = {}) {
     return rollPassion(actor, key, options);
   }
 
+  const pre = await invokeBefore(actor, rollable, options);
+  if (!pre) return;
+
   const insp = actor.inspirationBonus(key);
   const reflected = Number(options.reflected || 0);
   const modifier = Number(options.modifier || 0) + insp + reflected;
@@ -146,11 +165,13 @@ export async function rollAttribute(actor, key, options = {}) {
   const view = {
     title: rollable.label,
     subtitle: L(`PDVF.Kind.${rollable.kind}`),
+    prelude: pre.prelude,
     participants: [participantView(actor, rollable, modifier, result)],
-    notes: []
+    notes: [...pre.notes],
+    buttons: pre.buttons
   };
-  if (insp) view.notes.push(F("PDVF.Card.InspirationApplied", { bonus: signed(insp) }));
-  const rolls = [roll];
+  if (insp) view.notes.push(inspirationNote(actor, key));
+  const rolls = [...pre.rolls, roll];
   const xpKeys = [];
   if (result.outcome === OUTCOME.CRITICAL && rollable.canXp) xpKeys.push([actor, key]);
 
@@ -206,11 +227,16 @@ export async function rollTrait(actor, key, options = {}) {
     [first, second] = [second, first];
   }
 
+  const pre = await invokeBefore(actor, actor.getRollable(key), options);
+  if (!pre) return;
+  notes.unshift(...pre.notes);
+
   const modifier = Number(options.modifier || 0);
   const mod1 = modifier + actor.inspirationBonus(first.key);
   const roll1 = await d20();
   const res1 = resolveTest(first.value, mod1, roll1.total);
-  const rolls = [roll1];
+  const rolls = [...pre.rolls, roll1];
+  for (const k of [first.key, second.key]) if (actor.inspirationBonus(k)) notes.push(inspirationNote(actor, k));
   const participants = [participantView(actor, first, mod1, res1)];
 
   let proc = traitProcedure(res1);
@@ -241,21 +267,29 @@ export async function rollTrait(actor, key, options = {}) {
     subtitle: L("PDVF.Kind.trait"),
     participants,
     verdict: { text: verdictText, cls: proc.acts === "player" ? "tie" : "victory" },
-    notes
+    prelude: pre.prelude,
+    notes,
+    buttons: pre.buttons
   };
   return postCard(actor, view, rolls, { key, kind: "trait" });
 }
 
 /**
- * Test de passion sans opposition (Table 4.2) : Enflammé, Inspiré, crise, perte.
+ * Invocation d'une passion (Table 4.2) : Enflammé, Inspiré, crise ou perte d'un point.
+ * Coche l'expérience, note l'usage du jour et enregistre le bonus éventuel.
+ * @param {Actor} actor
+ * @param {string} key          clé de la passion (« honor », « passion.2 »)
+ * @param {object} [options]
+ * @param {number} [options.modifier]
+ * @param {string} [options.target]  Attribut inspiré (vide : à choisir sur la fiche)
+ * @returns {Promise<object|null>} éléments de carte et résultat
  */
-export async function rollPassion(actor, key, options = {}) {
+export async function invokePassion(actor, key, { modifier = 0, target = "" } = {}) {
   const rollable = actor.getRollable(key);
-  if (!rollable) return;
-  const modifier = Number(options.modifier || 0);
+  if (!rollable) return null;
   const roll = await d20();
-  const result = resolveTest(rollable.value, modifier, roll.total);
-  const effect = passionEffect(result.outcome);
+  const result = resolveTest(rollable.value, Number(modifier || 0), roll.total);
+  const effect = passionEffect(result.outcome, passionBonuses(rollable.label, PDVF.passionBonuses));
   const notes = [];
   const buttons = [];
 
@@ -263,9 +297,9 @@ export async function rollPassion(actor, key, options = {}) {
     await maybeXp(actor, key);
     notes.push(F("PDVF.Card.XpMarked", { name: actor.name, label: rollable.label }));
   }
-  if (effect.bonus && actor.isOwner) {
-    await actor.update({ "system.inspiration": { source: rollable.label, bonus: effect.bonus, target: "" } });
-    notes.push(L("PDVF.Card.ChooseInspirationTarget"));
+  if (actor.isOwner) {
+    if (effect.bonus) await actor.addInspiration({ source: rollable.label, state: effect.state, bonus: effect.bonus, target });
+    else await actor.markInvoked(rollable.label);
   }
   if (effect.loss && actor.isOwner) {
     await actor.adjustPassion(key, -effect.loss);
@@ -274,16 +308,59 @@ export async function rollPassion(actor, key, options = {}) {
   if (effect.crisis) {
     buttons.push({ action: "crisis", label: L("PDVF.Card.RollCrisis"), actor: actor.uuid, key });
   }
-
-  const view = {
-    title: rollable.label,
-    subtitle: L("PDVF.Kind.passion"),
-    participants: [participantView(actor, rollable, modifier, result)],
-    verdict: { text: L(`PDVF.Passion.${effect.state}`), cls: effect.crisis || effect.loss ? "defeat" : "victory" },
-    notes,
-    buttons
+  return {
+    rollable, roll, result, effect, notes, buttons,
+    participant: participantView(actor, rollable, modifier, result),
+    verdict: {
+      text: effect.bonus ? F(`PDVF.Passion.${effect.state}Bonus`, { bonus: signed(effect.bonus) }) : L(`PDVF.Passion.${effect.state}`),
+      cls: effect.crisis || effect.loss ? "defeat" : "victory"
+    }
   };
-  return postCard(actor, view, [roll], { key, kind: "passion" });
+}
+
+/**
+ * Test de passion seul (depuis la fiche, ou demandé par le MJ).
+ * Le bonus obtenu attend qu'on choisisse sur la fiche la compétence ou le trait inspiré.
+ */
+export async function rollPassion(actor, key, options = {}) {
+  const inv = await invokePassion(actor, key, { modifier: options.modifier });
+  if (!inv) return;
+  if (inv.effect.bonus) inv.notes.push(L("PDVF.Card.ChooseInspirationTarget"));
+  const view = {
+    title: inv.rollable.label,
+    subtitle: L("PDVF.Kind.passion"),
+    participants: [inv.participant],
+    verdict: inv.verdict,
+    notes: inv.notes,
+    buttons: inv.buttons
+  };
+  return postCard(actor, view, [inv.roll], { key, kind: "passion" });
+}
+
+/**
+ * Passion invoquée avant un test de compétence ou de trait.
+ * Renvoie les éléments à placer en tête de carte, ou poste la carte et renvoie null
+ * quand l'invocation échoue (le test n'est alors pas lancé).
+ */
+async function invokeBefore(actor, rollable, options) {
+  const none = { prelude: null, rolls: [], notes: [], buttons: [] };
+  if (!options.invoke || !PDVF.inspirableKinds.includes(rollable?.kind)) return none;
+  const inv = await invokePassion(actor, options.invoke, { target: rollable.key });
+  if (!inv) return none;
+  const prelude = { title: F("PDVF.Card.Invoked", { label: inv.rollable.label }), participant: inv.participant, verdict: inv.verdict };
+  if (!inv.effect.bonus) {
+    const view = {
+      title: rollable.label,
+      subtitle: L(`PDVF.Kind.${rollable.kind}`),
+      prelude,
+      participants: [],
+      notes: [...inv.notes, F("PDVF.Card.TestBlocked", { label: rollable.label })],
+      buttons: inv.buttons
+    };
+    await postCard(actor, view, [inv.roll], { key: rollable.key, kind: rollable.kind, invoked: options.invoke });
+    return null;
+  }
+  return { prelude, rolls: [inv.roll], notes: inv.notes, buttons: inv.buttons };
 }
 
 /**

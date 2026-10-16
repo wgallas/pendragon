@@ -104,3 +104,11 @@ PDVF.defaultPassions = [
 
 /** Modificateurs proposés dans le panneau de la fiche (Table 2.1). */
 PDVF.quickModifiers = [-10, -5, 0, 5, 10];
+
+/** Passions au bonus particulier (motif sur le nom). Livre du joueur p. 88 : l'Adoration donne +10 Inspiré ou Enflammé. */
+PDVF.passionBonuses = [
+  { pattern: "^adoration\\b", inspired: 10, impassioned: 10 }
+];
+
+/** Types d'Attributs qu'une passion peut inspirer (« une seule compétence ou trait »). */
+PDVF.inspirableKinds = ["skill", "trait"];

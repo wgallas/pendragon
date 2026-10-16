@@ -4,6 +4,19 @@
     <input id="pdvf-mod" type="number" name="modifier" value="{{modifier}}" step="1">
   </div>
 
+  {{#if canInvoke}}
+  <div class="form-group">
+    <label for="pdvf-invoke">{{localize "PDVF.Invoke.Label"}}</label>
+    <select id="pdvf-invoke" name="invoke">
+      <option value="">{{localize "PDVF.Invoke.None"}}</option>
+      {{#each invokeChoices}}
+      <option value="{{key}}" {{#if selected}}selected{{/if}} {{#if disabled}}disabled{{/if}}>{{label}}</option>
+      {{/each}}
+    </select>
+  </div>
+  {{#if currentInspiration}}<p class="hint">{{currentInspiration}}</p>{{/if}}
+  {{/if}}
+
   <fieldset>
     <legend>{{localize "PDVF.Dialog.Opposition"}}</legend>
     <label class="pdvf-radio">

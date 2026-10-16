@@ -290,10 +290,25 @@
       "10": "Avantage élevé : situation dramatique"
     },
     "Inspiration": {
-      "Active": "{source} : {bonus}",
+      "Title": "Inspirations en cours",
       "Target": "Compétence ou trait inspiré",
       "Choose": "— Choisir —",
-      "End": "Fin de l'inspiration"
+      "End": "Fin",
+      "EndTip": "La situation qui a invoqué la passion est terminée"
+    },
+    "Invoke": {
+      "Label": "Invoquer une passion",
+      "None": "— Aucune —",
+      "Hint": "Testée juste avant la compétence ou le trait. En cas de succès, le bonus s'applique aussitôt et reste acquis tant que dure la situation ; en cas d'échec, le test n'est pas lancé.",
+      "UsedToday": "déjà invoquée aujourd'hui",
+      "UsedTodayTip": "Invoquée aujourd'hui : chaque passion ne déclenche un bonus qu'une fois par jour",
+      "Already": "Déjà inspiré par {source} ({bonus}).",
+      "NewDay": "Nouveau jour",
+      "NewDayTip": "Passions de nouveau invocables et inspirations closes, pour ce personnage",
+      "NewDayOne": "{name} : nouveau jour.",
+      "NewDayControl": "Nouveau jour : passions de nouveau invocables",
+      "NewDayConfirm": "Commencer un nouveau jour ? Chaque passion pourra de nouveau être invoquée et les inspirations en cours prendront fin, pour tous les chevaliers.",
+      "NewDayChat": "Un nouveau jour se lève : chaque passion peut de nouveau être invoquée."
     },
     "Sheet": {
       "Tabs": "Onglets de la fiche",
@@ -406,6 +421,10 @@
     },
     "Passion": {
       "impassioned": "Enflammé : +10 à une compétence ou un trait",
+      "impassionedBonus": "Enflammé : {bonus} à une compétence ou un trait",
+      "inspiredBonus": "Inspiré : {bonus} à une compétence ou un trait",
+      "impassionedShort": "Enflammé",
+      "inspiredShort": "Inspiré",
       "inspired": "Inspiré : +5 à une compétence ou un trait",
       "crisis": "Crise de passion !",
       "loss": "Échec critique : la passion perd 1 point"
@@ -426,7 +445,9 @@
       "Opposed": "Test opposé",
       "FixedOpposition": "Opposition fixe de {value}",
       "Reflected": "Modificateur réfléchi : {a} / {b}",
-      "InspirationApplied": "Inspiration appliquée : {bonus}",
+      "InspirationApplied": "Inspiré par {source} : {bonus}",
+      "Invoked": "Passion invoquée : {label}",
+      "TestBlocked": "{label} : test non lancé (passion ratée).",
       "XpMarked": "Croix d'expérience cochée pour {name} : {label}",
       "FamousFirst": "{label} est Célèbre ou Exalté : il est testé en premier.",
       "ChooseInspirationTarget": "Choisissez sur la fiche la compétence ou le trait qui bénéficie du bonus.",

@@ -832,3 +832,17 @@
 }
 .pendragon-vf .pdvf-wiz-warning p { margin: 0 0 4px; }
 .pendragon-vf .pdvf-wiz-warning ul { margin: 0 0 8px; padding-left: 20px; }
+
+/* Passions invoquées et inspirations */
+.pendragon-vf .pdvf-invoke { margin-top: 10px; }
+.pendragon-vf .pdvf-invoke select { width: 100%; }
+.pendragon-vf .pdvf-invoked { color: #B07A12; font-size: 0.8em; margin-left: 2px; }
+.pendragon-vf .pdvf-newday { float: right; font-family: var(--pdvf-font-body); font-size: 13px; padding: 1px 8px; margin-top: 2px; }
+.pendragon-vf .pdvf-inspiration-row + .pdvf-inspiration-row { margin-top: 8px; padding-top: 8px; border-top: 1px dotted var(--pdvf-rule); }
+.pendragon-vf .pdvf-inspiration-text { font-weight: 700; }
+.pendragon-vf .pdvf-inspiration-line { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
+.pendragon-vf .pdvf-inspiration-line select { flex: 1; min-width: 0; margin: 0; }
+.pdvf-card .pdvf-card-prelude { margin: 4px 0 6px; padding: 4px 6px; border: 1px dashed rgba(120, 90, 40, 0.5); }
+.pdvf-card .pdvf-card-prelude-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.8; }
+.pdvf-card .pdvf-verdict.small { font-size: 13px; padding: 2px 4px; margin-top: 2px; }
+.pendragon-vf .pdvf-inspired-badge { font-size: 12px; font-weight: 700; color: var(--pdvf-parchment-light, #fff); background: var(--pdvf-vermilion); border-radius: 8px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }

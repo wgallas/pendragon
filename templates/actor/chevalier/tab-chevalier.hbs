@@ -38,21 +38,33 @@
         {{/each}}
       </div>
       <p class="pdvf-hint">{{modifierHint}}</p>
-    </section>
-
-    {{#if inspiration.active}}
-    <section class="pdvf-boxed pdvf-inspiration">
-      <h3 class="pdvf-h3 red">{{inspiration.text}}</h3>
-      <label class="pdvf-field">
-        <span>{{localize "PDVF.Inspiration.Target"}}</span>
-        <select name="system.inspiration.target">
-          <option value="">{{localize "PDVF.Inspiration.Choose"}}</option>
-          {{#each inspiration.targets}}
-          <option value="{{key}}" {{#if (eq key ../inspiration.target)}}selected{{/if}}>{{label}}</option>
+      <label class="pdvf-field pdvf-invoke">
+        <span>{{localize "PDVF.Invoke.Label"}}</span>
+        <select name="pdvfInvoke">
+          <option value="">{{localize "PDVF.Invoke.None"}}</option>
+          {{#each invoke.choices}}
+          <option value="{{key}}" {{#if selected}}selected{{/if}} {{#if disabled}}disabled{{/if}}>{{label}}</option>
           {{/each}}
         </select>
       </label>
-      <button type="button" class="pdvf-btn" data-action="endInspiration">{{localize "PDVF.Inspiration.End"}}</button>
+      <p class="pdvf-hint">{{localize "PDVF.Invoke.Hint"}}</p>
+    </section>
+
+    {{#if inspirations.length}}
+    <section class="pdvf-boxed pdvf-inspiration">
+      <h3 class="pdvf-h3 red">{{localize "PDVF.Inspiration.Title"}}</h3>
+      {{#each inspirations}}
+      <div class="pdvf-inspiration-row">
+        <div class="pdvf-inspiration-text">{{text}}</div>
+        <div class="pdvf-inspiration-line">
+          <select name="system.inspirations.{{index}}.target" aria-label="{{localize 'PDVF.Inspiration.Target'}}">
+            <option value="">{{localize "PDVF.Inspiration.Choose"}}</option>
+            {{#each targets}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+          </select>
+          <button type="button" class="pdvf-btn" data-action="endInspiration" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Inspiration.EndTip'}}">{{localize "PDVF.Inspiration.End"}}</button>
+        </div>
+      </div>
+      {{/each}}
     </section>
     {{/if}}
   </div>

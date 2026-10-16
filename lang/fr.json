@@ -8,7 +8,9 @@
     "Glory": "Gloire",
     "GloryTest": "Test de Gloire",
     "Honor": "Honneur",
-    "SheetLabel": { "chevalier": "Fiche de chevalier (Pendragon VF)" },
+    "SheetLabel": {
+      "chevalier": "Fiche de chevalier (Pendragon VF)"
+    },
     "Settings": {
       "currentYear": {
         "name": "Année de jeu en cours",
@@ -24,21 +26,60 @@
       "chronique": "Chronique"
     },
     "Char": {
-      "siz": { "abbr": "TAI", "long": "Taille" },
-      "dex": { "abbr": "DEX", "long": "Dextérité" },
-      "str": { "abbr": "FOR", "long": "Force" },
-      "con": { "abbr": "CON", "long": "Constitution" },
-      "app": { "abbr": "ATT", "long": "Attrait" }
+      "siz": {
+        "abbr": "TAI",
+        "long": "Taille"
+      },
+      "dex": {
+        "abbr": "DEX",
+        "long": "Dextérité"
+      },
+      "str": {
+        "abbr": "FOR",
+        "long": "Force"
+      },
+      "con": {
+        "abbr": "CON",
+        "long": "Constitution"
+      },
+      "app": {
+        "abbr": "ATT",
+        "long": "Attrait"
+      }
     },
     "Derived": {
-      "knockdown": { "label": "Chute", "formula": "TAI" },
-      "majorWound": { "label": "Blessure majeure", "formula": "CON" },
-      "damage": { "label": "Dégâts d'arme", "formula": "(FOR+TAI)/6" },
-      "brawlDamage": { "label": "Dégâts de rixe", "formula": "(FOR+TAI)/6" },
-      "move": { "label": "Mouvement", "formula": "(FOR+DEX)/2+5" },
-      "hpMax": { "label": "Total de points de vie", "formula": "CON+TAI" },
-      "unconscious": { "label": "Inconscience", "formula": "PV/4" },
-      "healRate": { "label": "Taux de guérison", "formula": "CON/5" }
+      "knockdown": {
+        "label": "Chute",
+        "formula": "TAI"
+      },
+      "majorWound": {
+        "label": "Blessure majeure",
+        "formula": "CON"
+      },
+      "damage": {
+        "label": "Dégâts d'arme",
+        "formula": "(FOR+TAI)/6"
+      },
+      "brawlDamage": {
+        "label": "Dégâts de rixe",
+        "formula": "(FOR+TAI)/6"
+      },
+      "move": {
+        "label": "Mouvement",
+        "formula": "(FOR+DEX)/2+5"
+      },
+      "hpMax": {
+        "label": "Total de points de vie",
+        "formula": "CON+TAI"
+      },
+      "unconscious": {
+        "label": "Inconscience",
+        "formula": "PV/4"
+      },
+      "healRate": {
+        "label": "Taux de guérison",
+        "formula": "CON/5"
+      }
     },
     "Skill": {
       "awareness": "Vigilance",
@@ -75,19 +116,58 @@
       "thrown": "Arme lancée"
     },
     "Trait": {
-      "chaste": { "left": "Chaste", "right": "Luxurieux" },
-      "trusting": { "left": "Confiant", "right": "Méfiant" },
-      "spiritual": { "left": "Croyant", "right": "Matérialiste" },
-      "energetic": { "left": "Énergique", "right": "Paresseux" },
-      "generous": { "left": "Généreux", "right": "Égoïste" },
-      "honest": { "left": "Honnête", "right": "Trompeur" },
-      "forgiving": { "left": "Indulgent", "right": "Rancunier" },
-      "just": { "left": "Juste", "right": "Arbitraire" },
-      "merciful": { "left": "Miséricordieux", "right": "Cruel" },
-      "modest": { "left": "Modeste", "right": "Fier" },
-      "prudent": { "left": "Prudent", "right": "Téméraire" },
-      "temperate": { "left": "Sobre", "right": "Bon-vivant" },
-      "valorous": { "left": "Valeureux", "right": "Couard" },
+      "chaste": {
+        "left": "Chaste",
+        "right": "Luxurieux"
+      },
+      "trusting": {
+        "left": "Confiant",
+        "right": "Méfiant"
+      },
+      "spiritual": {
+        "left": "Croyant",
+        "right": "Matérialiste"
+      },
+      "energetic": {
+        "left": "Énergique",
+        "right": "Paresseux"
+      },
+      "generous": {
+        "left": "Généreux",
+        "right": "Égoïste"
+      },
+      "honest": {
+        "left": "Honnête",
+        "right": "Trompeur"
+      },
+      "forgiving": {
+        "left": "Indulgent",
+        "right": "Rancunier"
+      },
+      "just": {
+        "left": "Juste",
+        "right": "Arbitraire"
+      },
+      "merciful": {
+        "left": "Miséricordieux",
+        "right": "Cruel"
+      },
+      "modest": {
+        "left": "Modeste",
+        "right": "Fier"
+      },
+      "prudent": {
+        "left": "Prudent",
+        "right": "Téméraire"
+      },
+      "temperate": {
+        "left": "Sobre",
+        "right": "Bon-vivant"
+      },
+      "valorous": {
+        "left": "Valeureux",
+        "right": "Couard"
+      },
       "PlayerChoice": "Les deux tests échouent : le joueur choisit le comportement.",
       "Acts": "Agit selon : {label}",
       "ActsStrongly": "Agit pleinement selon : {label}"
@@ -111,8 +191,14 @@
       "famous": "Célèbre",
       "exalted": "Exalté"
     },
-    "Title": { "sire": "Sire", "dame": "Dame" },
-    "Religion": { "christian": "Chrétien", "pagan": "Païen" },
+    "Title": {
+      "sire": "Sire",
+      "dame": "Dame"
+    },
+    "Religion": {
+      "christian": "Chrétien",
+      "pagan": "Païen"
+    },
     "Class": {
       "squire": "Écuyer",
       "household": "Chevalier de maisonnée",
@@ -148,7 +234,10 @@
       "ennobled": "Anobli",
       "died": "Décédé"
     },
-    "Heraldry": { "blazon": "Héraldique", "motto": "Devise" },
+    "Heraldry": {
+      "blazon": "Héraldique",
+      "motto": "Devise"
+    },
     "Family": {
       "parent": "Parent",
       "characteristic": "Particularité familiale",
@@ -188,7 +277,8 @@
       "Family": "Famille",
       "Chronicle": "Historique et évènements",
       "PassiveGlory": "Gloire passive",
-      "Prestige": "Récompenses de prestige"
+      "Prestige": "Récompenses de prestige",
+      "FamilyHistory": "Histoire de la famille"
     },
     "ModifierHint": {
       "-10": "Difficulté élevée, en défaveur : situation dramatique",
@@ -238,7 +328,11 @@
       "PassionName": "Nom de la passion",
       "Court": "Cour",
       "NoPassion": "Aucune passion.",
-      "AddPassion": "Ajouter une passion"
+      "AddPassion": "Ajouter une passion",
+      "DrawFamily": "Tirer l'historique familial",
+      "RedrawFamily": "Tirer un autre historique familial",
+      "NoFamilyHistory": "Aucun historique familial. Passez en mode édition pour en tirer un.",
+      "NoFamilyHistoryEdit": "Tirez trois historiques au hasard et choisissez celui qui vous plaît : Gloire héritée, passions et traits de famille, parents vivants et défunts."
     },
     "Chronicle": {
       "year": "Année",
@@ -356,6 +450,29 @@
     "Notify": {
       "NotOwner": "Vous ne contrôlez pas ce personnage.",
       "NoSessionGlory": "Aucune Gloire de session à inscrire."
+    },
+    "FamilyApp": {
+      "Title": "Historique familial",
+      "TitleFor": "Historique familial — {name}",
+      "Intro": "Trois histoires de famille, de l'arrière-grand-père adoubé en 431 au père mort avant 508. Relancez celles qui ne vous plaisent pas, décochez les passions ou traits que vous ne voulez pas reprendre, puis choisissez.",
+      "Proposal": "Proposition",
+      "RerollOne": "Relancer",
+      "RerollAll": "Relancer les trois",
+      "Choose": "Choisir cette famille",
+      "Chronicle": "Chronique",
+      "Inheritance": "Héritage du personnage",
+      "InheritedGlory": "Gloire héritée",
+      "BonusTip": "Règle de la 6e : bonus égal à la valeur du parent moins 15, +5 au plus. Il s'ajoute à la passion du personnage, ou crée la passion à cette valeur s'il ne l'a pas encore.",
+      "Legacy": "Legs et obligations",
+      "Living": "Famille vivante",
+      "PaternalSide": "Côté paternel",
+      "MaternalSide": "Côté maternel",
+      "None": "Aucun",
+      "NamingCustom": "Selon la coutume, l'aîné porte le nom de son grand-père paternel :",
+      "HasHistory": "Ce personnage a déjà un historique : le nouveau choix le remplacera.",
+      "ReplaceTitle": "Remplacer l'historique familial",
+      "ReplaceText": "Le personnage a déjà un historique familial. Ses effets (Gloire héritée, bonus de passions, traits dirigés) seront retirés puis remplacés par ceux de la nouvelle famille. Continuer ?",
+      "Applied": "Historique familial appliqué à {name}."
     }
   }
 }

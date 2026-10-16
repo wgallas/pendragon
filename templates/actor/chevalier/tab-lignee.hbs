@@ -59,5 +59,17 @@
       <input type="text" name="system.family.characteristic" value="{{system.family.characteristic}}"></label>
     <label class="pdvf-field"><span>{{localize "PDVF.Family.notes"}}</span>
       <textarea name="system.family.notes" rows="4">{{system.family.notes}}</textarea></label>
+
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.FamilyHistory"}}</h2>
+    {{#if familyHistory}}
+    {{> "systems/pendragon-vf/templates/family/history.hbs" familyHistory choosing=false}}
+    {{else}}
+    <p class="pdvf-hint">{{#if editMode}}{{localize "PDVF.Sheet.NoFamilyHistoryEdit"}}{{else}}{{localize "PDVF.Sheet.NoFamilyHistory"}}{{/if}}</p>
+    {{/if}}
+    {{#if editMode}}
+    <button type="button" class="pdvf-btn pdvf-add" data-action="openFamily">
+      {{#if familyHistory}}{{localize "PDVF.Sheet.RedrawFamily"}}{{else}}{{localize "PDVF.Sheet.DrawFamily"}}{{/if}}
+    </button>
+    {{/if}}
   </div>
 </section>

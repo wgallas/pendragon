@@ -16,6 +16,7 @@ Système non officiel pour Pendragon 6e édition en français. Version 0.1.0 : p
 - Jets : clic = test de d20 avec le modificateur choisi ; Maj + clic = options (modificateur, opposition fixe, test opposé contre le jeton ciblé avec modificateur réfléchi).
 - Règles automatisées : critique, échec critique, bonus de critique au-delà de 20, valeurs négatives, tests opposés et succès partiel, procédure des traits (trait Célèbre testé en premier, trait opposé en cas d'échec), passions (Inspiré, Enflammé, crise, Mélancolie, Folie, perte de point), test de Gloire, croix d'expérience cochées automatiquement sur critique.
 - Caractéristiques dérivées, Gloire totale tirée de la chronique, récompenses de prestige, Gloire passive (traits, passions, Attrait).
+- Historique familial (onglet Lignée, mode édition) : trois propositions tirées au hasard sur trois générations (arrière-grand-père, grand-père, père), d'après l'historique de Salisbury de la 5.2 pour 439–484 et la chronologie de la 6e pour 483–507. Gloire héritée et passions héritées selon les règles de la 6e, traits dirigés, legs et obligations, famille vivante.
 
 Les onglets « Combat & équipement » et « Suite & domaine » sont partiels : objets (armes, armures), blessures, montures, PNJ et domaines arrivent aux étapes suivantes.
 

@@ -46,7 +46,8 @@ Hooks.once("init", () => {
   // Gabarits partiels
   foundry.applications.handlebars.loadTemplates([
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/skill-row.hbs`,
-    `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/stepper.hbs`
+    `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/stepper.hbs`,
+    `systems/${SYSTEM_ID}/templates/family/history.hbs`
   ]);
 });
 

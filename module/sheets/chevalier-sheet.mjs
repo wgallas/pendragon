@@ -1,6 +1,9 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { traitPair, attributeLevel, formatValue } from "../rules/resolution.mjs";
 import { rollAttribute, promptTestOptions, signed } from "../dice/tests.mjs";
+import { FamilyHistoryApp } from "../family/family-app.mjs";
+import { familyView } from "../family/view.mjs";
+import { getFamilyHistory } from "../family/apply.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -49,7 +52,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       recordSession: ChevalierSheet.#onRecordSession,
       editHeraldry: ChevalierSheet.#onEditHeraldry,
       endInspiration: ChevalierSheet.#onEndInspiration,
-      step: ChevalierSheet.#onStep
+      step: ChevalierSheet.#onStep,
+      openFamily: ChevalierSheet.#onOpenFamily
     }
   };
 
@@ -197,6 +201,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       id, label: L(`PDVF.Dates.${id}`), value: system.dates[id] || "", name: `system.dates.${id}`
     }));
     context.parents = system.family.parents.map((p, i) => ({ ...p, index: i }));
+    const history = getFamilyHistory(actor);
+    context.familyHistory = history?.result ? familyView(history.result) : null;
 
     // Onglet Chronique
     context.chronicle = system.chronicleRows;
@@ -363,6 +369,10 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (input.max !== "") value = Math.min(Number(input.max), value);
     input.value = value;
     input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  static #onOpenFamily() {
+    new FamilyHistoryApp(this.document).render({ force: true });
   }
 
   static async #onEndInspiration() {

@@ -1,0 +1,25 @@
+<div class="pdvf-family">
+  <p class="pdvf-family-intro">{{localize "PDVF.FamilyApp.Intro"}}</p>
+  <div class="pdvf-proposals">
+    {{#each proposals}}
+    <article class="pdvf-proposal" data-proposal="{{index}}">
+      <header class="pdvf-proposal-head">
+        <h3>{{localize "PDVF.FamilyApp.Proposal"}} {{roman}}</h3>
+        <button type="button" class="pdvf-btn pdvf-reroll" data-action="reroll" data-index="{{index}}">{{localize "PDVF.FamilyApp.RerollOne"}}</button>
+      </header>
+      <div class="pdvf-proposal-summary">
+        <span>{{father.title}}, {{father.causeLabel}} en {{father.died}}</span>
+        <span>{{localize "PDVF.FamilyApp.InheritedGlory"}} : <strong>{{inheritedGloryLabel}}</strong></span>
+      </div>
+      {{> "systems/pendragon-vf/templates/family/history.hbs" choosing=true}}
+      <footer class="pdvf-proposal-foot">
+        <button type="button" class="pdvf-choose" data-action="choose" data-index="{{index}}">{{localize "PDVF.FamilyApp.Choose"}}</button>
+      </footer>
+    </article>
+    {{/each}}
+  </div>
+  <footer class="pdvf-family-foot">
+    <button type="button" class="pdvf-btn" data-action="rerollAll">{{localize "PDVF.FamilyApp.RerollAll"}}</button>
+    {{#if hasHistory}}<span class="pdvf-hint">{{localize "PDVF.FamilyApp.HasHistory"}}</span>{{/if}}
+  </footer>
+</div>

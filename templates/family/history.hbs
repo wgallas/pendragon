@@ -1,0 +1,102 @@
+{{!-- Une proposition d'historique familial. Paramètre : `choosing` (cases à cocher) --}}
+<div class="pdvf-history">
+  {{#each ancestors}}
+  <section class="pdvf-ancestor {{role}}">
+    <header class="pdvf-ancestor-head">
+      <span class="pdvf-ancestor-role">{{label}}</span>
+      <span class="pdvf-ancestor-name">{{title}}</span>
+      <span class="pdvf-ancestor-span">{{span}}</span>
+    </header>
+    <p class="pdvf-ancestor-death">{{#if glorious}}<strong>{{causeLabel}}</strong>{{else}}{{causeLabel}}{{/if}}</p>
+    <div class="pdvf-ancestor-meta">
+      <span>{{localize "PDVF.Glory"}} : <strong>{{gloryLabel}}</strong></span>
+      {{#if wifeLabel}}<span>{{wifeLabel}}</span>{{/if}}
+    </div>
+    <details class="pdvf-ancestor-events">
+      <summary>{{localize "PDVF.FamilyApp.Chronicle"}}</summary>
+      <ol>
+        {{#each events}}
+        <li class="{{#if death}}death{{/if}}">
+          <span class="year">{{year}}</span>
+          <span class="text">{{text}}</span>
+          {{#if glory}}<span class="glory">+{{glory}}</span>{{/if}}
+        </li>
+        {{/each}}
+      </ol>
+    </details>
+  </section>
+  {{/each}}
+
+  {{#if sideLabel}}<p class="pdvf-history-note">{{sideLabel}}.</p>{{/if}}
+
+  <section class="pdvf-inherit">
+    <h4>{{localize "PDVF.FamilyApp.Inheritance"}}</h4>
+    <div class="pdvf-inherit-glory">
+      <span>{{localize "PDVF.FamilyApp.InheritedGlory"}} ({{inheritYear}})</span>
+      <strong>{{inheritedGloryLabel}}</strong>
+    </div>
+
+    {{#if passions.length}}
+    <ul class="pdvf-inherit-list">
+      {{#each passions}}
+      <li class="{{#unless usable}}disabled{{/unless}}">
+        {{#if ../choosing}}
+        <label>
+          <input type="checkbox" data-kind="passion" value="{{name}}" {{#if usable}}checked{{else}}disabled{{/if}}>
+          <span class="name">{{name}} {{value}}</span>
+          <span class="bonus" data-tooltip="{{localize 'PDVF.FamilyApp.BonusTip'}}">{{bonusLabel}}</span>
+        </label>
+        {{else}}
+        <span class="name">{{name}} {{value}}</span>
+        <span class="bonus">{{bonusLabel}}</span>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+    {{#if traits.length}}
+    <ul class="pdvf-inherit-list">
+      {{#each traits}}
+      <li>
+        {{#if ../choosing}}
+        <label>
+          <input type="checkbox" data-kind="trait" value="{{name}}" checked>
+          <span class="name">{{name}}</span>
+          <span class="bonus">+{{value}}</span>
+        </label>
+        {{else}}
+        <span class="name">{{name}}</span>
+        <span class="bonus">+{{value}}</span>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+    {{#if legacy.length}}
+    <h4>{{localize "PDVF.FamilyApp.Legacy"}}</h4>
+    <ul class="pdvf-legacy">
+      {{#each legacy}}<li>{{this}}</li>{{/each}}
+    </ul>
+    {{/if}}
+  </section>
+
+  <section class="pdvf-living">
+    <h4>{{localize "PDVF.FamilyApp.Living"}}</h4>
+    <p>{{motherLabel}}</p>
+    <details>
+      <summary>{{siblingsSummary}}</summary>
+      <ul>{{#each siblings}}<li>{{this}}</li>{{else}}<li>{{localize "PDVF.FamilyApp.None"}}</li>{{/each}}</ul>
+    </details>
+    <details>
+      <summary>{{localize "PDVF.FamilyApp.PaternalSide"}} : {{paternalSummary}}</summary>
+      <ul>{{#each paternal}}<li>{{this}}</li>{{/each}}</ul>
+    </details>
+    <details>
+      <summary>{{localize "PDVF.FamilyApp.MaternalSide"}} : {{maternalSummary}}</summary>
+      <ul>{{#each maternal}}<li>{{this}}</li>{{/each}}</ul>
+    </details>
+    <p class="pdvf-history-note">{{localize "PDVF.FamilyApp.NamingCustom"}} <strong>{{suggestedName}}</strong>.</p>
+  </section>
+</div>

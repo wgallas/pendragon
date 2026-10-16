@@ -23,7 +23,7 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     super(options);
     this.actor = actor;
     const draft = actor.getFlag(SYSTEM_ID, DRAFT);
-    this.state = draft?.version ? foundry.utils.deepClone(draft) : R.defaultState(this.C);
+    this.draft = draft?.version ? foundry.utils.deepClone(draft) : R.defaultState(this.C);
   }
 
   /** Données de création (extensibles par les suppléments). */
@@ -69,7 +69,7 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    const s = this.state;
+    const s = this.draft;
     const C = this.C;
     const stepId = R.STEPS[s.step];
     const o = R.resolveOrigin(s, C);
@@ -325,31 +325,31 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     let value = el.type === "checkbox" ? el.checked : el.value;
     if (el.dataset.type === "number") value = Number(value) || 0;
     if (el.type === "radio" && !el.checked) return;
-    foundry.utils.setProperty(this.state, path, value);
+    foundry.utils.setProperty(this.draft, path, value);
 
     // Changer d'origine remet à zéro ce qui en dépend.
     if (path.startsWith("origin.") && path !== "origin.name") {
-      const o = R.resolveOrigin(this.state, this.C);
-      Object.assign(this.state.origin, { klass: o.klassId, homeland: o.homelandId ?? "", religion: o.religionId });
+      const o = R.resolveOrigin(this.draft, this.C);
+      Object.assign(this.draft.origin, { klass: o.klassId, homeland: o.homelandId ?? "", religion: o.religionId });
       if (path === "origin.religion" || path === "origin.culture") {
-        this.state.traits.rolled = null;
-        this.state.traits.famous = "";
-        this.state.traits.points = {};
+        this.draft.traits.rolled = null;
+        this.draft.traits.famous = "";
+        this.draft.traits.points = {};
       }
     }
     if (path === "apprentice.years") {
       const y = Number(value) || 0;
-      this.state.apprentice.alloc = { skills: y, traits: 0, chars: 0 };
-      this.state.apprentice.skills = {};
-      this.state.apprentice.traits = {};
-      this.state.apprentice.chars = {};
+      this.draft.apprentice.alloc = { skills: y, traits: 0, chars: 0 };
+      this.draft.apprentice.skills = {};
+      this.draft.apprentice.traits = {};
+      this.draft.apprentice.chars = {};
     }
-    if (path === "family.mode") this.state.family.chosen = null;
+    if (path === "family.mode") this.draft.family.chosen = null;
     if (render) this.render({ parts: ["body"] });
   }
 
   async #saveDraft() {
-    if (this.actor.isOwner) await this.actor.setFlag(SYSTEM_ID, DRAFT, this.state);
+    if (this.actor.isOwner) await this.actor.setFlag(SYSTEM_ID, DRAFT, this.draft);
   }
 
   async close(options) {
@@ -362,20 +362,20 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   /* -------------------------------------------- */
 
   static async #onGoto(event, target) {
-    this.state.step = Number(target.dataset.step);
+    this.draft.step = Number(target.dataset.step);
     await this.#saveDraft();
     this.render({ parts: ["body"] });
   }
 
   static async #onNext() {
-    if (R.validateStep(R.STEPS[this.state.step], this.state, this.C).errors.length) return;
-    this.state.step = Math.min(R.STEPS.length - 1, this.state.step + 1);
+    if (R.validateStep(R.STEPS[this.draft.step], this.draft, this.C).errors.length) return;
+    this.draft.step = Math.min(R.STEPS.length - 1, this.draft.step + 1);
     await this.#saveDraft();
     this.render({ parts: ["body"] });
   }
 
   static async #onPrev() {
-    this.state.step = Math.max(0, this.state.step - 1);
+    this.draft.step = Math.max(0, this.draft.step - 1);
     this.render({ parts: ["body"] });
   }
 
@@ -384,28 +384,28 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const delta = Number(target.dataset.delta) || 0;
     const min = target.dataset.min !== undefined ? Number(target.dataset.min) : 0;
     const max = target.dataset.max !== undefined ? Number(target.dataset.max) : Infinity;
-    const current = Number(foundry.utils.getProperty(this.state, path)) || 0;
+    const current = Number(foundry.utils.getProperty(this.draft, path)) || 0;
     const next = Math.max(min, Math.min(max, current + delta));
     // Les points de trait sont rangés par « id.côté » : on évite de créer un sous-objet.
-    if (path.startsWith("traits.points.")) this.state.traits.points[path.slice("traits.points.".length)] = next;
-    else if (path.startsWith("apprentice.traits.")) this.state.apprentice.traits[path.slice("apprentice.traits.".length)] = next;
-    else if (path.startsWith("passions.points.")) this.state.passions.points[path.slice("passions.points.".length)] = next;
-    else foundry.utils.setProperty(this.state, path, next);
+    if (path.startsWith("traits.points.")) this.draft.traits.points[path.slice("traits.points.".length)] = next;
+    else if (path.startsWith("apprentice.traits.")) this.draft.apprentice.traits[path.slice("apprentice.traits.".length)] = next;
+    else if (path.startsWith("passions.points.")) this.draft.passions.points[path.slice("passions.points.".length)] = next;
+    else foundry.utils.setProperty(this.draft, path, next);
     this.render({ parts: ["body"] });
   }
 
   static #onSetMethod(event, target) {
     const method = target.dataset.value;
-    if (method === this.state.method) return;
+    if (method === this.draft.method) return;
     const fresh = R.defaultState(this.C);
-    fresh.origin = this.state.origin;
+    fresh.origin = this.draft.origin;
     fresh.method = method;
-    this.state = fresh;
+    this.draft = fresh;
     this.render({ parts: ["body"] });
   }
 
   static #onRoll(event, target) {
-    const s = this.state;
+    const s = this.draft;
     const C = this.C;
     switch (target.dataset.what) {
       case "name": R.randomName(s, C); break;
@@ -427,13 +427,13 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static #onAddPassion() {
-    this.state.passions.extra.push({ name: "", court: "fervor" });
+    this.draft.passions.extra.push({ name: "", court: "fervor" });
     this.render({ parts: ["body"] });
   }
 
   static #onRemovePassion(event, target) {
     const i = Number(target.dataset.index);
-    const s = this.state;
+    const s = this.draft;
     s.passions.extra.splice(i, 1);
     // Renuméroter les points des passions ajoutées
     const points = {};
@@ -449,8 +449,8 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static #onFamilyReroll(event, target) {
     const i = Number(target.dataset.index);
-    this.state.family.proposals[i] = generateFamily();
-    if (this.state.family.chosen === i) this.state.family.chosen = null;
+    this.draft.family.proposals[i] = generateFamily();
+    if (this.draft.family.chosen === i) this.draft.family.chosen = null;
     this.render({ parts: ["body"] });
   }
 
@@ -458,8 +458,8 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const i = Number(target.dataset.index);
     const column = this.element.querySelector(`[data-proposal="${i}"]`);
     const checked = (kind) => [...column.querySelectorAll(`input[data-kind="${kind}"]:checked`)].map(el => el.value);
-    this.state.family.chosen = i;
-    this.state.family.selection = { passions: checked("passion"), traits: checked("trait") };
+    this.draft.family.chosen = i;
+    this.draft.family.selection = { passions: checked("passion"), traits: checked("trait") };
     this.render({ parts: ["body"] });
   }
 
@@ -470,13 +470,13 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       rejectClose: false
     });
     if (!ok) return;
-    this.state = R.defaultState(this.C);
+    this.draft = R.defaultState(this.C);
     await this.#saveDraft();
     this.render({ parts: ["body"] });
   }
 
   static async #onFinish() {
-    const s = this.state;
+    const s = this.draft;
     for (const step of R.STEPS) {
       if (R.validateStep(step, s, this.C).errors.length) {
         s.step = R.STEPS.indexOf(step);

@@ -714,6 +714,10 @@
       "Remove": "Retirer de la suite",
       "DropHint": "Glissez ici un PNJ depuis l'onglet Acteurs pour l'ajouter à la suite.",
       "SquireTestTip": "Test de la compétence Écuyer (Maj + clic : options)"
+    },
+    "Compendium": {
+      "Adversaries": "Pendragon — Adversaires",
+      "Imported": "Compendium « Pendragon — Adversaires » prêt : {count} adversaires."
     }
   }
 }

@@ -1,0 +1,7212 @@
+{
+ "version": 1,
+ "folders": [
+  {
+   "_id": "4a340e112fc011df",
+   "name": "Chevaliers",
+   "type": "Actor",
+   "sorting": "a"
+  },
+  {
+   "_id": "6c9c308345c20c29",
+   "name": "Combattants",
+   "type": "Actor",
+   "sorting": "a"
+  },
+  {
+   "_id": "3440576d5ff5b701",
+   "name": "Saxons",
+   "type": "Actor",
+   "sorting": "a"
+  },
+  {
+   "_id": "ea43978ec4fb4b19",
+   "name": "Pictes",
+   "type": "Actor",
+   "sorting": "a"
+  },
+  {
+   "_id": "aebeb7a473fb1846",
+   "name": "Unités de bataille",
+   "type": "Actor",
+   "sorting": "a"
+  },
+  {
+   "_id": "8b67d867104d2efd",
+   "name": "Animaux",
+   "type": "Actor",
+   "sorting": "a"
+  },
+  {
+   "_id": "6dcb1b46feb437b6",
+   "name": "Créatures féeriques et monstres",
+   "type": "Actor",
+   "sorting": "a"
+  }
+ ],
+ "actors": [
+  {
+   "_id": "c5e8a0f275012a6e",
+   "name": "Chevalier débutant",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 11
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal et écu"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 13,
+      "damage": "6D6"
+     },
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 13,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 10
+     },
+     {
+      "name": "Chasse",
+      "value": 8
+     },
+     {
+      "name": "Courtoisie",
+      "value": 10
+     },
+     {
+      "name": "Équitation",
+      "value": 13
+     },
+     {
+      "name": "Identification",
+      "value": 7
+     },
+     {
+      "name": "Premiers soins",
+      "value": 10
+     },
+     {
+      "name": "Vigilance",
+      "value": 7
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": 15,
+    "passions": [
+     {
+      "name": "Hommage/Fidélité (Seigneur)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Chevalier débutant",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "964f112e61713613",
+   "name": "Chevalier ordinaire",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, heaume à nasal, auqueton et écu"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 15,
+      "damage": "6D6"
+     },
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 15,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 10
+     },
+     {
+      "name": "Chasse",
+      "value": 10
+     },
+     {
+      "name": "Courtoisie",
+      "value": 10
+     },
+     {
+      "name": "Équitation",
+      "value": 15
+     },
+     {
+      "name": "Identification",
+      "value": 9
+     },
+     {
+      "name": "Premiers soins",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 9
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": 15,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 13+1D3, Hommage (Seigneur) 13+1D3, Honneur 13+1D3."
+   },
+   "prototypeToken": {
+    "name": "Chevalier ordinaire",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "564fd89f4545f3f6",
+   "name": "Chevalier vétéran",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert avancé, auqueton, heaume à nasal et écu"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 16,
+      "damage": "6D6"
+     },
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Masse",
+      "skill": "Haches et masses",
+      "value": 12,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 16,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 11
+     },
+     {
+      "name": "Chasse",
+      "value": 11
+     },
+     {
+      "name": "Courtoisie",
+      "value": 11
+     },
+     {
+      "name": "Équitation",
+      "value": 16
+     },
+     {
+      "name": "Identification",
+      "value": 10
+     },
+     {
+      "name": "Premiers soins",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 10
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 18
+     }
+    ],
+    "honor": 17,
+    "passions": [
+     {
+      "name": "Hommage/Fidélité (Seigneur)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D6, Honneur 13+1D6."
+   },
+   "prototypeToken": {
+    "name": "Chevalier vétéran",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "36b40e8050eab465",
+   "name": "Chevalier respecté",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 11
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 29
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, heaume à nasal, auqueton et écu"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 17,
+      "damage": "6D6"
+     },
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 17,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 12
+     },
+     {
+      "name": "Chasse",
+      "value": 11
+     },
+     {
+      "name": "Courtoisie",
+      "value": 13
+     },
+     {
+      "name": "Équitation",
+      "value": 17
+     },
+     {
+      "name": "Identification",
+      "value": 10
+     },
+     {
+      "name": "Premiers soins",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 10
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 16
+     }
+    ],
+    "honor": 17,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 16
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 157.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D3, Honneur 13+1D6."
+   },
+   "prototypeToken": {
+    "name": "Chevalier respecté",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "4389933148c752af",
+   "name": "Chevalier notable",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 11
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert avancé, auqueton, heaume à nasal et écu"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 19,
+      "damage": "6D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 19,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 16
+     },
+     {
+      "name": "Chasse",
+      "value": 10
+     },
+     {
+      "name": "Courtoisie",
+      "value": 13
+     },
+     {
+      "name": "Équitation",
+      "value": 19
+     },
+     {
+      "name": "Identification",
+      "value": 12
+     },
+     {
+      "name": "Premiers soins",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 12
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 18
+     }
+    ],
+    "honor": 16,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 16
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 157.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D6, Honneur 12+1D6."
+   },
+   "prototypeToken": {
+    "name": "Chevalier notable",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "4003627b22af0f9e",
+   "name": "Chevalier renommé",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 13
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 11
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 31
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert avancé, auqueton, heaume à nasal et écu"
+    },
+    "gloryReward": 100,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 21,
+      "damage": "6D6"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 15,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 21,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 18
+     },
+     {
+      "name": "Chasse",
+      "value": 13
+     },
+     {
+      "name": "Courtoisie",
+      "value": 13
+     },
+     {
+      "name": "Équitation",
+      "value": 21
+     },
+     {
+      "name": "Identification",
+      "value": 13
+     },
+     {
+      "name": "Premiers soins",
+      "value": 13
+     },
+     {
+      "name": "Vigilance",
+      "value": 13
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 17
+     }
+    ],
+    "honor": 18,
+    "passions": [
+     {
+      "name": "Devoir (Vassaux)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 157.\nPassions : plus une ou plusieurs passions à 16.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 15+1D3, Honneur 14+1D6."
+   },
+   "prototypeToken": {
+    "name": "Chevalier renommé",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "beb284d8214949ee",
+   "name": "Chevalier extraordinaire",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "4a340e112fc011df",
+   "system": {
+    "category": "character",
+    "tagline": "Chevalier",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 14
+     },
+     "str": {
+      "value": 16
+     },
+     "con": {
+      "value": 18
+     },
+     "app": {
+      "value": 12
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 34
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 12,
+     "shield": 6,
+     "description": "haubert avancé, auqueton, heaume à nasal avancé et"
+    },
+    "gloryReward": 100,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 22,
+      "damage": "6D6"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 18,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 24,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 18
+     },
+     {
+      "name": "Chasse",
+      "value": 15
+     },
+     {
+      "name": "Courtoisie",
+      "value": 16
+     },
+     {
+      "name": "Équitation",
+      "value": 22
+     },
+     {
+      "name": "Identification",
+      "value": 15
+     },
+     {
+      "name": "Premiers soins",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 19
+     }
+    ],
+    "honor": 19,
+    "passions": [
+     {
+      "name": "Chevalerie",
+      "value": 12
+     },
+     {
+      "name": "Loyauté (Roi Arthur)",
+      "value": 16
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 157.\nPassions : plus une ou plusieurs passions à 16.\nToutes les autres compétences d'armes à 10.\nATT 2D6+5 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 15+1D6, Chevalerie 8+1D6, Loyauté (Roi Arthur) 12+1D6, Honneur 15+1D6."
+   },
+   "prototypeToken": {
+    "name": "Chevalier extraordinaire",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "0bff3fad4e215127",
+   "name": "Bandit",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 9
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 24
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 4,
+     "shield": 0,
+     "description": "gambison"
+    },
+    "gloryReward": 10,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 8,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Arc",
+      "skill": "Arc",
+      "value": 8,
+      "damage": "3D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 8,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 16
+     },
+     {
+      "name": "Vigilance",
+      "value": 18
+     }
+    ],
+    "traits": [
+     {
+      "name": "Confiant",
+      "value": 4
+     },
+     {
+      "name": "Miséricordieux",
+      "value": 7
+     },
+     {
+      "name": "Valeureux",
+      "value": 8
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Haine (Chevaliers)",
+      "value": 12
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 158.\nATT 1D6+5 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Bandit",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "7867ac778b83a60c",
+   "name": "Lancier",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 26
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 7,
+     "shield": 6,
+     "description": "haubergeon, auqueton, heaume ouvert et écu"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 12,
+      "damage": "4D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 15,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Vigilance",
+      "value": 12
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 10
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Fidélité (Seigneur)",
+      "value": 10
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 158.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Lancier",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "c5bde47cd807ef36",
+   "name": "Lancier vétéran",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 13
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 9
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 29
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal et écu"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 12,
+      "damage": "5D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 15,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Vigilance",
+      "value": 14
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 12
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Fidélité (Seigneur)",
+      "value": 12
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 158.\nATT 2D6+2 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Lancier vétéran",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "97780a7a2fe0fa82",
+   "name": "Archer",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 13
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 23
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": "gambison et chapel de fer"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Arc",
+      "skill": "Arc",
+      "value": 15,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 8
+     },
+     {
+      "name": "Vigilance",
+      "value": 12
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 10
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 158.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Archer",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "3e245cde8a2bfe76",
+   "name": "Arbalétrier",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 11
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 22
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": "gambison et chapel de fer"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Arbalète légère",
+      "skill": "Arbalète",
+      "value": 15,
+      "damage": "1D6+10"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Vigilance",
+      "value": 10
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 8
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Arbalétrier",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "9c8350ecf2455ac5",
+   "name": "Sergent monté",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 13
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 15,
+     "healRate": null
+    },
+    "armor": {
+     "value": 9,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal et écu"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 13,
+      "damage": "5D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 7,
+      "damage": "4D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 13,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 10
+     },
+     {
+      "name": "Équitation",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 12
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Fidélité (Seigneur)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Sergent monté",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6bb0d6886a4478b2",
+   "name": "Homme des collines",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 13
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 25
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 4,
+     "description": "targe"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Arc long",
+      "skill": "Arc",
+      "value": 14,
+      "damage": "4D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 12,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 10
+     },
+     {
+      "name": "Vigilance",
+      "value": 13
+     }
+    ],
+    "traits": [
+     {
+      "name": "Prudent",
+      "value": 14
+     },
+     {
+      "name": "Valeureux",
+      "value": 12
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Homme des collines",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "f29e665f91046256",
+   "name": "Berserker",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6c9c308345c20c29",
+   "system": {
+    "category": "character",
+    "tagline": "Combattant",
+    "characteristics": {
+     "siz": {
+      "value": 18
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 16
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 8
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 6,
+     "shield": 0,
+     "description": "haubergeon et auqueton"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Seax",
+      "skill": "Rixe",
+      "value": 15,
+      "damage": "2D6+6"
+     },
+     {
+      "name": "Grande hache ou fléau",
+      "skill": "Armes longues",
+      "value": 18,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Vigilance",
+      "value": 8
+     }
+    ],
+    "traits": [
+     {
+      "name": "Fier",
+      "value": 16
+     },
+     {
+      "name": "Indulgent",
+      "value": 16
+     },
+     {
+      "name": "Téméraire",
+      "value": 20
+     },
+     {
+      "name": "Valeureux",
+      "value": 20
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Haine (Vous)",
+      "value": 18
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 162.\nATT 2D6+1 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Berserker",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "cffc5fb187253527",
+   "name": "Chevalier saxon",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 27
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 9,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume ouvert et bouclier rond"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 12,
+      "damage": "5D6"
+     },
+     {
+      "name": "Seax",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 15,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Bataille",
+      "value": 12
+     },
+     {
+      "name": "Équitation",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 12
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 160.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Chevalier saxon",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "4d3c03b939ce2a15",
+   "name": "Ceorl",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 8
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 9
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 26
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 6,
+     "description": "bouclier rond"
+    },
+    "gloryReward": 10,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 10,
+      "damage": "4D6"
+     },
+     {
+      "name": "Seax",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Javelot",
+      "skill": "Arme lancée",
+      "value": 10,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Navigation",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 12
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 10
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Loyauté (Seigneur)",
+      "value": 10
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 160.\nATT 2D6+2 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Ceorl",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "fa325227dff238b6",
+   "name": "Ceorl riche",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 8
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 7,
+     "shield": 6,
+     "description": "haubergeon, auqueton, heaume ouvert et bouclier rond"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 12,
+      "damage": "5D6"
+     },
+     {
+      "name": "Seax",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 10,
+      "damage": "5D6"
+     },
+     {
+      "name": "Javelot",
+      "skill": "Arme lancée",
+      "value": 12,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Navigation",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 12
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Loyauté (Seigneur)",
+      "value": 10
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 160.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Ceorl riche",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6d6c3471c4dcdf78",
+   "name": "Heorthgeneat",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 8
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 16
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 32
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal et bouclier rond"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 15,
+      "damage": "5D6"
+     },
+     {
+      "name": "Seax",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 16,
+      "damage": "5D6"
+     },
+     {
+      "name": "Javelot",
+      "skill": "Arme lancée",
+      "value": 15,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Navigation",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 13
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 161.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Heorthgeneat",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "548a7b899c25b482",
+   "name": "Heorthgeneat à cheval",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 8
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 16
+     },
+     "app": {
+      "value": 10
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal et bouclier rond"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Seax",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+5"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 16,
+      "damage": "5D6"
+     },
+     {
+      "name": "Javelot",
+      "skill": "Arme lancée",
+      "value": 15,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 13
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 161.\nATT 2D6+3 (valeur moyenne reportée)."
+   },
+   "prototypeToken": {
+    "name": "Heorthgeneat à cheval",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "4d4654fd88e06b1c",
+   "name": "Ætheling",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 11
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 31
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal avancé et bou\u0002clier rond"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 16,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 20,
+      "damage": "5D6"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 16,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Identification",
+      "value": 10
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Fier",
+      "value": 16
+     },
+     {
+      "name": "Généreux",
+      "value": 15
+     },
+     {
+      "name": "Téméraire",
+      "value": 13
+     },
+     {
+      "name": "Valeureux",
+      "value": 16
+     }
+    ],
+    "honor": 16,
+    "passions": [
+     {
+      "name": "Haine (Bretons)",
+      "value": 14
+     },
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 16
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 161.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Honneur 12+1D6."
+   },
+   "prototypeToken": {
+    "name": "Ætheling",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "88a9d8a8f0ae94a8",
+   "name": "Cyning",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "3440576d5ff5b701",
+   "system": {
+    "category": "character",
+    "tagline": "Saxon",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 12
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 31
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert, auqueton, heaume à nasal avancé et bou\u0002clier rond"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 20,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 20,
+      "damage": "5D6"
+     },
+     {
+      "name": "Hache",
+      "skill": "Haches et masses",
+      "value": 16,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Identification",
+      "value": 12
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Fier",
+      "value": 20
+     },
+     {
+      "name": "Généreux",
+      "value": 16
+     },
+     {
+      "name": "Téméraire",
+      "value": 10
+     },
+     {
+      "name": "Valeureux",
+      "value": 20
+     }
+    ],
+    "honor": 16,
+    "passions": [
+     {
+      "name": "Devoir (Sujets)",
+      "value": 18
+     },
+     {
+      "name": "Haine (Bretons)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 161.\nATT 2D6+5 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Honneur 12+1D6."
+   },
+   "prototypeToken": {
+    "name": "Cyning",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "686a478b9c17a638",
+   "name": "Guerrier picte",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "ea43978ec4fb4b19",
+   "system": {
+    "category": "character",
+    "tagline": "Picte",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 14
+     },
+     "str": {
+      "value": 10
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 7
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 24
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 4,
+     "description": "targe"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 12,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "4D6+2D6"
+     },
+     {
+      "name": "Javelot",
+      "skill": "Arme lancée",
+      "value": 15,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 18
+     },
+     {
+      "name": "Évitement",
+      "value": 14
+     },
+     {
+      "name": "Folklore",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Prudent",
+      "value": 16
+     },
+     {
+      "name": "Valeureux",
+      "value": 16
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Amour (Clan)",
+      "value": 15
+     },
+     {
+      "name": "Dévotion (Déesse)",
+      "value": 12
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 162."
+   },
+   "prototypeToken": {
+    "name": "Guerrier picte",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "d97766fb698cef7b",
+   "name": "Guerrier picte supérieur",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "ea43978ec4fb4b19",
+   "system": {
+    "category": "character",
+    "tagline": "Picte",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 14
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 7
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 26
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 3,
+     "shield": 4,
+     "description": "tatouages magiques et targe"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 16,
+      "damage": "4D6+2D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 14,
+      "damage": "4D6"
+     },
+     {
+      "name": "Javelot",
+      "skill": "Arme lancée",
+      "value": 18,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 18
+     },
+     {
+      "name": "Évitement",
+      "value": 12
+     },
+     {
+      "name": "Folklore",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 18
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Amour (Clan)",
+      "value": 18
+     },
+     {
+      "name": "Haine (Cymri)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 162."
+   },
+   "prototypeToken": {
+    "name": "Guerrier picte supérieur",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "5505c99f384fd134",
+   "name": "Paysans",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 10
+     },
+     "con": {
+      "value": 8
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 18
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": "aucune"
+    },
+    "gloryReward": 0,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Outil agricole",
+      "skill": "",
+      "value": 8,
+      "damage": "2D6+3"
+     }
+    ],
+    "skills": [],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 6
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 137.\nBataille : perte de Moral 1D3, Moral minimum 5, valeur de chevalier 1/16."
+   },
+   "prototypeToken": {
+    "name": "Paysans",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "c4d36e0c2ea2837a",
+   "name": "Lanciers",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 13
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 23
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": "gambison, chapel de fer"
+    },
+    "gloryReward": 10,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+4"
+     },
+     {
+      "name": "Lance (2M)",
+      "skill": "Lance",
+      "value": 10,
+      "damage": "4D6+2D6"
+     }
+    ],
+    "skills": [],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 12
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 137.\nBataille : perte de Moral 1D6, Moral minimum 8, valeur de chevalier 1/8."
+   },
+   "prototypeToken": {
+    "name": "Lanciers",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "ba40b3149d025664",
+   "name": "Fantassins",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 13
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 23
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 6,
+     "description": "gambison, chapel de fer, bouclier rond"
+    },
+    "gloryReward": 10,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Hache de bataille",
+      "skill": "Haches et masses",
+      "value": 10,
+      "damage": "4D6"
+     },
+     {
+      "name": "Masse d'armes",
+      "skill": "Haches et masses",
+      "value": 10,
+      "damage": "4D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 10,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 12
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 138.\nHache de bataille : −1D6 à la protection du bouclier.\nMasse d'armes : +1D6 contre la maille.\nArme tirée au 1D6 : 1–2 épée, 3–4 hache, 5–6 masse.\nBataille : perte de Moral 1D6, Moral minimum 7, valeur de chevalier 1/8."
+   },
+   "prototypeToken": {
+    "name": "Fantassins",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "55ba3d7511dd7caf",
+   "name": "Archers",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 9
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 24
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 1,
+     "shield": 0,
+     "description": "heaume ouvert ; ou gambison et heaume ouvert ; ou"
+    },
+    "gloryReward": 5,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Arbalète légère",
+      "skill": "Arbalète",
+      "value": 12,
+      "damage": "1D6+10"
+     },
+     {
+      "name": "Arc",
+      "skill": "Arc",
+      "value": 12,
+      "damage": "3D6"
+     },
+     {
+      "name": "Dague",
+      "skill": "Rixe",
+      "value": 10,
+      "damage": "2D6+4"
+     }
+    ],
+    "skills": [],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 8
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 138.\nBataille : perte de Moral 1D6, Moral minimum 5, valeur de chevalier 1/8."
+   },
+   "prototypeToken": {
+    "name": "Archers",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6110aecec8af5f57",
+   "name": "Chevaliers à pied",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, gambison et heaume à nasal + bouclier"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 12,
+      "damage": "4D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 15,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 139.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nBataille : perte de Moral 1D6, Moral minimum 10, valeur de chevalier 1/2."
+   },
+   "prototypeToken": {
+    "name": "Chevaliers à pied",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "5fa834e305afdee7",
+   "name": "Chevaliers d'élite à pied",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert, gambison et heaume à nasal + bouclier"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 19,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 139.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 1/2."
+   },
+   "prototypeToken": {
+    "name": "Chevaliers d'élite à pied",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "136aeff7988ab9aa",
+   "name": "Hobilars",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 10
+     },
+     "con": {
+      "value": 13
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 23
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 6,
+     "shield": 6,
+     "description": "gambison, heaume à nasal, bouclier normand"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 16
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 10
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 140.\nBataille : perte de Moral 1D6+3, Moral minimum 10, valeur de chevalier 1/2."
+   },
+   "prototypeToken": {
+    "name": "Hobilars",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "8ff1cf4edd4fd35e",
+   "name": "Sergents montés",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 13
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 15,
+     "healRate": null
+    },
+    "armor": {
+     "value": 9,
+     "shield": 6,
+     "description": "haubert, gambison, heaume ouvert, bouclier"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 13,
+      "damage": "5D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 7,
+      "damage": "4D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 13,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 14
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 12
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 140.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 3/4."
+   },
+   "prototypeToken": {
+    "name": "Sergents montés",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6c03100972673424",
+   "name": "Chevaliers montés",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 14
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 16,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 6,
+     "description": "haubert, gambison, heaume à nasal, bouclier nor\u0002mand"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 13,
+      "damage": "6D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 12,
+      "damage": "4D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 15,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 141.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 1."
+   },
+   "prototypeToken": {
+    "name": "Chevaliers montés",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "9be892161f7a6be9",
+   "name": "Chevaliers montés d’élite",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 11
+     },
+     "str": {
+      "value": 14
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 11,
+     "shield": 6,
+     "description": "haubert, gambison, heaume à nasal, bouclier"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 19,
+      "damage": "6D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 19,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 141.\nBataille : perte de Moral 2D6, Moral minimum 12, valeur de chevalier 1."
+   },
+   "prototypeToken": {
+    "name": "Chevaliers montés d’élite",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "7dbb48658a691973",
+   "name": "Guerriers tribaux pictes",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 14
+     },
+     "str": {
+      "value": 10
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 24
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 4,
+     "shield": 0,
+     "description": "targe"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance (2M)",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "6D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 142.\nBataille : perte de Moral 1D6+1, Moral minimum 8, valeur de chevalier 1/8."
+   },
+   "prototypeToken": {
+    "name": "Guerriers tribaux pictes",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "ba9a0eb388366b7a",
+   "name": "Guerriers saxons",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 6,
+     "description": "haubergeon, heaume ouvert, bouclier rond"
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Hache de bataille",
+      "skill": "Haches et masses",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Grande hache",
+      "skill": "Armes longues",
+      "value": 14,
+      "damage": "7D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 142.\nHaches : −1D6 à la protection du bouclier.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nArme tirée au 1D6 : 1–2 épée, 3–4 hache de bataille, 5–6 lance ; pas de bouclier avec la grande hache (armure 5).\nBataille : perte de Moral 1D6+2, Moral minimum 8, valeur de chevalier 1/4."
+   },
+   "prototypeToken": {
+    "name": "Guerriers saxons",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "aec112688eed430a",
+   "name": "Gardes de la Bannière",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 17
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": 9,
+     "move": 16,
+     "healRate": null
+    },
+    "armor": {
+     "value": 12,
+     "shield": 6,
+     "description": "haubert avancé, heaume à nasal avancé, gambison, bouclier normand"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 16,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 20,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 20
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 18
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 20
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 143."
+   },
+   "prototypeToken": {
+    "name": "Gardes de la Bannière",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "8bd88adbc1f3f88d",
+   "name": "Commandant",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 14
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 18
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": 16,
+     "majorWound": null,
+     "unconscious": 9,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 13,
+     "shield": 6,
+     "description": "cotte de mailles double, heaume à nasal avancé, gambison, bouclier normand"
+    },
+    "gloryReward": 150,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 14,
+      "damage": "5D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 16,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 16
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 21
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 144.\nCompétences d'armes déjà réduites de 5 pour la cotte de mailles double.\nRançon : 100 £ ou plus selon le rang."
+   },
+   "prototypeToken": {
+    "name": "Commandant",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "3468abac19617484",
+   "name": "Garde du Corps",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 17
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": 9,
+     "move": null,
+     "healRate": 1
+    },
+    "armor": {
+     "value": 12,
+     "shield": 6,
+     "description": "haubert avancé, heaume à nasal avancé, gambison, bouclier normand"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Lance",
+      "value": 18,
+      "damage": "5D6+1D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 20,
+      "damage": "5D6+1D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 16
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 18
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 22
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 144.\n+1D6 de Chevalier farouche compris dans les dégâts."
+   },
+   "prototypeToken": {
+    "name": "Garde du Corps",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "749d06a64a60aca1",
+   "name": "Champion",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "aebeb7a473fb1846",
+   "system": {
+    "category": "character",
+    "tagline": "Unité de bataille (chap. 6)",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 18
+     },
+     "con": {
+      "value": 17
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": 9,
+     "move": 16,
+     "healRate": null
+    },
+    "armor": {
+     "value": 12,
+     "shield": 6,
+     "description": "haubert avancé, heaume à nasal avancé, auqueton +"
+    },
+    "gloryReward": 50,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Lance",
+      "skill": "Charge",
+      "value": 18,
+      "damage": "7D6"
+     },
+     {
+      "name": "Épée",
+      "skill": "Épée",
+      "value": 19,
+      "damage": "5D6+1D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Équitation",
+      "value": 19
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 20
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Hommage (Seigneur)",
+      "value": 18
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 146.\nCharge : dégâts selon le meilleur cheval de guerre de la période.\n+1D6 de Chevalier farouche à l'épée.\nLe MJ peut remplacer l'Épée par une autre compétence d'arme."
+   },
+   "prototypeToken": {
+    "name": "Champion",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "630550a86e6c9f35",
+   "name": "Taureau",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 40
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 40
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 52
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 18,
+     "healRate": null
+    },
+    "armor": {
+     "value": 4,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 25,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Charge",
+      "skill": "",
+      "value": 10,
+      "damage": "8D6"
+     },
+     {
+      "name": "Empalement",
+      "skill": "",
+      "value": 8,
+      "damage": "6D6"
+     },
+     {
+      "name": "Piétinement",
+      "skill": "",
+      "value": 16,
+      "damage": "7D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 5
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 175.\nCharge : dégâts complets en chargeant.\nEmpalement : à pleine vitesse, avec les cornes.\nPiétinement : seulement contre une victime à terre."
+   },
+   "prototypeToken": {
+    "name": "Taureau",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "549bcba04922989d",
+   "name": "Auroch",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 50
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 50
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 65
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 20,
+     "healRate": null
+    },
+    "armor": {
+     "value": 6,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Charge",
+      "skill": "",
+      "value": 12,
+      "damage": "10D6"
+     },
+     {
+      "name": "Empalement",
+      "skill": "",
+      "value": 12,
+      "damage": "10D6"
+     },
+     {
+      "name": "Piétinement",
+      "skill": "",
+      "value": 16,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 5
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 176.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149).\nEmpalement : à pleine vitesse, avec les cornes.\nPiétinement : seulement contre une victime à terre."
+   },
+   "prototypeToken": {
+    "name": "Auroch",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "ca5761b08bb71388",
+   "name": "Éléphant",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 70
+     },
+     "dex": {
+      "value": 5
+     },
+     "str": {
+      "value": 70
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 90
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 24,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 50,
+    "valorousMod": -15,
+    "attacks": [
+     {
+      "name": "Piétinement",
+      "skill": "",
+      "value": 16,
+      "damage": "10D6"
+     },
+     {
+      "name": "Empalement",
+      "skill": "",
+      "value": 12,
+      "damage": "14D6"
+     },
+     {
+      "name": "Saisie & Lancé",
+      "skill": "",
+      "value": 14,
+      "damage": "6D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 177.\nPiétinement : la cible esquive par un test opposé de DEX (la sienne ou celle de sa monture) ; succès partiel = demi-dégâts.\nEmpalement : +2D6 contre une armure de plaques.\nSaisie et lancé : projette la cible à 1D6+5 m (6D6)."
+   },
+   "prototypeToken": {
+    "name": "Éléphant",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "b8066c32a17dbd9d",
+   "name": "Ours",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 40
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 40
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 55
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 15,
+     "healRate": null
+    },
+    "armor": {
+     "value": 6,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 50,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 13,
+      "damage": "4D6/4D6"
+     },
+     {
+      "name": "Mutilation",
+      "skill": "",
+      "value": 18,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 5
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 179.\nBlessure majeure et Inconscience : voir Férocité.\nGriffes : deux jets de 4D6 si l'ours l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.\nFérocité : continue d'attaquer un tour après Inconscience ou Blessure majeure (sauf face à un épieu à sanglier)."
+   },
+   "prototypeToken": {
+    "name": "Ours",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "68253233601f013f",
+   "name": "Loup",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 8
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 28
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 20,
+     "healRate": null
+    },
+    "armor": {
+     "value": 2,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 10,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 20,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 10
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 179.\nChasse en meute : un loup ignoré par sa cible fait une attaque téméraire."
+   },
+   "prototypeToken": {
+    "name": "Loup",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "44883e55f926709d",
+   "name": "Renard",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 2
+     },
+     "dex": {
+      "value": 30
+     },
+     "str": {
+      "value": 4
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 14
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 16,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 10,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 10,
+      "damage": "1D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 21
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 180.\nÉvite le combat ; mord s'il est acculé."
+   },
+   "prototypeToken": {
+    "name": "Renard",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "3e516adcfaed7f24",
+   "name": "Sanglier",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 30
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 31
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 8,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 25,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Défenses",
+      "skill": "",
+      "value": 15,
+      "damage": "5D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 5
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 180.\nDéfenses : contre un cavalier, attaque toujours le cheval d'abord.\nFérocité : continue d'attaquer un tour après Inconscience ou Blessure majeure (sauf face à un épieu à sanglier)."
+   },
+   "prototypeToken": {
+    "name": "Sanglier",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "090630689aa5f407",
+   "name": "Faucon",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 1
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 5
+     },
+     "con": {
+      "value": 10
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 11
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 80,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 0,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 12,
+      "damage": "1D6"
+     },
+     {
+      "name": "Plongée",
+      "skill": "",
+      "value": 19,
+      "damage": "2D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 40
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 175.\nMouvement 80 en vol.\nValeurs variables (moyenne reportée) : Évitement 20 (+20) en vol.\nÉvitement +20 en vol.\nPlongée : attaque en piqué depuis les airs."
+   },
+   "prototypeToken": {
+    "name": "Faucon",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "66d134cd26f117bd",
+   "name": "Cheval féérique",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 35
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 40
+     },
+     "con": {
+      "value": 17
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 52
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 27,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 75,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Sabot",
+      "skill": "",
+      "value": 12,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 5
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 184.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Cheval féérique",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "c6baf494fea33a88",
+   "name": "Barguest",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 25
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 15,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 13,
+      "damage": "4D6"
+     },
+     {
+      "name": "Regard terrifiant",
+      "skill": "",
+      "value": 15,
+      "damage": "Spécial"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 14
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 185.\nRegard terrifiant (30 m, chaque tour) : opposé au Valeureux ; échec = coche Couard et fuite 1D6 tours ; succès partiel = fuite sans coche.\nDocile auprès d'une jeune fille vierge… jusqu'à son réveil.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Barguest",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "f72420edd06cdae4",
+   "name": "Chien noir",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 22
+     },
+     "dex": {
+      "value": 18
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 37
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 18,
+     "healRate": null
+    },
+    "armor": {
+     "value": 8,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 50,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 10,
+      "damage": "6D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 21
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 185.\nInvisibilité à volonté (n'attaque pas invisible) ; tactiques de meute.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Chien noir",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "b8eae912e5acd427",
+   "name": "Cu Sith",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 24
+     },
+     "dex": {
+      "value": 19
+     },
+     "str": {
+      "value": 26
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 39
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 30,
+     "healRate": null
+    },
+    "armor": {
+     "value": 14,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 14,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 12
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 186.\nChien des chasseurs féeriques, silencieux, garde les entrées des collines creuses.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Cu Sith",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "b0023930a5cf08e1",
+   "name": "Coquatrice",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 3
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 10
+     },
+     "con": {
+      "value": 40
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 43
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 5,
+     "healRate": null
+    },
+    "armor": {
+     "value": 3,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Bec",
+      "skill": "",
+      "value": 10,
+      "damage": "2D6"
+     },
+     {
+      "name": "Crache-venin",
+      "skill": "",
+      "value": 21,
+      "damage": "Spécial"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 15
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 186.\nCrache-venin (une fois par tour, 30 m, attaque à distance) : test de CON contre venin 30 ; l'armure protège de la première attaque (1 ou 2 selon le métal) puis se dégrade.\nVenin rampant : les armes en bois qui la touchent se dissolvent ; les lames se briseront sur un échec critique.\nFuit la fouine ; le chant du coq lui inflige 6D6.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Coquatrice",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "fb5eb25a5cf32a53",
+   "name": "Dragon",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 80
+     },
+     "dex": {
+      "value": 40
+     },
+     "str": {
+      "value": 80
+     },
+     "con": {
+      "value": 50
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 130
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 25,
+     "healRate": null
+    },
+    "armor": {
+     "value": 25,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 1000,
+    "valorousMod": -20,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 17,
+      "damage": "16D6"
+     },
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 15,
+      "damage": "Spécial"
+     },
+     {
+      "name": "Coup de queue",
+      "skill": "",
+      "value": 15,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 187.\nMouvement 25 au sol, 85 en vol.\nGriffes : deux attaques par tour, éventuellement sur deux cibles.\nMorsure : saisie (maintien au sol) ; avale toute créature de TAI ≤ moitié de la sienne.\nCoup de queue : peut être attaqué par deux fois plus d'adversaires ; la queue frappe ceux de flanc et de dos sans pénalité.\nAttaque en vol : en passant, +5 à l'attaque, −15 à celle de la cible.\nUne panthère qui rote l'apaise et l'endort."
+   },
+   "prototypeToken": {
+    "name": "Dragon",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "7e1671a4a2df9c0e",
+   "name": "Doppelganger",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 18
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 30
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 25,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Saisie",
+      "skill": "",
+      "value": 20,
+      "damage": "Spécial"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 187.\nChangeforme : prend la forme et les caractéristiques physiques de quiconque, pas ses compétences, traits ni passions.\nCraint les objets bénis.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Doppelganger",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6016900542e84ab5",
+   "name": "Fachan",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 15
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 25
+     },
+     "con": {
+      "value": 30
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 45
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 20,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 150,
+    "valorousMod": -10,
+    "attacks": [
+     {
+      "name": "Fléau d'armes",
+      "skill": "",
+      "value": 18,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 20
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 188.\nDeux dimensions : invisible et inattaquable de face ou de dos ; garde un adversaire en face ; plusieurs attaquants peuvent le prendre de flanc. Le voir : Vigilance contre son Évitement 20.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Fachan",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "055581afe4b2d4be",
+   "name": "Licorne",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 30
+     },
+     "dex": {
+      "value": 40
+     },
+     "str": {
+      "value": 25
+     },
+     "con": {
+      "value": 25
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 55
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 25,
+     "healRate": null
+    },
+    "armor": {
+     "value": 15,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 250,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Corne",
+      "skill": "",
+      "value": 20,
+      "damage": "9D6"
+     },
+     {
+      "name": "Piétinement",
+      "skill": "",
+      "value": 20,
+      "damage": "6D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 25
+     }
+    ],
+    "traits": [
+     {
+      "name": "Méfiant",
+      "value": 20
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Haine (Éléphants)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 189.\nCorne : charge (au moins 6 m d'élan).\nPiétinement : seulement contre une cible à terre.\nMagie féerique une fois par rencontre (invisibilité, obstacle pour fuir) ; Évitement +10 lors d'une chasse.\nSoigne entièrement une créature une fois par rencontre ; attaque les éléphants à vue.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Licorne",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "c0d3e0959a6bd7f6",
+   "name": "Toque-rouge",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 12
+     },
+     "str": {
+      "value": 35
+     },
+     "con": {
+      "value": 40
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 52
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Hallebarde",
+      "skill": "",
+      "value": 20,
+      "damage": "8D6"
+     },
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 21,
+      "damage": "4D6/4D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 191.\nDésarmé : deux attaques de griffes par tour, éventuellement sur deux cibles.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Toque-rouge",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "0d13fc2a6416d01a",
+   "name": "Cwn Annwn",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 18
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 20
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 30,
+     "healRate": null
+    },
+    "armor": {
+     "value": 13,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 250,
+    "valorousMod": -15,
+    "attacks": [
+     {
+      "name": "Morsure démoniaque",
+      "skill": "",
+      "value": 20,
+      "damage": "6D6"
+     },
+     {
+      "name": "Tromperie",
+      "skill": "",
+      "value": 20,
+      "damage": "12+1D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 194.\nMorsure démoniaque : l'armure ne compte pas ; la victime oppose sa valeur de Croyant comme armure.\nLangue de feu : après chaque morsure réussie, attaque de Tromperie ; la victime résiste par un test de Dévotion.\nDémon : le fer inflige +1D6 dégâts (autres faiblesses au choix du MJ)."
+   },
+   "prototypeToken": {
+    "name": "Cwn Annwn",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "858ec06e728d16fc",
+   "name": "Chevalier démoniaque",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 18
+     },
+     "dex": {
+      "value": 5
+     },
+     "str": {
+      "value": 35
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 33
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 24,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": "Peau (5)+ la meilleure armure de la Période."
+    },
+    "gloryReward": 150,
+    "valorousMod": -10,
+    "attacks": [
+     {
+      "name": "Masse d'armes",
+      "skill": "",
+      "value": 15,
+      "damage": "9D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Identification",
+      "value": 10
+     },
+     {
+      "name": "Vigilance",
+      "value": 15
+     }
+    ],
+    "traits": [
+     {
+      "name": "Arbitraire",
+      "value": 15
+     },
+     {
+      "name": "Cruel",
+      "value": 17
+     },
+     {
+      "name": "Rancunier",
+      "value": 15
+     },
+     {
+      "name": "Trompeur",
+      "value": 17
+     },
+     {
+      "name": "Valeureux",
+      "value": 13
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Haine (Chevalier Courtois)",
+      "value": 19
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 194.\nSes illusions (Tromperie démoniaque) se percent par un test de Croyant (voir le livre).\nDémon : le fer inflige +1D6 dégâts (autres faiblesses au choix du MJ)."
+   },
+   "prototypeToken": {
+    "name": "Chevalier démoniaque",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "8623a32dba1217cf",
+   "name": "Petit géant",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 30
+     },
+     "dex": {
+      "value": 8
+     },
+     "str": {
+      "value": 30
+     },
+     "con": {
+      "value": 25
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 55
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 34,
+     "healRate": null
+    },
+    "armor": {
+     "value": 15,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Gourdin",
+      "skill": "",
+      "value": 13,
+      "damage": "5D6+10"
+     },
+     {
+      "name": "Saisie",
+      "skill": "",
+      "value": 15,
+      "damage": "Spécial"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 0
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+5 pour les pister avec Chasse).\nAllonge : pas de désavantage de hauteur contre les cavaliers.\nPisté avec Chasse +5."
+   },
+   "prototypeToken": {
+    "name": "Petit géant",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "797b2f9e761a7dd5",
+   "name": "Grand géant",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 40
+     },
+     "dex": {
+      "value": 5
+     },
+     "str": {
+      "value": 50
+     },
+     "con": {
+      "value": 30
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 70
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 25,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 250,
+    "valorousMod": -10,
+    "attacks": [
+     {
+      "name": "Gourdin",
+      "skill": "",
+      "value": 8,
+      "damage": "8D6+15"
+     },
+     {
+      "name": "Piétinement",
+      "skill": "",
+      "value": 18,
+      "damage": "15D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 0
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+10 pour les pister avec Chasse).\nChaque tour : un coup de gourdin, ou deux piétinements sur deux cibles sans pénalité.\nDéfenses adverses +5 ; modificateur réfléchi +5/−5 contre les combattants à pied ; pas de +5 aux armes longues contre lui.\nPisté avec Chasse +10."
+   },
+   "prototypeToken": {
+    "name": "Grand géant",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "32869e9105234e3f",
+   "name": "Géant gargantuesque",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 70
+     },
+     "dex": {
+      "value": 2
+     },
+     "str": {
+      "value": 65
+     },
+     "con": {
+      "value": 35
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 105
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 40,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 500,
+    "valorousMod": -15,
+    "attacks": [
+     {
+      "name": "Gourdin",
+      "skill": "",
+      "value": 5,
+      "damage": "12D6+23"
+     },
+     {
+      "name": "Piétinement",
+      "skill": "",
+      "value": 16,
+      "damage": "23D6"
+     },
+     {
+      "name": "Écrasement",
+      "skill": "",
+      "value": 25,
+      "damage": "23D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 0
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+20 pour les pister avec Chasse).\nChaque tour : un coup de gourdin, ou deux piétinements ; Écrasement contre une cible déjà à terre.\nDéfenses adverses +10 ; modificateur réfléchi +10/−10 à pied, +5/−5 à cheval ; pas de bonus de charge à la lance.\nPisté avec Chasse +20."
+   },
+   "prototypeToken": {
+    "name": "Géant gargantuesque",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "eb08699b17b8162c",
+   "name": "Sauvageon",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 11
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 16
+     },
+     "con": {
+      "value": 16
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 27
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": 8,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 0,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Recroquevillage",
+      "skill": "",
+      "value": 20,
+      "damage": "Aucun"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 19
+     },
+     {
+      "name": "Évitement",
+      "value": 20
+     },
+     {
+      "name": "Premiers soins",
+      "value": 15
+     },
+     {
+      "name": "Vigilance",
+      "value": 17
+     }
+    ],
+    "traits": [
+     {
+      "name": "Couard",
+      "value": 20
+     },
+     {
+      "name": "Énergique",
+      "value": 15
+     },
+     {
+      "name": "Méfiant",
+      "value": 17
+     },
+     {
+      "name": "Prudent",
+      "value": 18
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 200.\nFuit et se recroqueville plutôt que de combattre."
+   },
+   "prototypeToken": {
+    "name": "Sauvageon",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6d359d640210d88e",
+   "name": "Brownie",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 3
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 9
+     },
+     "con": {
+      "value": 14
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 17
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 3,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 50,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Entaille",
+      "skill": "",
+      "value": 8,
+      "damage": "2"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 35
+     },
+     {
+      "name": "Industrie",
+      "value": 20
+     }
+    ],
+    "traits": [
+     {
+      "name": "Fier",
+      "value": 15
+     }
+    ],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Loyauté (famille adoptée)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 200.\nInvisible à volonté pour les mortels.\nEsprit domestique : influence la Gestion du domaine lors de la phase d'hiver (voir le livre).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Brownie",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "52926c61522417d8",
+   "name": "Ogre",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 20
+     },
+     "dex": {
+      "value": 10
+     },
+     "str": {
+      "value": 25
+     },
+     "con": {
+      "value": 25
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 45
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 12,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 75,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Maillet",
+      "skill": "",
+      "value": 17,
+      "damage": "10D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 5
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 200.\nManie un lourd maillet à deux mains."
+   },
+   "prototypeToken": {
+    "name": "Ogre",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "f9665cffffc317ba",
+   "name": "Elfe",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 16
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 20
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 36
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 18,
+     "shield": 6,
+     "description": "métal d'étoile (voir les notes)"
+    },
+    "gloryReward": 250,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Épée",
+      "skill": "",
+      "value": 20,
+      "damage": "6D6"
+     },
+     {
+      "name": "Lance",
+      "skill": "",
+      "value": 20,
+      "damage": "6D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Chasse",
+      "value": 16
+     },
+     {
+      "name": "Courtoisie",
+      "value": 16
+     },
+     {
+      "name": "Équitation",
+      "value": 20
+     },
+     {
+      "name": "Vigilance",
+      "value": 20
+     }
+    ],
+    "traits": [
+     {
+      "name": "Valeureux",
+      "value": 16
+     }
+    ],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 202.\nPassions : au moins une passion à 16 au choix du MJ.\nArmure en métal d'étoile, toujours d'une période en avance (18 + bouclier à l'époque de l'Enfant-roi).\nMagie féerique une fois par rencontre (invisibilité, illusion, métamorphose, soins).\nDon féerique (Table 8.5) ; monte un cheval féerique.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Elfe",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "f0bcd17fb0eb46c6",
+   "name": "Guenaude",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 19
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 18
+     },
+     "con": {
+      "value": 17
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 36
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 10,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 75,
+    "valorousMod": -10,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 20,
+      "damage": "6D6"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 205.\nDeux attaques de griffes par tour, éventuellement sur deux cibles (cheval et cavalier compris).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Guenaude",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "6e1f7fa33279e6cf",
+   "name": "Gobelin",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 5
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 16
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 25
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 4,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 15,
+    "valorousMod": 0,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 10,
+      "damage": "4D6"
+     },
+     {
+      "name": "Lancer de pierre",
+      "skill": "",
+      "value": 15,
+      "damage": "3D6"
+     },
+     {
+      "name": "Tir elfe",
+      "skill": "",
+      "value": 15,
+      "damage": "Spécial"
+     }
+    ],
+    "skills": [],
+    "traits": [],
+    "honor": null,
+    "passions": [
+     {
+      "name": "Haine (Humains et elfes)",
+      "value": 15
+     }
+    ],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 205.\nMagie féerique : invisibilité une fois par rencontre.\nTir elfe : la victime fait aussitôt un test comme pour la Sénescence.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Gobelin",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "8c644f9a0a69b2be",
+   "name": "Nain",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "6dcb1b46feb437b6",
+   "system": {
+    "category": "creature",
+    "tagline": "",
+    "characteristics": {
+     "siz": {
+      "value": 10
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 25
+     },
+     "con": {
+      "value": 17
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 27
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 20,
+     "healRate": null
+    },
+    "armor": {
+     "value": 2,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 20,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Saisie",
+      "skill": "",
+      "value": 18,
+      "damage": "Spécial"
+     },
+     {
+      "name": "Coup de poing",
+      "skill": "",
+      "value": 18,
+      "damage": "6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 10
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 206.\nMagie féerique : invisibilité une fois par rencontre.\nCombat à mains nues (Rixe).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+   },
+   "prototypeToken": {
+    "name": "Nain",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "cbddf58482c007f9",
+   "name": "Bâtard",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 3
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 6
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 18
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 8,
+     "healRate": null
+    },
+    "armor": {
+     "value": 1,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 0,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 15,
+      "damage": "2D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 10
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 175."
+   },
+   "prototypeToken": {
+    "name": "Bâtard",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "52027562d65c1187",
+   "name": "Chien courant",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 5
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 12
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 25
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 10,
+     "healRate": null
+    },
+    "armor": {
+     "value": 1,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 0,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 15,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 10
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 175.\nChien de piste (odorat)."
+   },
+   "prototypeToken": {
+    "name": "Chien courant",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "d16944f40284f3de",
+   "name": "Lévrier",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 4
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 8
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 16
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 23,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 0,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Morsure (en marchant)",
+      "skill": "",
+      "value": 15,
+      "damage": "2D6"
+     },
+     {
+      "name": "Morsure (en courant)",
+      "skill": "",
+      "value": 10,
+      "damage": "2D6"
+     },
+     {
+      "name": "Morsure (en sprintant)",
+      "skill": "",
+      "value": 5,
+      "damage": "2D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 10
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 175.\nChien de vue, très rapide."
+   },
+   "prototypeToken": {
+    "name": "Lévrier",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "21cc837423b8f74f",
+   "name": "Lévrier irlandais",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 11
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 16
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 31
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 15,
+     "healRate": null
+    },
+    "armor": {
+     "value": 2,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 15,
+    "valorousMod": -1,
+    "attacks": [
+     {
+      "name": "Morsure",
+      "skill": "",
+      "value": 20,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 8
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 175."
+   },
+   "prototypeToken": {
+    "name": "Lévrier irlandais",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "8c31f0c5f7381431",
+   "name": "Cerf",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 30
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 30
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 42
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 4,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 10,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Charge",
+      "skill": "",
+      "value": 12,
+      "damage": "6D6"
+     },
+     {
+      "name": "Empalement",
+      "skill": "",
+      "value": 12,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 15
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149)."
+   },
+   "prototypeToken": {
+    "name": "Cerf",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "7fadd44863e61b09",
+   "name": "Chevreuil",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 5
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 5
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 17
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 0,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 0,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Coup de sabot",
+      "skill": "",
+      "value": 10,
+      "damage": "1D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 18
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 177.\nTrop petit pour inquiéter un chevalier en armure."
+   },
+   "prototypeToken": {
+    "name": "Chevreuil",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "f1f050ae559a0c4f",
+   "name": "Daim",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 24
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 15,
+     "healRate": null
+    },
+    "armor": {
+     "value": 3,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 1,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Charge",
+      "skill": "",
+      "value": 10,
+      "damage": "3D6"
+     },
+     {
+      "name": "Empalement",
+      "skill": "",
+      "value": 10,
+      "damage": "2D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 18
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149)."
+   },
+   "prototypeToken": {
+    "name": "Daim",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "609afc2fb097e165",
+   "name": "Élan",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 45
+     },
+     "dex": {
+      "value": 15
+     },
+     "str": {
+      "value": 45
+     },
+     "con": {
+      "value": 12
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 57
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": 23,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 25,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Charge",
+      "skill": "",
+      "value": 12,
+      "damage": "9D6"
+     },
+     {
+      "name": "Empalement",
+      "skill": "",
+      "value": 12,
+      "damage": "7D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 14
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149)."
+   },
+   "prototypeToken": {
+    "name": "Élan",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "103d416359032510",
+   "name": "Lion",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 40
+     },
+     "dex": {
+      "value": 20
+     },
+     "str": {
+      "value": 40
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 55
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 5,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 250,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 20,
+      "damage": "4D6/4D6"
+     },
+     {
+      "name": "Mutilation",
+      "skill": "",
+      "value": 20,
+      "damage": "8D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 10
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe."
+   },
+   "prototypeToken": {
+    "name": "Lion",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "4d88f5916c8a1dbb",
+   "name": "Lynx",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 5
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 15
+     },
+     "con": {
+      "value": 20
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 25
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": null,
+     "move": null,
+     "healRate": null
+    },
+    "armor": {
+     "value": 2,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 10,
+    "valorousMod": null,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 20,
+      "damage": "1D6/1D6"
+     },
+     {
+      "name": "Mutilation",
+      "skill": "",
+      "value": 25,
+      "damage": "3D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 20
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe."
+   },
+   "prototypeToken": {
+    "name": "Lynx",
+    "actorLink": false,
+    "disposition": -1
+   }
+  },
+  {
+   "_id": "df28e5564e07c433",
+   "name": "Panthère",
+   "type": "pnj",
+   "img": "icons/svg/mystery-man.svg",
+   "folder": "8b67d867104d2efd",
+   "system": {
+    "category": "creature",
+    "tagline": "Animal",
+    "characteristics": {
+     "siz": {
+      "value": 12
+     },
+     "dex": {
+      "value": 25
+     },
+     "str": {
+      "value": 25
+     },
+     "con": {
+      "value": 15
+     },
+     "app": {
+      "value": 0
+     }
+    },
+    "health": {
+     "hp": {
+      "value": 27
+     }
+    },
+    "overrides": {
+     "hp": null,
+     "knockdown": null,
+     "majorWound": null,
+     "unconscious": 8,
+     "move": 20,
+     "healRate": null
+    },
+    "armor": {
+     "value": 3,
+     "shield": 0,
+     "description": ""
+    },
+    "gloryReward": 100,
+    "valorousMod": -5,
+    "attacks": [
+     {
+      "name": "Griffes",
+      "skill": "",
+      "value": 20,
+      "damage": "2D6/2D6"
+     },
+     {
+      "name": "Mutilation",
+      "skill": "",
+      "value": 25,
+      "damage": "4D6"
+     }
+    ],
+    "skills": [
+     {
+      "name": "Évitement",
+      "value": 15
+     }
+    ],
+    "traits": [],
+    "honor": null,
+    "passions": [],
+    "defaultSkill": 5,
+    "possessions": "",
+    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.\nSon rot apaise les dragons."
+   },
+   "prototypeToken": {
+    "name": "Panthère",
+    "actorLink": false,
+    "disposition": -1
+   }
+  }
+ ]
+}

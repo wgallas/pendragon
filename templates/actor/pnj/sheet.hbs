@@ -99,10 +99,12 @@
                 <td>{{#if editMode}}<input type="number" name="system.valorousMod" value="{{system.valorousMod}}" aria-label="{{localize 'PDVF.Npc.ValorousMod'}}">{{else}}<strong>{{system.valorousMod}}</strong>{{/if}}</td>
               </tr>
               {{/if}}
+              {{#unless isCreature}}
               <tr>
                 <th scope="row">{{localize "PDVF.Derived.damage.label"}}</th>
                 <td><strong>{{damageLabel}}</strong></td>
               </tr>
+              {{/unless}}
             </tbody>
           </table>
         </div>

@@ -101,7 +101,7 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       honorLevel: s.honorLevel ? L(`PDVF.Level.${s.honorLevel}`) : "",
       skillNames: Object.keys(PDVF.skills).map(id => L(`PDVF.Skill.${id}`)).sort((a, b) => a.localeCompare(b, "fr")),
       traitNames: PDVF.traits.flatMap(id => [L(`PDVF.Trait.${id}.left`), L(`PDVF.Trait.${id}.right`)]).sort((a, b) => a.localeCompare(b, "fr")),
-      canConvert: actor.isOwner && game.user.can?.("ACTOR_CREATE") !== false
+      canConvert: !isCreature && actor.isOwner && game.user.can?.("ACTOR_CREATE") !== false
     });
 
     if (s.squireView) {

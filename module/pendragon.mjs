@@ -8,6 +8,7 @@ import { ChevalierSheet } from "./sheets/chevalier-sheet.mjs";
 import { PnjData } from "./data/pnj.mjs";
 import { PnjSheet } from "./sheets/pnj-sheet.mjs";
 import * as followers from "./documents/followers.mjs";
+import { ensureAdversaries } from "./documents/compendium.mjs";
 import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
 import { CREATION } from "./creation/data.mjs";
@@ -20,7 +21,7 @@ Hooks.once("init", () => {
   CONFIG.PDVF = PDVF;
   // Données de création : les suppléments peuvent les compléter dans leur propre hook « init ».
   PDVF.creation = CREATION;
-  game.pendragon = { config: PDVF, newDay: newDayForAll, followers, tests, rules, openCreationWizard };
+  game.pendragon = { config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, tests, rules, openCreationWizard };
 
   // Documents et modèles de données
   CONFIG.Actor.documentClass = PendragonActor;
@@ -43,6 +44,13 @@ Hooks.once("init", () => {
         if (app instanceof ChevalierSheet || app instanceof PnjSheet) app.render();
       }
     }
+  });
+
+  // Version du compendium des adversaires déjà importée dans ce monde
+  game.settings.register(SYSTEM_ID, "adversariesVersion", {
+    scope: "world",
+    config: false,
+    type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 0 })
   });
 
   // Jour en cours (compteur avancé par « Nouveau jour » ; sert à l'usage quotidien des passions)
@@ -80,6 +88,9 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/actor/pnj/row.hbs`
   ]);
 });
+
+// Compendium des adversaires : créé ou mis à jour par le MJ au chargement du monde
+Hooks.once("ready", () => ensureAdversaries());
 
 // Boutons des cartes de chat (crise de passion…)
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));

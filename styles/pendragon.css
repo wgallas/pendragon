@@ -1007,12 +1007,12 @@
 
 /* Tableaux : on neutralise le thème de Foundry (en-têtes sombres, lignes alternées) */
 .pendragon-vf table { background: none; border: 0; }
-.pendragon-vf table thead { background: none; text-shadow: none; }
-.pendragon-vf table thead th { background: none; text-shadow: none; }
+.pendragon-vf table thead { background: none !important; text-shadow: none !important; }
+.pendragon-vf table thead th { background: none !important; text-shadow: none !important; }
 .pendragon-vf table tr,
 .pendragon-vf table tr:nth-child(odd),
 .pendragon-vf table tr:nth-child(even),
-.pendragon-vf table tbody tr:hover { background: none; }
+.pendragon-vf table tbody tr:hover { background: none !important; }
 .pendragon-vf table th,
 .pendragon-vf table td { color: var(--pdvf-ink); }
 .pendragon-vf .pdvf-npc-table thead th { color: var(--pdvf-vermilion); }

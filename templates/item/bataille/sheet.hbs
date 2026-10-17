@@ -1,0 +1,520 @@
+<div class="pdvf-battle phase-{{phase}}">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="{{battle.img}}" alt="">
+    <div class="pdvf-battle-identity">
+      {{#if isGM}}
+      <input type="text" class="pdvf-npc-name-input" name="name" value="{{battle.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      {{else}}
+      <h1 class="pdvf-name">{{battle.name}}</h1>
+      {{/if}}
+      <div class="pdvf-line1">
+        {{sizeLabel}}{{#if system.tournament}} · {{localize "PDVF.Battle.Tournament"}}{{/if}}
+        · {{localize "PDVF.Battle.Intensity"}} {{intensityLabel}}
+        {{#unless isPrep}} · {{localize "PDVF.Battle.Round"}} {{round}} / {{maxRounds}} · {{positionLabel}}{{/unless}}
+      </div>
+    </div>
+    <div class="pdvf-morale" aria-label="{{localize 'PDVF.Battle.Morale'}}">
+      <div class="pdvf-morale-label">{{localize "PDVF.Battle.Morale"}}</div>
+      <div class="pdvf-morale-value"><strong>{{morale.value}}</strong> / {{morale.start}}</div>
+      <div class="pdvf-morale-bar" role="img" aria-label="{{morale.value}} / {{morale.start}}">
+        <div class="pdvf-morale-fill {{#if morale.low}}low{{/if}}" style="width: {{morale.pct}}%"></div>
+        {{#if isGM}}{{#if morale.minPct}}<div class="pdvf-morale-min" style="left: {{morale.minPct}}%" data-tooltip="{{localize 'PDVF.Battle.MoraleMin'}}"></div>{{/if}}{{/if}}
+      </div>
+    </div>
+    {{#if isGM}}
+    <div class="pdvf-battle-tools">
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="show" data-tooltip="{{localize 'PDVF.Battle.ShowTip'}}"><i class="fa-solid fa-eye"></i> {{localize "PDVF.Battle.Show"}}</button>
+    </div>
+    {{/if}}
+  </header>
+
+  <nav class="pdvf-battle-tabs" aria-label="{{localize 'PDVF.Battle.Title'}}">
+    {{#each tabs}}
+    <button type="button" class="pdvf-battle-tab {{#if active}}active{{/if}}" data-action="tab" data-tab="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">{{label}}</button>
+    {{/each}}
+  </nav>
+
+  <div class="pdvf-battle-body">
+
+  {{!-- ============================ PRÉPARATION ============================ --}}
+  {{#if tabIs.prep}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Setup"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.SizeLabel"}}</span>
+          <select name="system.size" {{#unless isGM}}disabled{{/unless}}>{{#each sizeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Intensity"}}</span>
+          <span class="pdvf-inline">
+            <input type="number" name="system.intensity" value="{{system.intensity}}" step="1" min="0" placeholder="—">
+            {{#if isGM}}<button type="button" class="pdvf-btn pdvf-mini" data-action="rollIntensity" data-tooltip="{{sizeInfo}}"><i class="fa-solid fa-dice"></i></button>{{/if}}
+          </span>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.MaxRounds"}}</span>
+          <input type="number" name="system.rounds" value="{{system.rounds}}" step="1" min="1" placeholder="{{maxRounds}}">
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.ArmyLabel"}}</span>
+          <select name="system.army">{{#each armyChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.OddsLabel"}}</span>
+          <select name="system.odds">{{#each oddsChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.FavorsLabel"}}</span>
+          <select name="system.favors">{{#each favorsChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-check pdvf-field-check"><input type="checkbox" name="system.tournament" {{#if system.tournament}}checked{{/if}}> {{localize "PDVF.Battle.Tournament"}}</label>
+      </div>
+      <p class="pdvf-hint">{{sizeInfo}}</p>
+    </section>
+
+    {{#if armies.length}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.ArmyCommanders"}}</h3>
+      <div class="pdvf-battle-armies">
+        {{#each armies}}
+        <div class="pdvf-battle-army">
+          <h4 class="pdvf-h4">{{label}}</h4>
+          <div class="pdvf-battle-grid two">
+            <label class="pdvf-field"><span>{{localize "PDVF.Battle.CommanderName"}}</span><input type="text" name="system.{{side}}.name" value="{{data.name}}"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Skill.battle"}}</span><input type="number" name="system.{{side}}.battle" value="{{data.battle}}" step="1" min="0" placeholder="2D6+10"></label>
+          </div>
+          <div class="pdvf-checks">
+            {{#each mods}}
+            <label class="pdvf-check"><input type="checkbox" name="{{../name}}.{{id}}" {{#if checked}}checked{{/if}}> {{label}}</label>
+            {{/each}}
+          </div>
+          <div class="pdvf-army-result">
+            {{localize "PDVF.Battle.Modifier"}} <strong>{{modifier}}</strong>
+            {{#if outcomeLabel}} · <span class="pdvf-tag">{{outcomeLabel}}</span> <span class="pdvf-hint-inline">{{effect}}</span>{{/if}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      {{#if isGM}}{{#if isPrep}}<button type="button" class="pdvf-btn" data-action="gm" data-op="armyTests"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Battle.Op.armyTests"}}</button>{{/if}}{{/if}}
+    </section>
+    {{/if}}
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Conroi"}}</h3>
+      {{#if knights.length}}
+      <table class="pdvf-table pdvf-battle-knights">
+        <thead><tr>
+          <th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Skill.battle"}}</th>
+          <th>{{localize "PDVF.Battle.MoralePassion"}}</th><th>{{localize "PDVF.Battle.RoleLabel"}}</th><th></th>
+        </tr></thead>
+        <tbody>
+          {{#each knights}}
+          <tr>
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="{{uuid}}"><img src="{{img}}" alt="" class="pdvf-mini-portrait"> {{name}}</button>
+              {{#if isCommander}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Battle.Commander'}}"><i class="fa-solid fa-flag"></i></span>{{/if}}</td>
+            <td class="num">{{battleSkill}}</td>
+            <td>
+              {{#if @root.isGM}}
+              <select name="system.knights.{{index}}.passion">
+                <option value="">{{localize "PDVF.Battle.BestPassion"}}</option>
+                {{#each passionChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+              </select>
+              {{else}}{{passionLabel}}{{/if}}
+            </td>
+            <td><select name="system.knights.{{index}}.role">{{#each roleChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td>{{#if @root.isGM}}{{#if @root.isPrep}}<button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeKnight" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      {{#if isGM}}<p class="pdvf-drop-zone"><span class="pdvf-hint">{{localize "PDVF.Battle.DropKnights"}}</span></p>{{/if}}
+
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.CommanderLabel"}}</span>
+          <select name="system.conroi.commander">{{#each commanderChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        {{#unless system.conroi.commander}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.CommanderName"}}</span><input type="text" name="system.conroi.commanderName" value="{{system.conroi.commanderName}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Skill.battle"}}</span><input type="number" name="system.conroi.commanderBattle" value="{{system.conroi.commanderBattle}}" step="1" min="0"></label>
+        {{/unless}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.NpcKnights"}}</span><input type="number" name="system.conroi.npcKnights" value="{{system.conroi.npcKnights}}" step="1" min="0"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.CourtLabel"}}</span>
+          <select name="system.conroi.court">{{#each courtChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <div class="pdvf-field"><span>{{localize "PDVF.Battle.StartingMorale"}}</span>
+          <span class="pdvf-inline"><strong class="pdvf-big">{{system.conroi.moraleStart}}</strong>
+          {{#if isGM}}<button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="computeMorale">{{localize "PDVF.Battle.Op.computeMorale"}}</button>{{/if}}</span>
+        </div>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.MoraleHint"}}</p>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Deck"}}</h3>
+      {{#if isGM}}
+      <div class="pdvf-inline" data-group="preset">
+        <select aria-label="{{localize 'PDVF.Battle.ArmyLabel'}}">{{#each armyChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="addPreset">{{localize "PDVF.Battle.Op.addPreset"}}</button>
+        <span class="pdvf-hint-inline">{{localize "PDVF.Battle.DropEncounters"}}</span>
+      </div>
+      {{/if}}
+      <div class="pdvf-battle-decks">
+        <div>
+          <h4 class="pdvf-h4">{{localize "PDVF.Battle.Opponents"}}</h4>
+          <ul class="pdvf-deck">
+            {{#each opponents}}
+            <li class="pdvf-deck-card">
+              {{#if @root.isGM}}
+              <details><summary><span class="pdvf-deck-name">{{name}}</span>
+                <span class="pdvf-deck-stats">{{localize "PDVF.Battle.MoraleLossShort"}} {{moraleLoss}} · {{localize "PDVF.Battle.MoraleMinShort"}} {{moraleMin}} · {{localize "PDVF.Battle.KV"}} {{kvLabel}} · {{countLabel}}</span></summary>
+                <p class="pdvf-deck-desc">{{description}}</p></details>
+              <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeEncounter" data-id="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+              {{else}}<span class="pdvf-deck-name">{{name}}</span>{{/if}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        <div>
+          <h4 class="pdvf-h4">{{localize "PDVF.Battle.Opportunities"}}</h4>
+          <ul class="pdvf-deck">
+            {{#each opportunities}}
+            <li class="pdvf-deck-card opportunity {{#if used}}used{{/if}}">
+              {{#if @root.isGM}}
+              <details><summary><span class="pdvf-deck-name">{{name}}</span>
+                <span class="pdvf-deck-stats">{{localize "PDVF.Battle.MoraleLossShort"}} {{moraleLoss}} · {{localize "PDVF.Battle.MoraleMinShort"}} {{moraleMin}}</span></summary>
+                <p class="pdvf-deck-desc">{{description}}</p></details>
+              <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeEncounter" data-id="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+              {{else}}<span class="pdvf-deck-name">{{name}}</span>{{/if}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Events"}}</h3>
+      {{#each events}}
+      <div class="pdvf-event-row">
+        <label class="pdvf-inline">{{localize "PDVF.Battle.Round"}} <input type="number" name="system.events.{{index}}.round" value="{{round}}" min="1" step="1"></label>
+        <input type="text" name="system.events.{{index}}.text" value="{{text}}" aria-label="{{localize 'PDVF.Battle.EventText'}}">
+        {{#if @root.isGM}}<button type="button" class="pdvf-icon-btn" data-action="deleteEvent" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+      </div>
+      {{/each}}
+      {{#if isGM}}<button type="button" class="pdvf-btn pdvf-mini" data-action="addEvent"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddEvent"}}</button>{{/if}}
+    </section>
+
+    {{#if isGM}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Notes"}}</h3>
+      <textarea name="system.notes" rows="4">{{system.notes}}</textarea>
+    </section>
+    {{#if isPrep}}
+    <div class="pdvf-battle-go">
+      <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="start"><i class="fa-solid fa-flag"></i> {{localize "PDVF.Battle.Op.start"}}</button>
+    </div>
+    {{/if}}
+    {{/if}}
+  {{/if}}
+
+  {{!-- ============================ DÉROULEMENT ============================ --}}
+  {{#if tabIs.conduct}}
+    {{#if isPrep}}
+    <p class="pdvf-empty">{{localize "PDVF.Battle.NotStarted"}}</p>
+    {{else}}
+    <ol class="pdvf-steps">
+      {{#each steps}}<li class="{{#if current}}current{{/if}} {{#if done}}done{{/if}} {{#if skipped}}skipped{{/if}}">{{label}}</li>{{/each}}
+    </ol>
+
+    {{#if roundEvents.length}}
+    <div class="pdvf-battle-event">{{#each roundEvents}}<p><i class="fa-solid fa-scroll"></i> {{text}}</p>{{/each}}</div>
+    {{/if}}
+
+    <section class="pdvf-step-panel">
+      {{#if stepHelp}}<p class="pdvf-step-help">{{stepHelp}}</p>{{/if}}
+
+      {{#if at.define}}
+        {{#if inRear}}
+        <p>{{localize "PDVF.Battle.InRear"}}</p>
+        {{#if isCommander}}
+        <div class="pdvf-step-actions">
+          <button type="button" class="pdvf-btn" data-action="gm" data-op="stayRear">{{localize "PDVF.Battle.Op.stayRear"}}</button>
+          <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="returnField">{{localize "PDVF.Battle.Op.returnField"}}</button>
+          {{#if isGM}}<button type="button" class="pdvf-btn" data-action="gm" data-op="firstAid">{{localize "PDVF.Battle.Op.firstAid"}}</button>{{/if}}
+        </div>
+        {{/if}}
+        {{else if isGM}}
+        <div class="pdvf-step-actions" data-group="default">
+          <select aria-label="{{localize 'PDVF.Battle.DefaultEncounter'}}">{{#each defaultChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="confirmDefault">{{localize "PDVF.Battle.Op.confirmDefault"}}</button>
+        </div>
+        {{/if}}
+      {{/if}}
+
+      {{#if at.charge}}
+        <p>{{localize "PDVF.Battle.DefaultIs"}} <strong>{{defaultName}}</strong>.</p>
+        {{#if isCommander}}<div class="pdvf-step-actions"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="player" data-op="chargeTest"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Battle.ChargeTest"}}</button></div>{{/if}}
+      {{/if}}
+
+      {{#if at.intensity}}
+        <p>{{localize "PDVF.Battle.DefaultIs"}} <strong>{{defaultName}}</strong>. {{#if chargeLabel}}<em>{{chargeLabel}}</em>{{/if}}</p>
+        {{#if isGM}}<div class="pdvf-step-actions"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="intensityTest"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Battle.IntensityTest"}} ({{intensityLabel}})</button></div>{{/if}}
+      {{/if}}
+
+      {{#if at.battle}}
+        <p>{{intensityResult}}</p>
+        <ul class="pdvf-battle-rolls">
+          {{#each knights}}{{#if (eq status "field")}}
+          <li>{{name}} :
+            {{#if battleRoll}}<span class="pdvf-tag">{{battleRollLabel}}</span>{{#if proposalName}} → <strong>{{proposalName}}</strong>{{/if}}
+            {{else if canBattleTest}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="battleTest" data-index="{{index}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Battle.BattleTest"}}</button>
+            {{else}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.Waiting"}}</span>{{/if}}
+          </li>
+          {{/if}}{{/each}}
+        </ul>
+        {{#if isGM}}<div class="pdvf-step-actions"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="closeTests">{{localize "PDVF.Battle.Op.closeTests"}}</button></div>{{/if}}
+      {{/if}}
+
+      {{#if at.select}}
+        {{#if chargeLabel}}<p><em>{{chargeLabel}}</em></p>{{/if}}
+        {{#if intensityResult}}<p>{{intensityResult}}</p>{{/if}}
+        <ul class="pdvf-candidates">
+          {{#each candidates}}
+          <li class="{{#if selected}}selected{{/if}} {{kind}}">
+            <span class="pdvf-deck-name">{{name}}</span>
+            {{#if isDefault}}<span class="pdvf-tag">{{localize "PDVF.Battle.Default"}}</span>{{/if}}
+            {{#if proposers}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.ProposedBy"}} {{proposers}}</span>{{/if}}
+            {{#if @root.isGM}}<span class="pdvf-deck-stats">{{localize "PDVF.Battle.MoraleMinShort"}} {{moraleMin}} · {{localize "PDVF.Battle.MoraleLossShort"}} {{moraleLoss}}{{#unless enough}} · <strong class="pdvf-warn">{{localize "PDVF.Battle.NotEnoughMorale"}}</strong>{{/unless}}</span>{{/if}}
+            {{#if @root.isCommander}}{{#unless selected}}<button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="select" data-id="{{id}}">{{localize "PDVF.Battle.Op.select"}}</button>{{/unless}}{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{#if imposable}}
+        <div class="pdvf-step-actions" data-group="impose">
+          <select aria-label="{{localize 'PDVF.Battle.Op.impose'}}">{{#each imposeChoices}}<option value="{{value}}">{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="impose" data-tooltip="{{localize 'PDVF.Battle.ImposeTip'}}">{{localize "PDVF.Battle.Op.impose"}}</button>
+        </div>
+        {{/if}}
+        {{#if isCommander}}
+        <div class="pdvf-step-actions">
+          {{#if immunity}}<button type="button" class="pdvf-btn pdvf-mini {{#if system.state.immune}}active{{/if}}" data-action="gm" data-op="toggleImmunity" aria-pressed="{{#if system.state.immune}}true{{else}}false{{/if}}"><i class="fa-solid fa-shield-heart"></i> {{localize "PDVF.Battle.Immunity"}}</button>{{/if}}
+          <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="engage"><i class="fa-solid fa-horse-head"></i> {{localize "PDVF.Battle.Op.engage"}}</button>
+        </div>
+        {{/if}}
+      {{/if}}
+
+      {{#if at.posture}}
+        {{#if encounter}}<p><strong>{{encounter.name}}</strong> — {{localize "PDVF.Battle.EnemiesCount"}} {{encounter.count}}{{#if chargeLabel}} · <em>{{chargeLabel}}</em>{{/if}}</p>{{/if}}
+        <ul class="pdvf-postures">
+          {{#each knights}}{{#if (eq status "field")}}
+          <li>
+            <span class="pdvf-posture-name">{{name}}</span>
+            {{#if canPosture}}
+            <span class="pdvf-posture-buttons">
+              {{#each postures}}<button type="button" class="pdvf-btn pdvf-mini {{#if active}}active{{/if}} posture-{{id}}" data-action="player" data-op="posture" data-index="{{../index}}" data-value="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}" data-tooltip="{{rounds}} {{localize 'PDVF.Battle.CombatRounds'}}">{{label}}</button>{{/each}}
+            </span>
+            {{else}}<span class="pdvf-tag">{{#if postureLabel}}{{postureLabel}}{{else}}{{localize "PDVF.Battle.Waiting"}}{{/if}}</span>{{/if}}
+            {{#if canInvoke}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="invoke" data-index="{{index}}"><i class="fa-solid fa-fire"></i> {{localize "PDVF.Battle.Invoke"}}</button>{{/if}}
+            {{#if invoked}}<span class="pdvf-hint-inline"><i class="fa-solid fa-fire"></i> {{invoked}}</span>{{/if}}
+          </li>
+          {{/if}}{{/each}}
+        </ul>
+        {{#if isGM}}<div class="pdvf-step-actions">
+          {{#unless allPostured}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.MissingPostures"}} {{missingPostures}}</span>{{/unless}}
+          <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="fight"><i class="fa-solid fa-khanda"></i> {{localize "PDVF.Battle.Op.fight"}}</button>
+        </div>{{/if}}
+      {{/if}}
+
+      {{#if at.resolve}}
+        {{#if encounter}}
+        <div class="pdvf-encounter-box">
+          <h4 class="pdvf-h4">{{encounter.name}} <span class="pdvf-hint-inline">— {{localize "PDVF.Battle.EnemiesCount"}} {{encounter.count}}{{#if system.state.doubled}} ({{localize "PDVF.Battle.Doubled"}}){{/if}}</span></h4>
+          <ul class="pdvf-encounter-facts">
+            {{#if chargeLabel}}<li>{{chargeLabel}}</li>{{/if}}
+            {{#if encounter.counterCharge}}<li>{{#if counterChargeLabel}}{{counterChargeLabel}}{{else}}{{localize "PDVF.Battle.CounterChargeMaybe"}}
+              {{#if isGM}}<button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="counterChargeRoll">1D6</button>{{/if}}{{/if}}</li>{{/if}}
+            {{#if encounter.ranged}}<li>{{#if rangedLabel}}{{rangedLabel}}{{else}}{{localize "PDVF.Battle.RangedPending"}}
+              {{#if isCommander}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="rangedTest">{{localize "PDVF.Battle.RangedTest"}}</button>{{/if}}{{/if}}
+              {{#if isGM}}<button type="button" class="pdvf-btn pdvf-mini" data-action="missile" data-tooltip="{{localize 'PDVF.Battle.MissileTip'}}">{{localize "PDVF.Battle.Missile"}}</button>{{/if}}</li>{{/if}}
+            {{#if encounter.noCharge}}<li>{{localize "PDVF.Battle.Flag.noCharge"}}</li>{{/if}}
+            {{#if isGM}}<li>{{localize "PDVF.Battle.GloryEach"}} {{encounter.gloryEach}} · {{localize "PDVF.Battle.KV"}} {{encounter.kvLabel}}{{#if encounter.ransom}} · {{localize "PDVF.Battle.Ransom"}} {{encounter.ransom}}{{/if}}</li>{{/if}}
+          </ul>
+          {{#if isGM}}
+          {{#if encounter.description}}<details class="pdvf-encounter-details"><summary>{{localize "PDVF.Battle.Description"}}</summary><p class="pdvf-deck-desc">{{encounter.description}}</p></details>{{/if}}
+          <div class="pdvf-step-actions">
+            <button type="button" class="pdvf-btn" data-action="place" {{#unless encounter.npc}}disabled{{/unless}}><i class="fa-solid fa-chess-pawn"></i> {{localize "PDVF.Battle.Place"}}</button>
+            <button type="button" class="pdvf-btn" data-action="unplace"><i class="fa-solid fa-broom"></i> {{localize "PDVF.Battle.Unplace"}}</button>
+          </div>
+          {{/if}}
+        </div>
+        {{/if}}
+        <table class="pdvf-table pdvf-battle-fight">
+          <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Battle.PostureLabel"}}</th><th>{{localize "PDVF.Battle.CombatRounds"}}</th><th>{{localize "PDVF.Battle.Defeated"}}</th><th></th></tr></thead>
+          <tbody>
+          {{#each knights}}{{#if participated}}{{#if (eq status "field")}}
+            <tr>
+              <td>{{name}}{{#if invoked}} <span class="pdvf-hint-inline" data-tooltip="{{invoked}}"><i class="fa-solid fa-fire"></i></span>{{/if}}</td>
+              <td>{{postureLabel}}</td>
+              <td class="num">{{fightRounds}}{{#if @root.encounter.ranged}}{{#if @root.system.state.rangedRounds}} <span class="pdvf-hint-inline">({{localize "PDVF.Battle.AfterVolleys"}})</span>{{/if}}{{/if}}</td>
+              <td class="num">
+                {{roundKills}}{{#if roundCaptured}} <span class="pdvf-hint-inline">({{roundCaptured}} {{localize "PDVF.Battle.CapturedShort"}})</span>{{/if}}
+                {{#if @root.isGM}}
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="addKill" data-index="{{index}}" data-captured="false" data-tooltip="{{localize 'PDVF.Battle.AddKillTip'}}">+ {{localize "PDVF.Battle.Killed"}}</button>
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="addKill" data-index="{{index}}" data-captured="true">+ {{localize "PDVF.Battle.Captured"}}</button>
+                {{#if roundKills}}<button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeKill" data-index="{{index}}" aria-label="{{localize 'PDVF.Battle.RemoveKill'}}"><i class="fa-solid fa-minus"></i></button>{{/if}}
+                {{/if}}
+              </td>
+              <td>{{#if canInvoke}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="invoke" data-index="{{index}}"><i class="fa-solid fa-fire"></i> {{localize "PDVF.Battle.Invoke"}}</button>{{/if}}
+                {{#if canExtra}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="extraRound" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Battle.ExtraRoundTip'}}">{{localize "PDVF.Battle.ExtraRound"}}</button>{{/if}}</td>
+            </tr>
+          {{/if}}{{/if}}{{/each}}
+          </tbody>
+        </table>
+        {{#if isGM}}<div class="pdvf-step-actions"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="endEncounter">{{localize "PDVF.Battle.Op.endEncounter"}}</button></div>{{/if}}
+      {{/if}}
+
+      {{#if at.squire}}
+        <ul class="pdvf-battle-rolls">
+          {{#each knights}}{{#if participated}}
+          <li>{{name}} :
+            {{#if squireLabel}}<span class="pdvf-tag">{{squireLabel}}</span>
+            {{else if squireLost}}<span class="pdvf-tag">{{localize "PDVF.Battle.SquireLostTag"}}</span>
+            {{else if canSquire}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="squireTest" data-index="{{index}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Battle.SquireTest"}}</button>
+            {{else}}<span class="pdvf-hint-inline">—</span>{{/if}}
+          </li>
+          {{/if}}{{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if at.end}}<p>{{localize "PDVF.Battle.RetreatedThisRound"}}</p>
+        {{#if isGM}}<div class="pdvf-step-actions"><button type="button" class="pdvf-btn" data-action="gm" data-op="firstAid">{{localize "PDVF.Battle.Op.firstAid"}}</button></div>{{/if}}
+      {{/if}}
+      {{#if at.over}}<p>{{localize "PDVF.Battle.Card.Over"}}</p>{{/if}}
+
+      {{#if isGM}}{{#if isActive}}
+      <div class="pdvf-step-actions pdvf-next">
+        {{#if at.squire}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="nextRound">{{localize "PDVF.Battle.Op.nextRound"}}</button>{{/if}}
+        {{#if at.end}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="nextRound">{{localize "PDVF.Battle.Op.nextRound"}}</button>{{/if}}
+        {{#if at.over}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="conclude">{{localize "PDVF.Battle.Op.conclude"}}</button>{{/if}}
+      </div>
+      {{/if}}{{/if}}
+    </section>
+
+    {{#if isActive}}{{#if isCommander}}
+    <div class="pdvf-battle-orders">
+      {{#if onFieldNow}}<button type="button" class="pdvf-btn" data-action="gm" data-op="retreat" data-tooltip="{{localize 'PDVF.Battle.RetreatTip'}}"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> {{localize "PDVF.Battle.Retreat"}}</button>{{/if}}
+      <button type="button" class="pdvf-btn" data-action="gm" data-op="leaveField">{{localize "PDVF.Battle.Op.leaveField"}}</button>
+      {{#if isGM}}<button type="button" class="pdvf-btn" data-action="gm" data-op="conclude">{{localize "PDVF.Battle.Op.conclude"}}</button>{{/if}}
+    </div>
+    {{/if}}{{/if}}
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Conroi"}}</h3>
+      <table class="pdvf-table pdvf-battle-knights">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Health.hp"}}</th><th>{{localize "PDVF.Battle.StatusLabel"}}</th>
+          <th>{{localize "PDVF.Battle.PostureLabel"}}</th><th>{{localize "PDVF.Battle.Defeated"}}</th><th>{{localize "PDVF.Glory"}}</th><th>{{localize "PDVF.Battle.Squire"}}</th></tr></thead>
+        <tbody>
+        {{#each knights}}
+          <tr class="status-{{status}}">
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="{{uuid}}"><img src="{{img}}" alt="" class="pdvf-mini-portrait"> {{name}}</button>
+              {{#if isCommander}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Battle.Commander'}}"><i class="fa-solid fa-flag"></i></span>{{/if}}</td>
+            <td class="num {{#if hpLow}}pdvf-warn{{/if}}">{{hp}}</td>
+            <td>{{#if @root.isGM}}<select name="system.knights.{{index}}.status">{{#each statusChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{statusLabel}}{{/if}}</td>
+            <td>{{postureLabel}}</td>
+            <td class="num">{{totalKills}}</td>
+            <td class="num">{{glorySoFar}}</td>
+            <td>{{#if squireLost}}{{localize "PDVF.Battle.SquireLostTag"}}{{else}}{{squireLabel}}{{/if}}</td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Deck"}}</h3>
+      <div class="pdvf-deck-strip">
+        {{#each opponents}}<span class="pdvf-deck-chip {{#if isSelected}}selected{{/if}}">{{name}}</span>{{/each}}
+        {{#each opportunities}}<span class="pdvf-deck-chip opportunity {{#if used}}used{{/if}} {{#if isSelected}}selected{{/if}}">{{name}}</span>{{/each}}
+      </div>
+    </section>
+
+    {{#if isGM}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.GmTools"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Morale"}}</span><input type="number" name="system.conroi.morale" value="{{system.conroi.morale}}" min="0" step="1"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.MinMod"}}</span><input type="number" name="system.state.moraleMinMod" value="{{system.state.moraleMinMod}}" step="1"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.LossMod"}}</span><input type="number" name="system.state.moraleLossMod" value="{{system.state.moraleLossMod}}" step="1"></label>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.ModsHint"}}</p>
+    </section>
+    {{/if}}
+    {{/if}}
+  {{/if}}
+
+  {{!-- ============================ BILAN ============================ --}}
+  {{#if tabIs.results}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Outcome"}}</h3>
+      {{#if hasNpcKnights}}
+      <p>{{localize "PDVF.Battle.NpcKnightsLosses"}} ({{system.conroi.npcKnights}}) :
+        {{#if lossLabel}}<span class="pdvf-tag">{{lossLabel}}</span> {{localize "PDVF.Battle.Lost"}} {{system.result.npcLost}} ({{system.result.npcKilled}} {{localize "PDVF.Battle.KilledShort"}}, {{system.result.npcCaptured}} {{localize "PDVF.Battle.CapturedShort"}})
+        {{else}}{{#if isCommander}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="lossesTest"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Battle.LossesTest"}}</button>{{/if}}{{/if}}
+      </p>
+      {{/if}}
+      <div class="pdvf-battle-grid four">
+        <div class="pdvf-field"><span>{{localize "PDVF.Battle.EnemyKV"}}</span><strong class="pdvf-big">{{sum.enemyKVLabel}}</strong></div>
+        <div class="pdvf-field"><span>{{localize "PDVF.Battle.OwnKV"}}</span><strong class="pdvf-big">{{sum.ownKVLabel}}</strong></div>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.OtherLosses"}}</span><input type="number" name="system.result.otherLosses" value="{{system.result.otherLosses}}" min="0" step="0.125"></label>
+        <div class="pdvf-field"><span>{{localize "PDVF.Battle.Ratio"}}</span><strong class="pdvf-big">{{sum.ratioLabel}}</strong> <span class="pdvf-hint-inline">{{sum.multLabel}}</span></div>
+      </div>
+      <div class="pdvf-battle-grid two">
+        <div class="pdvf-field"><span>{{localize "PDVF.Battle.ResultLabel"}}</span><strong class="pdvf-result result-{{sum.resultId}}">{{sum.resultLabel}}</strong></div>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Override"}}</span>
+          <select name="system.result.override">{{#each resultChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.ResultHint"}}</p>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Rewards"}}</h3>
+      <table class="pdvf-table pdvf-battle-rewards">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Battle.RoleLabel"}}</th><th>{{localize "PDVF.Battle.Participation"}}</th>
+          <th>{{localize "PDVF.Battle.EncounterGlory"}}</th><th>{{localize "PDVF.Battle.TotalGlory"}}</th><th>{{localize "PDVF.Battle.Loot"}}</th><th>{{localize "PDVF.Battle.Captives"}}</th></tr></thead>
+        <tbody>
+        {{#each knights}}
+          <tr class="status-{{status}}">
+            <td>{{name}} <span class="pdvf-hint-inline">{{statusLabel}}</span></td>
+            <td>{{summary.roleLabel}}</td>
+            <td class="num">{{summary.participation}}</td>
+            <td class="num">{{summary.killsGlory}}</td>
+            <td class="num"><strong>{{summary.total}}</strong></td>
+            <td class="num">{{summary.lootLabel}}</td>
+            <td>{{#each summary.captives}}<span class="pdvf-tag" data-tooltip="{{ransom}}">{{name}}</span> {{/each}}</td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+      {{#if isGM}}
+      <div class="pdvf-step-actions">
+        {{#if system.result.applied}}<span class="pdvf-tag">{{localize "PDVF.Battle.Applied"}}</span>
+        {{else}}
+          {{#if isDone}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="applyResults">{{localize "PDVF.Battle.Op.applyResults"}}</button>
+          <button type="button" class="pdvf-btn" data-action="gm" data-op="reopen">{{localize "PDVF.Battle.Op.reopen"}}</button>
+          {{else}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.ConcludeFirst"}}</span>{{/if}}
+        {{/if}}
+        <button type="button" class="pdvf-btn" data-action="gm" data-op="reset">{{localize "PDVF.Battle.Op.reset"}}</button>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.ApplyHint"}}</p>
+      {{/if}}
+    </section>
+  {{/if}}
+
+  {{!-- ============================ JOURNAL ============================ --}}
+  {{#if tabIs.log}}
+    {{#each log}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{label}}</h3>
+      <ul class="pdvf-battle-log">{{#each lines}}<li>{{this}}</li>{{/each}}</ul>
+    </section>
+    {{else}}<p class="pdvf-empty">{{localize "PDVF.Battle.EmptyLog"}}</p>{{/each}}
+  {{/if}}
+  </div>
+</div>

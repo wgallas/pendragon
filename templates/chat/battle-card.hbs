@@ -1,0 +1,19 @@
+<div class="pdvf-card pdvf-battle-card">
+  <header class="pdvf-card-header">
+    <h3 class="pdvf-card-title">{{title}}</h3>
+    {{#if subtitle}}<div class="pdvf-card-subtitle">{{subtitle}}</div>{{/if}}
+  </header>
+  {{#if text}}<p class="pdvf-battle-text">{{text}}</p>{{/if}}
+  {{#if lines.length}}
+  <ul class="pdvf-card-notes">
+    {{#each lines}}<li>{{this}}</li>{{/each}}
+  </ul>
+  {{/if}}
+  {{#if buttons.length}}
+  <div class="pdvf-card-buttons">
+    {{#each buttons}}
+    <button type="button" data-pdvf-battle="{{action}}" data-battle="{{../battle}}" {{#if value}}data-value="{{value}}"{{/if}}>{{label}}</button>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

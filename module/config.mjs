@@ -228,3 +228,82 @@ PDVF.startingHorses = [
   { type: "roncin", role: "squire", sex: "gelding" },
   { type: "sumpter", role: "pack", sex: "mare" }
 ];
+
+/* -------------------------------------------- */
+/*  Batailles (Livre du maître, chap. 6)        */
+/* -------------------------------------------- */
+
+PDVF.battle = {
+  /** Table 6.1 : tours maximum et Intensité aléatoire ; Tables 6.6 et 6.10 : Gloire et multiplicateur de butin. */
+  sizes: {
+    combat:     { rounds: 1, intensity: "1D6+2", glory: 5,  tournamentGlory: 0, lootSize: 0, armyTests: false },
+    skirmish:   { rounds: 3, intensity: "2D6",   glory: 5,  tournamentGlory: 0, lootSize: 0, armyTests: false },
+    clash:      { rounds: 5, intensity: "2D6+1", glory: 10, tournamentGlory: 1, lootSize: 0, armyTests: true },
+    small:      { rounds: 6, intensity: "2D6+2", glory: 20, tournamentGlory: 2, lootSize: 1, armyTests: true },
+    medium:     { rounds: 7, intensity: "2D6+3", glory: 30, tournamentGlory: 3, lootSize: 2, armyTests: true },
+    large:      { rounds: 8, intensity: "3D6",   glory: 45, tournamentGlory: 5, lootSize: 3, armyTests: true },
+    huge:       { rounds: 8, intensity: "3D6+1", glory: 60, tournamentGlory: 6, lootSize: 4, armyTests: true }
+  },
+  /** Compétence de Bataille d'un commandant inconnu. */
+  commanderSkill: "2D6+10",
+  /** Table 6.2 : rapport de forces (bonus du camp le plus nombreux, malus de l'autre). */
+  odds: { even: 0, r15: 2, r2: 5, r3: 7, r5: 10 },
+  /** Rapports qui comptent comme « grande infériorité numérique » (2:1 ou plus) pour le résultat et le butin. */
+  greatOdds: ["r2", "r3", "r5"],
+  /** Table 6.2 : autres circonstances (mod : camp concerné ; other : camp adverse). */
+  commanderMods: {
+    homeGround: { mod: 5 },
+    lastStand: { mod: 5 },
+    scouts: { mod: 5 },
+    fatigue: { mod: -5, other: 5 },
+    disease: { mod: -5, other: 5 },
+    divided: { mod: -5 }
+  },
+  /** Postures : tours de combat et effet sur le Moral (appliqué à la fin de la rencontre). */
+  postures: {
+    reckless: { rounds: 3, morale: "1D3", trait: "trait.prudent.right" },
+    valorous: { rounds: 2, morale: "", trait: "trait.valorous.left" },
+    prudent:  { rounds: 1, morale: "-1D3", trait: "trait.prudent.left" },
+    cowardly: { rounds: 0, morale: "", trait: "" }
+  },
+  /** Lâche : perte d'Honneur et de Moral (si le chevalier a plus de la moitié de ses PV). */
+  cowardHonorLoss: 1,
+  cowardMorale: "1D6",
+  /** Repli vers les lignes arrière : Moral regagné par tour, Premiers soins des soigneurs. */
+  rearMorale: "1D6",
+  rearFirstAid: "14+1D6",
+  /** Seul sur le champ de bataille : malus au test de Bataille. */
+  alonePenalty: -10,
+  /** Échec critique du commandant d'armée allié : malus de Bataille au premier tour. */
+  firstRoundPenalty: -5,
+  /** Contre-charge après le premier tour : 1D6, oui sur 1–2. */
+  counterChargeMax: 2,
+  /** Table 6.5 : pertes du conroi (parts des chevaliers PNJ). */
+  conroiLosses: {
+    critical: { lost: 0, killed: 0, captured: 0 },
+    success:  { lost: 0.1, killed: 0, captured: 0.1 },
+    failure:  { lost: 0.2, killed: 0.1, captured: 0.1 },
+    fumble:   { lost: 0.5, killed: 0.3, captured: 0.2 }
+  },
+  /** Résultat de la bataille : seuils du rapport VC ennemies / VC perdues. */
+  results: [
+    { id: "decisiveVictory", min: 4, glory: 2, loot: true, decisive: true },
+    { id: "victory", min: 2, glory: 1.5, loot: true },
+    { id: "indecisive", min: 0.5, glory: 1 },
+    { id: "defeat", min: 0.25, glory: 0.75 },
+    { id: "decisiveDefeat", min: 0, glory: 0.5 }
+  ],
+  /** Table 6.8 : multiplicateur de Gloire du commandement (s'ajoute à celui du résultat). */
+  commandGlory: { none: 0, conroi: 2, division: 3, army: 5 },
+  /** Table 6.10 : butin selon le commandement (conroi : +⅓ ; division et armée : × taille). */
+  commandLoot: { none: { add: 0 }, conroi: { add: 1 / 3 }, division: { times: 3 }, army: { times: 10 } },
+  /** Victoire décisive : butin supplémentaire. */
+  decisiveLoot: "2D3",
+  /** Table 6.9 : butin de base (£) selon l'armée adverse. */
+  armies: { feudal: 2, feudalLesser: 1.5, saxon: 1, cymric: 0.5, pict: 0.25 },
+  /** Mêlée de tournoi : Intensité divisée par deux, Gloire des adversaires divisée par dix. */
+  tournamentIntensity: 0.5,
+  tournamentGlory: 0.1,
+  /** Valeur de chevalier d'un chevalier (PJ ou PNJ) perdu. */
+  knightValue: 1
+};

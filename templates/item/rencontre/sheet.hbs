@@ -1,0 +1,54 @@
+<div class="pdvf-encounter">
+  <header class="pdvf-npc-header">
+    <img class="pdvf-encounter-icon" src="{{item.img}}" alt="">
+    <div class="pdvf-npc-identity">
+      <input type="text" class="pdvf-npc-name-input" name="name" value="{{item.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      <div class="pdvf-line1">
+        <select name="system.kind" aria-label="{{localize 'PDVF.Battle.KindLabel'}}">
+          {{#each kindChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="pdvf-encounter-body">
+    <div class="pdvf-battle-grid four">
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.MoraleLoss"}}</span><input type="text" name="system.moraleLoss" value="{{system.moraleLoss}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.MoraleMin"}}</span><input type="number" name="system.moraleMin" value="{{system.moraleMin}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.KV"}}</span><input type="number" name="system.kv" value="{{system.kv}}" step="0.0625" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.GloryEach"}}</span><input type="number" name="system.glory" value="{{system.glory}}" step="1" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.PerKnight"}}</span><input type="number" name="system.perKnight" value="{{system.perKnight}}" step="0.5" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.FixedCount"}}</span><input type="number" name="system.fixedCount" value="{{system.fixedCount}}" step="1" min="0" placeholder="—"></label>
+      <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.Ransom"}}</span><input type="text" name="system.ransom" value="{{system.ransom}}"></label>
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Battle.Adversary"}}</h3>
+    <div class="pdvf-drop-zone">
+      {{#if system.npc}}
+      <img src="{{npcImg}}" alt="" class="pdvf-mini-portrait">
+      <button type="button" class="pdvf-link" data-action="openNpc">{{npcName}}</button>
+      {{#if editable}}<button type="button" class="pdvf-icon-btn" data-action="clearNpc" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+      {{else}}
+      <span class="pdvf-hint">{{localize "PDVF.Battle.DropNpc"}}</span>
+      {{/if}}
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Battle.Special"}}</h3>
+    <div class="pdvf-checks">
+      {{#each flags}}
+      <label class="pdvf-check"><input type="checkbox" name="{{name}}" {{#if checked}}checked{{/if}}> {{label}}</label>
+      {{/each}}
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Battle.ArmiesLabel"}}</h3>
+    <div class="pdvf-checks">
+      {{#each armies}}
+      <label class="pdvf-check"><input type="checkbox" name="armies.{{id}}" {{#if checked}}checked{{/if}}> {{label}}</label>
+      {{/each}}
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Battle.Description"}}</h3>
+    <p class="pdvf-hint">{{localize "PDVF.Battle.DescriptionHint"}}</p>
+    <textarea name="system.description" rows="12">{{system.description}}</textarea>
+  </div>
+</div>

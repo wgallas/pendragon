@@ -10,12 +10,19 @@ import { PnjSheet } from "./sheets/pnj-sheet.mjs";
 import { ChevalData } from "./data/cheval.mjs";
 import { ChevalSheet } from "./sheets/cheval-sheet.mjs";
 import * as followers from "./documents/followers.mjs";
-import { ensureAdversaries } from "./documents/compendium.mjs";
+import { ensureAdversaries, ensureEncounters } from "./documents/compendium.mjs";
 import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
 import { CREATION } from "./creation/data.mjs";
 import { CreationWizard, openCreationWizard } from "./creation/wizard.mjs";
 import { newDayForAll, addNewDayControl, addNewDayDirectoryButton } from "./documents/new-day.mjs";
+import { PendragonItem } from "./documents/item.mjs";
+import { BatailleData } from "./data/bataille.mjs";
+import { RencontreData } from "./data/rencontre.mjs";
+import { BatailleSheet } from "./sheets/bataille-sheet.mjs";
+import { RencontreSheet } from "./sheets/rencontre-sheet.mjs";
+import * as battleEngine from "./battle/engine.mjs";
+import * as battleClient from "./battle/client.mjs";
 
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initialisation du système Pendragon (VF)`);
@@ -23,13 +30,19 @@ Hooks.once("init", () => {
   CONFIG.PDVF = PDVF;
   // Données de création : les suppléments peuvent les compléter dans leur propre hook « init ».
   PDVF.creation = CREATION;
-  game.pendragon = { config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, tests, rules, openCreationWizard };
+  game.pendragon = {
+    config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters,
+    tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient }
+  };
 
   // Documents et modèles de données
   CONFIG.Actor.documentClass = PendragonActor;
   CONFIG.Actor.dataModels.chevalier = ChevalierData;
   CONFIG.Actor.dataModels.pnj = PnjData;
   CONFIG.Actor.dataModels.cheval = ChevalData;
+  CONFIG.Item.documentClass = PendragonItem;
+  CONFIG.Item.dataModels.bataille = BatailleData;
+  CONFIG.Item.dataModels.rencontre = RencontreData;
   CONFIG.Actor.trackableAttributes = {
     chevalier: { bar: ["health.hp"], value: [] },
     pnj: { bar: ["health.hp"], value: [] },
@@ -48,6 +61,13 @@ Hooks.once("init", () => {
         if (app instanceof ChevalierSheet || app instanceof PnjSheet || app instanceof ChevalSheet) app.render();
       }
     }
+  });
+
+  // Version du compendium des rencontres de bataille déjà importée dans ce monde
+  game.settings.register(SYSTEM_ID, "encountersVersion", {
+    scope: "world",
+    config: false,
+    type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 0 })
   });
 
   // Version du compendium des adversaires déjà importée dans ce monde
@@ -87,6 +107,17 @@ Hooks.once("init", () => {
     label: "PDVF.SheetLabel.cheval"
   });
 
+  DSC.registerSheet(Item, SYSTEM_ID, BatailleSheet, {
+    types: ["bataille"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.bataille"
+  });
+  DSC.registerSheet(Item, SYSTEM_ID, RencontreSheet, {
+    types: ["rencontre"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.rencontre"
+  });
+
   // Gabarits partiels
   foundry.applications.handlebars.loadTemplates([
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/skill-row.hbs`,
@@ -109,11 +140,17 @@ Hooks.on("updateActor", (actor) => {
   }
 });
 
-// Compendium des adversaires : créé ou mis à jour par le MJ au chargement du monde
-Hooks.once("ready", () => ensureAdversaries());
+// Compendiums des adversaires et des rencontres : créés ou mis à jour par le MJ au chargement du monde ;
+// socket du système (demandes des joueurs pendant une bataille).
+Hooks.once("ready", async () => {
+  game.socket.on(battleEngine.SOCKET, battleEngine.onSocket);
+  await ensureAdversaries();
+  await ensureEncounters();
+});
 
 // Boutons des cartes de chat (crise de passion…)
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));
+Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMessage(message, html));
 
 // « Nouveau jour » du MJ (outils des jetons, barre de gauche)
 Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));

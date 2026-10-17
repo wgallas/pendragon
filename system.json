@@ -35,6 +35,10 @@
       "chevalier": {},
       "pnj": {},
       "cheval": {}
+    },
+    "Item": {
+      "bataille": {},
+      "rencontre": {}
     }
   },
   "grid": {

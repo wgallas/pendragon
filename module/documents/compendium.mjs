@@ -1,6 +1,6 @@
 /**
- * Compendium « Pendragon — Adversaires » : créé et tenu à jour dans le monde par le MJ,
- * à partir de data/adversaires.json (blocs du Livre du maître, chap. 6 à 8).
+ * Compendiums du système (« Adversaires », « Rencontres de bataille ») : créés et tenus à jour dans
+ * le monde par le MJ, à partir des fichiers data/*.json (Livre du maître).
  *
  * On passe par un compendium du monde plutôt que par un compendium du système : les fichiers
  * LevelDB d'un compendium du système seraient modifiés par Foundry à chaque lancement, ce qui
@@ -17,44 +17,61 @@ function CompendiumCollectionClass() {
 }
 
 /**
- * Crée le compendium s'il n'existe pas, ou le remplace si les données du système sont plus récentes.
- * @param {{force?: boolean}} [options]  force : réimporter même si la version est à jour
+ * Crée un compendium du monde s'il n'existe pas, ou le remplace si les données du système sont plus récentes.
+ * @param {object} spec
+ * @param {string} spec.file      fichier de données (data/…json : version, folders, documents)
+ * @param {string} spec.name      nom du compendium dans le monde
+ * @param {"Actor"|"Item"} spec.type
+ * @param {string} spec.label     clé de traduction du nom
+ * @param {string} spec.setting   réglage qui retient la version importée
+ * @param {string} spec.key       clé des documents dans le fichier (« actors », « items »)
+ * @param {boolean} [force]       réimporter même si la version est à jour
  */
-export async function ensureAdversaries({ force = false } = {}) {
+async function ensurePack({ file, name, type, label, setting, key }, force = false) {
   if (!game.user.isGM) return null;
   let data;
   try {
-    const response = await fetch(foundry.utils.getRoute(`systems/${SYSTEM_ID}/data/adversaires.json`));
+    const response = await fetch(foundry.utils.getRoute(`systems/${SYSTEM_ID}/data/${file}`));
     data = await response.json();
   } catch (err) {
-    console.error(`${SYSTEM_ID} | Lecture des adversaires impossible`, err);
+    console.error(`${SYSTEM_ID} | Lecture de ${file} impossible`, err);
     return null;
   }
-  const stored = Number(game.settings.get(SYSTEM_ID, "adversariesVersion")) || 0;
-  let pack = game.packs.get(`world.${PACK_NAME}`);
+  const stored = Number(game.settings.get(SYSTEM_ID, setting)) || 0;
+  let pack = game.packs.get(`world.${name}`);
   if (pack && stored >= data.version && !force) return pack;
 
+  const cls = type === "Actor" ? Actor.implementation : Item.implementation;
+  const docs = data[key] ?? [];
   try {
-    if (!pack) {
-      pack = await CompendiumCollectionClass().createCompendium({ type: "Actor", label: L("PDVF.Compendium.Adversaries"), name: PACK_NAME });
-    }
+    if (!pack) pack = await CompendiumCollectionClass().createCompendium({ type, label: L(label), name });
     if (pack.locked) await pack.configure({ locked: false });
 
-    // Remplacement complet : dossiers puis acteurs (identifiants fixes)
+    // Remplacement complet : dossiers puis documents (identifiants fixes)
     const index = await pack.getIndex();
-    if (index.size) await Actor.implementation.deleteDocuments([...index.keys()], { pack: pack.collection });
+    if (index.size) await cls.deleteDocuments([...index.keys()], { pack: pack.collection });
     const oldFolders = pack.folders?.map(f => f.id) ?? [];
     if (oldFolders.length) await Folder.implementation.deleteDocuments(oldFolders, { pack: pack.collection });
-    await Folder.implementation.createDocuments(data.folders, { pack: pack.collection, keepId: true });
-    await Actor.implementation.createDocuments(data.actors, { pack: pack.collection, keepId: true, pdvfSkipWizard: true });
+    if (data.folders?.length) await Folder.implementation.createDocuments(data.folders, { pack: pack.collection, keepId: true });
+    await cls.createDocuments(docs, { pack: pack.collection, keepId: true, pdvfSkipWizard: true });
 
     await pack.configure({ locked: true });
-    await game.settings.set(SYSTEM_ID, "adversariesVersion", data.version);
-    ui.notifications.info(F("PDVF.Compendium.Imported", { count: data.actors.length }));
-    console.log(`${SYSTEM_ID} | Compendium des adversaires : ${data.actors.length} acteurs (version ${data.version})`);
+    await game.settings.set(SYSTEM_ID, setting, data.version);
+    ui.notifications.info(F("PDVF.Compendium.Imported", { count: docs.length, label: L(label) }));
+    console.log(`${SYSTEM_ID} | Compendium ${name} : ${docs.length} documents (version ${data.version})`);
   } catch (err) {
-    console.error(`${SYSTEM_ID} | Création du compendium des adversaires impossible`, err);
-    ui.notifications.error(`${L("PDVF.Compendium.Adversaries")} : ${err.message}`);
+    console.error(`${SYSTEM_ID} | Création du compendium ${name} impossible`, err);
+    ui.notifications.error(`${L(label)} : ${err.message}`);
   }
   return pack;
+}
+
+/** Compendium « Pendragon — Adversaires » (blocs du Livre du maître). */
+export function ensureAdversaries({ force = false } = {}) {
+  return ensurePack({ file: "adversaires.json", name: PACK_NAME, type: "Actor", label: "PDVF.Compendium.Adversaries", setting: "adversariesVersion", key: "actors" }, force);
+}
+
+/** Compendium « Pendragon — Rencontres de bataille » (Livre du maître, chap. 6). */
+export function ensureEncounters({ force = false } = {}) {
+  return ensurePack({ file: "rencontres.json", name: "pendragon-rencontres", type: "Item", label: "PDVF.Compendium.Encounters", setting: "encountersVersion", key: "items" }, force);
 }

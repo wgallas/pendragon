@@ -1,0 +1,553 @@
+{
+ "version": 1,
+ "folders": [
+  {
+   "_id": "2bc4625e14c02825",
+   "name": "Opposants féodaux",
+   "type": "Item",
+   "sorting": "m",
+   "sort": 100
+  },
+  {
+   "_id": "f1a5410eb766d601",
+   "name": "Opposants des marches",
+   "type": "Item",
+   "sorting": "m",
+   "sort": 200
+  },
+  {
+   "_id": "9f7b4b2c99c657aa",
+   "name": "Opportunités",
+   "type": "Item",
+   "sorting": "m",
+   "sort": 300
+  }
+ ],
+ "items": [
+  {
+   "_id": "fa737df9afbc2933",
+   "name": "Paysans",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Levée de paysans sans cœur à l'ouvrage ; aucune Gloire à les vaincre. Cinq par PJ, dont la moitié seulement attaque à chaque tour (pénalité d'adversaires multiples). Chargés par des chevaliers, ils testent Couard et fuient sur un succès. Un paysan blessé fuit à la fin du tour ; à la fin de chaque tour, test collectif de Valeureux : échec, la moitié fuit ; échec critique, tous fuient. (p. 137)",
+    "moraleLoss": "1D3",
+    "moraleMin": 5,
+    "kv": 0.0625,
+    "perKnight": 5,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.5505c99f384fd134",
+    "glory": 0,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "cymric"
+    ]
+   }
+  },
+  {
+   "_id": "75a1a912e425a174",
+   "name": "Lanciers",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Piétaille armée de lances à deux mains, dangereuse en mur de lances pour les chevaliers et leurs chevaux. Trois par PJ, qui se liguent contre lui. Ils peuvent planter leurs lances contre une charge si tout le groupe réussit un test de Valeureux ; pas de malus contre des cavaliers. Ils reculent en Défense au tiers de pertes graves et détalent aux deux tiers. (p. 137)",
+    "moraleLoss": "1D6",
+    "moraleMin": 8,
+    "kv": 0.125,
+    "perKnight": 3,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.c4d36e0c2ea2837a",
+    "glory": 10,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "20ed22cca736e88a",
+   "name": "Fantassins",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Hommes d'armes à l'épée, à la masse ou à la hache, armure légère et bouclier. Deux par PJ (un seul jet d'armement). Chargés par des chevaliers montés : test collectif de Valeureux (échec, la moitié fuit ; échec critique, tous). Ils fuient aussi à la moitié de pertes graves. Modificateur de hauteur contre les cavaliers, bonus d'arme longue à la lance. (p. 138)",
+    "moraleLoss": "1D6",
+    "moraleMin": 7,
+    "kv": 0.125,
+    "perKnight": 2,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.ba40b3149d025664",
+    "glory": 10,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "cymric"
+    ]
+   }
+  },
+  {
+   "_id": "a04e27bf4c1af8a8",
+   "name": "Archers",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Trois archers par PJ, qui tirent dès la longue portée (« Réduire la distance », Livre du joueur p. 152). Le commandant du conroi fait un test de Bataille pour savoir combien de tours de tirs subir avant le contact ; chaque tir touche le cheval sur 1–4, le cavalier sur 5–6. Rejoints par plus de cavaliers que de piétons, chacun teste Valeureux ou fuit ; l'unité fuit au tiers de pertes graves. (p. 138)",
+    "moraleLoss": "1D6",
+    "moraleMin": 5,
+    "kv": 0.125,
+    "perKnight": 3,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.55ba3d7511dd7caf",
+    "glory": 5,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": true,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon"
+    ]
+   }
+  },
+  {
+   "_id": "2f9329137fb9c749",
+   "name": "Chevaliers à pied",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Des chevaliers démontés, aussi déterminés que les autres. Une fois et demie le nombre de PJ ; ils se groupent sur les PJ les plus glorieux ou les mieux montés, les autres combattent un contre un. Leur lance annule le malus contre un cavalier ; à pied, ils prennent l'épée. Rançon à tirer pour chaque captif. (p. 139)",
+    "moraleLoss": "1D6",
+    "moraleMin": 10,
+    "kv": 0.5,
+    "perKnight": 1.5,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.6110aecec8af5f57",
+    "glory": 25,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "1D6 : 1 chevalier pauvre 3 £ ; 2–5 chevalier de maisonnée 4 £ ; 6 chevalier vassal 10 £",
+    "armies": [
+     "feudal",
+     "feudalLesser"
+    ]
+   }
+  },
+  {
+   "_id": "57a876bbf877ea45",
+   "name": "Chevaliers d'élite à pied",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "La garde personnelle d'un grand seigneur, privée de ses destriers, superbement armée. Une fois et demie le nombre de PJ ; mêmes tactiques que les chevaliers à pied. Rançon à tirer pour chaque captif. (p. 139)",
+    "moraleLoss": "1D6+2",
+    "moraleMin": 12,
+    "kv": 0.5,
+    "perKnight": 1.5,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.5fa834e305afdee7",
+    "glory": 50,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "1D6 : 1–5 chevalier de maisonnée 4 £ ; 6 chevalier vassal 10 £",
+    "armies": [
+     "feudal"
+    ]
+   }
+  },
+  {
+   "_id": "336b06ad41af9b38",
+   "name": "Hobilars",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Cavalerie légère sur des hobbies (Mouvement 18), peu de Gloire et aucune rançon. Deux par PJ ; ils esquivent automatiquement à l'approche : poursuivre les deux impose −5 à toutes les actions, n'en viser qu'un laisse l'autre s'enfuir. Rattrapé, un hobilar combat un tour puis teste Valeureux (échec : il esquive de nouveau ; succès : il reste un tour de plus). (p. 140)",
+    "moraleLoss": "1D6+3",
+    "moraleMin": 10,
+    "kv": 0.5,
+    "perKnight": 2,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.136aeff7988ab9aa",
+    "glory": 25,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "cymric"
+    ]
+   }
+  },
+  {
+   "_id": "2d23416c7239cbfb",
+   "name": "Sergents montés",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Cavaliers non nobles entraînés au combat monté (sert aussi pour des écuyers ou des mercenaires pauvres). Autant que de PJ, sur de petits chargeurs. Ils peuvent contre-charger. Rançon à tirer pour chaque captif. (p. 140)",
+    "moraleLoss": "1D6+2",
+    "moraleMin": 12,
+    "kv": 0.75,
+    "perKnight": 1,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.8ff1cf4edd4fd35e",
+    "glory": 25,
+    "mounted": true,
+    "counterCharge": true,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "1D6 : 1–4 sergent, pas de rançon ; 5–6 mercenaire pauvre 2 £",
+    "armies": [
+     "feudal",
+     "feudalLesser"
+    ]
+   }
+  },
+  {
+   "_id": "92fdbb728a7315c7",
+   "name": "Chevaliers montés",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Un conroi de chevaliers semblable à celui des PJ. Autant que de PJ, sur des chargeurs en bon état. Ils contre-chargent ; hors charge, ils préfèrent l'épée, sauf contre des armes longues (lance). Rançon à tirer pour chaque captif. (p. 141)",
+    "moraleLoss": "1D6+2",
+    "moraleMin": 12,
+    "kv": 1,
+    "perKnight": 1,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.6c03100972673424",
+    "glory": 25,
+    "mounted": true,
+    "counterCharge": true,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "1D6 : 1 chevalier pauvre 3 £ ; 2–5 chevalier de maisonnée 4 £ ; 6 chevalier vassal 10 £",
+    "armies": [
+     "feudal",
+     "feudalLesser"
+    ]
+   }
+  },
+  {
+   "_id": "7bc858dcdbe39615",
+   "name": "Chevaliers montés d’élite",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "2bc4625e14c02825",
+   "system": {
+    "kind": "opponent",
+    "description": "Chevaliers de maisonnée et vassaux d'un seigneur réputé, superbement armés, sur de beaux étalons (+5 £). Autant que de PJ ; mêmes tactiques que les chevaliers montés. Un cheval capturé peut avoir un dressage ou une personnalité (Livre du joueur p. 184–186). (p. 141)",
+    "moraleLoss": "2D6",
+    "moraleMin": 12,
+    "kv": 1,
+    "perKnight": 1,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.9be892161f7a6be9",
+    "glory": 50,
+    "mounted": true,
+    "counterCharge": true,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "1D6 : 1–5 chevalier de maisonnée 4 £ ; 6 chevalier vassal 10 £",
+    "armies": [
+     "feudal"
+    ]
+   }
+  },
+  {
+   "_id": "7d49be49ad22cb0e",
+   "name": "Guerriers tribaux pictes",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "f1a5410eb766d601",
+   "system": {
+    "kind": "opponent",
+    "description": "Guerriers peints sans armure, targe au poing, lance à deux mains ; ils ne paient ni n'acceptent de rançon. Deux par PJ. Ils plantent leurs lances contre une charge sans test. Au tiers de pertes graves, les autres tentent de fuir (Esquive) au tour suivant. (p. 142)",
+    "moraleLoss": "1D6+1",
+    "moraleMin": 8,
+    "kv": 0.125,
+    "perKnight": 2,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.7dbb48658a691973",
+    "glory": 25,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "a5766d072871122a",
+   "name": "Guerriers saxons",
+   "type": "rencontre",
+   "img": "icons/svg/sword.svg",
+   "folder": "f1a5410eb766d601",
+   "system": {
+    "kind": "opponent",
+    "description": "Heorthgeneat aguerris, garde d'un seigneur saxon. Deux par PJ : le défenseur au bouclier (lance, hache ou épée), l'autre à la grande hache. Mur de boucliers contre la charge au premier tour (seul le défenseur est testé), puis ils attaquent tous deux. Ni reddition ni rançon ; ils combattent jusqu'aux trois quarts de pertes. (p. 142)",
+    "moraleLoss": "1D6+2",
+    "moraleMin": 8,
+    "kv": 0.25,
+    "perKnight": 2,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.ba9a0eb388366b7a",
+    "glory": 25,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "saxon"
+    ]
+   }
+  },
+  {
+   "_id": "10bd521bce3cc5e6",
+   "name": "Capturer la Bannière",
+   "type": "rencontre",
+   "img": "icons/svg/aura.svg",
+   "folder": "9f7b4b2c99c657aa",
+   "system": {
+    "kind": "opportunity",
+    "description": "La bannière d'un commandant ennemi est en vue, gardée par autant de chevaliers d'élite que de PJ (Hommage (Seigneur) 20, combat à mort). Pas de charge possible. Pour la prendre : vaincre son garde, puis le porte-bannière ou réussir Rixe (Saisir l'arme). En repli, les escortes font des tests d'Équitation opposés pour bloquer les poursuivants. Bannière ramenée : porteur +100 Gloire, escortes +50, tous +2 £ et des faveurs F10 ; le commandant de division adverse teste Bataille à −5 ou quitte le champ (sinon Moral minimum −3 pour le reste de la bataille). Le conroi se replie ensuite. (p. 143)",
+    "moraleLoss": "3D6",
+    "moraleMin": 13,
+    "kv": 1,
+    "perKnight": 1,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.aec112688eed430a",
+    "glory": 50,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": true,
+    "forbidPrudent": false,
+    "ransom": "5 £",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "b7ba1d1e1c089c4b",
+   "name": "Combattre le Commandant Ennemi",
+   "type": "rencontre",
+   "img": "icons/svg/aura.svg",
+   "folder": "9f7b4b2c99c657aa",
+   "system": {
+    "kind": "opportunity",
+    "description": "Un commandant de flanc isolé avec ses gardes du corps (une fois et demie le nombre de PJ), qui peuvent contre-charger et s'acharnent sur les PJ les plus glorieux. Il faut vaincre son adversaire avant d'approcher le commandant (acteur « Commandant », 150 Gloire). Commandant pris ou tué : la division quitte la bataille, sauf ralliement (Bataille −10) ; les autres chevaliers du conroi gagnent +50 Gloire, +5 £ et des faveurs F15. (p. 144)",
+    "moraleLoss": "3D6",
+    "moraleMin": 14,
+    "kv": 1,
+    "perKnight": 1.5,
+    "fixedCount": null,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.3468abac19617484",
+    "glory": 50,
+    "mounted": false,
+    "counterCharge": true,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "5 £ (gardes) ; commandant 100 £ ou plus",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "0f93c4374421a77b",
+   "name": "Rassembler la Division !",
+   "type": "rencontre",
+   "img": "icons/svg/aura.svg",
+   "folder": "9f7b4b2c99c657aa",
+   "system": {
+    "kind": "opportunity",
+    "description": "L'aile se débande. Trois étapes, une seule passion (invocable à chacune) : 1) test de Bataille, puis Honneur, Valeureux et Hommage (critique 2, succès 1, échec critique −2) ; 2) un seul PJ sonne du cor (Instrument −10) ; 3) la foule a Couard 20, modifié par les tests d'Honneur, Valeureux et Hommage de chaque PJ, puis chacun teste Éloquence contre elle. Résultats de la déroute générale à l'offensive (+5 à toutes les compétences pour la rencontre suivante). (p. 145)",
+    "moraleLoss": "3D6",
+    "moraleMin": 12,
+    "kv": 0,
+    "perKnight": 0,
+    "fixedCount": null,
+    "npc": "",
+    "glory": 0,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "b68f974f95d36d9e",
+   "name": "Duel des Champions",
+   "type": "rencontre",
+   "img": "icons/svg/aura.svg",
+   "folder": "9f7b4b2c99c657aa",
+   "system": {
+    "kind": "opportunity",
+    "description": "Un champion ennemi défie le conroi. Le commandant désigne le champion (titre, Gloire, Charge, dégâts du cheval, armure) ; un volontaire peut tester Honneur ou une passion adaptée pour être retenu (critique : en tête). Contre une armée féodale, joute à mort ; le vaincu est fait prisonnier, sa division peut se retirer. 150 Gloire pour la victoire. (p. 146)",
+    "moraleLoss": "0",
+    "moraleMin": 14,
+    "kv": 1,
+    "perKnight": 0,
+    "fixedCount": 1,
+    "npc": "Compendium.world.pendragon-adversaires.Actor.749d06a64a60aca1",
+    "glory": 150,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "5 £",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "0657c36d5d0c31ff",
+   "name": "Raid sur le Camp",
+   "type": "rencontre",
+   "img": "icons/svg/aura.svg",
+   "folder": "9f7b4b2c99c657aa",
+   "system": {
+    "kind": "opportunity",
+    "description": "L'ennemi pille votre camp. Rencontre ennemie aléatoire, deux adversaires au plus par chevalier ; pas de posture Prudent. Après 1D3 tours, une autre rencontre aléatoire. Un chevalier sans adversaire peut piller (coche Égoïste et Arbitraire, Table 6.11), au risque d'être vu (Vigilance 12). Les deux groupes battus sans voler : 50 Gloire et faveurs F30 ; un seul : 20 Gloire et F10. Placez les ennemis de la rencontre tirée à la main. (p. 147)",
+    "moraleLoss": "3D6",
+    "moraleMin": 10,
+    "kv": 0,
+    "perKnight": 2,
+    "fixedCount": null,
+    "npc": "",
+    "glory": 0,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": true,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  },
+  {
+   "_id": "fffb2ee725086659",
+   "name": "Raid sur le convoi de ravitaillement",
+   "type": "rencontre",
+   "img": "icons/svg/aura.svg",
+   "folder": "9f7b4b2c99c657aa",
+   "system": {
+    "kind": "opportunity",
+    "description": "Le camp ennemi est sans défense. Chaque chevalier pille par phases (Table 6.12) : la première coche Égoïste, la deuxième Arbitraire, la troisième Téméraire ; un résultat déjà obtenu amène un combat (1D3+1 lanciers, puis 1D3 chevaliers ordinaires à pied), une quatrième phase un chevalier vétéran monté. Les pillards sont à pied (Écuyer −5). (p. 147–148)",
+    "moraleLoss": "1D6",
+    "moraleMin": 14,
+    "kv": 0,
+    "perKnight": 0,
+    "fixedCount": null,
+    "npc": "",
+    "glory": 0,
+    "mounted": false,
+    "counterCharge": false,
+    "ranged": false,
+    "noCharge": false,
+    "forbidPrudent": false,
+    "ransom": "",
+    "armies": [
+     "feudal",
+     "feudalLesser",
+     "saxon",
+     "cymric",
+     "pict"
+    ]
+   }
+  }
+ ]
+}

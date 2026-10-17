@@ -165,11 +165,12 @@ export async function rollAttribute(actor, key, options = {}) {
   const roll = await d20();
   const result = resolveTest(rollable.value, modifier, roll.total);
   const view = {
-    title: rollable.label,
-    subtitle: L(`PDVF.Kind.${rollable.kind}`),
+    title: options.title ?? rollable.label,
+    subtitle: options.subtitle ?? L(`PDVF.Kind.${rollable.kind}`),
     prelude: pre.prelude,
     participants: [participantView(actor, rollable, modifier, result)],
-    notes: [...pre.notes],
+    notes: [...pre.notes, ...(options.notes ?? [])],
+    verdict: options.verdict?.(result.outcome),
     buttons: pre.buttons
   };
   if (insp) view.notes.push(inspirationNote(actor, key));
@@ -209,7 +210,58 @@ export async function rollAttribute(actor, key, options = {}) {
     await maybeXp(a, k);
     view.notes.push(F("PDVF.Card.XpMarked", { name: a.name, label: a.getRollable(k)?.label ?? "" }));
   }
-  return postCard(actor, view, rolls, { key, kind: rollable.kind });
+  return postCard(actor, view, rolls, { key, kind: rollable.kind, outcome: result.outcome });
+}
+
+/**
+ * Test d'une valeur sans Attribut d'acteur (Intensité d'une bataille, commandant d'armée…).
+ * @param {object} p
+ * @param {Actor} [p.actor]   acteur au nom duquel le test est publié (facultatif)
+ * @param {string} p.name     nom affiché du participant
+ * @param {string} p.label    nom de la valeur testée
+ * @param {number} p.value
+ * @param {number} [p.modifier]
+ * @param {string} p.title
+ * @param {string} [p.subtitle]
+ * @param {string[]} [p.notes]
+ * @param {(outcome:string) => {text:string, cls:string}} [p.verdict]
+ * @param {string} [p.alias]  nom de l'orateur quand il n'y a pas d'acteur
+ * @returns {Promise<{outcome:string, result:object, message:ChatMessage}>}
+ */
+export async function rollPlain({ actor = null, name, label, value, modifier = 0, title, subtitle = "", notes = [], verdict = null, alias = "" }) {
+  const roll = await d20();
+  const result = resolveTest(value, modifier, roll.total);
+  const fake = { name, system: {}, img: actor?.img ?? "" };
+  const view = {
+    title, subtitle,
+    participants: [participantView(fake, { label, value }, modifier, result)],
+    verdict: verdict?.(result.outcome),
+    notes
+  };
+  const content = await foundry.applications.handlebars.renderTemplate(CARD_TEMPLATE, view);
+  const data = {
+    speaker: actor ? ChatMessage.getSpeaker({ actor }) : { alias: alias || name },
+    content, rolls: [roll], sound: CONFIG.sounds.dice,
+    flags: { [SYSTEM_ID]: { kind: "plain", outcome: result.outcome } }
+  };
+  try {
+    if (typeof ChatMessage.applyMode === "function") ChatMessage.applyMode(data);
+  } catch (err) { /* visibilité par défaut */ }
+  const message = await ChatMessage.implementation.create(data);
+  return { outcome: result.outcome, result, message };
+}
+
+/** Carte d'une passion invoquée (sans test qui suive), avec des notes en plus. */
+export async function postPassionCard(actor, inv, extraNotes = []) {
+  const view = {
+    title: inv.rollable.label,
+    subtitle: L("PDVF.Kind.passion"),
+    participants: [inv.participant],
+    verdict: inv.verdict,
+    notes: [...inv.notes, ...extraNotes],
+    buttons: inv.buttons
+  };
+  return postCard(actor, view, [inv.roll], { key: inv.rollable.key, kind: "passion", outcome: inv.result.outcome });
 }
 
 /**

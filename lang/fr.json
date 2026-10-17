@@ -2,7 +2,8 @@
   "TYPES": {
     "Actor": {
       "chevalier": "Chevalier",
-      "pnj": "PNJ"
+      "pnj": "PNJ",
+      "cheval": "Cheval"
     }
   },
   "PDVF": {
@@ -11,7 +12,8 @@
     "Honor": "Honneur",
     "SheetLabel": {
       "chevalier": "Fiche de chevalier (Pendragon VF)",
-      "pnj": "Fiche de PNJ (Pendragon VF)"
+      "pnj": "Fiche de PNJ (Pendragon VF)",
+      "cheval": "Fiche de cheval (Pendragon VF)"
     },
     "Settings": {
       "currentYear": {
@@ -376,7 +378,9 @@
       "holdings": "Propriétés",
       "other": "Autre",
       "total": "Total annuel",
-      "Hint": "Traits, passions et Attrait sont calculés d'après la fiche (15 par valeur Célèbre, 25 par valeur Exaltée, 100 au plus par catégorie)."
+      "Hint": "Traits, passions et Attrait sont calculés d'après la fiche (15 par valeur Célèbre, 25 par valeur Exaltée, 100 au plus par catégorie).",
+      "horses": "Chevaux",
+      "horsesTip": "Robes (une fois chacune : blanc 50, gris 25, alezan 15, palomino 5) et cheval de guerre principal : 15 s'il s'agit d'un étalon entraîné au combat, monté avec Équitation 15."
     },
     "Prestige": {
       "earned": "Obtenues (une par tranche de 1000)",
@@ -385,7 +389,7 @@
     },
     "Upcoming": {
       "Combat": "Les armes, armures et boucliers à glisser sur la fiche, ainsi que la table des blessures, arrivent à la prochaine étape.",
-      "Suite": "Les montures et le domaine arrivent à une prochaine étape."
+      "Suite": "Le domaine arrive à une prochaine étape."
     },
     "Footer": {
       "Click": "Clic sur une valeur : jet de d20",
@@ -713,11 +717,245 @@
       "Missing": "Suivant introuvable (supprimé ?)",
       "Remove": "Retirer de la suite",
       "DropHint": "Glissez ici un PNJ depuis l'onglet Acteurs pour l'ajouter à la suite.",
-      "SquireTestTip": "Test de la compétence Écuyer (Maj + clic : options)"
+      "SquireTestTip": "Test de la compétence Écuyer (Maj + clic : options)",
+      "Stable": "Écurie",
+      "MissingHorse": "Cheval introuvable (supprimé ?)",
+      "RemoveHorse": "Retirer de l'écurie",
+      "DropHorseHint": "Glissez ici un cheval depuis l'onglet Acteurs pour l'ajouter à l'écurie."
     },
     "Compendium": {
       "Adversaries": "Pendragon — Adversaires",
       "Imported": "Compendium « Pendragon — Adversaires » prêt : {count} adversaires."
+    },
+    "Horse": {
+      "New": "Nouveau cheval",
+      "Create": "Créer le cheval",
+      "NamePlaceholder": "(nom du type par défaut)",
+      "TypeLabel": "Type",
+      "SexLabel": "Sexe",
+      "ColorLabel": "Robe",
+      "RoleLabel": "Rôle",
+      "Years": "ans",
+      "Group": {
+        "war": "Chevaux de combat",
+        "riding": "Chevaux de monte",
+        "work": "Chevaux de travail",
+        "fae": "Chevaux féeriques"
+      },
+      "Type": {
+        "hobby": "Hobby",
+        "destrierSmall": "Petit destrier",
+        "destrier": "Destrier",
+        "faeHorse": "Cheval féerique",
+        "genet": "Genet",
+        "roncinInferior": "Roncin inférieur",
+        "roncinSmall": "Petit roncin",
+        "roncin": "Roncin",
+        "roncinLarge": "Grand roncin",
+        "courser": "Coursier",
+        "pony": "Poney (cambrien, irlandais ou dales)",
+        "cartHorse": "Cheval d'attelage",
+        "bidet": "Bidet",
+        "haridelle": "Haridelle",
+        "sumpter": "Sommier",
+        "sumpterStrong": "Sommier fort",
+        "haquenee": "Haquenée",
+        "donkey": "Âne",
+        "mule": "Mule"
+      },
+      "Note": {
+        "skirmish": "Reconnaissance et escarmouche.",
+        "fae": "Monture des fées : éjecte ou emporte au loin le cavalier qu'elle refuse.",
+        "ambles": "Va à l'amble (vitesse du trot, sans fatiguer le cavalier).",
+        "hills": "Ne ralentit pas dans les collines ni les tourbières.",
+        "draught": "Traction.",
+        "riding": "Monte.",
+        "peasant": "Usage paysan.",
+        "pack": "Bât (jusqu'à 100 kg pour un sommier).",
+        "draughtPack": "Traction et bât."
+      },
+      "Sex": {
+        "stallion": "Étalon",
+        "gelding": "Hongre",
+        "mare": "Jument"
+      },
+      "Color": {
+        "bay": "Bai",
+        "chestnut": "Alezan",
+        "grey": "Gris",
+        "white": "Blanc",
+        "palomino": "Palomino",
+        "cream": "Crème",
+        "dun": "Dun (isabelle)",
+        "black": "Noir"
+      },
+      "GloryPerYear": "{glory} de Gloire/an",
+      "GloryShort": "de Gloire passive par an",
+      "Role": {
+        "war": "Cheval de guerre",
+        "riding": "Cheval de voyage",
+        "squire": "Monture de l'écuyer",
+        "pack": "Bât"
+      },
+      "StartingName": {
+        "war": "Destrier de {name}",
+        "riding": "Roncin de {name}",
+        "squire": "Roncin de l'écuyer de {name}",
+        "pack": "Sommier de {name}"
+      },
+      "StartingCreated": "{count} chevaux de départ créés et ajoutés à l'écurie (onglet Suite & domaine).",
+      "NoStartingHorses": "Chevaux de départ non créés : vous n'avez pas le droit de créer des acteurs. Le MJ peut les ajouter depuis l'onglet Suite & domaine.",
+      "Main": "Cheval principal",
+      "MainTip": "Cheval de guerre principal (Gloire passive, charges)",
+      "ChargeShort": "Charge",
+      "ChargeTip": "Dégâts de Charge montée avec ce cheval",
+      "ChargeOf": "Charge montée sur {name}",
+      "ArmorShort": "armure",
+      "MoveShort": "mouvement",
+      "Owner": "Écurie de",
+      "WarTrained": "Entraîné au combat",
+      "UntrainedHint": "Non entraîné au combat : au combat, Contrôler sa monture (−5) chaque tour avant toute autre action.",
+      "StallionHint": "Étalon : Équitation {skill} nécessaire pour le monter sans difficulté.",
+      "ApplyType": "Valeurs du type",
+      "ApplyTypeTip": "Remet les caractéristiques, le mouvement, l'armure et les dégâts du type choisi",
+      "ApplyTypeConfirm": "Remplacer les valeurs de ce cheval par celles du type « {type} » (Tables 10.2 à 10.4) ?",
+      "Movement": "Allures",
+      "MoveBase": "Mouvement de base",
+      "Gait": {
+        "walk": "Pas",
+        "trot": "Trot (×2)",
+        "gallop": "Galop (×3)",
+        "fullGallop": "Grand galop (×6)"
+      },
+      "Combat": "Combat",
+      "Damage": "Dégâts (sabot, piétinement)",
+      "ChargeDamage": "Dégâts de charge",
+      "NaturalArmor": "Armure naturelle",
+      "BardingLabel": "Armure de cheval",
+      "TotalArmor": "Armure totale",
+      "Barding": {
+        "none": "Aucune",
+        "caparisonOpen": "Caparaçon ouvert",
+        "caparisonHalf": "Demi-caparaçon",
+        "caparisonFull": "Caparaçon complet",
+        "paddedFull": "Matelassage complet",
+        "gambisonHalf": "Demi-gambison",
+        "gambisonFull": "Gambison complet"
+      },
+      "BardingTooHeavy": "Ce cheval n'a pas la FOR requise pour porter cette armure (Table 10.7).",
+      "Identity": "Signalement",
+      "Price": "Valeur indicative",
+      "NotForSale": "ne se vend pas (cadeau)",
+      "Tricks": "Tours (dressage unique)",
+      "TricksHint": "Chaque tour augmente le prix de 25 %.",
+      "NoTrick": "Aucun tour.",
+      "Trick": {
+        "comes": "S'approche à l'appel",
+        "sits": "S'assoit",
+        "rears": "Se dresse sur les postérieurs",
+        "rolls": "Se roule sur commande",
+        "dances": "Danse",
+        "counts": "Compte en tapant du sabot"
+      },
+      "PersonalityTitle": "Personnalité (Table 10.5)",
+      "NoPersonality": "Aucun trait noté.",
+      "RollPersonality": "Tirer la personnalité (1D3 traits)",
+      "PersonalityRolled": "{count} tirage(s) sur la Table 10.5 : {rolls}.",
+      "Personality": {
+        "loyal": {
+          "label": "Loyal",
+          "tip": "vient à l'appel, cherche à plaire à son humain préféré"
+        },
+        "willing": {
+          "label": "Volontaire",
+          "tip": "accepte toute demande raisonnable, très patient"
+        },
+        "gentle": {
+          "label": "Doux",
+          "tip": "convient aux cavaliers jeunes ou timides"
+        },
+        "affectionate": {
+          "label": "Affectueux",
+          "tip": "salue son maître, aime les caresses"
+        },
+        "stoic": {
+          "label": "Stoïque",
+          "tip": "calme, presque jamais effrayé"
+        },
+        "alert": {
+          "label": "Alerte",
+          "tip": "rarement pris par surprise"
+        },
+        "resilient": {
+          "label": "Résilient",
+          "tip": "récupère vite après l'effort"
+        },
+        "careful": {
+          "label": "Prudent",
+          "tip": "trébuche et casse peu"
+        },
+        "faeTouched": {
+          "label": "Marqué par les fées",
+          "tip": "une aura surnaturelle l'entoure"
+        },
+        "clever": {
+          "label": "Intelligent",
+          "tip": "semble raisonner et apprendre mieux que les autres"
+        },
+        "aggressive": {
+          "label": "Agressif",
+          "tip": "attaque l'ennemi de lui-même"
+        },
+        "brave": {
+          "label": "Courageux",
+          "tip": "charge sans se soucier du danger"
+        },
+        "stubborn": {
+          "label": "Têtu",
+          "tip": "conteste les décisions du cavalier"
+        },
+        "mischievous": {
+          "label": "Malicieux",
+          "tip": "renverse les piquets, libère les autres chevaux, chaparde"
+        },
+        "greedy": {
+          "label": "Glouton",
+          "tip": "mange à la moindre occasion"
+        },
+        "nervous": {
+          "label": "Nerveux",
+          "tip": "s'effraie sans prévenir"
+        },
+        "biter": {
+          "label": "Mordeur",
+          "tip": "mord gens et chevaux"
+        },
+        "destructive": {
+          "label": "Destructeur",
+          "tip": "ronge son box, abîme le matériel"
+        },
+        "clumsy": {
+          "label": "Maladroit",
+          "tip": "trébuche, se blesse ou blesse les autres"
+        },
+        "rebellious": {
+          "label": "Rebelle",
+          "tip": "cherche à désarçonner son cavalier"
+        }
+      },
+      "Condition": "État",
+      "Weakened": "Affaibli",
+      "Exhausted": "Épuisé",
+      "HpLoss": "PV perdus définitivement",
+      "ConditionHint": "Affaibli (Table 14.7) : −2 au Mouvement par degré. Épuisé (Table 10.1) : ne galope plus.",
+      "ExhaustionTest": "Test d'épuisement (CON)",
+      "ExhaustionTip": "Après un galop de plus d'un quart d'heure, une marche forcée, une nuit sans repos… (Table 10.1)",
+      "Exhaustion": {
+        "fine": "Aucun problème",
+        "tired": "Trop fatigué pour continuer ; récupère avec repos et nourriture",
+        "exhausted": "Épuisé : ne galopera plus jamais",
+        "dead": "S'effondre, mort"
+      }
     }
   }
 }

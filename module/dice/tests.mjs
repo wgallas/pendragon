@@ -4,6 +4,7 @@ import {
   passionEffect, crisisEffect, afflictionDuration, formatValue, passionBonuses
 } from "../rules/resolution.mjs";
 import { PDVF } from "../config.mjs";
+import { exhaustionEffect } from "../rules/horses.mjs";
 
 const CARD_TEMPLATE = `systems/${SYSTEM_ID}/templates/chat/test-card.hbs`;
 const DIALOG_TEMPLATE = `systems/${SYSTEM_ID}/templates/dialog/test-options.hbs`;
@@ -231,6 +232,30 @@ export async function rollDamage(actor, formula, label = "") {
     speaker: ChatMessage.getSpeaker({ actor }),
     flavor: label ? F("PDVF.Card.DamageOf", { label }) : L("PDVF.Card.Damage")
   });
+}
+
+/**
+ * Test d'épuisement d'un cheval (Livre du joueur, Table 10.1) : test de CON ; un échec le laisse
+ * épuisé (il ne peut plus galoper), un échec critique le tue.
+ */
+export async function rollHorseExhaustion(horse) {
+  const rollable = horse.getRollable("char.con");
+  if (!rollable) return;
+  const roll = await d20();
+  const result = resolveTest(rollable.value, 0, roll.total);
+  const effect = exhaustionEffect(result.outcome);
+  if (horse.isOwner) {
+    if (effect === "exhausted") await horse.update({ "system.exhausted": true });
+    if (effect === "dead") await horse.update({ "system.health.hp.value": 0 });
+  }
+  const view = {
+    title: horse.name,
+    subtitle: L("PDVF.Horse.ExhaustionTest"),
+    participants: [participantView(horse, rollable, 0, result)],
+    verdict: { text: L(`PDVF.Horse.Exhaustion.${effect}`), cls: effect === "fine" || effect === "tired" ? "victory" : "defeat" },
+    notes: []
+  };
+  return postCard(horse, view, [roll], { kind: "exhaustion" });
 }
 
 /**

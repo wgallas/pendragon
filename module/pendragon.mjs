@@ -7,6 +7,8 @@ import { PendragonActor } from "./documents/actor.mjs";
 import { ChevalierSheet } from "./sheets/chevalier-sheet.mjs";
 import { PnjData } from "./data/pnj.mjs";
 import { PnjSheet } from "./sheets/pnj-sheet.mjs";
+import { ChevalData } from "./data/cheval.mjs";
+import { ChevalSheet } from "./sheets/cheval-sheet.mjs";
 import * as followers from "./documents/followers.mjs";
 import { ensureAdversaries } from "./documents/compendium.mjs";
 import * as tests from "./dice/tests.mjs";
@@ -27,9 +29,11 @@ Hooks.once("init", () => {
   CONFIG.Actor.documentClass = PendragonActor;
   CONFIG.Actor.dataModels.chevalier = ChevalierData;
   CONFIG.Actor.dataModels.pnj = PnjData;
+  CONFIG.Actor.dataModels.cheval = ChevalData;
   CONFIG.Actor.trackableAttributes = {
     chevalier: { bar: ["health.hp"], value: [] },
-    pnj: { bar: ["health.hp"], value: [] }
+    pnj: { bar: ["health.hp"], value: [] },
+    cheval: { bar: ["health.hp"], value: [] }
   };
 
   // Réglages du monde
@@ -41,7 +45,7 @@ Hooks.once("init", () => {
     type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 508 }),
     onChange: () => {
       for (const app of foundry.applications.instances?.values?.() ?? []) {
-        if (app instanceof ChevalierSheet || app instanceof PnjSheet) app.render();
+        if (app instanceof ChevalierSheet || app instanceof PnjSheet || app instanceof ChevalSheet) app.render();
       }
     }
   });
@@ -77,6 +81,11 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "PDVF.SheetLabel.pnj"
   });
+  DSC.registerSheet(Actor, SYSTEM_ID, ChevalSheet, {
+    types: ["cheval"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.cheval"
+  });
 
   // Gabarits partiels
   foundry.applications.handlebars.loadTemplates([
@@ -87,6 +96,17 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/creation/knight-status.hbs`,
     `systems/${SYSTEM_ID}/templates/actor/pnj/row.hbs`
   ]);
+});
+
+// Un cheval ou un suivant modifié : les fiches de chevalier ouvertes se redessinent (écurie, suite, Gloire passive)
+Hooks.on("updateActor", (actor) => {
+  if (!["cheval", "pnj"].includes(actor.type)) return;
+  for (const app of foundry.applications.instances?.values?.() ?? []) {
+    if (app instanceof ChevalierSheet && app.rendered) {
+      const s = app.document.system;
+      if (s.horses?.some(h => h.uuid === actor.uuid) || s.followers?.some(f => f.uuid === actor.uuid)) app.render();
+    }
+  }
 });
 
 // Compendium des adversaires : créé ou mis à jour par le MJ au chargement du monde

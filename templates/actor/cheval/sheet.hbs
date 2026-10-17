@@ -1,0 +1,183 @@
+<div class="pdvf-npc pdvf-horse {{#if editMode}}editing{{/if}}">
+  <header class="pdvf-npc-header">
+    <button type="button" class="pdvf-npc-portrait" data-action="editImage" aria-label="{{localize 'PDVF.Npc.EditImage'}}" {{#unless editMode}}tabindex="-1"{{/unless}}>
+      <img src="{{actor.img}}" alt="">
+    </button>
+    <div class="pdvf-npc-identity">
+      {{#if editMode}}
+      <input type="text" class="pdvf-npc-name-input" name="name" value="{{actor.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      {{else}}
+      <h1 class="pdvf-name">{{actor.name}}</h1>
+      {{/if}}
+      <div class="pdvf-line1">{{line}}</div>
+      {{#if owners.length}}
+      <div class="pdvf-line2">{{localize "PDVF.Horse.Owner"}}
+        {{#each owners}}<button type="button" class="pdvf-link" data-action="openOwner" data-id="{{id}}">{{name}}</button>{{/each}}
+      </div>
+      {{/if}}
+    </div>
+    <div class="pdvf-npc-tools">
+      <button type="button" class="pdvf-mode-toggle" data-action="toggleEdit" aria-pressed="{{#if editMode}}true{{else}}false{{/if}}">
+        {{#if editMode}}{{localize "PDVF.Sheet.PlayMode"}}{{else}}{{localize "PDVF.Sheet.EditMode"}}{{/if}}
+      </button>
+    </div>
+  </header>
+
+  <div class="pdvf-hp pdvf-npc-hp">
+    <div class="pdvf-hp-label">{{localize "PDVF.Health.hp"}}</div>
+    <div class="pdvf-hp-gauge">
+      <div class="pdvf-hp-bar" role="img" aria-label="{{hp.value}} / {{hp.max}}">
+        <div class="pdvf-hp-fill status-{{status}}" style="width: {{hp.pct}}%"></div>
+        <div class="pdvf-hp-mark" style="left: {{hp.unconsciousPct}}%"></div>
+      </div>
+    </div>
+    <label class="pdvf-hp-value"><input type="number" name="system.health.hp.value" value="{{hp.value}}" step="1" aria-label="{{localize 'PDVF.Health.current'}}"> / {{hp.max}}</label>
+    <span class="pdvf-status status-{{status}}">{{statusLabel}}</span>
+    {{#if system.weakened}}<span class="pdvf-status affliction">{{localize "PDVF.Horse.Weakened"}} ×{{system.weakened}}</span>{{/if}}
+    {{#if system.exhausted}}<span class="pdvf-status affliction">{{localize "PDVF.Horse.Exhausted"}}</span>{{/if}}
+  </div>
+
+  <div class="pdvf-npc-body">
+    <div class="pdvf-npc-grid">
+      <div class="pdvf-npc-col">
+        {{#if editMode}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Horse.TypeLabel"}}</span>
+          <span class="pdvf-inline">
+            <select name="system.horseType">
+              {{#each typeGroups}}<optgroup label="{{label}}">{{#each options}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</optgroup>{{/each}}
+            </select>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="applyType" data-tooltip="{{localize 'PDVF.Horse.ApplyTypeTip'}}">{{localize "PDVF.Horse.ApplyType"}}</button>
+          </span>
+        </label>
+        {{/if}}
+        {{#if typeNote}}<p class="pdvf-hint">{{typeNote}}</p>{{/if}}
+
+        <div class="pdvf-npc-chars four">
+          {{#each characteristics}}
+          <div class="pdvf-npc-char">
+            <span class="abbr" data-tooltip="{{long}}">{{abbr}}</span>
+            {{#if @root.editMode}}
+            {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=name value=value min="0" label=long}}
+            {{else}}
+            <button type="button" class="pdvf-npc-charval" data-action="roll" data-key="{{key}}" aria-label="{{long}} {{value}}">{{value}}</button>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+
+        <div class="pdvf-npc-stats">
+          <table class="pdvf-npc-table">
+            <thead><tr><th scope="col">{{localize "PDVF.Npc.Health"}}</th><th></th></tr></thead>
+            <tbody>{{#each health}}<tr><th scope="row">{{label}}</th><td><strong>{{value}}</strong></td></tr>{{/each}}</tbody>
+          </table>
+          <table class="pdvf-npc-table">
+            <thead><tr><th scope="col">{{localize "PDVF.Horse.Movement"}}</th><th></th></tr></thead>
+            <tbody>
+              {{#each gaits}}<tr class="{{#if blocked}}pdvf-blocked{{/if}}"><th scope="row">{{label}}</th><td><strong>{{value}}</strong></td></tr>{{/each}}
+              <tr><th scope="row">{{localize "PDVF.Horse.MoveBase"}}</th>
+                <td>{{#if editMode}}<input type="number" name="system.move" value="{{system.move}}" min="0" aria-label="{{localize 'PDVF.Horse.MoveBase'}}">{{else}}{{system.move}}{{/if}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="pdvf-boxed">
+          <h3 class="pdvf-h3 red">{{localize "PDVF.Horse.Combat"}}</h3>
+          <div class="pdvf-npc-squire-grid">
+            <span class="lbl">{{localize "PDVF.Horse.Damage"}}</span>
+            <span>{{#if editMode}}<input type="text" name="system.damage" value="{{system.damage}}" aria-label="{{localize 'PDVF.Horse.Damage'}}">{{else}}{{#if damageRollable}}<button type="button" class="pdvf-npc-roll damage" data-action="damage" data-which="damage">{{system.damage}}</button>{{else}}{{system.damage}}{{/if}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.ChargeDamage"}}</span>
+            <span>{{#if editMode}}<input type="text" name="system.charge" value="{{system.charge}}" placeholder="—" aria-label="{{localize 'PDVF.Horse.ChargeDamage'}}">{{else}}{{#if chargeRollable}}<button type="button" class="pdvf-npc-roll damage" data-action="damage" data-which="charge">{{system.charge}}</button>{{else}}—{{/if}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.NaturalArmor"}}</span>
+            <span>{{#if editMode}}<input type="number" name="system.naturalArmor" value="{{system.naturalArmor}}" min="0" aria-label="{{localize 'PDVF.Horse.NaturalArmor'}}">{{else}}{{system.naturalArmor}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.BardingLabel"}}</span>
+            <span>{{#if editMode}}<select name="system.barding">{{#each bardingChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{bardingLabel}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.TotalArmor"}}</span>
+            <span><strong>{{system.derived.armor}}</strong></span>
+            <span class="lbl">{{localize "PDVF.Horse.WarTrained"}}</span>
+            <span><input type="checkbox" name="system.warTrained" {{checked system.warTrained}} {{#unless editMode}}disabled{{/unless}} aria-label="{{localize 'PDVF.Horse.WarTrained'}}"></span>
+          </div>
+          {{#if system.derived.bardingTooHeavy}}<p class="pdvf-wiz-warning">{{localize "PDVF.Horse.BardingTooHeavy"}}</p>{{/if}}
+          {{#unless system.warTrained}}<p class="pdvf-hint">{{localize "PDVF.Horse.UntrainedHint"}}</p>{{/unless}}
+        </section>
+      </div>
+
+      <div class="pdvf-npc-col">
+        <section class="pdvf-boxed">
+          <h3 class="pdvf-h3 red">{{localize "PDVF.Horse.Identity"}}</h3>
+          <div class="pdvf-npc-squire-grid">
+            <span class="lbl">{{localize "PDVF.Horse.SexLabel"}}</span>
+            <span>{{#if editMode}}<select name="system.sex">{{#each sexChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{localize (concat "PDVF.Horse.Sex." system.sex)}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Npc.Age"}}</span>
+            <span class="pdvf-inline">
+              {{#if editMode}}
+              <span class="pdvf-stepper pdvf-age-stepper">
+                <button type="button" class="pdvf-step" data-action="age" data-step="-1" aria-label="{{localize 'PDVF.Sheet.Decrease'}} {{localize 'PDVF.Npc.Age'}}">−</button>
+                <span class="pdvf-age-value">{{#if system.age}}{{system.age}}{{else}}—{{/if}}</span>
+                <button type="button" class="pdvf-step" data-action="age" data-step="1" aria-label="{{localize 'PDVF.Sheet.Increase'}} {{localize 'PDVF.Npc.Age'}}">+</button>
+              </span>
+              {{/if}}
+              {{#unless editMode}}{{#if system.age}}<strong>{{system.age}} {{localize "PDVF.Horse.Years"}}</strong>{{else}}—{{/if}}{{/unless}}
+              {{#if system.born}}<span class="pdvf-faint">({{localize "PDVF.Npc.BornIn"}} {{system.born}})</span>{{/if}}
+            </span>
+            <span class="lbl">{{localize "PDVF.Horse.ColorLabel"}}</span>
+            <span>{{#if editMode}}<select name="system.color">{{#each colorChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{localize (concat "PDVF.Horse.Color." system.color)}}{{#if colorGlory}} <span class="pdvf-faint">({{colorGlory}} {{localize "PDVF.Horse.GloryShort"}})</span>{{/if}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.Price"}}</span>
+            <span>{{priceLabel}}</span>
+          </div>
+          {{#if stallionHint}}<p class="pdvf-hint">{{stallionHint}}</p>{{/if}}
+        </section>
+
+        <section>
+          <h3 class="pdvf-h3">{{localize "PDVF.Horse.Tricks"}}</h3>
+          {{#if editMode}}
+          <div class="pdvf-horse-tricks">
+            {{#each tricks}}<label class="pdvf-inline"><input type="checkbox" name="tricks.{{id}}" {{checked checked}}> {{label}}</label>{{/each}}
+          </div>
+          <p class="pdvf-hint">{{localize "PDVF.Horse.TricksHint"}}</p>
+          {{else}}
+          <p>{{#if knownTricks}}{{knownTricks}}{{else}}<span class="pdvf-faint">{{localize "PDVF.Horse.NoTrick"}}</span>{{/if}}</p>
+          {{/if}}
+        </section>
+
+        <section>
+          <h3 class="pdvf-h3">{{localize "PDVF.Horse.PersonalityTitle"}}</h3>
+          <ul class="pdvf-horse-personality">
+            {{#each personality}}
+            <li><strong>{{label}}</strong> <span class="pdvf-faint">— {{tip}}</span>
+              {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="removePersonality" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>{{/if}}
+            </li>
+            {{else}}<li class="pdvf-faint">{{localize "PDVF.Horse.NoPersonality"}}</li>
+            {{/each}}
+          </ul>
+          {{#if editMode}}<button type="button" class="pdvf-btn" data-action="rollPersonality"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i> {{localize "PDVF.Horse.RollPersonality"}}</button>{{/if}}
+        </section>
+
+        <section>
+          <h3 class="pdvf-h3">{{localize "PDVF.Horse.Condition"}}</h3>
+          <div class="pdvf-npc-squire-grid">
+            <span class="lbl">{{localize "PDVF.Horse.Weakened"}}</span>
+            <span>{{#if editMode}}{{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name="system.weakened" value=system.weakened min="0" label=(localize "PDVF.Horse.Weakened")}}{{else}}{{system.weakened}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.HpLoss"}}</span>
+            <span>{{#if editMode}}<input type="number" name="system.hpLoss" value="{{system.hpLoss}}" min="0" aria-label="{{localize 'PDVF.Horse.HpLoss'}}">{{else}}{{system.hpLoss}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Horse.Exhausted"}}</span>
+            <span><input type="checkbox" name="system.exhausted" {{checked system.exhausted}} {{#unless editMode}}disabled{{/unless}} aria-label="{{localize 'PDVF.Horse.Exhausted'}}"></span>
+          </div>
+          <p class="pdvf-hint">{{localize "PDVF.Horse.ConditionHint"}}</p>
+          <button type="button" class="pdvf-btn" data-action="exhaustion" data-tooltip="{{localize 'PDVF.Horse.ExhaustionTip'}}"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i> {{localize "PDVF.Horse.ExhaustionTest"}}</button>
+        </section>
+      </div>
+    </div>
+
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Notes"}}</h2>
+    {{#if editMode}}
+    <textarea name="system.notes" rows="4" aria-label="{{localize 'PDVF.Section.Notes'}}">{{system.notes}}</textarea>
+    {{else}}
+    <div class="pdvf-npc-notes">{{system.notes}}</div>
+    {{/if}}
+  </div>
+
+  <footer class="pdvf-footer">
+    <span>{{localize "PDVF.Footer.Click"}}</span>
+    <span>{{localize "PDVF.Footer.Shift"}}</span>
+  </footer>
+</div>

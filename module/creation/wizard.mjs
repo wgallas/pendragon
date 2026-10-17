@@ -3,6 +3,7 @@ import * as R from "./rules.mjs";
 import { generateFamily } from "../family/generator.mjs";
 import { familyView } from "../family/view.mjs";
 import { applyFamilyHistory } from "../family/apply.mjs";
+import { createStartingHorses } from "../documents/followers.mjs";
 import { traitPair, formatValue } from "../rules/resolution.mjs";
 import { signed } from "../dice/tests.mjs";
 
@@ -553,6 +554,13 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     await this.actor.unsetFlag(SYSTEM_ID, DRAFT);
     ui.notifications.info(game.i18n.format("PDVF.Wizard.Done", { name: out.name }));
     // Fermer sans réenregistrer le brouillon
+    // Chevaux de départ (destrier, deux roncins, sommier), s'il n'y en a pas encore
+    try {
+      const horses = await createStartingHorses(this.actor);
+      if (horses.length) ui.notifications.info(game.i18n.format("PDVF.Horse.StartingCreated", { count: horses.length }));
+    } catch (err) {
+      console.error("pendragon-vf | Chevaux de départ", err);
+    }
     this._finished = true;
     return this.close();
   }

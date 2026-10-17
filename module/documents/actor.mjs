@@ -20,6 +20,10 @@ export class PendragonActor extends Actor {
       this.updateSource(updates);
       return;
     }
+    if (this.type === "cheval") {
+      this.updateSource({ "prototypeToken.actorLink": true });
+      return;
+    }
     if (this.type !== "chevalier") return;
     const updates = { "prototypeToken.actorLink": true };
     if (!data.system?.passions?.length) {
@@ -49,6 +53,11 @@ export class PendragonActor extends Actor {
   getRollable(key) {
     if (!key) return null;
     if (this.type === "pnj") return this._npcRollable(key);
+    if (this.type === "cheval") {
+      const [kind, id] = key.split(".");
+      if (kind !== "char" || !(id in (this.system.characteristics ?? {}))) return null;
+      return { key, kind: "characteristic", label: game.i18n.localize(`PDVF.Char.${id}.long`), value: this.system.characteristics[id].value, canXp: false };
+    }
     if (this.type !== "chevalier") return null;
     const s = this.system;
     const L = (k) => game.i18n.localize(k);
@@ -165,6 +174,7 @@ export class PendragonActor extends Actor {
       ];
       return keys.map(k => this.getRollable(k)).filter(Boolean);
     }
+    if (this.type === "cheval") return ["siz", "dex", "str", "con"].map(c => this.getRollable(`char.${c}`)).filter(Boolean);
     if (this.type !== "chevalier") return [];
     const keys = [
       ...PDVF.characteristics.map(c => `char.${c}`),

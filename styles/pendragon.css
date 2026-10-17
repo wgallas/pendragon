@@ -1020,3 +1020,24 @@
 .pendragon-vf .pdvf-wiz-table thead th { color: var(--pdvf-lapis); }
 .pendragon-vf .pdvf-age-stepper { align-items: center; }
 .pendragon-vf .pdvf-age-value { min-width: 34px; text-align: center; font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; border-block: 1px solid var(--pdvf-rule-strong); line-height: 26px; }
+
+/* Fiche de cheval */
+.pendragon-vf .pdvf-npc-chars.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.pendragon-vf .pdvf-horse .pdvf-boxed .pdvf-npc-squire-grid input[type="text"],
+.pendragon-vf .pdvf-horse .pdvf-boxed .pdvf-npc-squire-grid input[type="number"] { width: 90px; }
+.pendragon-vf .pdvf-horse .pdvf-boxed .pdvf-h3 { margin-top: 0; }
+.pendragon-vf .pdvf-horse .pdvf-field { display: flex; flex-direction: column; gap: 2px; }
+.pendragon-vf .pdvf-horse .pdvf-field select { min-width: 0; flex: 1; }
+.pendragon-vf .pdvf-mini { margin: 0; min-height: 28px; padding: 2px 8px; font-size: 13px; white-space: nowrap; }
+.pendragon-vf .pdvf-blocked th, .pendragon-vf .pdvf-blocked td { text-decoration: line-through; color: var(--pdvf-ink-faint); }
+.pendragon-vf .pdvf-horse-tricks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; font-size: 15px; }
+.pendragon-vf .pdvf-horse-personality { margin: 0; padding-left: 18px; font-size: 15px; }
+.pendragon-vf .pdvf-horse-personality li { margin: 2px 0; }
+.pendragon-vf .pdvf-horse-personality li .pdvf-icon-btn { width: 22px; height: 22px; vertical-align: middle; }
+.pendragon-vf .pdvf-horse .pdvf-npc-col > section:not(.pdvf-boxed) .pdvf-h3 { margin-top: 4px; }
+.pendragon-vf .pdvf-follower.main { border-color: var(--pdvf-gold, #B07A12); box-shadow: inset 3px 0 0 var(--pdvf-gold, #B07A12); }
+.pendragon-vf .pdvf-main-horse { width: 26px; height: 26px; flex: none; padding: 0; margin: 0; background: none; border: 0; color: var(--pdvf-rule-strong); cursor: pointer; font-size: 16px; }
+.pendragon-vf .pdvf-main-horse.on { color: var(--pdvf-gold, #B07A12); }
+.pendragon-vf .pdvf-main-horse:hover { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pendragon-vf .pdvf-follower-meta select { min-height: 24px; font-size: 13px; padding: 0 4px; width: auto; }

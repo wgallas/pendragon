@@ -33,6 +33,43 @@
     <div class="pdvf-drop-hint">{{localize "PDVF.Suite.DropHint"}}</div>
   </div>
 
+  <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Suite.Stable"}}
+    {{#if canCreateActors}}<button type="button" class="pdvf-btn pdvf-h2-btn" data-action="newHorse"><i class="fa-solid fa-horse" aria-hidden="true"></i> {{localize "PDVF.Horse.New"}}</button>{{/if}}
+  </h2>
+  <div class="pdvf-followers">
+    {{#each horses}}
+    <div class="pdvf-follower {{#if missing}}missing{{/if}} {{#if main}}main{{/if}}">
+      {{#if missing}}
+      <span class="pdvf-follower-name">{{name}}</span>
+      {{else}}
+      <button type="button" class="pdvf-main-horse {{#if main}}on{{/if}}" data-action="setMainHorse" data-uuid="{{uuid}}" aria-pressed="{{#if main}}true{{else}}false{{/if}}" data-tooltip="{{localize 'PDVF.Horse.MainTip'}}"><i class="fa-solid fa-star" aria-hidden="true"></i><span class="pdvf-sr">{{localize "PDVF.Horse.Main"}}</span></button>
+      <img class="pdvf-follower-img" src="{{img}}" alt="">
+      <div class="pdvf-follower-main">
+        <button type="button" class="pdvf-follower-name pdvf-plain" data-action="openFollower" data-uuid="{{uuid}}">{{name}}</button>
+        <div class="pdvf-follower-meta">
+          {{#if @root.editMode}}
+          <select name="system.horses.{{index}}.role" aria-label="{{localize 'PDVF.Horse.RoleLabel'}}">{{#each roleChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          {{else}}<span>{{roleLabel}}</span>{{/if}}
+          <span>{{type}} · {{sex}} · {{color}}{{#if age}} · {{age}} {{localize "PDVF.Horse.Years"}}{{/if}}</span>
+          <span>{{localize "PDVF.Health.hp"}} {{hp}} · {{localize "PDVF.Horse.ArmorShort"}} {{armor}} · {{localize "PDVF.Horse.MoveShort"}} {{move}}</span>
+          {{#if weakened}}<span class="pdvf-warn-text">{{localize "PDVF.Horse.Weakened"}}</span>{{/if}}
+          {{#if exhausted}}<span class="pdvf-warn-text">{{localize "PDVF.Horse.Exhausted"}}</span>{{/if}}
+        </div>
+      </div>
+      {{#if charge}}
+      <button type="button" class="pdvf-follower-roll" data-action="horseCharge" data-uuid="{{uuid}}" data-tooltip="{{localize 'PDVF.Horse.ChargeTip'}}">
+        <span>{{localize "PDVF.Horse.ChargeShort"}}</span><i class="pdvf-die-icon" aria-hidden="true"></i><strong>{{charge}}</strong>
+      </button>
+      {{/if}}
+      {{/if}}
+      {{#if (or @root.editMode missing)}}
+      <button type="button" class="pdvf-icon-btn" data-action="removeHorse" data-index="{{index}}" aria-label="{{localize 'PDVF.Suite.RemoveHorse'}}" data-tooltip="{{localize 'PDVF.Suite.RemoveHorse'}}">×</button>
+      {{/if}}
+    </div>
+    {{/each}}
+    <div class="pdvf-drop-hint">{{localize "PDVF.Suite.DropHorseHint"}}</div>
+  </div>
+
   <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Suite.Domain"}}</h2>
   <p class="pdvf-upcoming">{{localize "PDVF.Upcoming.Suite"}}</p>
 </section>

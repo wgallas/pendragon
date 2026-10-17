@@ -5,7 +5,8 @@ import { FamilyHistoryApp } from "../family/family-app.mjs";
 import { familyView } from "../family/view.mjs";
 import { getFamilyHistory } from "../family/apply.mjs";
 import { CreationWizard } from "../creation/wizard.mjs";
-import { addFollower, removeFollower, resolveFollowers, createSquire } from "../documents/followers.mjs";
+import { addFollower, removeFollower, resolveFollowers, createSquire, addHorse, removeHorse, resolveHorses, knightHorseGlory, promptNewHorse } from "../documents/followers.mjs";
+import { rollDamage } from "../dice/tests.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -13,7 +14,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 const TPL = `systems/${SYSTEM_ID}/templates/actor/chevalier`;
 const TAB_IDS = ["chevalier", "traits", "combat", "suite", "lignee", "chronique"];
 /** Chemins des tableaux du modèle, dont les lignes sont éditées dans le formulaire. */
-const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents"];
+const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.horses", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents"];
 
 const L = (k) => game.i18n.localize(k);
 
@@ -64,7 +65,11 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       newSquire: ChevalierSheet.#onNewSquire,
       openFollower: ChevalierSheet.#onOpenFollower,
       removeFollower: ChevalierSheet.#onRemoveFollower,
-      rollFollower: ChevalierSheet.#onRollFollower
+      rollFollower: ChevalierSheet.#onRollFollower,
+      newHorse: ChevalierSheet.#onNewHorse,
+      removeHorse: ChevalierSheet.#onRemoveHorse,
+      setMainHorse: ChevalierSheet.#onSetMainHorse,
+      horseCharge: ChevalierSheet.#onHorseCharge
     }
   };
 
@@ -236,6 +241,23 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
     context.canCreateActors = game.user.can?.("ACTOR_CREATE") ?? false;
 
+    // Écurie
+    const roles = ["war", "riding", "squire", "pack"];
+    context.horses = resolveHorses(actor).map(h => {
+      const a = h.actor;
+      if (!a) return { index: h.index, missing: true, name: L("PDVF.Suite.MissingHorse") };
+      const s = a.system;
+      return {
+        index: h.index, uuid: a.uuid, name: a.name, img: a.img,
+        main: a.uuid === system.mainHorse,
+        type: L(`PDVF.Horse.Type.${s.horseType}`), sex: L(`PDVF.Horse.Sex.${s.sex}`), color: L(`PDVF.Horse.Color.${s.color}`),
+        age: s.age, hp: `${s.health.hp.value} / ${s.health.hp.max}`, armor: s.derived.armor, move: s.derived.move,
+        charge: s.charge, warTrained: s.warTrained, weakened: s.weakened, exhausted: s.exhausted,
+        roleLabel: L(`PDVF.Horse.Role.${h.role}`),
+        roleChoices: roles.map(r => ({ value: r, label: L(`PDVF.Horse.Role.${r}`), selected: r === h.role }))
+      };
+    });
+
     // Onglet Lignée
     context.titleChoices = ["sire", "dame"].map(v => ({ value: v, label: L(`PDVF.Title.${v}`) }));
     context.religionChoices = Object.entries(PDVF.religions).map(([v, r]) => ({ value: v, label: L(r.label ?? `PDVF.Religion.${v}`) }));
@@ -250,7 +272,9 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Onglet Chronique
     context.chronicle = system.chronicleRows;
     context.livingChoices = PDVF.livingStandards.map(v => ({ value: L(`PDVF.Living.${v}`), label: L(`PDVF.Living.${v}`) }));
-    context.passive = system.passive;
+    // Gloire passive : celle des chevaux est calculée à partir de l'écurie
+    const horseGlory = knightHorseGlory(actor);
+    context.passive = { ...system.passive, horses: horseGlory.total, horsesDetail: horseGlory, total: system.passive.total + horseGlory.total };
     context.prestige = {
       earned: system.prestigeEarned,
       used: system.glory.prestigeUsed,
@@ -329,7 +353,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
       for (const [i, row] of Object.entries(incoming)) {
         // Une inspiration close entre-temps (nouveau jour, « Fin ») ne doit pas renaître d'un formulaire périmé.
-        if (path === "system.inspirations" && !rows[Number(i)]) continue;
+        if ((path === "system.inspirations" || path === "system.horses") && !rows[Number(i)]) continue;
         rows[Number(i)] = foundry.utils.mergeObject(rows[Number(i)] ?? {}, row, { inplace: false });
       }
       foundry.utils.setProperty(data, path, rows);
@@ -427,6 +451,12 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Un PNJ déposé sur la fiche rejoint la suite du chevalier. */
   async _onDropActor(event, actor) {
+    if (this.isEditable && actor?.type === "cheval") {
+      await addHorse(this.document, actor);
+      this.tabGroups.primary = "suite";
+      this.render();
+      return actor;
+    }
     if (!this.isEditable || actor?.type !== "pnj") return super._onDropActor?.(event, actor) ?? null;
     await addFollower(this.document, actor);
     this.tabGroups.primary = "suite";
@@ -437,6 +467,25 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onNewSquire() {
     const npc = await createSquire(this.document);
     if (npc) { this.tabGroups.primary = "suite"; this.render(); }
+  }
+
+  static async #onNewHorse() {
+    const horse = await promptNewHorse(this.document);
+    if (horse) { this.tabGroups.primary = "suite"; this.render(); }
+  }
+
+  static async #onRemoveHorse(event, target) {
+    await removeHorse(this.document, Number(target.dataset.index));
+  }
+
+  static async #onSetMainHorse(event, target) {
+    const uuid = target.dataset.uuid;
+    await this.document.update({ "system.mainHorse": this.document.system.mainHorse === uuid ? "" : uuid });
+  }
+
+  static async #onHorseCharge(event, target) {
+    const horse = globalThis.fromUuidSync?.(target.dataset.uuid);
+    if (horse) await rollDamage(this.document, horse.system.charge, game.i18n.format("PDVF.Horse.ChargeOf", { name: horse.name }));
   }
 
   static #onOpenFollower(event, target) {

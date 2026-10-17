@@ -4,6 +4,7 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { CREATION } from "../creation/data.mjs";
 import { formulaValue, defaultState } from "../creation/rules.mjs";
+import { horseFromType, horsePassiveGlory } from "../rules/horses.mjs";
 import { squireAgeFromRoll, squireOriginFromRoll, squireOrigin, squireSkill, squireKnightly, normalizeLabel } from "../rules/followers.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -276,4 +277,93 @@ export function squireWizardDraft(npc, C) {
     draft.apprentice.alloc = { skills: years, traits: 0, chars: 0 };
   }
   return draft;
+}
+
+/* -------------------------------------------- */
+/*  Écurie                                       */
+/* -------------------------------------------- */
+
+/** Rattache un cheval à l'écurie d'un chevalier (sans doublon). */
+export async function addHorse(knight, horse, role = null) {
+  if (knight?.type !== "chevalier" || horse?.type !== "cheval") return null;
+  const rows = foundry.utils.deepClone(knight._source.system.horses ?? []);
+  if (rows.some(r => r.uuid === horse.uuid)) return horse;
+  const group = horse.system.typeGroup;
+  rows.push({ uuid: horse.uuid, role: role ?? (group === "war" || group === "fae" ? "war" : group === "work" ? "pack" : "riding") });
+  const update = { "system.horses": rows };
+  // Premier cheval de guerre : cheval principal
+  if (!knight.system.mainHorse && horse.system.warTrained) update["system.mainHorse"] = horse.uuid;
+  await knight.update(update);
+  return horse;
+}
+
+export async function removeHorse(knight, index) {
+  const rows = foundry.utils.deepClone(knight._source.system.horses ?? []);
+  const [gone] = rows.splice(index, 1);
+  const update = { "system.horses": rows };
+  if (gone && gone.uuid === knight.system.mainHorse) update["system.mainHorse"] = "";
+  return knight.update(update);
+}
+
+/** Chevaux d'un chevalier, résolus. */
+export function resolveHorses(knight) {
+  return (knight.system.horses ?? []).map((h, index) => ({ index, uuid: h.uuid, role: h.role, actor: globalThis.fromUuidSync?.(h.uuid) ?? null }));
+}
+
+/** Gloire passive annuelle des chevaux d'un chevalier. */
+export function knightHorseGlory(knight) {
+  const horses = resolveHorses(knight).map(h => h.actor).filter(a => a?.type === "cheval");
+  const main = horses.find(a => a.uuid === knight.system.mainHorse) ?? null;
+  return horsePassiveGlory(horses, main, knight.system.skills?.horsemanship?.value);
+}
+
+/** Crée un cheval d'un type donné et le rattache au chevalier. */
+export async function createHorse(knight, { type, name, sex, color = "bay", role = null } = {}) {
+  if (!game.user.can("ACTOR_CREATE")) { ui.notifications.warn(L("PDVF.Npc.NoCreatePermission")); return null; }
+  const year = Number(game.settings.get(SYSTEM_ID, "currentYear")) || 508;
+  const system = horseFromType(type, { sex: sex ?? "gelding", color, born: year - 6 });
+  const horse = await Actor.implementation.create({
+    name: name || L(`PDVF.Horse.Type.${type}`),
+    type: "cheval",
+    folder: knight.folder?.id ?? null,
+    ownership: foundry.utils.deepClone(knight.ownership),
+    system
+  });
+  if (horse) await addHorse(knight, horse, role);
+  return horse;
+}
+
+/** Les quatre chevaux de départ (Livre du joueur p. 54), si le chevalier n'a pas encore d'écurie. */
+export async function createStartingHorses(knight) {
+  if ((knight.system.horses ?? []).length) return [];
+  if (!game.user.can("ACTOR_CREATE")) { ui.notifications.warn(L("PDVF.Horse.NoStartingHorses")); return []; }
+  const out = [];
+  for (const h of PDVF.startingHorses) {
+    const name = F(`PDVF.Horse.StartingName.${h.role}`, { name: knight.name });
+    out.push(await createHorse(knight, { type: h.type, name, sex: h.sex, role: h.role }));
+  }
+  return out.filter(Boolean);
+}
+
+/** Fenêtre « Nouveau cheval » : type, nom, sexe, robe. */
+export async function promptNewHorse(knight) {
+  const { DialogV2 } = foundry.applications.api;
+  const groups = ["war", "riding", "work", "fae"].map(g => `<optgroup label="${L(`PDVF.Horse.Group.${g}`)}">` +
+    Object.entries(PDVF.horseTypes).filter(([, t]) => t.group === g).map(([id]) => `<option value="${id}" ${id === "destrier" ? "selected" : ""}>${L(`PDVF.Horse.Type.${id}`)}</option>`).join("") + "</optgroup>").join("");
+  const sexes = PDVF.horseSexes.map(id => `<option value="${id}" ${id === "gelding" ? "selected" : ""}>${L(`PDVF.Horse.Sex.${id}`)}</option>`).join("");
+  const colors = Object.keys(PDVF.horseColors).map(id => `<option value="${id}">${L(`PDVF.Horse.Color.${id}`)}</option>`).join("");
+  const result = await DialogV2.wait({
+    window: { title: L("PDVF.Horse.New") },
+    classes: [SYSTEM_ID, "pdvf-dialog"],
+    content: `<div class="form-group"><label>${L("PDVF.Horse.TypeLabel")}</label><select name="type">${groups}</select></div>
+      <div class="form-group"><label>${L("PDVF.Bio.name")}</label><input type="text" name="name" placeholder="${L("PDVF.Horse.NamePlaceholder")}"></div>
+      <div class="form-group"><label>${L("PDVF.Horse.SexLabel")}</label><select name="sex">${sexes}</select></div>
+      <div class="form-group"><label>${L("PDVF.Horse.ColorLabel")}</label><select name="color">${colors}</select></div>`,
+    rejectClose: false,
+    buttons: [{ action: "ok", label: L("PDVF.Horse.Create"), icon: "fa-solid fa-horse", default: true,
+      callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
+    { action: "cancel", label: L("PDVF.Dialog.Cancel") }]
+  });
+  if (!result || result === "cancel") return null;
+  return createHorse(knight, { type: result.type, name: String(result.name || "").trim(), sex: result.sex, color: result.color });
 }

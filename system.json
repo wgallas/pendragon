@@ -33,7 +33,8 @@
   "documentTypes": {
     "Actor": {
       "chevalier": {},
-      "pnj": {}
+      "pnj": {},
+      "cheval": {}
     }
   },
   "grid": {

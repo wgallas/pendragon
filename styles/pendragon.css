@@ -968,3 +968,39 @@
 .pendragon-vf .pdvf-npc-item input[type="number"] { width: 64px; flex: none; }
 .pendragon-vf .pdvf-npc-squire-grid input[type="number"] { width: 70px; }
 .pendragon-vf .pdvf-npc-field input { width: auto; }
+
+/* Fenêtres de dialogue du système : thème parchemin complet
+   (sinon les boutons gardent le fond sombre de Foundry avec le texte encre du système). */
+.pendragon-vf.pdvf-dialog .window-content {
+  background: var(--pdvf-parchment);
+  color: var(--pdvf-ink);
+  font-family: var(--pdvf-font-body);
+  font-size: 16px;
+}
+.pendragon-vf.pdvf-dialog .window-content label,
+.pendragon-vf.pdvf-dialog .window-content legend,
+.pendragon-vf.pdvf-dialog .window-content p { color: var(--pdvf-ink); }
+.pendragon-vf.pdvf-dialog .window-content .hint { color: var(--pdvf-ink-soft); font-style: italic; font-size: 14px; }
+.pendragon-vf.pdvf-dialog .form-footer button,
+.pendragon-vf.pdvf-dialog footer button {
+  background: var(--pdvf-parchment-light);
+  border: 1px solid var(--pdvf-rule-strong);
+  border-radius: 2px;
+  color: var(--pdvf-ink);
+  font-family: var(--pdvf-font-body);
+  font-size: 16px;
+  box-shadow: none;
+}
+.pendragon-vf.pdvf-dialog .form-footer button:hover,
+.pendragon-vf.pdvf-dialog footer button:hover { border-color: var(--pdvf-vermilion); color: var(--pdvf-vermilion); }
+.pendragon-vf.pdvf-dialog .form-footer button[autofocus],
+.pendragon-vf.pdvf-dialog .form-footer button.default,
+.pendragon-vf.pdvf-dialog footer button[autofocus] {
+  background: var(--pdvf-vermilion);
+  border-color: var(--pdvf-vermilion);
+  color: var(--pdvf-parchment-light);
+}
+.pendragon-vf.pdvf-dialog .form-footer button[autofocus]:hover,
+.pendragon-vf.pdvf-dialog footer button[autofocus]:hover { background: var(--pdvf-vermilion-dark); color: var(--pdvf-parchment-light); }
+.pendragon-vf.pdvf-dialog .form-footer button i,
+.pendragon-vf.pdvf-dialog footer button i { color: inherit; }

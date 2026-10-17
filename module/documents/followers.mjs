@@ -2,6 +2,8 @@
  * Suite du chevalier : rattacher un PNJ, créer un écuyer (Table 12.7), convertir un PNJ en chevalier.
  */
 import { PDVF, SYSTEM_ID } from "../config.mjs";
+import { CREATION } from "../creation/data.mjs";
+import { formulaValue } from "../creation/rules.mjs";
 import { squireAgeFromRoll, squireOriginFromRoll, squireOrigin, squireSkill, squireKnightly, normalizeLabel } from "../rules/followers.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -128,13 +130,17 @@ export function guessCourt(name) {
 export function knightDataFromNpc(npc, localize = L) {
   const s = npc.system;
   const byLabel = new Map(Object.keys(PDVF.skills).map(id => [normalizeLabel(localize(`PDVF.Skill.${id}`)), id]));
-  const skills = Object.fromEntries(Object.keys(PDVF.skills).map(id => [id, { value: Number(s.defaultSkill ?? PDVF.npcDefaultSkill), xp: false }]));
+  // Base : valeurs de départ du chevalier (Livre du joueur, Table 3.5) tirées des caractéristiques
+  const ch = Object.fromEntries(PDVF.characteristics.map(id => [id, Number(s.characteristics?.[id]?.value) || 10]));
+  const C = PDVF.creation ?? CREATION;
+  const skills = Object.fromEntries(Object.keys(PDVF.skills).map(id =>
+    [id, { value: Math.max(0, formulaValue(C.startingSkills?.[id] ?? s.defaultSkill ?? PDVF.npcDefaultSkill, ch)), xp: false }]));
   const extraSkills = [];
   const setSkill = (id, value) => { skills[id].value = Math.max(skills[id].value, Number(value) || 0); };
 
-  // Compétences de l'écuyer (âge − 9), puis compétences notées, puis compétences des attaques
+  // Compétences de l'écuyer (âge − 9) si elles dépassent la base, puis compétences notées, puis celles des attaques
   const v = s.squireView;
-  if (v && v.knightly !== null) for (const id of v.knightlyIds) if (id in skills) skills[id].value = v.knightly;
+  if (v && v.knightly !== null) for (const id of v.knightlyIds) if (id in skills) setSkill(id, v.knightly);
   for (const r of s.skills ?? []) {
     const id = byLabel.get(normalizeLabel(r.name));
     if (id) skills[id].value = Number(r.value) || 0;
@@ -170,8 +176,11 @@ export function knightDataFromNpc(npc, localize = L) {
     s.possessions ? `${localize("PDVF.Npc.Possessions")} : ${s.possessions}` : ""
   ].filter(Boolean).join("\n\n");
 
-  const characteristics = Object.fromEntries(PDVF.characteristics.map(id => [id, { value: Number(s.characteristics?.[id]?.value) || 10 }]));
+  const characteristics = Object.fromEntries(PDVF.characteristics.map(id => [id, { value: ch[id] }]));
+  const age = v?.age ?? null;
+  const knighthood = knighthoodFromSkills(skills, age, C);
   return {
+    knighthood,
     name: npc.name,
     type: "chevalier",
     img: npc.img,
@@ -182,24 +191,47 @@ export function knightDataFromNpc(npc, localize = L) {
       honor: { value: s.honor === null || s.honor === undefined ? 15 : Number(s.honor), xp: false },
       biography: {
         born: s.category === "squire" ? (s.squire?.born ?? null) : null,
-        knightClass: s.category === "squire" ? "squire" : ""
+        knightClass: s.category === "squire" && !knighthood.eligible ? "squire" : (s.category === "squire" ? "household" : "")
       },
       notes
     }
   };
 }
 
+/** Conditions d'adoubement (Livre du joueur p. 53) d'après des compétences de chevalier. */
+export function knighthoodFromSkills(skills, age, C = PDVF.creation ?? CREATION) {
+  const k = C.knighthood;
+  const val = (id) => Number(skills[id]?.value) || 0;
+  const weapons = k.weapons.map(id => ({ id, value: val(id), ok: val(id) >= k.minValue }));
+  const othersOk = k.others.filter(id => val(id) >= k.minValue).length >= k.othersNeeded;
+  const ageOk = age === null || age >= k.minAge;
+  return { age, ageOk, weapons, othersOk, eligible: ageOk && othersOk && weapons.every(w => w.ok) };
+}
+
 /** Crée un chevalier à partir d'un PNJ ; le PNJ est conservé. */
 export async function convertNpcToKnight(npc) {
   if (npc?.type !== "pnj") return null;
   if (!game.user.can("ACTOR_CREATE")) return ui.notifications.warn(L("PDVF.Npc.NoCreatePermission"));
+  const data = knightDataFromNpc(npc);
+  const kh = data.knighthood;
+  delete data.knighthood;
+  let warning = "";
+  if (!kh.eligible) {
+    const C = PDVF.creation ?? CREATION;
+    const missing = [
+      kh.ageOk ? null : `${L("PDVF.Wizard.Knight.age")} ${kh.age} (${C.knighthood.minAge})`,
+      ...kh.weapons.filter(w => !w.ok).map(w => `${L(`PDVF.Skill.${w.id}`)} ${w.value} (${C.knighthood.minValue})`),
+      kh.othersOk ? null : L("PDVF.Wizard.Knight.others")
+    ].filter(Boolean);
+    warning = `<p class="pdvf-wiz-warning">${L("PDVF.Npc.ConvertNotEligible")}</p><ul>${missing.map(m => `<li>${m}</li>`).join("")}</ul>`;
+  }
   const ok = await foundry.applications.api.DialogV2.confirm({
     window: { title: L("PDVF.Npc.Convert") },
-    content: `<p>${F("PDVF.Npc.ConvertConfirm", { name: npc.name })}</p>`,
+    classes: [SYSTEM_ID, "pdvf-dialog"],
+    content: `<p>${F("PDVF.Npc.ConvertConfirm", { name: npc.name })}</p>${warning}`,
     rejectClose: false
   });
   if (!ok) return null;
-  const data = knightDataFromNpc(npc);
   data.folder = npc.folder?.id ?? null;
   data.ownership = foundry.utils.deepClone(npc.ownership);
   data.flags = { [SYSTEM_ID]: { convertedFrom: npc.uuid } };

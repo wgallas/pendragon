@@ -236,7 +236,7 @@ export function familyTraitResult(state, C = CREATION) {
 /*  Compétences                                  */
 /* -------------------------------------------- */
 
-function formulaValue(formula, ch) {
+export function formulaValue(formula, ch) {
   if (typeof formula === "number") return formula;
   const m = String(formula).match(/^(siz|dex|str|con|app)([/-])(\d+)$/);
   if (!m) return Number(formula) || 0;

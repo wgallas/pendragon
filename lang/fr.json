@@ -699,8 +699,9 @@
       "NoCreatePermission": "Vous n'avez pas le droit de créer des acteurs : demandez au MJ.",
       "Convert": "Convertir en chevalier",
       "ConvertTip": "Crée une fiche de chevalier avec ces valeurs ; ce PNJ est conservé",
-      "ConvertConfirm": "Créer une fiche de chevalier à partir de {name} ? Ses caractéristiques, compétences, traits, passions et son Honneur sont repris ; la fiche de PNJ est conservée.",
-      "Converted": "{name} : fiche de chevalier créée."
+      "ConvertConfirm": "Créer une fiche de chevalier à partir de {name} ? Ses caractéristiques, compétences (au moins les valeurs de départ de la Table 3.5), traits, passions et son Honneur sont repris ; la fiche de PNJ est conservée.",
+      "Converted": "{name} : fiche de chevalier créée.",
+      "ConvertNotEligible": "Il ne remplit pas encore les conditions de l'adoubement : la fiche sera créée comme écuyer, à compléter (par exemple en jouant ses dernières années d'écuyer)."
     },
     "Suite": {
       "Title": "Suite",

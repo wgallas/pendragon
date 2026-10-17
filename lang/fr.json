@@ -1377,8 +1377,11 @@
         "NoNpc": "La rencontre « {name} » n'a pas d'adversaire à placer.",
         "NoScene": "Aucune scène active.",
         "Placed": "{count} × {name} placés sur la scène.",
-        "Shown": "Bataille ouverte chez les joueurs."
-      }
+        "Shown": "Bataille ouverte chez les joueurs.",
+        "NoPreset": "Aucune rencontre ajoutée pour cette armée (déjà dans le paquet, ou rencontres introuvables).",
+        "NoEncounters": "Le paquet de rencontres est vide : ajoutez-en avant de commencer."
+      },
+      "EmptyDeck": "Le paquet de rencontres est vide : ajoutez le paquet type de l'armée adverse, ou glissez des rencontres (compendium « Rencontres de bataille ») ou des PNJ sur la fiche."
     }
   }
 }

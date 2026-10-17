@@ -1162,3 +1162,4 @@
 .pendragon-vf .pdvf-encounter textarea, .pendragon-vf .pdvf-battle textarea { width: 100%; font-family: var(--pdvf-font-body); font-size: 15px; }
 .pdvf-battle-card .pdvf-battle-text { margin: 6px 8px; }
 .pdvf-battle-card .pdvf-card-buttons { flex-wrap: wrap; }
+.pendragon-vf .pdvf-warn { color: var(--pdvf-vermilion-dark); font-weight: 600; }

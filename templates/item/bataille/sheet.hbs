@@ -240,6 +240,13 @@
         </div>
         {{/if}}
         {{else if isGM}}
+        {{#unless defaultChoices.length}}
+        <p class="pdvf-warn">{{localize "PDVF.Battle.EmptyDeck"}}</p>
+        <div class="pdvf-step-actions" data-group="preset">
+          <select aria-label="{{localize 'PDVF.Battle.ArmyLabel'}}">{{#each armyChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="addPreset">{{localize "PDVF.Battle.Op.addPreset"}}</button>
+        </div>
+        {{/unless}}
         <div class="pdvf-step-actions" data-group="default">
           <select aria-label="{{localize 'PDVF.Battle.DefaultEncounter'}}">{{#each defaultChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
           <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="confirmDefault">{{localize "PDVF.Battle.Op.confirmDefault"}}</button>

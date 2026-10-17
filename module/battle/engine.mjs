@@ -198,17 +198,8 @@ const ACTIONS = {
     if (sys.state.defaultId === id) sys.state.defaultId = "";
   } },
   addPreset: { who: "gm", fn: async ({ sys }, { army, id }) => {
-    army = army || id || sys.army;
-    const pack = game.packs.get(`world.${ENCOUNTER_PACK}`);
-    if (!pack) { ui.notifications.warn(L("PDVF.Battle.Notify.NoPack")); return false; }
-    const docs = await pack.getDocuments();
-    let n = 0;
-    for (const d of docs) {
-      if (!d.system.armies?.includes(army) || sys.encounters.some(e => e.source === d.uuid)) continue;
-      sys.encounters.push({ ...d.toObject().system, id: foundry.utils.randomID(), name: d.name, source: d.uuid, used: false });
-      n++;
-    }
-    if (!n) return false;
+    const n = await addPreset(sys, army || id || sys.army);
+    if (!n) { ui.notifications.warn(L("PDVF.Battle.Notify.NoPreset")); return false; }
   } },
   computeMorale: { who: "gm", fn: async (ctx) => computeMorale(ctx) },
   armyTests: { who: "gm", fn: async (ctx) => armyTests(ctx) },
@@ -216,6 +207,9 @@ const ACTIONS = {
   start: { who: "gm", fn: async (ctx) => {
     const { sys, battle } = ctx;
     if (!sys.knights.length) { ui.notifications.warn(L("PDVF.Battle.Notify.NoKnights")); return false; }
+    // Paquet vide : on prend le paquet type de l'armée adverse.
+    if (!sys.encounters.some(e => e.kind === "opponent")) await addPreset(sys, sys.army);
+    if (!sys.encounters.some(e => e.kind === "opponent")) { ui.notifications.warn(L("PDVF.Battle.Notify.NoEncounters")); return false; }
     const cfg = C();
     if (sys.intensity === null) sys.intensity = await rollFormula(cfg.sizes[sys.size].intensity, L("PDVF.Battle.RollIntensity"), battle);
     if (!sys.conroi.moraleStart) computeMorale(ctx);
@@ -528,6 +522,33 @@ const ACTIONS = {
 };
 
 export const ENCOUNTER_PACK = "pendragon-rencontres";
+
+/**
+ * Ajoute au paquet les rencontres d'une armée : celles du compendium du monde, ou à défaut
+ * celles du fichier de données du système. Renvoie le nombre de cartes ajoutées.
+ */
+async function addPreset(sys, army) {
+  let entries = [];
+  const pack = game.packs.get(`world.${ENCOUNTER_PACK}`);
+  if (pack) {
+    try { entries = (await pack.getDocuments()).map(d => ({ name: d.name, system: d.toObject().system, source: d.uuid })); }
+    catch (err) { console.warn(`${SYSTEM_ID} | Compendium des rencontres illisible`, err); }
+  }
+  if (!entries.length) {
+    try {
+      const data = await (await fetch(foundry.utils.getRoute(`systems/${SYSTEM_ID}/data/rencontres.json`))).json();
+      entries = data.items.map(i => ({ name: i.name, system: i.system, source: `${SYSTEM_ID}.rencontres.${i._id}` }));
+    } catch (err) { console.error(`${SYSTEM_ID} | Lecture des rencontres impossible`, err); }
+  }
+  let n = 0;
+  for (const e of entries) {
+    if (!e.system.armies?.includes(army)) continue;
+    if (sys.encounters.some(x => x.source === e.source || x.name === e.name)) continue;
+    sys.encounters.push({ ...foundry.utils.deepClone(e.system), id: foundry.utils.randomID(), name: e.name, source: e.source, used: false });
+    n++;
+  }
+  return n;
+}
 
 /* -------------------------------------------- */
 /*  Étapes partagées                             */

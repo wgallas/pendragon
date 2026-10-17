@@ -1,5 +1,6 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { traitPair, gloryTestValue, samePassion } from "../rules/resolution.mjs";
+import { normalizeLabel } from "../rules/followers.mjs";
 
 /**
  * Document Acteur du système.
@@ -10,6 +11,15 @@ export class PendragonActor extends Actor {
   /** Valeurs par défaut d'un nouveau chevalier. */
   async _preCreate(data, options, user) {
     if ((await super._preCreate(data, options, user)) === false) return false;
+    if (this.type === "pnj") {
+      // Écuyers et suivants sont des individus : jeton lié. Les autres PNJ restent génériques.
+      const category = data.system?.category ?? "character";
+      const c = foundry.utils.mergeObject({ siz: { value: 10 }, con: { value: 10 } }, data.system?.characteristics ?? {}, { inplace: false });
+      const updates = { "prototypeToken.actorLink": ["squire", "follower"].includes(category) };
+      if (data.system?.health?.hp?.value === undefined) updates["system.health.hp.value"] = (Number(c.siz.value) || 0) + (Number(c.con.value) || 0);
+      this.updateSource(updates);
+      return;
+    }
     if (this.type !== "chevalier") return;
     const updates = { "prototypeToken.actorLink": true };
     if (!data.system?.passions?.length) {
@@ -37,7 +47,9 @@ export class PendragonActor extends Actor {
    * @returns {{key:string, kind:string, label:string, value:number, canXp:boolean, opposite?:string}|null}
    */
   getRollable(key) {
-    if (!key || this.type !== "chevalier") return null;
+    if (!key) return null;
+    if (this.type === "pnj") return this._npcRollable(key);
+    if (this.type !== "chevalier") return null;
     const s = this.system;
     const L = (k) => game.i18n.localize(k);
     const [kind, id, side] = key.split(".");
@@ -80,8 +92,79 @@ export class PendragonActor extends Actor {
     return null;
   }
 
+  /**
+   * Attributs d'un PNJ. Clés : char.siz · attack.0 · nskill.0 · squire.skill · squire.sword ·
+   * ntrait.0 · passion.0 · honor · skill.sword (compétence nommée, notée ou par défaut).
+   */
+  _npcRollable(key) {
+    const s = this.system;
+    const L = (k) => game.i18n.localize(k);
+    const [kind, id] = key.split(".");
+    const base = { key, canXp: false };
+    switch (kind) {
+      case "char":
+        if (!PDVF.characteristics.includes(id)) return null;
+        return { ...base, kind: "characteristic", label: L(`PDVF.Char.${id}.long`), value: s.characteristics[id].value };
+      case "attack": {
+        const a = s.attacks[Number(id)];
+        if (!a) return null;
+        const label = a.skill ? `${a.name || a.skill} (${a.skill})` : (a.name || L("PDVF.Npc.UnnamedAttack"));
+        return { ...base, kind: "skill", label, value: a.value, damage: a.damage };
+      }
+      case "nskill": {
+        const r = s.skills[Number(id)];
+        if (!r) return null;
+        return { ...base, kind: "skill", label: r.name || L("PDVF.Sheet.UnnamedSkill"), value: r.value };
+      }
+      case "squire": {
+        const v = s.squireView;
+        if (!v) return null;
+        if (id === "skill") return { ...base, kind: "skill", label: L("PDVF.Npc.SquireSkill"), value: v.skill };
+        if (!v.knightlyIds.includes(id) || v.knightly === null) return null;
+        return { ...base, kind: "skill", label: L(`PDVF.Skill.${id}`), value: v.knightly };
+      }
+      case "skill": {
+        // Compétence nommée : celle notée sur la fiche, sinon celle de l'écuyer, sinon la valeur par défaut.
+        if (!(id in PDVF.skills)) return null;
+        const label = L(`PDVF.Skill.${id}`);
+        const noted = s.skills.find(r => normalizeLabel(r.name) === normalizeLabel(label));
+        if (noted) return { ...base, kind: "skill", label, value: noted.value };
+        const v = s.squireView;
+        if (v?.knightlyIds.includes(id) && v.knightly !== null) return { ...base, kind: "skill", label, value: v.knightly };
+        return { ...base, kind: "skill", label, value: s.defaultSkill };
+      }
+      case "ntrait": {
+        const r = s.traits[Number(id)];
+        if (!r) return null;
+        return { ...base, kind: "npcTrait", label: r.name || L("PDVF.Npc.UnnamedTrait"), value: r.value };
+      }
+      case "passion": {
+        const p = s.passions[Number(id)];
+        if (!p) return null;
+        return { ...base, kind: "passion", label: p.name || L("PDVF.Sheet.UnnamedPassion"), value: p.value };
+      }
+      case "honor":
+        if (s.honor === null) return null;
+        return { ...base, kind: "passion", label: L("PDVF.Honor"), value: s.honor };
+    }
+    return null;
+  }
+
   /** Liste des Attributs testables (pour choisir l'Attribut d'un adversaire). */
   listRollables() {
+    if (this.type === "pnj") {
+      const s = this.system;
+      const keys = [
+        ...PDVF.characteristics.map(c => `char.${c}`),
+        ...s.attacks.map((_, i) => `attack.${i}`),
+        ...(s.squireView ? ["squire.skill", ...s.squireView.knightlyIds.map(id => `squire.${id}`)] : []),
+        ...s.skills.map((_, i) => `nskill.${i}`),
+        ...s.traits.map((_, i) => `ntrait.${i}`),
+        "honor",
+        ...s.passions.map((_, i) => `passion.${i}`)
+      ];
+      return keys.map(k => this.getRollable(k)).filter(Boolean);
+    }
     if (this.type !== "chevalier") return [];
     const keys = [
       ...PDVF.characteristics.map(c => `char.${c}`),
@@ -187,6 +270,7 @@ export class PendragonActor extends Actor {
 
   /** Coche la croix d'expérience d'un Attribut. */
   async markExperience(key) {
+    if (this.type !== "chevalier") return;
     const [kind, id, side] = key.split(".");
     const s = this.system;
     switch (kind) {
@@ -201,6 +285,12 @@ export class PendragonActor extends Actor {
   /** Modifie la valeur d'une passion (ou de l'Honneur) d'un certain nombre de points. */
   async adjustPassion(key, delta) {
     const [kind, id] = key.split(".");
+    if (this.type === "pnj") {
+      if (kind === "honor" && this.system.honor !== null) return this.update({ "system.honor": Math.max(0, this.system.honor + delta) });
+      const row = kind === "passion" ? this.system.passions[Number(id)] : null;
+      if (row) return this.#updateArrayRow("passions", Number(id), { value: Math.max(0, row.value + delta) });
+      return;
+    }
     if (kind === "honor") return this.update({ "system.honor.value": Math.max(0, this.system.honor.value + delta) });
     if (kind === "passion") {
       const row = this.system.passions[Number(id)];

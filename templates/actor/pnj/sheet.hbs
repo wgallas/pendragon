@@ -1,0 +1,230 @@
+<div class="pdvf-npc {{#if editMode}}editing{{/if}}">
+  {{!-- ============ Bandeau ============ --}}
+  <header class="pdvf-npc-header">
+    <button type="button" class="pdvf-npc-portrait" data-action="editImage" aria-label="{{localize 'PDVF.Npc.EditImage'}}" {{#unless editMode}}tabindex="-1"{{/unless}}>
+      <img src="{{actor.img}}" alt="">
+    </button>
+    <div class="pdvf-npc-identity">
+      {{#if editMode}}
+      <input type="text" class="pdvf-npc-name-input" name="name" value="{{actor.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      <div class="pdvf-npc-line">
+        <select name="system.category" aria-label="{{localize 'PDVF.Npc.CategoryLabel'}}">
+          {{#each categoryChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+        <input type="text" name="system.tagline" value="{{system.tagline}}" placeholder="{{localize 'PDVF.Npc.TaglineHint'}}" aria-label="{{localize 'PDVF.Npc.Tagline'}}">
+      </div>
+      {{else}}
+      <h1 class="pdvf-name">{{actor.name}}</h1>
+      <div class="pdvf-line1">{{categoryLabel}}{{#if system.tagline}} · <em>{{system.tagline}}</em>{{/if}}</div>
+      {{/if}}
+      {{#if masters.length}}
+      <div class="pdvf-line2">{{localize "PDVF.Npc.ServesKnight"}}
+        {{#each masters}}<button type="button" class="pdvf-link" data-action="openMaster" data-id="{{id}}">{{name}}</button>{{/each}}
+      </div>
+      {{/if}}
+    </div>
+    <div class="pdvf-npc-tools">
+      <button type="button" class="pdvf-mode-toggle" data-action="toggleEdit" aria-pressed="{{#if editMode}}true{{else}}false{{/if}}">
+        {{#if editMode}}{{localize "PDVF.Sheet.PlayMode"}}{{else}}{{localize "PDVF.Sheet.EditMode"}}{{/if}}
+      </button>
+      {{#if canConvert}}
+      <button type="button" class="pdvf-btn pdvf-npc-convert" data-action="convert" data-tooltip="{{localize 'PDVF.Npc.ConvertTip'}}">
+        <i class="fa-solid fa-chess-knight" aria-hidden="true"></i> {{localize "PDVF.Npc.Convert"}}
+      </button>
+      {{/if}}
+    </div>
+  </header>
+
+  <div class="pdvf-hp pdvf-npc-hp">
+    <div class="pdvf-hp-label">{{localize "PDVF.Health.hp"}}</div>
+    <div class="pdvf-hp-gauge">
+      <div class="pdvf-hp-bar" role="img" aria-label="{{hp.value}} / {{hp.max}}">
+        <div class="pdvf-hp-fill status-{{status}}" style="width: {{hp.pct}}%"></div>
+        <div class="pdvf-hp-mark" style="left: {{hp.unconsciousPct}}%"></div>
+      </div>
+    </div>
+    <label class="pdvf-hp-value"><input type="number" name="system.health.hp.value" value="{{hp.value}}" step="1" aria-label="{{localize 'PDVF.Health.current'}}"> / {{hp.max}}</label>
+    <span class="pdvf-status status-{{status}}">{{statusLabel}}</span>
+  </div>
+
+  <div class="pdvf-npc-body">
+    <div class="pdvf-npc-grid">
+      {{!-- ============ Colonne gauche ============ --}}
+      <div class="pdvf-npc-col">
+        <div class="pdvf-npc-chars">
+          {{#each characteristics}}
+          <div class="pdvf-npc-char">
+            <span class="abbr" data-tooltip="{{long}}">{{abbr}}</span>
+            {{#if @root.editMode}}
+            {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=name value=value min="0" label=long}}
+            {{else}}
+            <button type="button" class="pdvf-npc-charval" data-action="roll" data-key="{{key}}" aria-label="{{long}} {{value}}">{{value}}</button>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+
+        <div class="pdvf-npc-stats">
+          <table class="pdvf-npc-table">
+            <thead><tr><th scope="col">{{localize "PDVF.Npc.Health"}}</th><th scope="col"></th></tr></thead>
+            <tbody>
+              {{#each health}}
+              <tr>
+                <th scope="row">{{label}}</th>
+                <td>{{#if @root.editMode}}<input type="number" name="{{name}}" value="{{override}}" placeholder="{{auto}}" class="pdvf-npc-override" aria-label="{{label}}" data-tooltip="{{localize 'PDVF.Npc.OverrideTip'}}">{{else}}<strong>{{value}}</strong>{{/if}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <table class="pdvf-npc-table">
+            <thead><tr><th scope="col">{{localize "PDVF.Npc.Other"}}</th><th scope="col"></th></tr></thead>
+            <tbody>
+              {{#each other}}
+              <tr>
+                <th scope="row">{{label}}</th>
+                <td>{{#if @root.editMode}}<input type="number" name="{{name}}" value="{{override}}" placeholder="{{auto}}" class="pdvf-npc-override" aria-label="{{label}}" data-tooltip="{{localize 'PDVF.Npc.OverrideTip'}}">{{else}}<strong>{{value}}</strong>{{/if}}</td>
+              </tr>
+              {{/each}}
+              <tr>
+                <th scope="row">{{localize "PDVF.Npc.ArmorPoints"}}</th>
+                <td>{{#if editMode}}<span class="pdvf-npc-pair"><input type="number" name="system.armor.value" value="{{system.armor.value}}" min="0" aria-label="{{localize 'PDVF.Npc.ArmorPoints'}}"> + <input type="number" name="system.armor.shield" value="{{system.armor.shield}}" min="0" aria-label="{{localize 'PDVF.Npc.Shield'}}"></span>{{else}}<strong>{{armorLabel}}</strong>{{/if}}</td>
+              </tr>
+              <tr>
+                <th scope="row">{{localize "PDVF.Npc.GloryReward"}}</th>
+                <td>{{#if editMode}}<input type="number" name="system.gloryReward" value="{{system.gloryReward}}" aria-label="{{localize 'PDVF.Npc.GloryReward'}}">{{else}}<strong>{{system.gloryReward}}</strong>{{/if}}</td>
+              </tr>
+              {{#if isCreature}}
+              <tr>
+                <th scope="row">{{localize "PDVF.Npc.ValorousMod"}}</th>
+                <td>{{#if editMode}}<input type="number" name="system.valorousMod" value="{{system.valorousMod}}" aria-label="{{localize 'PDVF.Npc.ValorousMod'}}">{{else}}<strong>{{system.valorousMod}}</strong>{{/if}}</td>
+              </tr>
+              {{/if}}
+              <tr>
+                <th scope="row">{{localize "PDVF.Derived.damage.label"}}</th>
+                <td><strong>{{damageLabel}}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pdvf-npc-field">
+          <span class="lbl">{{localize "PDVF.Npc.Armor"}}</span>
+          {{#if editMode}}<input type="text" name="system.armor.description" value="{{system.armor.description}}" aria-label="{{localize 'PDVF.Npc.Armor'}}">{{else}}<span>{{system.armor.description}}</span>{{/if}}
+        </div>
+        <div class="pdvf-npc-field">
+          <span class="lbl">{{localize "PDVF.Npc.Possessions"}}</span>
+          {{#if editMode}}<input type="text" name="system.possessions" value="{{system.possessions}}" aria-label="{{localize 'PDVF.Npc.Possessions'}}">{{else}}<span>{{system.possessions}}</span>{{/if}}
+        </div>
+
+        {{#if squire}}
+        <section class="pdvf-boxed pdvf-npc-squire">
+          <h3 class="pdvf-h3 red">{{localize "PDVF.Npc.Category.squire"}}</h3>
+          <div class="pdvf-npc-squire-grid">
+            <span class="lbl">{{localize "PDVF.Npc.Age"}}</span>
+            <span>{{#if editMode}}<label class="pdvf-inline">{{localize "PDVF.Npc.BornIn"}} <input type="number" name="system.squire.born" value="{{system.squire.born}}" class="pdvf-year" aria-label="{{localize 'PDVF.Npc.BornIn'}}"></label> · {{/if}}<strong>{{squire.ageLabel}}</strong></span>
+            <span class="lbl">{{localize "PDVF.Npc.Origin"}}</span>
+            <span>{{#if editMode}}<select name="system.squire.origin" aria-label="{{localize 'PDVF.Npc.Origin'}}">{{#each squire.originChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{squire.originLabel}}{{/if}}</span>
+            <span class="lbl">{{localize "PDVF.Npc.SquireSkill"}}</span>
+            <span><button type="button" class="pdvf-npc-roll" data-action="roll" data-key="squire.skill"><i class="pdvf-die-icon" aria-hidden="true"></i> <strong>{{squire.skillDisplay}}</strong></button></span>
+            <span class="lbl">{{localize "PDVF.Npc.FirstSquire"}}</span>
+            <span><input type="checkbox" name="system.squire.first" {{checked system.squire.first}} {{#unless editMode}}disabled{{/unless}} aria-label="{{localize 'PDVF.Npc.FirstSquire'}}"></span>
+          </div>
+          {{#if squire.tooOld}}<p class="pdvf-wiz-warning">{{localize "PDVF.Npc.TooOldLong"}}</p>{{/if}}
+          <p class="pdvf-hint">{{localize "PDVF.Npc.SquireRule"}}</p>
+        </section>
+        {{/if}}
+      </div>
+
+      {{!-- ============ Colonne droite ============ --}}
+      <div class="pdvf-npc-col">
+        <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Npc.Attacks"}}</h2>
+        <table class="pdvf-npc-attacks">
+          <thead><tr><th scope="col">{{localize "PDVF.Npc.Weapon"}}</th><th scope="col">{{localize "PDVF.Npc.Skill"}}</th><th scope="col">{{localize "PDVF.Npc.Value"}}</th><th scope="col">{{localize "PDVF.Npc.Damage"}}</th>{{#if editMode}}<th></th>{{/if}}</tr></thead>
+          <tbody>
+            {{#each attacks}}
+            <tr>
+              {{#if @root.editMode}}
+              <td><input type="text" name="system.attacks.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Npc.Weapon'}}"></td>
+              <td><input type="text" name="system.attacks.{{index}}.skill" value="{{skill}}" list="pdvf-npc-skills-{{@root.actor.id}}" aria-label="{{localize 'PDVF.Npc.Skill'}}"></td>
+              <td><input type="number" name="system.attacks.{{index}}.value" value="{{value}}" aria-label="{{localize 'PDVF.Npc.Value'}}"></td>
+              <td><input type="text" name="system.attacks.{{index}}.damage" value="{{damage}}" placeholder="4D6" aria-label="{{localize 'PDVF.Npc.Damage'}}"></td>
+              <td><button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.attacks" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button></td>
+              {{else}}
+              <td>{{name}}</td>
+              <td class="pdvf-faint">{{skill}}</td>
+              <td><button type="button" class="pdvf-npc-roll" data-action="roll" data-key="{{key}}"><i class="pdvf-die-icon" aria-hidden="true"></i> <strong>{{display}}</strong></button></td>
+              <td>{{#if damageRollable}}<button type="button" class="pdvf-npc-roll damage" data-action="damage" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Npc.RollDamage'}}">{{damage}}</button>{{else}}{{damage}}{{/if}}</td>
+              {{/if}}
+            </tr>
+            {{else}}
+            <tr><td colspan="4" class="pdvf-hint">{{localize "PDVF.Npc.NoAttack"}}</td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{#if editMode}}<button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.attacks">{{localize "PDVF.Npc.AddAttack"}}</button>{{/if}}
+
+        <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Skills"}}</h2>
+        <div class="pdvf-npc-list">
+          {{#if squire}}
+          {{#each squire.knightlyRows}}
+          <button type="button" class="pdvf-npc-item derived" data-action="roll" data-key="{{key}}" data-tooltip="{{localize 'PDVF.Npc.SquireDerivedTip'}}">
+            <span class="lbl">{{label}}</span><i class="pdvf-die-icon" aria-hidden="true"></i><span class="val">{{display}}</span>
+          </button>
+          {{/each}}
+          {{/if}}
+          {{#each skills}}
+          {{> "systems/pendragon-vf/templates/actor/pnj/row.hbs" path="system.skills" list=(concat "pdvf-npc-skills-" @root.actor.id)}}
+          {{/each}}
+        </div>
+        {{#if editMode}}
+        <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.skills">{{localize "PDVF.Sheet.AddSkill"}}</button>
+        <label class="pdvf-inline pdvf-npc-default">{{localize "PDVF.Npc.DefaultSkill"}} <input type="number" name="system.defaultSkill" value="{{system.defaultSkill}}" min="0"></label>
+        {{#if squire}}
+        <label class="pdvf-inline pdvf-npc-default">{{localize "PDVF.Npc.SquireOther"}}
+          <select name="system.squire.otherSkill">{{#each squire.otherChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        {{/if}}
+        {{else}}
+        <p class="pdvf-hint">{{localize "PDVF.Npc.DefaultSkill"}} : {{system.defaultSkill}}</p>
+        {{/if}}
+
+        <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Traits"}}</h2>
+        <div class="pdvf-npc-list">
+          {{#each traits}}
+          {{> "systems/pendragon-vf/templates/actor/pnj/row.hbs" path="system.traits" list=(concat "pdvf-npc-traits-" @root.actor.id)}}
+          {{else}}{{#unless @root.editMode}}<p class="pdvf-hint">—</p>{{/unless}}
+          {{/each}}
+        </div>
+        {{#if editMode}}<button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.traits">{{localize "PDVF.Npc.AddTrait"}}</button>{{/if}}
+
+        <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Passions"}}</h2>
+        <div class="pdvf-npc-list">
+          {{#if editMode}}
+          <label class="pdvf-npc-item"><span class="lbl">{{localize "PDVF.Honor"}}</span><input type="number" name="system.honor" value="{{system.honor}}" placeholder="—" aria-label="{{localize 'PDVF.Honor'}}"></label>
+          {{else if hasHonor}}
+          <button type="button" class="pdvf-npc-item" data-action="roll" data-key="honor"><span class="lbl">{{localize "PDVF.Honor"}}</span><i class="pdvf-die-icon" aria-hidden="true"></i><span class="val">{{honorDisplay}}</span></button>
+          {{/if}}
+          {{#each passions}}
+          {{> "systems/pendragon-vf/templates/actor/pnj/row.hbs" path="system.passions"}}
+          {{/each}}
+        </div>
+        {{#if editMode}}<button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.passions">{{localize "PDVF.Sheet.AddPassion"}}</button>{{/if}}
+      </div>
+    </div>
+
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Notes"}}</h2>
+    {{#if editMode}}
+    <textarea name="system.notes" rows="5" aria-label="{{localize 'PDVF.Section.Notes'}}">{{system.notes}}</textarea>
+    {{else}}
+    <div class="pdvf-npc-notes">{{system.notes}}</div>
+    {{/if}}
+
+    <datalist id="pdvf-npc-skills-{{actor.id}}">{{#each skillNames}}<option value="{{this}}"></option>{{/each}}</datalist>
+    <datalist id="pdvf-npc-traits-{{actor.id}}">{{#each traitNames}}<option value="{{this}}"></option>{{/each}}</datalist>
+  </div>
+
+  <footer class="pdvf-footer">
+    <span>{{localize "PDVF.Footer.Click"}}</span>
+    <span>{{localize "PDVF.Footer.Shift"}}</span>
+  </footer>
+</div>

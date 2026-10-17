@@ -1,7 +1,8 @@
 {
   "TYPES": {
     "Actor": {
-      "chevalier": "Chevalier"
+      "chevalier": "Chevalier",
+      "pnj": "PNJ"
     }
   },
   "PDVF": {
@@ -9,7 +10,8 @@
     "GloryTest": "Test de Gloire",
     "Honor": "Honneur",
     "SheetLabel": {
-      "chevalier": "Fiche de chevalier (Pendragon VF)"
+      "chevalier": "Fiche de chevalier (Pendragon VF)",
+      "pnj": "Fiche de PNJ (Pendragon VF)"
     },
     "Settings": {
       "currentYear": {
@@ -383,7 +385,7 @@
     },
     "Upcoming": {
       "Combat": "Les armes, armures et boucliers à glisser sur la fiche, ainsi que la table des blessures, arrivent à la prochaine étape.",
-      "Suite": "Les liens vers les fiches de montures, d'écuyer et de domaine arrivent à une prochaine étape."
+      "Suite": "Les montures et le domaine arrivent à une prochaine étape."
     },
     "Footer": {
       "Click": "Clic sur une valeur : jet de d20",
@@ -396,7 +398,8 @@
       "skill": "Test de compétence",
       "trait": "Test de trait",
       "passion": "Test de passion",
-      "glory": "Test de Gloire"
+      "glory": "Test de Gloire",
+      "npcTrait": "Test de trait"
     },
     "Outcome": {
       "critical": "Critique",
@@ -455,7 +458,9 @@
       "PassionLoss": "{label} perd 1 point.",
       "RollCrisis": "Test de crise de passion",
       "Crisis": "Crise de passion",
-      "Duration": "Durée : {duration}"
+      "Duration": "Durée : {duration}",
+      "Damage": "Dégâts",
+      "DamageOf": "Dégâts : {label}"
     },
     "Dialog": {
       "Title": "Test : {label}",
@@ -475,7 +480,8 @@
     },
     "Notify": {
       "NotOwner": "Vous ne contrôlez pas ce personnage.",
-      "NoSessionGlory": "Aucune Gloire de session à inscrire."
+      "NoSessionGlory": "Aucune Gloire de session à inscrire.",
+      "BadFormula": "Formule de dégâts illisible : {formula}"
     },
     "FamilyApp": {
       "Title": "Historique familial",
@@ -623,6 +629,86 @@
       "FinishTitle": "Créer le personnage",
       "FinishText": "Les valeurs actuelles de la fiche (caractéristiques, compétences, traits, passions, chronique) seront remplacées par celles de l'assistant. Continuer ?",
       "Done": "{name} est prêt à servir son seigneur."
+    },
+    "Npc": {
+      "Category": {
+        "squire": "Écuyer",
+        "follower": "Suivant",
+        "character": "Personnage",
+        "creature": "Créature"
+      },
+      "CategoryLabel": "Catégorie",
+      "Tagline": "Description courte",
+      "TaglineHint": "Garde monté, dame de la cour, loup…",
+      "EditImage": "Changer le portrait",
+      "ServesKnight": "Au service de",
+      "Health": "Santé",
+      "Other": "Autre",
+      "OverrideTip": "Laisser vide pour la valeur calculée (indiquée en gris)",
+      "ArmorPoints": "Points d'armure",
+      "Shield": "Bouclier",
+      "GloryReward": "Récompense de Gloire",
+      "ValorousMod": "Mod. Valeureux",
+      "Armor": "Armure",
+      "Possessions": "Possessions",
+      "Attacks": "Attaques",
+      "Weapon": "Arme",
+      "Skill": "Compétence",
+      "Value": "Valeur",
+      "Damage": "Dégâts",
+      "RollDamage": "Lancer les dégâts",
+      "NoAttack": "Aucune attaque notée.",
+      "AddAttack": "Ajouter une attaque",
+      "AddTrait": "Ajouter un trait",
+      "UnnamedAttack": "Attaque",
+      "UnnamedTrait": "Trait",
+      "Name": "Nom",
+      "DefaultSkill": "Autres compétences",
+      "Age": "Âge",
+      "AgeShort": "âge",
+      "BornIn": "né en",
+      "Origin": "Origine",
+      "GMChoice": "au choix du MJ",
+      "SquireSkill": "Écuyer",
+      "FirstSquire": "Premier écuyer",
+      "SquireOther": "Compétence non martiale de l'écuyer",
+      "SquireDerivedTip": "Âge − 9, modifié selon l'origine (Livre du joueur, chap. 12)",
+      "SquireRule": "Compétence Écuyer : 15 + modificateur d'origine. Équitation, Rixe, Charge, Épée et une compétence non martiale : âge − 9 (+ modificateur). Autres compétences : 5. L'âge suit l'année de jeu.",
+      "TooOld": "21 ans : à adouber",
+      "TooOldLong": "L'écuyer a 21 ans : il devrait être adoubé (bouton « Convertir en chevalier ») ou libéré pour devenir esquire.",
+      "SquireOrigin": {
+        "esquireSon": "Fils d'un esquire",
+        "youngerSon": "Fils cadet d'un chevalier vassal",
+        "secondSon": "Deuxième fils d'un chevalier vassal",
+        "heir": "Héritier d'un chevalier vassal",
+        "holyChild": "Enfant d'un saint homme",
+        "commonerChild": "Enfant d'un roturier"
+      },
+      "SquireGear": "vêtements, couteau, bol, cuillère et couverture",
+      "SquireOf": "Écuyer de {name}",
+      "NewSquire": "Nouvel écuyer",
+      "CreateSquire": "Créer l'écuyer",
+      "SquireName": "Nom",
+      "RandomOrigin": "Au hasard (1D20, Table 12.7)",
+      "NewSquireHint": "L'âge est tiré sur 1D20 (14 ans pour 14 ou moins). L'écuyer rejoint la suite du chevalier.",
+      "NewSquireCard": "Nouvel écuyer : {name}",
+      "SquireAgeLine": "Âge : {age} ans (1D20 = {roll})",
+      "SquireOriginLine": "Origine : {origin} (1D20 = {roll})",
+      "SquireOriginChosen": "Origine : {origin} (choix du MJ)",
+      "SquireValuesLine": "Écuyer {skill} ; Équitation, Rixe, Charge, Épée et une compétence non martiale à {knightly}",
+      "NoCreatePermission": "Vous n'avez pas le droit de créer des acteurs : demandez au MJ.",
+      "Convert": "Convertir en chevalier",
+      "ConvertTip": "Crée une fiche de chevalier avec ces valeurs ; ce PNJ est conservé",
+      "ConvertConfirm": "Créer une fiche de chevalier à partir de {name} ? Ses caractéristiques, compétences, traits, passions et son Honneur sont repris ; la fiche de PNJ est conservée.",
+      "Converted": "{name} : fiche de chevalier créée."
+    },
+    "Suite": {
+      "Title": "Suite",
+      "Domain": "Domaine",
+      "Missing": "Suivant introuvable (supprimé ?)",
+      "Remove": "Retirer de la suite",
+      "DropHint": "Glissez ici un PNJ depuis l'onglet Acteurs pour l'ajouter à la suite.",
+      "SquireTestTip": "Test de la compétence Écuyer (Maj + clic : options)"
     }
   }
 }

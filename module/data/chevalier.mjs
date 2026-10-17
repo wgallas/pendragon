@@ -117,6 +117,8 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
       })),
       // Passions déjà invoquées aujourd'hui (une fois par jour chacune), par nom.
       invokedToday: new fields.ArrayField(new fields.StringField()),
+      // Suite : PNJ rattachés (écuyers, serviteurs, soldats), par UUID.
+      followers: new fields.ArrayField(new fields.SchemaField({ uuid: new fields.StringField({ initial: "" }) })),
       // Jour (compteur du monde) auquel se rapportent invokedToday et inspirations.
       passionDay: int(0),
 

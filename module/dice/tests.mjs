@@ -212,6 +212,28 @@ export async function rollAttribute(actor, key, options = {}) {
 }
 
 /**
+ * Jet de dégâts d'une attaque (« 5D6 », « 2D6+4 »…), affiché dans le chat.
+ * @param {Actor} actor
+ * @param {string} formula
+ * @param {string} label
+ */
+export async function rollDamage(actor, formula, label = "") {
+  const f = String(formula ?? "").trim().replace(/D/g, "d");
+  if (!f) return;
+  let roll;
+  try {
+    roll = new Roll(f);
+    await roll.evaluate();
+  } catch (err) {
+    return ui.notifications.warn(F("PDVF.Notify.BadFormula", { formula }));
+  }
+  return roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: label ? F("PDVF.Card.DamageOf", { label }) : L("PDVF.Card.Damage")
+  });
+}
+
+/**
  * Test de trait selon la procédure du livre :
  * trait Célèbre ou Exalté testé en premier ; en cas d'échec, test du trait opposé.
  */
@@ -294,11 +316,13 @@ export async function invokePassion(actor, key, { modifier = 0, target = "" } = 
   const notes = [];
   const buttons = [];
 
-  if (effect.xp) {
+  if (effect.xp && rollable.canXp) {
     await maybeXp(actor, key);
     notes.push(F("PDVF.Card.XpMarked", { name: actor.name, label: rollable.label }));
   }
-  if (actor.isOwner) {
+  // Inspirations et usage quotidien : suivis pour les chevaliers seulement.
+  const tracked = actor.type === "chevalier";
+  if (actor.isOwner && tracked) {
     if (effect.bonus) await actor.addInspiration({ source: rollable.label, state: effect.state, bonus: effect.bonus, target });
     else await actor.markInvoked(rollable.label);
   }
@@ -326,7 +350,7 @@ export async function invokePassion(actor, key, { modifier = 0, target = "" } = 
 export async function rollPassion(actor, key, options = {}) {
   const inv = await invokePassion(actor, key, { modifier: options.modifier });
   if (!inv) return;
-  if (inv.effect.bonus) inv.notes.push(L("PDVF.Card.ChooseInspirationTarget"));
+  if (inv.effect.bonus && actor.type === "chevalier") inv.notes.push(L("PDVF.Card.ChooseInspirationTarget"));
   const view = {
     title: inv.rollable.label,
     subtitle: L("PDVF.Kind.passion"),

@@ -112,3 +112,44 @@ PDVF.passionBonuses = [
 
 /** Types d'Attributs qu'une passion peut inspirer (« une seule compétence ou trait »). */
 PDVF.inspirableKinds = ["skill", "trait"];
+
+/* -------------------------------------------- */
+/*  PNJ et suivants                             */
+/* -------------------------------------------- */
+
+/** Catégories de PNJ. L'écuyer a en plus son propre bloc. */
+PDVF.npcCategories = ["squire", "follower", "character", "creature"];
+
+/** Valeur d'une compétence non notée sur la fiche d'un PNJ (Livre du joueur, écuyers). */
+PDVF.npcDefaultSkill = 5;
+
+/**
+ * Écuyers (Livre du joueur, chap. 12, Table 12.7) : origine tirée sur 1D20 (ou choisie par le MJ),
+ * modificateurs à la compétence Écuyer et aux compétences chevaleresques de l'écuyer.
+ */
+PDVF.squireOrigins = [
+  { id: "esquireSon", range: [1, 5], squire: -2, knightly: -1 },
+  { id: "youngerSon", range: [6, 10], squire: -1, knightly: 0 },
+  { id: "secondSon", range: [11, 15], squire: 0, knightly: 0 },
+  { id: "heir", range: [16, 20], squire: 2, knightly: 1 },
+  { id: "holyChild", range: null, squire: -4, knightly: -2 },
+  { id: "commonerChild", range: null, squire: -7, knightly: -3 }
+];
+
+/** Compétence Écuyer : 15 + modificateur d'origine. */
+PDVF.squireSkillBase = 15;
+
+/** Compétences de l'écuyer égales à « âge − 9 » (+ modificateur), plus une compétence non martiale au choix. */
+PDVF.squireKnightlySkills = ["horsemanship", "brawling", "charge", "sword"];
+PDVF.squireKnightlyOffset = 9;
+PDVF.squireDefaultOther = "courtesy";
+PDVF.squireHomage = 15;
+PDVF.squireMaxAge = 21;
+
+/** Cour d'une passion d'après le premier mot de son nom (conversion d'un PNJ en chevalier). */
+PDVF.passionCourtKeywords = {
+  fidelitas: ["hommage", "allegeance", "loyaute", "fidelite", "devoir"],
+  fervor: ["amour", "haine"],
+  adoratio: ["devotion", "adoration"],
+  civilitas: ["rang", "hospitalite", "chevalerie"]
+};

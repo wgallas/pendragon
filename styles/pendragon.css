@@ -121,6 +121,12 @@
 /* Boutons « invisibles » utilisés pour les valeurs cliquables */
 .pendragon-vf .pdvf-plain,
 .pendragon-vf .pdvf-row-roll,
+.pendragon-vf .pdvf-npc-portrait,
+.pendragon-vf .pdvf-npc-charval,
+.pendragon-vf .pdvf-npc-roll,
+.pendragon-vf button.pdvf-npc-item,
+.pendragon-vf .pdvf-follower-roll,
+.pendragon-vf .pdvf-link,
 .pendragon-vf .pdvf-char,
 .pendragon-vf .pdvf-shield,
 .pendragon-vf .pdvf-heraldry {
@@ -850,3 +856,115 @@
 /* « Nouveau jour » dans l'onglet Acteurs (hors de la fiche : styles indépendants) */
 .pdvf-newday-dir { flex: 1 1 100%; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .pdvf-newday-dir i { color: #E0A526; }
+
+/* --------------------------------------------------------------------------
+   Fiche de PNJ (blocs du Livre du maître)
+   -------------------------------------------------------------------------- */
+.pendragon-vf.pdvf-npc-sheet { min-width: 640px; min-height: 480px; }
+.pendragon-vf .pdvf-npc { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.pendragon-vf .pdvf-npc-header { flex: none; display: flex; align-items: center; gap: 18px; padding: 14px 22px 0; }
+.pendragon-vf .pdvf-npc-portrait { width: 84px; height: 84px; flex: none; border: 1.5px solid var(--pdvf-ink); background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-npc-portrait img { width: 100%; height: 100%; object-fit: cover; border: 0; display: block; }
+.pendragon-vf .pdvf-npc-identity { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-npc-identity .pdvf-name { font-size: 38px; }
+.pendragon-vf .pdvf-npc-name-input { width: 100%; font-size: 24px; }
+.pendragon-vf .pdvf-npc-line { display: flex; gap: 8px; margin-top: 6px; }
+.pendragon-vf .pdvf-npc-line select { flex: none; width: 140px; }
+.pendragon-vf .pdvf-npc-line input { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-npc-tools { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.pendragon-vf .pdvf-npc-tools .pdvf-btn { margin: 0; font-size: 14px; min-height: 28px; }
+.pendragon-vf .pdvf-link { color: var(--pdvf-lapis); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
+.pendragon-vf .pdvf-link:hover { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-npc-hp { margin: 12px 22px 0; }
+
+.pendragon-vf .pdvf-npc-body { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 22px 16px; }
+.pendragon-vf .pdvf-npc-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 26px; align-items: start; }
+.pendragon-vf .pdvf-npc-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.pendragon-vf .pdvf-npc-col .pdvf-h2 { margin: 6px 0 0; }
+
+.pendragon-vf .pdvf-npc-chars { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1.5px solid var(--pdvf-ink); }
+.pendragon-vf .pdvf-npc-char { display: flex; flex-direction: column; align-items: center; padding: 4px 2px 6px; border-left: 1px solid var(--pdvf-rule-strong); }
+.pendragon-vf .pdvf-npc-char:first-child { border-left: 0; }
+.pendragon-vf .pdvf-npc-char .abbr { font-family: var(--pdvf-font-heading); color: var(--pdvf-lapis); font-size: 17px; }
+.pendragon-vf .pdvf-npc-charval { width: 100%; font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: center; }
+.pendragon-vf .pdvf-npc-charval:hover { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-npc-char .pdvf-stepper input { width: 30px; padding: 0; font-size: 15px; text-align: center; }
+.pendragon-vf .pdvf-npc-char .pdvf-step { width: 17px; font-size: 14px; }
+
+.pendragon-vf .pdvf-npc-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pendragon-vf .pdvf-npc-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 0; background: none; border: 0; }
+.pendragon-vf .pdvf-npc-table thead th { text-align: left; font-family: var(--pdvf-font-heading); font-weight: 400; color: var(--pdvf-vermilion); border-bottom: 1px solid var(--pdvf-ink); padding: 2px 4px; background: none; }
+.pendragon-vf .pdvf-npc-table tbody th { text-align: left; font-weight: 400; padding: 3px 4px; }
+.pendragon-vf .pdvf-npc-table td { text-align: right; padding: 3px 4px; font-variant-numeric: tabular-nums; }
+.pendragon-vf .pdvf-npc-table tr { border-bottom: 1px dotted var(--pdvf-rule); background: none; }
+.pendragon-vf .pdvf-npc-override { width: 54px; text-align: right; }
+.pendragon-vf .pdvf-npc-override::placeholder { color: var(--pdvf-ink-faint); }
+.pendragon-vf .pdvf-npc-pair { display: inline-flex; align-items: center; gap: 3px; }
+.pendragon-vf .pdvf-npc-pair input { width: 40px; text-align: right; }
+
+.pendragon-vf .pdvf-npc-field { display: flex; align-items: baseline; gap: 8px; font-size: 15px; }
+.pendragon-vf .pdvf-npc-field .lbl { flex: none; width: 92px; font-style: italic; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-npc-field input { flex: 1; min-width: 0; }
+
+.pendragon-vf .pdvf-npc-squire .pdvf-h3 { margin-top: 0; }
+.pendragon-vf .pdvf-npc-squire-grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: center; font-size: 15px; }
+.pendragon-vf .pdvf-npc-squire-grid .lbl { font-style: italic; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-npc-squire-grid select { width: 100%; }
+.pendragon-vf .pdvf-inline { display: inline-flex; align-items: center; gap: 6px; }
+.pendragon-vf .pdvf-year { width: 64px; }
+
+.pendragon-vf .pdvf-npc-attacks { width: 100%; border-collapse: collapse; font-size: 15px; margin: 0; background: none; border: 0; }
+.pendragon-vf .pdvf-npc-attacks thead th { text-align: left; font-weight: 400; font-style: italic; color: var(--pdvf-ink-soft); border-bottom: 1px solid var(--pdvf-ink); padding: 2px 4px; background: none; }
+.pendragon-vf .pdvf-npc-attacks td { padding: 3px 4px; border-bottom: 1px dotted var(--pdvf-rule); }
+.pendragon-vf .pdvf-npc-attacks tr { background: none; }
+.pendragon-vf .pdvf-npc-attacks input { width: 100%; min-width: 0; }
+.pendragon-vf .pdvf-npc-attacks td:nth-child(3) input { width: 52px; }
+.pendragon-vf .pdvf-faint { color: var(--pdvf-ink-soft); font-style: italic; }
+.pendragon-vf .pdvf-npc-roll { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
+.pendragon-vf .pdvf-npc-roll .pdvf-die-icon { opacity: 0.35; }
+.pendragon-vf .pdvf-npc-roll:hover { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-npc-roll:hover .pdvf-die-icon { opacity: 1; }
+.pendragon-vf .pdvf-npc-roll.damage { border-bottom: 1px dashed var(--pdvf-rule-strong); }
+
+.pendragon-vf .pdvf-npc-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+.pendragon-vf .pdvf-npc-item { display: flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 4px; border-bottom: 1px dotted var(--pdvf-rule); width: 100%; text-align: left; }
+.pendragon-vf button.pdvf-npc-item:hover { background: rgba(163, 40, 30, 0.06); }
+.pendragon-vf button.pdvf-npc-item:hover .pdvf-die-icon { opacity: 1; }
+.pendragon-vf .pdvf-npc-item .lbl { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-npc-item .val { min-width: 30px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pendragon-vf .pdvf-npc-item.derived .lbl::after { content: " ·"; color: var(--pdvf-gold, #B07A12); }
+.pendragon-vf .pdvf-npc-item.editing input[type="text"] { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-npc-item input[type="number"] { width: 56px; }
+.pendragon-vf .pdvf-npc-default { margin-top: 8px; margin-left: 10px; font-size: 14px; }
+.pendragon-vf .pdvf-npc-default input { width: 52px; }
+.pendragon-vf .pdvf-npc-default select { width: 160px; }
+.pendragon-vf .pdvf-npc-notes { white-space: pre-wrap; min-height: 2em; }
+.pendragon-vf .pdvf-npc-body > .pdvf-h2 { margin-top: 18px; }
+.pendragon-vf .pdvf-npc textarea { width: 100%; font-family: var(--pdvf-font-body); font-size: 15px; }
+
+/* Suite du chevalier */
+.pendragon-vf .pdvf-h2-btn { margin: 0 0 0 auto; font-family: var(--pdvf-font-body); font-size: 14px; min-height: 28px; }
+.pendragon-vf .pdvf-followers { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+.pendragon-vf .pdvf-follower { display: flex; align-items: center; gap: 12px; padding: 6px 8px; border: 1px solid var(--pdvf-rule-strong); background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-follower.missing { opacity: 0.6; font-style: italic; }
+.pendragon-vf .pdvf-follower-img { width: 44px; height: 44px; object-fit: cover; border: 1px solid var(--pdvf-ink); flex: none; }
+.pendragon-vf .pdvf-follower-main { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-follower-name { font-size: 18px; font-weight: 600; text-align: left; }
+.pendragon-vf .pdvf-follower-name:hover { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-follower-meta { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 14px; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-follower-roll { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--pdvf-ink); background: var(--pdvf-parchment); }
+.pendragon-vf .pdvf-follower-roll strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.pendragon-vf .pdvf-follower-roll .pdvf-die-icon { opacity: 0.5; }
+.pendragon-vf .pdvf-follower-roll:hover { color: var(--pdvf-vermilion); border-color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-follower-roll:hover .pdvf-die-icon { opacity: 1; }
+.pendragon-vf .pdvf-drop-hint { padding: 10px; border: 1px dashed var(--pdvf-rule-strong); text-align: center; font-style: italic; color: var(--pdvf-ink-soft); font-size: 14px; }
+.pendragon-vf .pdvf-warn-text { color: var(--pdvf-vermilion-dark); font-weight: 600; }
+
+/* Fiche de PNJ en mode édition : une colonne pour laisser la place aux champs */
+.pendragon-vf .pdvf-npc.editing .pdvf-npc-stats,
+.pendragon-vf .pdvf-npc.editing .pdvf-npc-list { grid-template-columns: minmax(0, 1fr); }
+.pendragon-vf .pdvf-npc-table td input { width: 64px; }
+.pendragon-vf .pdvf-npc-table td .pdvf-npc-pair input { width: 44px; }
+.pendragon-vf .pdvf-npc-item input[type="number"] { width: 64px; flex: none; }
+.pendragon-vf .pdvf-npc-squire-grid input[type="number"] { width: 70px; }
+.pendragon-vf .pdvf-npc-field input { width: auto; }

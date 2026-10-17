@@ -5,6 +5,7 @@ import { FamilyHistoryApp } from "../family/family-app.mjs";
 import { familyView } from "../family/view.mjs";
 import { getFamilyHistory } from "../family/apply.mjs";
 import { CreationWizard } from "../creation/wizard.mjs";
+import { addFollower, removeFollower, resolveFollowers, createSquire } from "../documents/followers.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -59,7 +60,11 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       newDay: ChevalierSheet.#onNewDay,
       step: ChevalierSheet.#onStep,
       openFamily: ChevalierSheet.#onOpenFamily,
-      openWizard: ChevalierSheet.#onOpenWizard
+      openWizard: ChevalierSheet.#onOpenWizard,
+      newSquire: ChevalierSheet.#onNewSquire,
+      openFollower: ChevalierSheet.#onOpenFollower,
+      removeFollower: ChevalierSheet.#onRemoveFollower,
+      rollFollower: ChevalierSheet.#onRollFollower
     }
   };
 
@@ -211,6 +216,25 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         .filter(p => p.court === court)
     }));
     context.courtChoices = PDVF.passionCourts.map(c => ({ value: c, label: L(`PDVF.Court.${c}`) }));
+
+    // Onglet Suite & domaine : suivants rattachés
+    context.followers = resolveFollowers(actor).map(f => {
+      const a = f.actor;
+      if (!a) return { index: f.index, missing: true, name: L("PDVF.Suite.Missing") };
+      const s = a.system;
+      const v = s.squireView;
+      return {
+        index: f.index, id: a.id, uuid: a.uuid, name: a.name, img: a.img,
+        category: L(`PDVF.Npc.Category.${s.category}`),
+        first: v && s.squire.first,
+        age: v?.age ?? null,
+        squireSkill: v ? formatValue(v.skill) : null,
+        tagline: s.tagline,
+        hp: `${s.health.hp.value} / ${s.health.hp.max}`,
+        tooOld: v?.tooOld
+      };
+    });
+    context.canCreateActors = game.user.can?.("ACTOR_CREATE") ?? false;
 
     // Onglet Lignée
     context.titleChoices = ["sire", "dame"].map(v => ({ value: v, label: L(`PDVF.Title.${v}`) }));
@@ -399,6 +423,41 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (input.max !== "") value = Math.min(Number(input.max), value);
     input.value = value;
     input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  /** Un PNJ déposé sur la fiche rejoint la suite du chevalier. */
+  async _onDropActor(event, actor) {
+    if (!this.isEditable || actor?.type !== "pnj") return super._onDropActor?.(event, actor) ?? null;
+    await addFollower(this.document, actor);
+    this.tabGroups.primary = "suite";
+    this.render();
+    return actor;
+  }
+
+  static async #onNewSquire() {
+    const npc = await createSquire(this.document);
+    if (npc) { this.tabGroups.primary = "suite"; this.render(); }
+  }
+
+  static #onOpenFollower(event, target) {
+    const actor = globalThis.fromUuidSync?.(target.dataset.uuid);
+    actor?.sheet?.render(true);
+  }
+
+  static async #onRemoveFollower(event, target) {
+    await removeFollower(this.document, Number(target.dataset.index));
+  }
+
+  static async #onRollFollower(event, target) {
+    const actor = globalThis.fromUuidSync?.(target.dataset.uuid);
+    if (!actor) return;
+    const key = target.dataset.key;
+    let options = { modifier: 0 };
+    if (event.shiftKey) {
+      options = await promptTestOptions(actor, actor.getRollable(key), 0);
+      if (!options) return;
+    }
+    await rollAttribute(actor, key, options);
   }
 
   static #onOpenWizard() {

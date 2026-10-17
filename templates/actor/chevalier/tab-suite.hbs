@@ -1,4 +1,38 @@
 <section class="tab pdvf-tab-body {{tab.cssClass}}" data-group="primary" data-tab="suite">
-  <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Tab.suite"}}</h2>
+  <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Suite.Title"}}
+    {{#if canCreateActors}}<button type="button" class="pdvf-btn pdvf-h2-btn" data-action="newSquire"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i> {{localize "PDVF.Npc.NewSquire"}}</button>{{/if}}
+  </h2>
+
+  <div class="pdvf-followers">
+    {{#each followers}}
+    <div class="pdvf-follower {{#if missing}}missing{{/if}}">
+      {{#if missing}}
+      <span class="pdvf-follower-name">{{name}}</span>
+      {{else}}
+      <img class="pdvf-follower-img" src="{{img}}" alt="">
+      <div class="pdvf-follower-main">
+        <button type="button" class="pdvf-follower-name pdvf-plain" data-action="openFollower" data-uuid="{{uuid}}">{{name}}</button>
+        <div class="pdvf-follower-meta">
+          <span>{{category}}{{#if first}} · {{localize "PDVF.Npc.FirstSquire"}}{{/if}}</span>
+          {{#if age}}<span>{{localize "PDVF.Npc.AgeShort"}} {{age}}</span>{{/if}}
+          <span>{{localize "PDVF.Health.hp"}} {{hp}}</span>
+          {{#if tooOld}}<span class="pdvf-warn-text">{{localize "PDVF.Npc.TooOld"}}</span>{{/if}}
+        </div>
+      </div>
+      {{#if squireSkill}}
+      <button type="button" class="pdvf-follower-roll" data-action="rollFollower" data-uuid="{{uuid}}" data-key="squire.skill" data-tooltip="{{localize 'PDVF.Suite.SquireTestTip'}}">
+        <span>{{localize "PDVF.Npc.SquireSkill"}}</span><i class="pdvf-die-icon" aria-hidden="true"></i><strong>{{squireSkill}}</strong>
+      </button>
+      {{/if}}
+      {{/if}}
+      {{#if (or @root.editMode missing)}}
+      <button type="button" class="pdvf-icon-btn" data-action="removeFollower" data-index="{{index}}" aria-label="{{localize 'PDVF.Suite.Remove'}}" data-tooltip="{{localize 'PDVF.Suite.Remove'}}">×</button>
+      {{/if}}
+    </div>
+    {{/each}}
+    <div class="pdvf-drop-hint">{{localize "PDVF.Suite.DropHint"}}</div>
+  </div>
+
+  <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Suite.Domain"}}</h2>
   <p class="pdvf-upcoming">{{localize "PDVF.Upcoming.Suite"}}</p>
 </section>

@@ -1,0 +1,12 @@
+{{!-- Ligne nom / valeur d'un PNJ. Paramètres : path (tableau), list (datalist facultative) --}}
+{{#if @root.editMode}}
+<div class="pdvf-npc-item editing">
+  <input type="text" name="{{path}}.{{index}}.name" value="{{name}}" {{#if list}}list="{{list}}"{{/if}} aria-label="{{localize 'PDVF.Npc.Name'}}">
+  {{> "systems/pendragon-vf/templates/actor/chevalier/parts/stepper.hbs" name=(concat path "." index ".value") value=value min="0" label=name}}
+  <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="{{path}}" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
+</div>
+{{else}}
+<button type="button" class="pdvf-npc-item" data-action="roll" data-key="{{key}}">
+  <span class="lbl">{{name}}</span><i class="pdvf-die-icon" aria-hidden="true"></i><span class="val">{{display}}</span>
+</button>
+{{/if}}

@@ -32,7 +32,8 @@
   ],
   "documentTypes": {
     "Actor": {
-      "chevalier": {}
+      "chevalier": {},
+      "pnj": {}
     }
   },
   "grid": {

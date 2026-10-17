@@ -5,6 +5,9 @@ import { PDVF, SYSTEM_ID } from "./config.mjs";
 import { ChevalierData } from "./data/chevalier.mjs";
 import { PendragonActor } from "./documents/actor.mjs";
 import { ChevalierSheet } from "./sheets/chevalier-sheet.mjs";
+import { PnjData } from "./data/pnj.mjs";
+import { PnjSheet } from "./sheets/pnj-sheet.mjs";
+import * as followers from "./documents/followers.mjs";
 import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
 import { CREATION } from "./creation/data.mjs";
@@ -17,13 +20,15 @@ Hooks.once("init", () => {
   CONFIG.PDVF = PDVF;
   // Données de création : les suppléments peuvent les compléter dans leur propre hook « init ».
   PDVF.creation = CREATION;
-  game.pendragon = { config: PDVF, newDay: newDayForAll, tests, rules, openCreationWizard };
+  game.pendragon = { config: PDVF, newDay: newDayForAll, followers, tests, rules, openCreationWizard };
 
   // Documents et modèles de données
   CONFIG.Actor.documentClass = PendragonActor;
   CONFIG.Actor.dataModels.chevalier = ChevalierData;
+  CONFIG.Actor.dataModels.pnj = PnjData;
   CONFIG.Actor.trackableAttributes = {
-    chevalier: { bar: ["health.hp"], value: [] }
+    chevalier: { bar: ["health.hp"], value: [] },
+    pnj: { bar: ["health.hp"], value: [] }
   };
 
   // Réglages du monde
@@ -35,7 +40,7 @@ Hooks.once("init", () => {
     type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 508 }),
     onChange: () => {
       for (const app of foundry.applications.instances?.values?.() ?? []) {
-        if (app instanceof ChevalierSheet) app.render();
+        if (app instanceof ChevalierSheet || app instanceof PnjSheet) app.render();
       }
     }
   });
@@ -59,6 +64,11 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "PDVF.SheetLabel.chevalier"
   });
+  DSC.registerSheet(Actor, SYSTEM_ID, PnjSheet, {
+    types: ["pnj"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.pnj"
+  });
 
   // Gabarits partiels
   foundry.applications.handlebars.loadTemplates([
@@ -66,7 +76,8 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/actor/chevalier/parts/stepper.hbs`,
     `systems/${SYSTEM_ID}/templates/family/history.hbs`,
     `systems/${SYSTEM_ID}/templates/creation/stepper.hbs`,
-    `systems/${SYSTEM_ID}/templates/creation/knight-status.hbs`
+    `systems/${SYSTEM_ID}/templates/creation/knight-status.hbs`,
+    `systems/${SYSTEM_ID}/templates/actor/pnj/row.hbs`
   ]);
 });
 

@@ -1004,3 +1004,17 @@
 .pendragon-vf.pdvf-dialog footer button[autofocus]:hover { background: var(--pdvf-vermilion-dark); color: var(--pdvf-parchment-light); }
 .pendragon-vf.pdvf-dialog .form-footer button i,
 .pendragon-vf.pdvf-dialog footer button i { color: inherit; }
+
+/* Tableaux : on neutralise le thème de Foundry (en-têtes sombres, lignes alternées) */
+.pendragon-vf table { background: none; border: 0; }
+.pendragon-vf table thead { background: none; text-shadow: none; }
+.pendragon-vf table thead th { background: none; text-shadow: none; }
+.pendragon-vf table tr,
+.pendragon-vf table tr:nth-child(odd),
+.pendragon-vf table tr:nth-child(even),
+.pendragon-vf table tbody tr:hover { background: none; }
+.pendragon-vf table th,
+.pendragon-vf table td { color: var(--pdvf-ink); }
+.pendragon-vf .pdvf-npc-table thead th { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-npc-attacks thead th { color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-wiz-table thead th { color: var(--pdvf-lapis); }

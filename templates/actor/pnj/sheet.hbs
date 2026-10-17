@@ -121,7 +121,18 @@
           <h3 class="pdvf-h3 red">{{localize "PDVF.Npc.Category.squire"}}</h3>
           <div class="pdvf-npc-squire-grid">
             <span class="lbl">{{localize "PDVF.Npc.Age"}}</span>
-            <span>{{#if editMode}}<label class="pdvf-inline">{{localize "PDVF.Npc.BornIn"}} <input type="number" name="system.squire.born" value="{{system.squire.born}}" class="pdvf-year" aria-label="{{localize 'PDVF.Npc.BornIn'}}"></label> · {{/if}}<strong>{{squire.ageLabel}}</strong></span>
+            <span class="pdvf-inline">
+              {{#if editMode}}
+              <span class="pdvf-stepper pdvf-age-stepper">
+                <button type="button" class="pdvf-step" data-action="squireAge" data-step="-1" aria-label="{{localize 'PDVF.Sheet.Decrease'}} {{localize 'PDVF.Npc.Age'}}">−</button>
+                <span class="pdvf-age-value">{{#if squire.age}}{{squire.age}}{{else}}—{{/if}}</span>
+                <button type="button" class="pdvf-step" data-action="squireAge" data-step="1" aria-label="{{localize 'PDVF.Sheet.Increase'}} {{localize 'PDVF.Npc.Age'}}">+</button>
+              </span>
+              <span class="pdvf-faint">{{#if system.squire.born}}{{localize "PDVF.Npc.BornIn"}} {{system.squire.born}}{{/if}}</span>
+              {{else}}
+              <strong>{{squire.ageLabel}}</strong>{{#if system.squire.born}} <span class="pdvf-faint">({{localize "PDVF.Npc.BornIn"}} {{system.squire.born}})</span>{{/if}}
+              {{/if}}
+            </span>
             <span class="lbl">{{localize "PDVF.Npc.Origin"}}</span>
             <span>{{#if editMode}}<select name="system.squire.origin" aria-label="{{localize 'PDVF.Npc.Origin'}}">{{#each squire.originChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{squire.originLabel}}{{/if}}</span>
             <span class="lbl">{{localize "PDVF.Npc.SquireSkill"}}</span>

@@ -33,7 +33,8 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       step: PnjSheet.#onStep,
       editImage: PnjSheet.#onEditImage,
       convert: PnjSheet.#onConvert,
-      openMaster: PnjSheet.#onOpenMaster
+      openMaster: PnjSheet.#onOpenMaster,
+      squireAge: PnjSheet.#onSquireAge
     }
   };
 
@@ -218,6 +219,18 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onConvert() {
     const knight = await convertNpcToKnight(this.document);
     knight?.sheet?.render(true);
+  }
+
+  /**
+   * Âge de l'écuyer, + ou − 1 an : l'âge se déduit de l'année de naissance et de l'année de jeu,
+   * on déplace donc l'année de naissance. (La phase d'hiver fera vieillir tout le monde en avançant l'année.)
+   */
+  static async #onSquireAge(event, target) {
+    const step = Number(target.dataset.step) || 0;
+    const year = Number(game.settings.get(SYSTEM_ID, "currentYear")) || 508;
+    const born = this.document.system.squire.born ?? (year - 14);
+    const age = Math.max(0, year - born + step);
+    await this.document.update({ "system.squire.born": year - age });
   }
 
   static #onOpenMaster(event, target) {

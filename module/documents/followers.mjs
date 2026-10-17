@@ -3,7 +3,7 @@
  */
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { CREATION } from "../creation/data.mjs";
-import { formulaValue } from "../creation/rules.mjs";
+import { formulaValue, defaultState } from "../creation/rules.mjs";
 import { squireAgeFromRoll, squireOriginFromRoll, squireOrigin, squireSkill, squireKnightly, normalizeLabel } from "../rules/followers.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -225,17 +225,55 @@ export async function convertNpcToKnight(npc) {
     ].filter(Boolean);
     warning = `<p class="pdvf-wiz-warning">${L("PDVF.Npc.ConvertNotEligible")}</p><ul>${missing.map(m => `<li>${m}</li>`).join("")}</ul>`;
   }
-  const ok = await foundry.applications.api.DialogV2.confirm({
+  // Un écuyer peut aussi devenir un vrai chevalier construit avec l'assistant (chap. 3).
+  const isSquire = npc.system.category === "squire";
+  const choice = await foundry.applications.api.DialogV2.wait({
     window: { title: L("PDVF.Npc.Convert") },
     classes: [SYSTEM_ID, "pdvf-dialog"],
-    content: `<p>${F("PDVF.Npc.ConvertConfirm", { name: npc.name })}</p>${warning}`,
-    rejectClose: false
+    content: `<p>${F("PDVF.Npc.ConvertConfirm", { name: npc.name })}</p>${warning}${isSquire ? `<p class="hint">${L("PDVF.Npc.ConvertWizardHint")}</p>` : ""}`,
+    rejectClose: false,
+    buttons: [
+      ...(isSquire ? [{ action: "wizard", label: L("PDVF.Npc.ConvertWizard"), icon: "fa-solid fa-wand-magic-sparkles", default: true }] : []),
+      { action: "direct", label: L("PDVF.Npc.ConvertDirect"), icon: "fa-solid fa-chess-knight", default: !isSquire },
+      { action: "cancel", label: L("PDVF.Dialog.Cancel") }
+    ]
   });
-  if (!ok) return null;
-  data.folder = npc.folder?.id ?? null;
-  data.ownership = foundry.utils.deepClone(npc.ownership);
-  data.flags = { [SYSTEM_ID]: { convertedFrom: npc.uuid } };
+  if (choice !== "wizard" && choice !== "direct") return null;
+
+  const base = {
+    folder: npc.folder?.id ?? null,
+    ownership: foundry.utils.deepClone(npc.ownership),
+    flags: { [SYSTEM_ID]: { convertedFrom: npc.uuid } }
+  };
+  if (choice === "wizard") {
+    // Fiche vierge et brouillon de l'assistant prérempli (nom, années d'écuyer déjà faites) ;
+    // l'assistant s'ouvre de lui-même pour un chevalier tout neuf.
+    const draft = squireWizardDraft(npc, PDVF.creation ?? CREATION);
+    const knight = await Actor.implementation.create({
+      name: npc.name, type: "chevalier", img: npc.img, ...base,
+      flags: { [SYSTEM_ID]: { convertedFrom: npc.uuid, creationDraft: draft } }
+    });
+    if (knight) ui.notifications.info(F("PDVF.Npc.ConvertedWizard", { name: knight.name }));
+    return knight;
+  }
+  Object.assign(data, base);
   const knight = await Actor.implementation.create(data, { pdvfSkipWizard: true });
   if (knight) ui.notifications.info(F("PDVF.Npc.Converted", { name: knight.name }));
   return knight;
+}
+
+/**
+ * Brouillon de l'assistant de création pour un écuyer : son nom, et ses années d'écuyer
+ * (âge − 14, au plus le maximum de l'assistant), toutes placées par défaut en compétences.
+ */
+export function squireWizardDraft(npc, C) {
+  const draft = defaultState(C);
+  draft.origin.name = npc.name;
+  const age = npc.system.squireView?.age;
+  if (age !== null && age !== undefined) {
+    const years = Math.max(0, Math.min(C.budgets.apprenticeYears, age - 14));
+    draft.apprentice.years = years;
+    draft.apprentice.alloc = { skills: years, traits: 0, chars: 0 };
+  }
+  return draft;
 }

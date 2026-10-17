@@ -1018,3 +1018,5 @@
 .pendragon-vf .pdvf-npc-table thead th { color: var(--pdvf-vermilion); }
 .pendragon-vf .pdvf-npc-attacks thead th { color: var(--pdvf-ink-soft); }
 .pendragon-vf .pdvf-wiz-table thead th { color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-age-stepper { align-items: center; }
+.pendragon-vf .pdvf-age-value { min-width: 34px; text-align: center; font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; border-block: 1px solid var(--pdvf-rule-strong); line-height: 26px; }

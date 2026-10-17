@@ -698,10 +698,14 @@
       "SquireValuesLine": "Écuyer {skill} ; Équitation, Rixe, Charge, Épée et une compétence non martiale à {knightly}",
       "NoCreatePermission": "Vous n'avez pas le droit de créer des acteurs : demandez au MJ.",
       "Convert": "Convertir en chevalier",
-      "ConvertTip": "Crée une fiche de chevalier avec ces valeurs ; ce PNJ est conservé",
+      "ConvertTip": "Crée une fiche de chevalier ; ce PNJ est conservé",
       "ConvertConfirm": "Créer une fiche de chevalier à partir de {name} ? Ses caractéristiques, compétences (au moins les valeurs de départ de la Table 3.5), traits, passions et son Honneur sont repris ; la fiche de PNJ est conservée.",
       "Converted": "{name} : fiche de chevalier créée.",
-      "ConvertNotEligible": "Il ne remplit pas encore les conditions de l'adoubement : la fiche sera créée comme écuyer, à compléter (par exemple en jouant ses dernières années d'écuyer)."
+      "ConvertNotEligible": "Il ne remplit pas encore les conditions de l'adoubement : la fiche sera créée comme écuyer, à compléter (par exemple en jouant ses dernières années d'écuyer).",
+      "ConvertWizard": "Avec l'assistant de création",
+      "ConvertDirect": "Convertir tel quel",
+      "ConvertWizardHint": "Avec l'assistant, on construit un chevalier complet selon le chapitre 3 (caractéristiques, traits, passions, famille, compétences), en reprenant le nom de l'écuyer et ses années d'écuyer déjà accomplies.",
+      "ConvertedWizard": "{name} : fiche de chevalier créée, l'assistant de création s'ouvre."
     },
     "Suite": {
       "Title": "Suite",

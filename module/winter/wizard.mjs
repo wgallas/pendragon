@@ -114,6 +114,7 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           columnLabel: L(`PDVF.Winter.Column.${info.column}`),
           table: PDVF.winter.upkeepLevels.map((lv, i) => ({ label: L(`PDVF.Living.${lv}`), min: String(col[i]).replace(".", ",") })),
           suggested: info.household ? 0 : info.ordinary,
+          hasDomains: info.domains.length > 0, helped: st.lordHelp ? F("PDVF.Domain.Helped", { missing: String(st.lordHelp.missing).replace(".", ","), favor: st.lordHelp.favor }) : "",
           poor: e && ["poor", "destitute"].includes(e.level), destitute: e?.level === "destitute",
           effects: e?.effects ?? {}, conLabel: e?.effects?.con ? L(`PDVF.Outcome.${e.effects.con}`) : ""
         };
@@ -275,7 +276,18 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         case "testEvent": await E.testEvent(actor, st, target.dataset.key || val("key")); break;
         case "effect": await E.applyEventEffect(actor, st, Number(target.dataset.index)); break;
         case "xp": await E.rollExperience(actor, st); break;
-        case "upkeep": await E.payUpkeep(actor, st, { spend: Number(String(val("spend")).replace(",", ".")), income: Number(String(val("income")).replace(",", ".")) }); break;
+        case "upkeep": {
+          const domains = [...this.element.querySelectorAll("[data-domain-income]")].map(el => ({ id: el.dataset.domainIncome, income: Number(String(el.value).replace(",", ".")) || 0 }));
+          const income = domains.length ? domains.reduce((a, d) => a + d.income, 0) + (Number(String(val("income")).replace(",", ".")) || 0) : Number(String(val("income")).replace(",", "."));
+          await E.payUpkeep(actor, st, { spend: Number(String(val("spend")).replace(",", ".")), income, domains });
+          break;
+        }
+        case "lordHelp": {
+          const domains = [...this.element.querySelectorAll("[data-domain-income]")].map(el => Number(String(el.value).replace(",", ".")) || 0);
+          const income = domains.reduce((a, d) => a + d, 0) + (Number(String(val("income")).replace(",", ".")) || 0);
+          await E.askLordHelp(actor, st, income);
+          break;
+        }
         case "poverty": await E.povertyEffect(actor, st, target.dataset.kind); break;
         case "aging": await E.rollAging(actor, st); break;
         case "followers": await E.rollFollowers(actor, st); break;

@@ -1291,3 +1291,15 @@
 .pdvf-combat-card .pdvf-combat-section h4 { margin: 8px 0 0; font-size: 14px; color: var(--pdvf-vermilion); border-bottom: 1px solid var(--pdvf-rule); }
 .pdvf-combat-card .pdvf-card-notes li { margin: 2px 0; }
 .pdvf-exchange-dialog .form-group select, .pdvf-exchange-dialog .form-group input[type="number"] { max-width: 60%; }
+
+/* Domaines et faveurs */
+.pendragon-vf .pdvf-domains li .pdvf-link { font-family: var(--pdvf-font-heading); font-size: 16px; }
+.pendragon-vf .pdvf-favors input[type="text"] { width: 100%; }
+.pendragon-vf .pdvf-favors input[type="number"] { width: 64px; }
+.pendragon-vf .pdvf-favors tr.settled { opacity: 0.55; }
+.pendragon-vf .pdvf-domain-ledger input { width: 100%; }
+.pendragon-vf .pdvf-domain-actions { margin-top: 12px; }
+.pendragon-vf .pdvf-winter-domains { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 14px; }
+.pendragon-vf .pdvf-winter-domains .pdvf-wiz-note { grid-column: 1 / -1; }
+.pendragon-vf .pdvf-winter-domain { flex-direction: row; align-items: center; gap: 8px; }
+.pendragon-vf .pdvf-winter-domain input { width: 80px; }

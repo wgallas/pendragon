@@ -100,9 +100,18 @@
         {{#if household}}
         <p class="pdvf-wiz-note pdvf-span2">{{localize "PDVF.Winter.HouseholdText"}} ({{base}} £)</p>
         {{/if}}
-        <label class="pdvf-field"><span>{{localize "PDVF.Winter.Income"}}</span><input type="number" name="income" value="0" min="0" step="0.5"></label>
+        {{#if hasDomains}}
+        <div class="pdvf-span2 pdvf-winter-domains">
+          <p class="pdvf-wiz-note">{{localize "PDVF.Domain.WinterText"}}</p>
+          {{#each domains}}
+          <label class="pdvf-field pdvf-winter-domain"><span>{{name}}</span><input type="number" data-domain-income="{{id}}" value="{{income}}" step="0.5" aria-label="{{name}}"> £</label>
+          {{/each}}
+        </div>
+        {{/if}}
+        <label class="pdvf-field"><span>{{#if hasDomains}}{{localize "PDVF.Domain.OtherIncome"}}{{else}}{{localize "PDVF.Winter.Income"}}{{/if}}</span><input type="number" name="income" value="0" min="0" step="0.5"></label>
         <label class="pdvf-field"><span>{{#if household}}{{localize "PDVF.Winter.ExtraSpend"}}{{else}}{{localize "PDVF.Winter.Spend"}}{{/if}}</span><input type="number" name="spend" value="{{suggested}}" min="0" step="0.5"></label>
         <p class="pdvf-hint pdvf-span2">{{localize "PDVF.Winter.UpkeepHint"}}</p>
+        {{#if hasDomains}}<div class="pdvf-span2">{{#if helped}}<p class="pdvf-wiz-note">{{helped}}</p>{{else}}<button type="button" class="pdvf-btn" data-action="run" data-op="lordHelp" data-tooltip="{{localize 'PDVF.Domain.HelpTip'}}">{{localize "PDVF.Domain.AskHelp"}}</button>{{/if}}</div>{{/if}}
         <div class="pdvf-span2"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="upkeep">{{localize "PDVF.Winter.Pay"}}</button></div>
       </div>
       {{/if}}

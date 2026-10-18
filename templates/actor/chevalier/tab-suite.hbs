@@ -81,5 +81,48 @@
   <p class="pdvf-hint">{{localize "PDVF.Economy.Hint"}}</p>
 
   <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Suite.Domain"}}</h2>
-  <p class="pdvf-upcoming">{{localize "PDVF.Upcoming.Suite"}}</p>
+  {{#if domains.length}}
+  <ul class="pdvf-armor-list pdvf-domains">
+    {{#each domains}}
+    <li>
+      <img src="{{img}}" alt="" class="pdvf-gear-icon">
+      <button type="button" class="pdvf-link" data-action="domainOpen" data-id="{{id}}">{{name}}</button>
+      <span class="pdvf-gear-tag">{{rank}} · {{tenure}}{{#if location}} · {{location}}{{/if}}</span>
+      <span class="pdvf-armor-value">{{income}} £</span>
+      {{#if passive}}<span class="pdvf-gear-tag">+{{passive}}</span>{{/if}}
+      {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="domainDelete" data-id="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+    </li>
+    {{/each}}
+  </ul>
+  <p class="pdvf-hint">{{localize "PDVF.Domain.Totals"}} : <strong>{{domainTotals.income}} £</strong> / {{localize "PDVF.Domain.Year"}}{{#if domainTotals.glory}} · {{localize "PDVF.Glory"}} +{{domainTotals.glory}} / {{localize "PDVF.Domain.Year"}}{{/if}}</p>
+  {{else}}
+  <p class="pdvf-hint">{{localize "PDVF.Domain.None"}}</p>
+  {{/if}}
+  {{#if editable}}<button type="button" class="pdvf-btn" data-action="domainNew"><i class="fa-solid fa-chess-rook" aria-hidden="true"></i> {{localize "PDVF.Domain.New"}}</button>{{/if}}
+
+  <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Favor.Title"}}</h2>
+  <p class="pdvf-hint">{{localize "PDVF.Favor.Totals"}} : {{localize "PDVF.Favor.due"}} F{{favorTotals.due}} · {{localize "PDVF.Favor.owed"}} F{{favorTotals.owed}}</p>
+  {{#if favors.length}}
+  <table class="pdvf-wiz-table compact pdvf-favors">
+    <thead><tr><th scope="col">{{localize "PDVF.Favor.Direction"}}</th><th scope="col">{{localize "PDVF.Favor.Who"}}</th><th scope="col">F</th><th scope="col">{{localize "PDVF.Favor.Reason"}}</th><th scope="col">{{localize "PDVF.Domain.YearCol"}}</th><th scope="col">{{localize "PDVF.Favor.Settled"}}</th><th></th></tr></thead>
+    <tbody>
+      {{#each favors}}
+      <tr class="{{#if settled}}settled{{/if}}">
+        <td><select name="system.favors.{{index}}.direction" aria-label="{{localize 'PDVF.Favor.Direction'}}">{{#each directionChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+        <td><input type="text" name="system.favors.{{index}}.who" value="{{who}}" aria-label="{{localize 'PDVF.Favor.Who'}}"></td>
+        <td><input type="number" name="system.favors.{{index}}.value" value="{{value}}" min="0" step="1" aria-label="F"></td>
+        <td><input type="text" name="system.favors.{{index}}.reason" value="{{reason}}" aria-label="{{localize 'PDVF.Favor.Reason'}}"></td>
+        <td><input type="number" name="system.favors.{{index}}.year" value="{{year}}" step="1" aria-label="{{localize 'PDVF.Domain.Year'}}"></td>
+        <td><input type="checkbox" name="system.favors.{{index}}.settled" {{checked settled}} aria-label="{{localize 'PDVF.Favor.Settled'}}"></td>
+        <td><button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.favors" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{/if}}
+  <div class="pdvf-combat-actions">
+    <button type="button" class="pdvf-btn" data-action="addRow" data-path="system.favors" data-direction="due">{{localize "PDVF.Favor.AddDue"}}</button>
+    <button type="button" class="pdvf-btn" data-action="addRow" data-path="system.favors" data-direction="owed">{{localize "PDVF.Favor.AddOwed"}}</button>
+  </div>
+  <p class="pdvf-hint">{{localize "PDVF.Favor.Hint"}}</p>
 </section>

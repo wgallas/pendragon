@@ -10,7 +10,8 @@
       "rencontre": "Rencontre de bataille",
       "arme": "Arme",
       "armure": "Armure",
-      "bouclier": "Bouclier"
+      "bouclier": "Bouclier",
+      "domaine": "Domaine"
     }
   },
   "PDVF": {
@@ -23,7 +24,8 @@
       "cheval": "Fiche de cheval (Pendragon VF)",
       "bataille": "Fiche de bataille (Pendragon VF)",
       "rencontre": "Fiche de rencontre (Pendragon VF)",
-      "equipement": "Fiche d'équipement (Pendragon VF)"
+      "equipement": "Fiche d'équipement (Pendragon VF)",
+      "domaine": "Fiche de domaine (Pendragon VF)"
     },
     "Settings": {
       "currentYear": {
@@ -404,7 +406,9 @@
       "total": "Total annuel",
       "Hint": "Traits, passions et Attrait sont calculés d'après la fiche (15 par valeur Célèbre, 25 par valeur Exaltée, 100 au plus par catégorie).",
       "horses": "Chevaux",
-      "horsesTip": "Robes (une fois chacune : blanc 50, gris 25, alezan 15, palomino 5) et cheval de guerre principal : 15 s'il s'agit d'un étalon entraîné au combat, monté avec Équitation 15."
+      "horsesTip": "Robes (une fois chacune : blanc 50, gris 25, alezan 15, palomino 5) et cheval de guerre principal : 15 s'il s'agit d'un étalon entraîné au combat, monté avec Équitation 15.",
+      "domains": "Domaines",
+      "domainsTip": "Gloire passive des domaines tenus (Table A.2 du Livre du maître)."
     },
     "Prestige": {
       "earned": "Obtenues (une par tranche de 1000)",
@@ -1726,7 +1730,8 @@
         "Reminded": "Assistant rouvert chez les joueurs."
       },
       "Remaining": "Points restants :",
-      "GmOnly": "— (MJ)"
+      "GmOnly": "— (MJ)",
+      "GloryDomains": "Gloire passive des domaines"
     },
     "Period": {
       "all": "Toutes Périodes",
@@ -1851,7 +1856,8 @@
         "mail": "contre mailles, d'office",
         "plate": "contre plates, d'office",
         "unarmored": "sans armure, d'office"
-      }
+      },
+      "Description": "Description"
     },
     "Combat": {
       "Title": "Combat",
@@ -2023,6 +2029,91 @@
       "ApplyLoose": "Porter sur cette compétence : {list}",
       "CurrentInspirations": "Inspirations en cours :",
       "PassionFailedAct": "Passion ratée : le chevalier agit tout de même, sans bonus."
+    },
+    "Domain": {
+      "NewName": "Nouveau manoir",
+      "New": "Nouveau domaine",
+      "None": "Aucun domaine. Faites glisser un domaine sur la fiche, ou créez-en un.",
+      "Totals": "Revenus des domaines",
+      "Year": "an",
+      "Holder": "Tenu par",
+      "RankLabel": "Rang (Table A.2)",
+      "Rank": {
+        "vassal": "Manoir de chevalier vassal",
+        "lordship": "Seigneurie",
+        "banneret": "Domaine de banneret",
+        "minorBaron": "Petite baronnie",
+        "baron": "Baronnie",
+        "richBaron": "Riche baronnie",
+        "earl": "Comté ou duché",
+        "king": "Grand royaume"
+      },
+      "TenureLabel": "Tenure",
+      "Tenure": {
+        "fief": "Fief (héréditaire)",
+        "gift": "Don (à vie)"
+      },
+      "Title": {
+        "household": "Chevalier de maisonnée",
+        "vassal": "Chevalier vassal",
+        "banneret": "Banneret",
+        "baron": "Baron",
+        "earl": "Comte ou duc",
+        "king": "Roi"
+      },
+      "Since": "Tenu depuis",
+      "Location": "Situation",
+      "Garrison": "Garnison, vassaux",
+      "Income": "Revenu annuel (£)",
+      "Passive": "Gloire passive annuelle",
+      "Typical": "Valeurs typiques du rang",
+      "TypicalLine": "Table A.2 : revenu typique {income} £ ({min} à {max} £), entretien {upkeep} £, niveau de vie {living}, Gloire passive {passive}. Titre : {title} ({glory} points de Gloire, une seule fois).",
+      "FavorValue": "Valeur de ces terres en faveur (Table 12.6 : ×20 pour un fief, ×10 pour un don)",
+      "Steward": "Intendant",
+      "Obligations": "Obligations envers le seigneur",
+      "Ledger": "Registre des revenus",
+      "NoLedger": "Aucune année inscrite : la phase d'hiver y note chaque revenu.",
+      "AddLedger": "Ajouter une année",
+      "Note": "Note",
+      "Transfer": "Transmettre à l'héritier",
+      "TransferTitle": "Transmettre {name}",
+      "TransferHint": "Le fief passe à l'héritier avec son registre ; l'héritier prend le rang et la Gloire du titre s'il ne les a pas déjà.",
+      "Heir": "Héritier",
+      "NoHeir": "Aucun autre chevalier que vous puissiez modifier.",
+      "Transferred": "{name} passe à {heir}.",
+      "Inherited": "Hérité de {from}",
+      "GiveBack": "Rendre au seigneur",
+      "GiveBackText": "Le don « {name} » retourne au seigneur et quitte la fiche.",
+      "Returned": "Rendu par {from}",
+      "DeleteTitle": "Retirer un domaine",
+      "DeleteText": "Retirer « {name} » de la fiche ?",
+      "RulesHint": "Les livres de base ne décrivent pas la gestion d'un manoir (test de Gestion annuel, améliorations) : elle viendra avec le Livre des Nobles. Le revenu se note ici et entre au Trésor pendant la phase d'hiver.",
+      "ClassChanged": "{name} devient {klass}.",
+      "TitleEvent": "Titre : {title} ({domain})",
+      "TitleGlory": "Titre de {title} : +{glory} points de Gloire (chronique).",
+      "GainedTitle": "{name} reçoit {domain}",
+      "WinterText": "Revenus des domaines cette année (en nature) : corrigez une bonne ou une mauvaise année.",
+      "OtherIncome": "Autres revenus (£)",
+      "AskHelp": "Demander l'aide du seigneur",
+      "HelpTip": "Si les revenus et le trésor ne suffisent pas à l'entretien Ordinaire, le seigneur avance ce qui manque ; le chevalier lui doit une faveur (F1 par livre).",
+      "Helped": "Le seigneur a avancé {missing} £ ; faveur F{favor} due.",
+      "HelpLine": "{lord} avance {missing} £ pour l'entretien : faveur F{favor} due.",
+      "HelpReason": "Aide pour l'entretien, hiver {year}",
+      "TheLord": "le seigneur",
+      "YearCol": "Année"
+    },
+    "Favor": {
+      "Title": "Faveurs",
+      "due": "On lui doit",
+      "owed": "Il doit",
+      "Direction": "Sens",
+      "Who": "Auprès de qui",
+      "Reason": "Pour quoi",
+      "Settled": "Réglée",
+      "Totals": "En cours",
+      "AddDue": "Faveur reçue (on lui doit)",
+      "AddOwed": "Faveur due (il doit)",
+      "Hint": "Table 12.6 : F1 = 1 £ de biens, 1 £ de revenu foncier annuel, un acte valant 10 points de Gloire ; F10 = un acte valant 1 point d'Honneur. Une faveur est personnelle : elle meurt avec le chevalier. Ne pas l'honorer coûte de l'Honneur."
     }
   }
 }

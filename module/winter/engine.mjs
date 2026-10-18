@@ -9,6 +9,8 @@ import { compareOpposed, traitPair } from "../rules/resolution.mjs";
 import { rollPlain } from "../dice/tests.mjs";
 import { normalizeLabel } from "../rules/followers.mjs";
 import { resolveFollowers, resolveHorses, knightHorseGlory } from "../documents/followers.mjs";
+import { domainsOf, domainGlory, domainIncome, recordIncome, addFavor } from "../documents/domains.mjs";
+import { lordHelp } from "../rules/domains.mjs";
 import { winterEvent, PASSION_MATCH, WINTER_EVENTS } from "./events.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -377,12 +379,32 @@ export function economyInfo(actor) {
   const family = married || (s.family.children ?? []).some(c => c.alive);
   const column = W.upkeepColumn({ squire, family });
   const base = household ? (married ? C().householdUpkeep.married : C().householdUpkeep.single) : 0;
-  return { household, squire, family, married, column, base, ordinary: W.upkeepFor("ordinary", column, C()) };
+  const domains = domainsOf(actor).map(d => ({ id: d.id, name: d.name, income: d.system.income }));
+  return { household, squire, family, married, column, base, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
+}
+
+/**
+ * Mauvaise année sur ses terres (Livre du joueur p. 23) : le seigneur avance ce qui manque pour
+ * l'entretien Ordinaire, et le chevalier lui doit une faveur (F1 par livre, Table 12.6).
+ */
+export async function askLordHelp(actor, state, income) {
+  if (state.economy?.done || state.lordHelp) return state;
+  const info = economyInfo(actor);
+  const treasury = (Number(actor.system.economy.treasury) || 0) / D;
+  const help = lordHelp({ ordinary: info.ordinary, treasury, income });
+  if (!help.missing) return state;
+  await actor.update({ "system.economy.treasury": (Number(actor.system.economy.treasury) || 0) + Math.round(help.missing * D) });
+  const lord = actor.system.biography.lord || domainsOf(actor)[0]?.system.lord || L("PDVF.Domain.TheLord");
+  await addFavor(actor, { direction: "owed", who: lord, value: help.favor, reason: F("PDVF.Domain.HelpReason", { year: state.year }) });
+  state.lordHelp = help;
+  await postLines(actor, L("PDVF.Winter.Step.economy"), [F("PDVF.Domain.HelpLine", { lord, missing: String(help.missing).replace(".", ","), favor: help.favor })]);
+  return state;
 }
 
 /** Entretien de l'année : revenus encaissés, dépense, niveau de vie, Gloire passive et somptuaire. */
-export async function payUpkeep(actor, state, { spend = 0, income = 0 }) {
+export async function payUpkeep(actor, state, { spend = 0, income = 0, domains = [] }) {
   if (state.economy?.done) return state;
+  if (domains.length) await recordIncome(actor, state.year, domains);
   const info = economyInfo(actor);
   const own = Math.max(0, Number(spend) || 0);
   const total = info.base + own;
@@ -660,6 +682,8 @@ export function gloryRows(actor, state) {
   if (s.glory.session) rows.push({ label: L("PDVF.Winter.GlorySession"), value: s.glory.session });
   for (const g of state.glory) if (g.value) rows.push({ label: g.label, value: g.value });
   rows.push({ label: L("PDVF.Winter.GloryPassive"), value: s.passive.total + horses });
+  const dGlory = domainGlory(actor);
+  if (dGlory) rows.push({ label: L("PDVF.Winter.GloryDomains"), value: dGlory });
   return rows;
 }
 

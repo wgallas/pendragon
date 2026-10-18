@@ -15,6 +15,7 @@ import { attackProfiles, conflictsWith } from "../rules/equipment.mjs";
 import { giveStartingEquipment, hasGear, GEAR_TYPES } from "../documents/equipment.mjs";
 import { engage } from "../combat/exchange.mjs";
 import * as CD from "../combat/dialogs.mjs";
+import { domainsOf, domainGlory, domainIncome, newDomainData } from "../documents/domains.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -22,7 +23,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 const TPL = `systems/${SYSTEM_ID}/templates/actor/chevalier`;
 const TAB_IDS = ["chevalier", "traits", "combat", "suite", "lignee", "chronique"];
 /** Chemins des tableaux du modèle, dont les lignes sont éditées dans le formulaire. */
-const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.horses", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents", "system.family.children"];
+const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.horses", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents", "system.family.children", "system.favors"];
 
 const L = (k) => game.i18n.localize(k);
 
@@ -93,7 +94,10 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       combatStand: ChevalierSheet.#onCombatStand,
       combatRearm: ChevalierSheet.#onCombatRearm,
       woundAid: ChevalierSheet.#onWoundAid,
-      woundDelete: ChevalierSheet.#onWoundDelete
+      woundDelete: ChevalierSheet.#onWoundDelete,
+      domainNew: ChevalierSheet.#onDomainNew,
+      domainOpen: ChevalierSheet.#onDomainOpen,
+      domainDelete: ChevalierSheet.#onDomainDelete
     }
   };
 
@@ -309,11 +313,25 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.livingChoices = PDVF.livingStandards.map(v => ({ value: L(`PDVF.Living.${v}`), label: L(`PDVF.Living.${v}`) }));
     // Gloire passive : celle des chevaux est calculée à partir de l'écurie
     const horseGlory = knightHorseGlory(actor);
-    context.passive = { ...system.passive, horses: horseGlory.total, horsesDetail: horseGlory, total: system.passive.total + horseGlory.total };
+    const dGlory = domainGlory(actor);
+    context.passive = { ...system.passive, horses: horseGlory.total, horsesDetail: horseGlory, domains: dGlory, total: system.passive.total + horseGlory.total + dGlory };
     context.prestige = {
       earned: system.prestigeEarned,
       used: system.glory.prestigeUsed,
       available: Math.max(0, system.prestigeEarned - system.glory.prestigeUsed)
+    };
+
+    // Onglet Suite : domaines et faveurs
+    context.domains = domainsOf(actor).map(d => ({
+      id: d.id, name: d.name, img: d.img, rank: L(`PDVF.Domain.Rank.${d.system.rank}`), tenure: L(`PDVF.Domain.Tenure.${d.system.tenure}`),
+      income: d.system.income, passive: d.system.passiveGlory, location: d.system.location
+    }));
+    context.domainTotals = { income: domainIncome(actor), glory: dGlory };
+    context.favors = (system.favors ?? []).map((f, index) => ({ ...f, index, owed: f.direction === "owed",
+      directionChoices: ["due", "owed"].map(v => ({ value: v, label: L(`PDVF.Favor.${v}`), selected: v === f.direction })) }));
+    context.favorTotals = {
+      due: (system.favors ?? []).filter(f => f.direction === "due" && !f.settled).reduce((a, f) => a + (Number(f.value) || 0), 0),
+      owed: (system.favors ?? []).filter(f => f.direction === "owed" && !f.settled).reduce((a, f) => a + (Number(f.value) || 0), 0)
     };
 
     // Onglet Combat : armes, armure, bouclier
@@ -460,7 +478,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       "system.extraSkills": { name: L("PDVF.Sheet.NewSkill"), group: "general", value: 0, xp: false },
       "system.directedTraits": { name: "", value: 1 },
       "system.chronicle": { year: game.settings.get(SYSTEM_ID, "currentYear"), event: "", living: "", glory: 0 },
-      "system.family.children": { name: "", sex: "m", born: game.settings.get(SYSTEM_ID, "currentYear"), blessing: "", alive: true, died: null, notes: "" }
+      "system.family.children": { name: "", sex: "m", born: game.settings.get(SYSTEM_ID, "currentYear"), blessing: "", alive: true, died: null, notes: "" },
+      "system.favors": { direction: target.dataset.direction ?? "due", who: "", value: 1, reason: "", year: game.settings.get(SYSTEM_ID, "currentYear"), settled: false }
     };
     if (!(path in defaults)) return;
     rows.push(defaults[path]);
@@ -514,6 +533,16 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Seuls les objets d'équipement se rangent sur la fiche (pas les batailles ni les rencontres). */
   async _onDropItem(event, item) {
+    if (this.isEditable && item?.type === "domaine") {
+      if (item.parent?.uuid === this.document.uuid) return item;
+      const data = item.toObject();
+      delete data._id;
+      delete data.folder;
+      data.system.since ??= Number(game.settings.get(SYSTEM_ID, "currentYear")) || null;
+      const [created] = await this.document.createEmbeddedDocuments("Item", [data]);
+      if (created) { this.tabGroups.primary = "suite"; this.render(); }
+      return created ?? null;
+    }
     if (!this.isEditable || !GEAR_TYPES.includes(item?.type)) return null;
     // Objet déjà sur la fiche : rien à créer
     if (item.parent?.uuid === this.document.uuid) return item;
@@ -632,6 +661,26 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const wounds = foundry.utils.deepClone(this.document._source.system.health.wounds ?? []);
     wounds.splice(Number(target.dataset.index), 1);
     await this.document.update({ "system.health.wounds": wounds });
+  }
+
+  /* -------------------------------------------- */
+  /*  Domaines                                     */
+  /* -------------------------------------------- */
+
+  static async #onDomainNew() {
+    const [created] = await this.document.createEmbeddedDocuments("Item", [newDomainData("vassal")]);
+    created?.sheet?.render(true);
+  }
+
+  static #onDomainOpen(event, target) {
+    this.document.items.get(target.dataset.id)?.sheet?.render(true);
+  }
+
+  static async #onDomainDelete(event, target) {
+    const d = this.document.items.get(target.dataset.id);
+    if (!d) return;
+    const ok = await foundry.applications.api.DialogV2.confirm({ window: { title: L("PDVF.Domain.DeleteTitle") }, content: `<p>${game.i18n.format("PDVF.Domain.DeleteText", { name: d.name })}</p>`, rejectClose: false });
+    if (ok) await d.delete();
   }
 
   /** Un PNJ déposé sur la fiche rejoint la suite du chevalier. */

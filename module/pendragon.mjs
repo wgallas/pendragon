@@ -13,6 +13,9 @@ import * as followers from "./documents/followers.mjs";
 import { ensureAdversaries, ensureEncounters, ensureEquipment } from "./documents/compendium.mjs";
 import { ArmeData, ArmureData, BouclierData } from "./data/equipement.mjs";
 import { EquipementSheet } from "./sheets/equipement-sheet.mjs";
+import { DomaineData } from "./data/domaine.mjs";
+import { DomaineSheet } from "./sheets/domaine-sheet.mjs";
+import * as domains from "./documents/domains.mjs";
 import * as winterEngine from "./winter/engine.mjs";
 import * as winterGm from "./winter/gm.mjs";
 import { openWinterWizard, WinterWizard } from "./winter/wizard.mjs";
@@ -41,7 +44,7 @@ Hooks.once("init", () => {
   game.pendragon = {
     config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters, importEquipment: ensureEquipment,
     tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient },
-    combat: { engage: combatExchange.engage, receiveDamage: combatDamage.receiveDamage, stats: combatDamage.combatStats },
+    domains, combat: { engage: combatExchange.engage, receiveDamage: combatDamage.receiveDamage, stats: combatDamage.combatStats },
     winter: { engine: winterEngine, openPanel: winterGm.openWinterPanel, start: winterGm.startWinter, close: winterGm.closeWinter, open: openWinterWizard }
   };
 
@@ -56,6 +59,7 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.arme = ArmeData;
   CONFIG.Item.dataModels.armure = ArmureData;
   CONFIG.Item.dataModels.bouclier = BouclierData;
+  CONFIG.Item.dataModels.domaine = DomaineData;
   // Combat : états des jetons (à cheval, désarmé) ; l'ordre du suivi de combat suit la DEX (pas d'initiative dans Pendragon)
   registerStatuses();
   CONFIG.Combat.initiative = { formula: "@characteristics.dex.value", decimals: 0 };
@@ -153,6 +157,11 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "PDVF.SheetLabel.rencontre"
   });
+  DSC.registerSheet(Item, SYSTEM_ID, DomaineSheet, {
+    types: ["domaine"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.domaine"
+  });
   DSC.registerSheet(Item, SYSTEM_ID, EquipementSheet, {
     types: ["arme", "armure", "bouclier"],
     makeDefault: true,
@@ -197,6 +206,10 @@ Hooks.once("ready", async () => {
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMessage(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => combatExchange.onRenderCombatCard(message, html));
+
+// Domaines : rang du chevalier et Gloire du titre quand il en reçoit un
+Hooks.on("createItem", (item, options, userId) => domains.onDomainCreated(item, options, userId));
+Hooks.on("updateItem", (item, changes, options, userId) => domains.onDomainUpdated(item, changes, options, userId));
 
 // « Nouveau jour » du MJ (outils des jetons, barre de gauche)
 Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));

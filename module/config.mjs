@@ -408,3 +408,27 @@ PDVF.startingEquipment = {
     { name: "Bouclier rond", equipped: true }, { name: "Lance", equipped: true }, { name: "Dague", equipped: true }
   ]
 };
+
+/* -------------------------------------------- */
+/*  Domaines (Livre du maître, Table A.2 et p. 229) */
+/* -------------------------------------------- */
+
+/**
+ * Rangs d'un domaine : revenu typique (£) et fourchette, entretien, niveau de vie, Gloire passive
+ * du domaine (Table A.2), titre obtenu et sa Gloire (une seule fois par titre, p. 229), classe du chevalier.
+ * Données ouvertes : le Livre des Nobles pourra les compléter.
+ */
+PDVF.domainRanks = {
+  vassal: { income: 10, range: [7, 30], upkeep: 6, living: "ordinary", passive: 0, title: "vassal", knightClass: "vassal" },
+  lordship: { income: 50, range: [30, 100], upkeep: 10, living: "rich", passive: 40, title: "vassal", knightClass: "vassal" },
+  banneret: { income: 100, range: [60, 120], upkeep: 15, living: "superlative", passive: 90, title: "banneret", knightClass: "banneret" },
+  minorBaron: { income: 150, range: [100, 200], upkeep: 20, living: "superlative", passive: 100, title: "baron", knightClass: "banneret" },
+  baron: { income: 300, range: [200, 400], upkeep: 35, living: "superlative", passive: 120, title: "baron", knightClass: "banneret" },
+  richBaron: { income: 600, range: [400, 800], upkeep: 65, living: "superlative", passive: 150, title: "baron", knightClass: "banneret" },
+  earl: { income: 1000, range: [800, 1600], upkeep: 105, living: "superlative", passive: 200, title: "earl", knightClass: "banneret" },
+  king: { income: 3000, range: [1000, 5000], upkeep: 305, living: "superlative", passive: 400, title: "king", knightClass: "banneret" }
+};
+/** Gloire des titres (Livre du maître p. 229). */
+PDVF.titleGlory = { household: 50, vassal: 250, banneret: 500, baron: 1000, earl: 1000, king: 1000 };
+/** Ordre des classes de chevalier (pour ne jamais rétrograder un chevalier en lui donnant un domaine). */
+PDVF.knightClassOrder = ["squire", "mercenary", "household", "vassal", "banneret"];

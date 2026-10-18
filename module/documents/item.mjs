@@ -9,7 +9,8 @@ export class PendragonItem extends Item {
     rencontre: "icons/svg/sword.svg",
     arme: "systems/pendragon-vf/icons/gear/sword.svg",
     armure: "systems/pendragon-vf/icons/gear/mail.svg",
-    bouclier: "systems/pendragon-vf/icons/gear/shield_norman.svg"
+    bouclier: "systems/pendragon-vf/icons/gear/shield_norman.svg",
+    domaine: "systems/pendragon-vf/icons/gear/domain.svg"
   };
 
   async _preCreate(data, options, user) {

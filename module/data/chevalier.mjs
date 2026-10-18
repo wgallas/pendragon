@@ -129,6 +129,15 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         role: new fields.StringField({ initial: "riding" })
       })),
       mainHorse: new fields.StringField({ initial: "" }),
+      // Faveurs (Livre du joueur, Table 12.6) : « owed » le chevalier doit, « due » on lui doit
+      favors: new fields.ArrayField(new fields.SchemaField({
+        direction: new fields.StringField({ initial: "due", choices: ["due", "owed"] }),
+        who: new fields.StringField({ initial: "" }),
+        value: int(1, { min: 0 }),
+        reason: new fields.StringField({ initial: "" }),
+        year: int(null, { nullable: true }),
+        settled: new fields.BooleanField({ initial: false })
+      })),
       // Jour (compteur du monde) auquel se rapportent invokedToday et inspirations.
       passionDay: int(0),
 
@@ -243,6 +252,7 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
       passions: passiveGloryFromValues(passionValues),
       appearance: passiveGloryFromAppearance(c.app)
     };
+    // (La Gloire des chevaux et des domaines, tirée des acteurs et objets liés, s'ajoute sur la fiche et en hiver.)
     this.passive.total = this.passive.traits + this.passive.passions + this.passive.appearance
       + this.glory.passiveLiving + this.glory.passiveIdeals + this.glory.passiveHoldings + this.glory.passiveOther;
 

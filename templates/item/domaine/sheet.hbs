@@ -1,0 +1,70 @@
+<div class="pdvf-gear pdvf-domain">
+  <header class="pdvf-npc-header">
+    <img class="pdvf-encounter-icon" src="{{item.img}}" alt="" data-action="editImage" data-edit="img">
+    <div class="pdvf-npc-identity">
+      <input type="text" class="pdvf-npc-name-input" name="name" value="{{item.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      <div class="pdvf-line1 pdvf-gear-summary">
+        <span class="pdvf-gear-type">{{rankLabel}}</span>
+        <span>{{tenureLabel}}</span>
+        <span>{{system.income}} £ / {{localize "PDVF.Domain.Year"}}</span>
+        {{#if system.passiveGlory}}<span>{{localize "PDVF.Glory"}} +{{system.passiveGlory}} / {{localize "PDVF.Domain.Year"}}</span>{{/if}}
+        {{#if holder}}<span>{{localize "PDVF.Domain.Holder"}} : {{holder.name}}</span>{{/if}}
+      </div>
+    </div>
+  </header>
+
+  <div class="pdvf-gear-body">
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.RankLabel"}}</span>
+        <select name="system.rank">{{#each rankChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.TenureLabel"}}</span>
+        <select name="system.tenure">{{#each tenureChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Since"}}</span><input type="number" name="system.since" value="{{system.since}}" step="1" placeholder="—"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.lord"}}</span><input type="text" name="system.lord" value="{{system.lord}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Location"}}</span><input type="text" name="system.location" value="{{system.location}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Garrison"}}</span><input type="text" name="system.garrison" value="{{system.garrison}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Income"}}</span><input type="number" name="system.income" value="{{system.income}}" step="0.5" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Passive"}}</span><input type="number" name="system.passiveGlory" value="{{system.passiveGlory}}" step="1" min="0"></label>
+      <div class="pdvf-field"><span>&nbsp;</span>{{#if editable}}<button type="button" class="pdvf-btn" data-action="typical">{{localize "PDVF.Domain.Typical"}}</button>{{/if}}</div>
+    </div>
+    <p class="pdvf-hint">{{typical}}</p>
+    <p class="pdvf-hint">{{localize "PDVF.Domain.FavorValue"}} : F{{favorValue}}.</p>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Domain.Steward"}}</h3>
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.name"}}</span><input type="text" name="system.steward.name" value="{{system.steward.name}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Skill.stewardship"}}</span><input type="number" name="system.steward.skill" value="{{system.steward.skill}}" step="1" min="0"></label>
+    </div>
+    <label class="pdvf-field"><span>{{localize "PDVF.Domain.Obligations"}}</span><textarea name="system.obligations" rows="2">{{system.obligations}}</textarea></label>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Domain.Ledger"}}</h3>
+    {{#if ledger.length}}
+    <table class="pdvf-wiz-table compact pdvf-domain-ledger">
+      <thead><tr><th scope="col">{{localize "PDVF.Domain.YearCol"}}</th><th scope="col">{{localize "PDVF.Domain.Income"}}</th><th scope="col">{{localize "PDVF.Domain.Note"}}</th><th></th></tr></thead>
+      <tbody>
+        {{#each ledger}}
+        <tr>
+          <td><input type="number" name="system.ledger.{{index}}.year" value="{{year}}" step="1" aria-label="{{localize 'PDVF.Domain.Year'}}"></td>
+          <td><input type="number" name="system.ledger.{{index}}.income" value="{{income}}" step="0.5" aria-label="{{localize 'PDVF.Domain.Income'}}"></td>
+          <td><input type="text" name="system.ledger.{{index}}.note" value="{{note}}" aria-label="{{localize 'PDVF.Domain.Note'}}"></td>
+          <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteLedger" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{else}}<p class="pdvf-hint">{{localize "PDVF.Domain.NoLedger"}}</p>{{/if}}
+    {{#if editable}}<button type="button" class="pdvf-btn" data-action="addLedger">{{localize "PDVF.Domain.AddLedger"}}</button>{{/if}}
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Gear.Description"}}</h3>
+    <textarea name="system.description" rows="5">{{system.description}}</textarea>
+    <label class="pdvf-field"><span>{{localize "PDVF.Gear.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
+
+    {{#if holder}}{{#if editable}}
+    <div class="pdvf-combat-actions pdvf-domain-actions">
+      {{#if isFief}}<button type="button" class="pdvf-btn" data-action="transfer"><i class="fa-solid fa-people-arrows" aria-hidden="true"></i> {{localize "PDVF.Domain.Transfer"}}</button>
+      {{else}}<button type="button" class="pdvf-btn" data-action="giveBack"><i class="fa-solid fa-hand-holding" aria-hidden="true"></i> {{localize "PDVF.Domain.GiveBack"}}</button>{{/if}}
+    </div>
+    {{/if}}{{/if}}
+    <p class="pdvf-hint">{{localize "PDVF.Domain.RulesHint"}}</p>
+  </div>
+</div>

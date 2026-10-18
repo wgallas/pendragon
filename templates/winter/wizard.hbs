@@ -68,6 +68,17 @@
         <tbody>{{#each rows}}<tr><td>{{label}}</td><td>{{value}}</td><td>{{die}}</td><td>{{#if gain}}<strong class="pdvf-gain">+1</strong>{{/if}}</td></tr>{{else}}<tr><td colspan="4">{{localize "PDVF.Winter.NoXp"}}</td></tr>{{/each}}</tbody>
       </table>
       {{else}}
+      {{#if enh}}
+      <div class="pdvf-winter-land" data-group="enh">
+        <h4 class="pdvf-h4">{{localize "PDVF.Manor.Winter.EnhRolls"}}</h4>
+        {{#if enhDone}}
+        <ul class="pdvf-winter-list">{{#each enhRows}}<li>{{label}} : {{outcomeLabel}}</li>{{/each}}</ul>
+        {{else}}
+        <p class="pdvf-hint">{{localize "PDVF.Manor.Winter.EnhRollsHint"}} {{enh}}</p>
+        <button type="button" class="pdvf-btn" data-action="run" data-op="enhChecks"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Manor.Winter.EnhRoll"}}</button>
+        {{/if}}
+      </div>
+      {{/if}}
       <p>{{localize "PDVF.Winter.XpList"}}</p>
       <ul class="pdvf-winter-list">{{#each list}}<li>{{label}} <span class="pdvf-hint-inline">{{value}}</span></li>{{else}}<li>{{localize "PDVF.Winter.NoXp"}}</li>{{/each}}</ul>
       <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="xp"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.RollXp"}}</button>
@@ -79,6 +90,81 @@
     {{#if step.economy}}
     {{#with economy}}
       <p>{{localize "PDVF.Winter.Treasury"}} : <strong>{{@root.treasury}}</strong> · {{columnLabel}}</p>
+      {{#if lands}}
+      <section class="pdvf-winter-lands">
+        <h3 class="pdvf-h3">{{localize "PDVF.Manor.Winter.Title"}}</h3>
+        <p class="pdvf-wiz-note">{{localize "PDVF.Manor.Winter.Intro"}}</p>
+        {{#each lands.domains}}
+        <div class="pdvf-winter-land" data-group="land-{{id}}">
+          <h4 class="pdvf-h4">{{name}} <span class="pdvf-hint-inline">{{manors}} {{localize "PDVF.Manor.Manors"}} · {{rent}} £</span>
+            {{#if harvest.famine}}<span class="pdvf-tag pdvf-tag-warn">{{localize "PDVF.Manor.Famine"}}</span>{{/if}}
+            {{#if harvest.hunger}}<span class="pdvf-tag">{{localize "PDVF.Manor.Hunger"}}</span>{{/if}}</h4>
+          {{#if roll}}
+          <p>{{rollerLine}} — <strong>{{resultLine}}</strong>{{#if roll.rerolled}} ({{localize "PDVF.Manor.Winter.Rerolled"}}){{/if}}</p>
+          <p class="pdvf-hint">{{partsText}}</p>
+          {{#if canReroll}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="landReroll" data-id="{{id}}">{{localize "PDVF.Manor.Winter.Reroll"}}</button>{{/if}}
+          {{#if famineThreat}}
+          <div class="pdvf-wiz-warning"><p>{{localize "PDVF.Manor.Winter.FamineThreat"}}</p>
+            {{#if famineAvoided}}<span class="pdvf-tag">{{avoidedLabel}}</span>{{else}}{{#unless @root.economy.lands.done}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="avoidFamine" data-id="{{id}}">{{avoidLabel}}</button>{{/unless}}{{/if}}
+          </div>
+          {{/if}}
+          {{else}}
+          <div class="pdvf-winter-land-grid">
+            <label class="pdvf-field"><span>{{localize "PDVF.Manor.Winter.Roller"}}</span><select name="roller">{{#each rollers}}<option value="{{id}}">{{label}}</option>{{/each}}</select></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Manor.Winter.Value"}} ({{localize "PDVF.Manor.Winter.Other"}})</span><input type="number" name="value" value="10" min="0" step="1"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Manor.Winter.Fortune"}}</span><select name="war">{{#each @root.economy.lands.war}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+            <label class="pdvf-field"><span>&nbsp;</span><select name="weather" aria-label="{{localize 'PDVF.Manor.Weather.normal'}}">{{#each @root.economy.lands.weather}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+            <label class="pdvf-field"><span>&nbsp;</span><select name="brownie" aria-label="{{localize 'PDVF.Manor.Brownie.none'}}">{{#each @root.economy.lands.brownie}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+            <label class="pdvf-field"><span>&nbsp;</span><select name="pestilence" aria-label="{{localize 'PDVF.Manor.Pestilence.none'}}">{{#each @root.economy.lands.pestilence}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+            <label class="pdvf-check" data-tooltip="{{localize 'PDVF.Manor.GentlewomanTip'}}"><input type="checkbox" name="gentle"> {{localize "PDVF.Manor.Winter.Gentlewoman"}}</label>
+            <div><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="landRoll" data-id="{{id}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Manor.Winter.Test"}}</button></div>
+          </div>
+          {{/if}}
+        </div>
+        {{/each}}
+
+        <div class="pdvf-winter-land" data-group="peasants">
+          <h4 class="pdvf-h4">{{localize "PDVF.Manor.Winter.Peasants"}}</h4>
+          {{#if lands.peasants}}
+          <p>{{lands.peasants.line}}</p>
+          {{#if lands.peasants.noStation}}<p class="pdvf-hint">{{localize "PDVF.Manor.Winter.NoStation"}}</p>{{/if}}
+          {{#if lands.peasantsPending}}{{#unless lands.done}}
+          <div class="pdvf-wiz-inline wrap">
+            {{#each lands.squeeze}}<label class="pdvf-check"><input type="checkbox" data-squeeze="{{key}}" {{#if forced}}checked disabled{{/if}}> {{label}} ({{value}})</label>{{/each}}
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="peasants" data-choice="squeeze">{{localize "PDVF.Manor.Winter.Squeeze"}}</button>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="peasants" data-choice="spare">{{localize "PDVF.Manor.Winter.NoSqueeze"}}</button>
+          </div>
+          {{/unless}}{{/if}}
+          {{else}}{{#unless lands.done}}
+          {{#if lands.mustBeJust}}<p class="pdvf-hint">{{localize "PDVF.Manor.Winter.MustBeJust"}}</p>{{/if}}
+          <div class="pdvf-wiz-inline wrap">
+            {{#unless lands.mustBeJust}}<button type="button" class="pdvf-btn" data-action="run" data-op="peasants" data-choice="motivate">{{localize "PDVF.Manor.Winter.Motivate"}}</button>{{/unless}}
+            <button type="button" class="pdvf-btn" data-action="run" data-op="peasants" data-choice="just">{{localize "PDVF.Manor.Winter.LeaveAlone"}}</button>
+          </div>
+          {{/unless}}{{/if}}
+        </div>
+
+        <div class="pdvf-winter-land" data-group="collect">
+          {{#if lands.done}}
+          <ul class="pdvf-winter-list">{{#each lands.lines}}<li>{{this}}</li>{{/each}}</ul>
+          <p><strong>{{lands.netLabel}}</strong></p>
+          {{else}}
+          <h4 class="pdvf-h4">{{lands.charityLabel}}</h4>
+          <div class="pdvf-wiz-inline wrap">
+            <label class="pdvf-check"><input type="checkbox" name="charity-largesse"> {{localize "PDVF.Manor.Winter.Largesse"}}</label>
+            <label class="pdvf-check"><input type="checkbox" name="charity-poor"> {{localize "PDVF.Manor.Winter.Poor"}}</label>
+            <label class="pdvf-check"><input type="checkbox" name="charity-church"> {{localize "PDVF.Manor.Winter.Church"}}</label>
+          </div>
+          <p class="pdvf-hint">{{localize "PDVF.Manor.Winter.CharityHint"}}</p>
+          <h4 class="pdvf-h4">{{localize "PDVF.Manor.Winter.Costs"}}</h4>
+          <p>{{lands.wagesLabel}}</p>
+          {{#if lands.maintenance}}<label class="pdvf-check"><input type="checkbox" name="maintain" checked> {{lands.maintainLabel}}</label>{{/if}}
+          <div><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="landCollect" {{#unless lands.allRolled}}disabled data-tooltip="{{localize 'PDVF.Manor.Winter.RollAll'}}"{{/unless}}>{{localize "PDVF.Manor.Winter.Collect"}}</button></div>
+          {{/if}}
+        </div>
+      </section>
+      {{/if}}
+
       <table class="pdvf-wiz-table compact pdvf-winter-upkeep">
         <thead><tr>{{#each table}}<th>{{label}}</th>{{/each}}</tr></thead>
         <tbody><tr>{{#each table}}<td>{{min}} £</td>{{/each}}</tr></tbody>
@@ -100,17 +186,10 @@
         {{#if household}}
         <p class="pdvf-wiz-note pdvf-span2">{{localize "PDVF.Winter.HouseholdText"}} ({{base}} £)</p>
         {{/if}}
-        {{#if hasDomains}}
-        <div class="pdvf-span2 pdvf-winter-domains">
-          <p class="pdvf-wiz-note">{{localize "PDVF.Domain.WinterText"}}</p>
-          {{#each domains}}
-          <label class="pdvf-field pdvf-winter-domain"><span>{{name}}</span><input type="number" data-domain-income="{{id}}" value="{{income}}" step="0.5" aria-label="{{name}}"> £</label>
-          {{/each}}
-        </div>
-        {{/if}}
+        {{#if hasDomains}}{{#unless household}}<p class="pdvf-wiz-note pdvf-span2">{{landsUpkeepLine}}</p>{{/unless}}{{/if}}
         <label class="pdvf-field"><span>{{#if hasDomains}}{{localize "PDVF.Domain.OtherIncome"}}{{else}}{{localize "PDVF.Winter.Income"}}{{/if}}</span><input type="number" name="income" value="0" min="0" step="0.5"></label>
-        <label class="pdvf-field"><span>{{#if household}}{{localize "PDVF.Winter.ExtraSpend"}}{{else}}{{localize "PDVF.Winter.Spend"}}{{/if}}</span><input type="number" name="spend" value="{{suggested}}" min="0" step="0.5"></label>
-        <p class="pdvf-hint pdvf-span2">{{localize "PDVF.Winter.UpkeepHint"}}</p>
+        <label class="pdvf-field"><span>{{#if base}}{{localize "PDVF.Winter.ExtraSpend"}}{{else}}{{localize "PDVF.Winter.Spend"}}{{/if}}</span><input type="number" name="spend" value="{{suggested}}" min="0" step="0.5"></label>
+        {{#unless hasDomains}}<p class="pdvf-hint pdvf-span2">{{localize "PDVF.Winter.UpkeepHint"}}</p>{{/unless}}
         {{#if hasDomains}}<div class="pdvf-span2">{{#if helped}}<p class="pdvf-wiz-note">{{helped}}</p>{{else}}<button type="button" class="pdvf-btn" data-action="run" data-op="lordHelp" data-tooltip="{{localize 'PDVF.Domain.HelpTip'}}">{{localize "PDVF.Domain.AskHelp"}}</button>{{/if}}</div>{{/if}}
         <div class="pdvf-span2"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="upkeep">{{localize "PDVF.Winter.Pay"}}</button></div>
       </div>

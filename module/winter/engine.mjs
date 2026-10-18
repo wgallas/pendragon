@@ -9,8 +9,8 @@ import { compareOpposed, traitPair } from "../rules/resolution.mjs";
 import { rollPlain } from "../dice/tests.mjs";
 import { normalizeLabel } from "../rules/followers.mjs";
 import { resolveFollowers, resolveHorses, knightHorseGlory } from "../documents/followers.mjs";
-import { domainsOf, domainGlory, domainIncome, recordIncome, addFavor } from "../documents/domains.mjs";
-import { lordHelp } from "../rules/domains.mjs";
+import { domainsOf, domainGlory, domainIncome, addFavor } from "../documents/domains.mjs";
+import { lordHelp, landsUpkeep, entourageGlory } from "../rules/domains.mjs";
 import { winterEvent, PASSION_MATCH, WINTER_EVENTS } from "./events.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -64,7 +64,7 @@ export async function postLines(actor, title, lines, subtitle = "") {
   return ChatMessage.implementation.create({ speaker: ChatMessage.getSpeaker({ actor }), content, flags: { [SYSTEM_ID]: { kind: "winter" } } });
 }
 
-async function test(actor, key, { modifier = 0, title, subtitle = "" } = {}) {
+export async function test(actor, key, { modifier = 0, title, subtitle = "" } = {}) {
   const r = actor.getRollable(key);
   if (!r) return null;
   const res = await rollPlain({ actor, name: actor.name, label: r.label, value: r.value, modifier, title: title ?? r.label, subtitle });
@@ -126,7 +126,7 @@ async function addPounds(actor, pounds) {
 }
 
 /** Coche les cases d'expérience (« passion:hate* » : toutes les Haines). */
-async function checkKeys(actor, keys) {
+export async function checkKeys(actor, keys) {
   const done = [];
   for (const k of keys) {
     if (k.startsWith("passion:")) {
@@ -378,9 +378,12 @@ export function economyInfo(actor) {
   const married = !!s.family.spouse?.name && s.family.spouse.alive;
   const family = married || (s.family.children ?? []).some(c => c.alive);
   const column = W.upkeepColumn({ squire, family });
-  const base = household ? (married ? C().householdUpkeep.married : C().householdUpkeep.single) : 0;
-  const domains = domainsOf(actor).map(d => ({ id: d.id, name: d.name, income: d.system.income }));
-  return { household, squire, family, married, column, base, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
+  const domains = domainsOf(actor).map(d => ({ id: d.id, name: d.name, income: d.system.income, rank: d.system.rank }));
+  // Chevalier de maisonnée : le seigneur l'entretient. Chevalier fieffé : la rente de ses terres
+  // paie l'entretien de sa maisonnée au niveau de vie de son rang (Table A.2 ; Livre des Nobles p. 68).
+  const lands = landsUpkeep(domains, PDVF.domainRanks, (r) => W.upkeepFor(r.living, column, C()));
+  const base = household ? (married ? C().householdUpkeep.married : C().householdUpkeep.single) : lands;
+  return { household, squire, family, married, column, base, lands, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
 }
 
 /**
@@ -391,7 +394,7 @@ export async function askLordHelp(actor, state, income) {
   if (state.economy?.done || state.lordHelp) return state;
   const info = economyInfo(actor);
   const treasury = (Number(actor.system.economy.treasury) || 0) / D;
-  const help = lordHelp({ ordinary: info.ordinary, treasury, income });
+  const help = lordHelp({ ordinary: info.ordinary, treasury, income: (Number(income) || 0) + info.base });
   if (!help.missing) return state;
   await actor.update({ "system.economy.treasury": (Number(actor.system.economy.treasury) || 0) + Math.round(help.missing * D) });
   const lord = actor.system.biography.lord || domainsOf(actor)[0]?.system.lord || L("PDVF.Domain.TheLord");
@@ -402,9 +405,8 @@ export async function askLordHelp(actor, state, income) {
 }
 
 /** Entretien de l'année : revenus encaissés, dépense, niveau de vie, Gloire passive et somptuaire. */
-export async function payUpkeep(actor, state, { spend = 0, income = 0, domains = [] }) {
+export async function payUpkeep(actor, state, { spend = 0, income = 0 }) {
   if (state.economy?.done) return state;
-  if (domains.length) await recordIncome(actor, state.year, domains);
   const info = economyInfo(actor);
   const own = Math.max(0, Number(spend) || 0);
   const total = info.base + own;
@@ -684,6 +686,8 @@ export function gloryRows(actor, state) {
   rows.push({ label: L("PDVF.Winter.GloryPassive"), value: s.passive.total + horses });
   const dGlory = domainGlory(actor);
   if (dGlory) rows.push({ label: L("PDVF.Winter.GloryDomains"), value: dGlory });
+  const eGlory = entourageGlory(domainsOf(actor).flatMap(d => d.system.professionals ?? []), PDVF.manor);
+  if (eGlory) rows.push({ label: L("PDVF.Manor.EntourageGlory"), value: eGlory });
   return rows;
 }
 

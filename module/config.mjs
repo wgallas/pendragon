@@ -4,6 +4,8 @@
  * de données, pour pouvoir ajouter d'autres cultures sans toucher à la logique.
  */
 
+import { MANOR } from "./domain/tables.mjs";
+
 export const SYSTEM_ID = "pendragon-vf";
 
 export const PDVF = {};
@@ -432,3 +434,5 @@ PDVF.domainRanks = {
 PDVF.titleGlory = { household: 50, vassal: 250, banneret: 500, baron: 1000, earl: 1000, king: 1000 };
 /** Ordre des classes de chevalier (pour ne jamais rétrograder un chevalier en lui donnant un domaine). */
 PDVF.knightClassOrder = ["squire", "mercenary", "household", "vassal", "banneret"];
+/** Gestion du manoir (Livre des Nobles, chap. 3). */
+PDVF.manor = MANOR;

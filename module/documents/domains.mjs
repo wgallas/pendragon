@@ -109,14 +109,46 @@ export async function returnDomain(domain) {
   return true;
 }
 
-/** Note le revenu de l'année dans le registre de chaque domaine (phase d'hiver). */
-export async function recordIncome(actor, year, rows) {
-  for (const r of rows) {
-    const d = actor.items.get(r.id);
-    if (!d) continue;
-    const ledger = foundry.utils.deepClone(d._source.system.ledger ?? []);
-    if (ledger.some(l => l.year === year && l.note === "")) continue;
-    ledger.push({ year, income: Number(r.income) || 0, note: "" });
-    await d.update({ "system.ledger": ledger });
+/* -------------------------------------------- */
+/*  Le manoir (Livre des Nobles, chap. 3)        */
+/* -------------------------------------------- */
+
+/** Libellé d'une clé d'attribut : « trait.chaste.left », « skill.hunting », « passion:devotion ». */
+export function checkLabel(key) {
+  if (!key) return "";
+  if (key.startsWith("passion:")) {
+    const id = key.slice(8).replace("*", "");
+    const k = `PDVF.Winter.PassionName.${id}`;
+    return game.i18n.has(k) ? L(k) : id.charAt(0).toUpperCase() + id.slice(1);
   }
+  const [kind, id, side] = key.split(".");
+  if (kind === "trait") return L(`PDVF.Trait.${id}.${side}`);
+  if (kind === "skill") return L(`PDVF.Skill.${id}`);
+  return key;
+}
+
+/** Paie une somme (£) du trésor d'un chevalier ; refuse si le trésor ne suffit pas. */
+export async function payFromTreasury(actor, pounds) {
+  const t = Number(actor.system.economy?.treasury) || 0;
+  const cost = Math.round((Number(pounds) || 0) * 240);
+  if (cost > t) {
+    ui.notifications.warn(F("PDVF.Manor.NotEnough", { treasury: `${Math.floor(t / 240)} £` }));
+    return false;
+  }
+  await actor.update({ "system.economy.treasury": t - cost });
+  return true;
+}
+
+/** Jet de 1D20 sur une table du manoir, affiché dans le chat ; rend l'entrée tirée. */
+export async function rollTable(domain, list) {
+  const M = PDVF.manor;
+  const table = { investments: M.investments, enhancements: M.enhancements, improvements: M.improvements, features: M.features }[list];
+  if (!table) return null;
+  const roll = await new Roll("1d20").evaluate();
+  const entry = R.tableEntry(table, roll.total);
+  const prefix = { investments: "Investment", enhancements: "Enhancement", improvements: "Improvement", features: "Feature" }[list];
+  const label = entry ? L(`PDVF.Manor.${prefix}.${entry.id}`) : "—";
+  const period = entry?.period ? ` (${L(`PDVF.Manor.PeriodReq.${entry.period}`)})` : "";
+  await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: domain.parent ?? undefined }), flavor: `${domain.name} — ${L(`PDVF.Manor.Section.${list}`)} : ${label}${period}` });
+  return entry;
 }

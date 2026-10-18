@@ -1,5 +1,6 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import * as E from "./engine.mjs";
+import * as Lands from "./lands.mjs";
 import { winterEvent } from "./events.mjs";
 import { formatValue, traitPair } from "../rules/resolution.mjs";
 import { formatDenarii } from "../rules/horses.mjs";
@@ -68,6 +69,30 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     return context;
   }
 
+  /** Terres : un bloc par domaine, puis paysans, charité et dépenses. */
+  #landsContext() {
+    const info = Lands.landsInfo(this.actor, this.wstate);
+    const opts = (group, list) => list.map(id => ({ value: id, label: L(`PDVF.Manor.${group}.${id}`) }));
+    const m = PDVF.manor;
+    return {
+      ...info,
+      war: opts("War", Object.keys(m.war)), weather: opts("Weather", Object.keys(m.weather)),
+      brownie: opts("Brownie", Object.keys(m.brownie)), pestilence: opts("Pestilence", ["none", ...Object.keys(m.pestilence)]),
+      domains: info.domains.map(d => ({
+        ...d,
+        resultLine: d.roll ? F("PDVF.Manor.Winter.Result", { outcome: L(`PDVF.Outcome.${d.roll.outcome}`), privy: String(d.roll.total).replace(".", ",") }) : "",
+        rollerLine: d.roll ? `${d.roll.rollerName} (${d.roll.value}${d.roll.modifier ? (d.roll.modifier > 0 ? " +" : " ") + d.roll.modifier : ""})` : "",
+        avoidLabel: F("PDVF.Manor.Winter.AvoidFamine", { cost: d.famineCost }),
+        avoidedLabel: F("PDVF.Manor.Winter.FamineAvoided", { cost: d.famineCost })
+      })),
+      charityLabel: F("PDVF.Manor.Winter.Charity", { cost: info.charityCost }),
+      maintainLabel: F("PDVF.Manor.Winter.Maintain", { cost: info.maintenance }),
+      wagesLabel: F("PDVF.Manor.StaffCost", { cost: String(info.wages).replace(".", ",") }),
+      peasantsPending: !!info.peasants?.pending,
+      netLabel: info.net != null ? F("PDVF.Manor.Winter.Done", { net: String(info.net).replace(".", ",") }) : ""
+    };
+  }
+
   #doneMap() {
     const st = this.wstate;
     return {
@@ -102,8 +127,11 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       case "xp": {
         const list = E.xpList(actor);
+        const enh = Lands.enhancementCheckList(actor, st);
         return { done: !!st.xp?.done, list: list.map(r => ({ label: r.label, value: formatValue(r.value) })),
-          rows: (st.xp?.rows ?? []).map(r => ({ ...r, value: formatValue(r.before) })) };
+          rows: (st.xp?.rows ?? []).map(r => ({ ...r, value: formatValue(r.before) })),
+          enh: enh.length ? enh.join(" · ") : "", enhDone: !!st.enhChecks?.done,
+          enhRows: (st.enhChecks?.rows ?? []).map(r => ({ ...r, outcomeLabel: r.outcome ? L(`PDVF.Outcome.${r.outcome}`) : "—" })) };
       }
       case "economy": {
         const info = E.economyInfo(actor);
@@ -113,8 +141,9 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           ...info, done: !!e?.done, e, levelLabel: e ? L(`PDVF.Living.${e.level}`) : "",
           columnLabel: L(`PDVF.Winter.Column.${info.column}`),
           table: PDVF.winter.upkeepLevels.map((lv, i) => ({ label: L(`PDVF.Living.${lv}`), min: String(col[i]).replace(".", ",") })),
-          suggested: info.household ? 0 : info.ordinary,
-          hasDomains: info.domains.length > 0, helped: st.lordHelp ? F("PDVF.Domain.Helped", { missing: String(st.lordHelp.missing).replace(".", ","), favor: st.lordHelp.favor }) : "",
+          suggested: (info.household || info.domains.length) ? 0 : info.ordinary,
+          hasDomains: info.domains.length > 0, landsUpkeepLine: F("PDVF.Manor.Winter.UpkeepFromLands", { upkeep: String(info.lands).replace(".", ",") }),
+          lands: info.domains.length ? this.#landsContext() : null, helped: st.lordHelp ? F("PDVF.Domain.Helped", { missing: String(st.lordHelp.missing).replace(".", ","), favor: st.lordHelp.favor }) : "",
           poor: e && ["poor", "destitute"].includes(e.level), destitute: e?.level === "destitute",
           effects: e?.effects ?? {}, conLabel: e?.effects?.con ? L(`PDVF.Outcome.${e.effects.con}`) : ""
         };
@@ -277,17 +306,27 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         case "effect": await E.applyEventEffect(actor, st, Number(target.dataset.index)); break;
         case "xp": await E.rollExperience(actor, st); break;
         case "upkeep": {
-          const domains = [...this.element.querySelectorAll("[data-domain-income]")].map(el => ({ id: el.dataset.domainIncome, income: Number(String(el.value).replace(",", ".")) || 0 }));
-          const income = domains.length ? domains.reduce((a, d) => a + d.income, 0) + (Number(String(val("income")).replace(",", ".")) || 0) : Number(String(val("income")).replace(",", "."));
-          await E.payUpkeep(actor, st, { spend: Number(String(val("spend")).replace(",", ".")), income, domains });
+          await E.payUpkeep(actor, st, { spend: Number(String(val("spend")).replace(",", ".")), income: Number(String(val("income")).replace(",", ".")) || 0 });
           break;
         }
         case "lordHelp": {
-          const domains = [...this.element.querySelectorAll("[data-domain-income]")].map(el => Number(String(el.value).replace(",", ".")) || 0);
-          const income = domains.reduce((a, d) => a + d, 0) + (Number(String(val("income")).replace(",", ".")) || 0);
-          await E.askLordHelp(actor, st, income);
+          await E.askLordHelp(actor, st, Number(String(val("income")).replace(",", ".")) || 0);
           break;
         }
+        case "landRoll": await Lands.landRoll(actor, st, target.dataset.id, {
+          roller: val("roller"), value: Number(val("value")) || 0, war: val("war"), weather: val("weather"),
+          brownie: val("brownie"), pestilence: val("pestilence"), gentle: !!group.querySelector('[name="gentle"]')?.checked
+        }); break;
+        case "landReroll": await Lands.landReroll(actor, st, target.dataset.id); break;
+        case "avoidFamine": Lands.avoidFamine(actor, st, target.dataset.id); break;
+        case "peasants": await Lands.peasants(actor, st, target.dataset.choice, {
+          traits: [...group.querySelectorAll("[data-squeeze]:checked")].map(el => el.dataset.squeeze)
+        }); break;
+        case "landCollect": await Lands.collectLands(actor, st, {
+          charity: Object.fromEntries(["largesse", "poor", "church"].map(k => [k, !!group.querySelector(`[name="charity-${k}"]`)?.checked])),
+          maintain: !!group.querySelector('[name="maintain"]')?.checked
+        }); break;
+        case "enhChecks": await Lands.enhancementChecks(actor, st); break;
         case "poverty": await E.povertyEffect(actor, st, target.dataset.kind); break;
         case "aging": await E.rollAging(actor, st); break;
         case "followers": await E.rollFollowers(actor, st); break;

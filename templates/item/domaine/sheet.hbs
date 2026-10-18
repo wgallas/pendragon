@@ -6,65 +6,252 @@
       <div class="pdvf-line1 pdvf-gear-summary">
         <span class="pdvf-gear-type">{{rankLabel}}</span>
         <span>{{tenureLabel}}</span>
-        <span>{{system.income}} £ / {{localize "PDVF.Domain.Year"}}</span>
+        <span>{{system.manors}} {{localize "PDVF.Manor.Manors"}} · {{system.income}} £ / {{localize "PDVF.Domain.Year"}}</span>
         {{#if system.passiveGlory}}<span>{{localize "PDVF.Glory"}} +{{system.passiveGlory}} / {{localize "PDVF.Domain.Year"}}</span>{{/if}}
+        {{#if system.harvest.famine}}<span class="pdvf-tag pdvf-tag-warn">{{localize "PDVF.Manor.Famine"}}</span>{{/if}}
         {{#if holder}}<span>{{localize "PDVF.Domain.Holder"}} : {{holder.name}}</span>{{/if}}
       </div>
     </div>
   </header>
 
+  <nav class="tabs pdvf-tabs" data-group="domain" aria-label="{{localize 'PDVF.Sheet.Tabs'}}">
+    {{#each tabs}}<a class="pdvf-tab {{cssClass}}" data-action="tab" data-group="domain" data-tab="{{id}}" role="tab" aria-selected="{{active}}">{{label}}</a>{{/each}}
+  </nav>
+
   <div class="pdvf-gear-body">
-    <div class="pdvf-battle-grid three">
-      <label class="pdvf-field"><span>{{localize "PDVF.Domain.RankLabel"}}</span>
-        <select name="system.rank">{{#each rankChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Domain.TenureLabel"}}</span>
-        <select name="system.tenure">{{#each tenureChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Since"}}</span><input type="number" name="system.since" value="{{system.since}}" step="1" placeholder="—"></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Bio.lord"}}</span><input type="text" name="system.lord" value="{{system.lord}}"></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Location"}}</span><input type="text" name="system.location" value="{{system.location}}"></label>
+    {{!-- Domaine --}}
+    <section class="tab {{tab.estate}}" data-group="domain" data-tab="estate">
+      <div class="pdvf-battle-grid three">
+        <label class="pdvf-field"><span>{{localize "PDVF.Domain.RankLabel"}}</span>
+          <select name="system.rank">{{#each rankChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Domain.TenureLabel"}}</span>
+          <select name="system.tenure">{{#each tenureChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Domain.Since"}}</span><input type="number" name="system.since" value="{{system.since}}" step="1" placeholder="—"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Bio.lord"}}</span><input type="text" name="system.lord" value="{{system.lord}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Domain.Location"}}</span><input type="text" name="system.location" value="{{system.location}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Manor.Manors"}}</span><input type="number" name="system.manors" value="{{system.manors}}" step="1" min="1"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Domain.Income"}}</span><input type="number" name="system.income" value="{{system.income}}" step="0.5" min="0"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Domain.Passive"}}</span><input type="number" name="system.passiveGlory" value="{{system.passiveGlory}}" step="1" min="0"></label>
+        <div class="pdvf-field"><span>&nbsp;</span>{{#if editable}}<button type="button" class="pdvf-btn" data-action="typical">{{localize "PDVF.Domain.Typical"}}</button>{{/if}}</div>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Manor.RentHint"}}</p>
+      <p class="pdvf-hint">{{typical}}</p>
+      <p class="pdvf-hint">{{localize "PDVF.Domain.FavorValue"}} : F{{favorValue}}.</p>
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Harvest"}}</h3>
+      <div class="pdvf-wiz-inline wrap pdvf-domain-harvest">
+        <label class="pdvf-field"><span>{{localize "PDVF.Manor.Fumbles"}}</span><input type="number" name="system.harvest.fumbles" value="{{system.harvest.fumbles}}" step="1" min="0"></label>
+        <label class="pdvf-check"><input type="checkbox" name="system.harvest.hunger" {{checked system.harvest.hunger}}> {{localize "PDVF.Manor.Hunger"}}</label>
+        <label class="pdvf-check"><input type="checkbox" name="system.harvest.famineNext" {{checked system.harvest.famineNext}}> {{localize "PDVF.Manor.FamineNext"}}</label>
+        <label class="pdvf-check"><input type="checkbox" name="system.harvest.famine" {{checked system.harvest.famine}}> {{localize "PDVF.Manor.Famine"}}</label>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Manor.FamineHint"}}</p>
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Domain.Steward"}}</h3>
+      <div class="pdvf-battle-grid three">
+        <label class="pdvf-field"><span>{{localize "PDVF.Bio.name"}}</span><input type="text" name="system.steward.name" value="{{system.steward.name}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Skill.stewardship"}}</span><input type="number" name="system.steward.skill" value="{{system.steward.skill}}" step="1" min="0"></label>
+      </div>
+      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Obligations"}}</span><textarea name="system.obligations" rows="2">{{system.obligations}}</textarea></label>
+    </section>
+
+    {{!-- Aménagements --}}
+    <section class="tab {{tab.works}}" data-group="domain" data-tab="works">
+      <p class="pdvf-wiz-note">{{localize "PDVF.Manor.Privy"}} : +{{worksPrivy}} £ / {{localize "PDVF.Domain.Year"}} · {{localize "PDVF.Manor.DV"}} {{dv}}{{#if enhUpkeep}} · {{localize "PDVF.Manor.EnhUpkeep" cost=enhUpkeep}}{{/if}}</p>
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Investments"}}</h3>
+      {{#if investments.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table fixed"><colgroup><col style="width:25%"><col style="width:21%"><col style="width:15%"><col><col style="width:118px"></colgroup>
+        <thead><tr><th scope="col">{{localize "PDVF.Manor.Type"}}</th><th scope="col">{{localize "PDVF.Manor.Name"}}</th><th scope="col">{{localize "PDVF.Manor.Paid"}}</th><th scope="col">{{localize "PDVF.Manor.Effects"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each investments}}
+          <tr class="{{#if destroyed}}pdvf-row-off{{/if}}">
+            <td><select name="system.investments.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="text" name="system.investments.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Manor.Name'}}"></td>
+            <td class="pdvf-nowrap"><input type="number" class="pdvf-num" name="system.investments.{{index}}.paid" value="{{paid}}" step="1" min="0" aria-label="{{localize 'PDVF.Manor.Paid'}}"> / {{cost}} £</td>
+            <td><div class="pdvf-domain-effect">
+              {{#if checkChoices}}<select name="system.investments.{{index}}.check" aria-label="{{localize 'PDVF.Manor.Check'}}">{{#each checkChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}
+              {{#if checkText}}<span class="pdvf-gear-tag">{{localize "PDVF.Manor.Check"}} : {{checkText}}</span>{{/if}}
+              {{#if note}}<span class="pdvf-hint">{{note}}</span>{{/if}}
+              <label class="pdvf-check"><input type="checkbox" name="system.investments.{{index}}.destroyed" {{checked destroyed}}> {{localize "PDVF.Manor.Destroyed"}}</label>
+            </div></td>
+            <td class="pdvf-nowrap">{{#if ../editable}}
+              {{#if destroyed}}<button type="button" class="pdvf-btn pdvf-mini" data-action="repair" data-list="investments" data-index="{{index}}">{{localize "PDVF.Manor.Repair" cost=repairCost}}</button>
+              {{else}}{{#unless built}}<button type="button" class="pdvf-btn pdvf-mini" data-action="fund" data-index="{{index}}" {{#if fundedNow}}disabled{{/if}}>{{localize "PDVF.Manor.Fund"}} ({{left}} £)</button>{{else}}<span class="pdvf-gear-tag">{{localize "PDVF.Manor.Built"}}</span>{{/unless}}{{/if}}
+              <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="investments" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+            {{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Manor.OneEach"}} {{localize "PDVF.Manor.FundHint"}}</p>
+      {{#if editable}}<div class="pdvf-wiz-inline"><button type="button" class="pdvf-btn" data-action="addRow" data-list="investments">{{localize "PDVF.Manor.Add"}}</button><button type="button" class="pdvf-btn" data-action="rollRow" data-list="investments">{{localize "PDVF.Manor.Roll"}}</button></div>{{/if}}
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Enhancements"}}</h3>
+      {{#if enhancements.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table fixed"><colgroup><col style="width:26%"><col style="width:24%"><col><col style="width:150px"></colgroup>
+        <thead><tr><th scope="col">{{localize "PDVF.Manor.Type"}}</th><th scope="col">{{localize "PDVF.Manor.Name"}}</th><th scope="col">{{localize "PDVF.Manor.Check"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each enhancements}}
+          <tr class="{{#if ruined}}pdvf-row-off{{/if}}">
+            <td><select name="system.enhancements.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="text" name="system.enhancements.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Manor.Name'}}"></td>
+            <td><div class="pdvf-domain-effect">
+              {{#if checkChoices}}<select name="system.enhancements.{{index}}.check" aria-label="{{localize 'PDVF.Manor.Check'}}"><option value=""></option>{{#each checkChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}
+              {{#if checkText}}<span class="pdvf-gear-tag">{{checkText}}</span>{{/if}}
+              {{#if note}}<span class="pdvf-hint">{{note}}</span>{{/if}}
+            </div></td>
+            <td class="pdvf-nowrap">{{#if ../editable}}
+              {{#if ruined}}<span class="pdvf-gear-tag">{{localize "PDVF.Manor.Ruined"}}</span> <button type="button" class="pdvf-btn pdvf-mini" data-action="repair" data-list="enhancements" data-index="{{index}}">{{localize "PDVF.Manor.Repair" cost=repairCost}}</button>
+              {{else}}{{#if built}}<span class="pdvf-gear-tag">{{localize "PDVF.Manor.Built"}}{{#if lastPaid}} · {{lastPaid}}{{/if}}</span>{{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="build" data-index="{{index}}">{{localize "PDVF.Manor.Build"}}</button>{{/if}}{{/if}}
+              <button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="enhancements" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+            {{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Manor.EnhancementHint"}}</p>
+      {{#if editable}}<div class="pdvf-wiz-inline"><button type="button" class="pdvf-btn" data-action="addRow" data-list="enhancements">{{localize "PDVF.Manor.Add"}}</button><button type="button" class="pdvf-btn" data-action="rollRow" data-list="enhancements">{{localize "PDVF.Manor.Roll"}}</button></div>{{/if}}
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Improvements"}}</h3>
+      {{#if improvements.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table">
+        <tbody>
+          {{#each improvements}}
+          <tr class="{{#if pending}}pdvf-row-off{{/if}}">
+            <td><select name="system.improvements.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="text" name="system.improvements.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Manor.Name'}}"></td>
+            <td>{{#if period}}<label class="pdvf-check" data-tooltip="{{period}}"><input type="checkbox" name="system.improvements.{{index}}.pending" {{checked pending}}> {{localize "PDVF.Manor.Pending"}}</label>{{/if}}</td>
+            <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="improvements" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Manor.ImprovementsHint"}}</p>
+      {{#if editable}}<div class="pdvf-wiz-inline"><button type="button" class="pdvf-btn" data-action="rollImprovements" {{#unless improvementRolls}}disabled{{/unless}}>{{localize "PDVF.Manor.RollImprovements" n=improvementRolls}}</button><button type="button" class="pdvf-btn" data-action="addRow" data-list="improvements">{{localize "PDVF.Manor.Add"}}</button></div>{{/if}}
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Features"}}</h3>
+      {{#if features.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table">
+        <tbody>
+          {{#each features}}
+          <tr>
+            <td><select name="system.features.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="text" name="system.features.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Manor.Name'}}"></td>
+            <td class="pdvf-hint">{{note}}</td>
+            <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="features" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Manor.FeaturesHint"}}</p>
+      {{#if editable}}<div class="pdvf-wiz-inline"><button type="button" class="pdvf-btn" data-action="rollRow" data-list="features">{{localize "PDVF.Manor.RollFeature"}}</button><button type="button" class="pdvf-btn" data-action="addRow" data-list="features">{{localize "PDVF.Manor.Add"}}</button></div>{{/if}}
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Defenses"}} — {{localize "PDVF.Manor.DV"}} {{dv}}</h3>
+      {{#if dvWarning}}<p class="pdvf-wiz-warning">{{localize "PDVF.Manor.DvWarning"}}</p>{{/if}}
+      {{#if defenses.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table">
+        <thead><tr><th scope="col">{{localize "PDVF.Manor.Type"}}</th><th scope="col">{{localize "PDVF.Manor.Name"}}</th><th scope="col">{{localize "PDVF.Manor.DV"}}</th><th scope="col">{{localize "PDVF.Manor.Cost"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each defenses}}
+          <tr>
+            <td><select name="system.defenses.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="text" name="system.defenses.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Manor.Name'}}"></td>
+            <td>{{dv}}</td><td>{{cost}} £</td>
+            <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="defenses" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Manor.DefensesHint"}}</p>
+      {{#if editable}}<button type="button" class="pdvf-btn" data-action="addRow" data-list="defenses">{{localize "PDVF.Manor.Add"}}</button>{{/if}}
+    </section>
+
+    {{!-- Gens --}}
+    <section class="tab {{tab.people}}" data-group="domain" data-tab="people">
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Staff"}}</h3>
+      {{#if professionals.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table fixed"><colgroup><col style="width:26%"><col><col style="width:150px"><col style="width:80px"><col style="width:56px"><col style="width:36px"></colgroup>
+        <thead><tr><th scope="col">{{localize "PDVF.Manor.Type"}}</th><th scope="col">{{localize "PDVF.Manor.Name"}}</th><th scope="col">{{localize "PDVF.Manor.KeySkill"}}</th><th scope="col">{{localize "PDVF.Manor.Pay"}}</th><th scope="col">{{localize "PDVF.Manor.Entourage"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each professionals}}
+          <tr>
+            <td><select name="system.professionals.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="text" name="system.professionals.{{index}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Manor.Name'}}"></td>
+            <td class="pdvf-nowrap"><input type="number" class="pdvf-num" name="system.professionals.{{index}}.skill" value="{{skill}}" step="1" min="0" aria-label="{{localize 'PDVF.Manor.KeySkill'}}"> <span class="pdvf-gear-tag">{{keySkill}}</span></td>
+            <td>{{pay}} £</td>
+            <td><input type="checkbox" name="system.professionals.{{index}}.entourage" {{checked entourage}} data-tooltip="{{localize 'PDVF.Manor.EntourageTip'}}" aria-label="{{localize 'PDVF.Manor.Entourage'}}"></td>
+            <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="professionals" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Manor.StaffCost" cost=staffCost}}{{#if entourageGlory}} · {{localize "PDVF.Manor.EntourageGlory"}} : +{{entourageGlory}}{{/if}}</p>
+      {{#if editable}}
+      <div class="pdvf-wiz-inline">
+        <select data-hire-type aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each hireChoices}}<option value="{{value}}">{{label}}</option>{{/each}}</select>
+        <button type="button" class="pdvf-btn" data-action="hire">{{localize "PDVF.Manor.Hire"}}</button>
+      </div>
+      {{/if}}
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Manor.Section.Mesnie"}}</h3>
+      <p>{{mesnieDue}}</p>
       <label class="pdvf-field"><span>{{localize "PDVF.Domain.Garrison"}}</span><input type="text" name="system.garrison" value="{{system.garrison}}"></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Income"}}</span><input type="number" name="system.income" value="{{system.income}}" step="0.5" min="0"></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Domain.Passive"}}</span><input type="number" name="system.passiveGlory" value="{{system.passiveGlory}}" step="1" min="0"></label>
-      <div class="pdvf-field"><span>&nbsp;</span>{{#if editable}}<button type="button" class="pdvf-btn" data-action="typical">{{localize "PDVF.Domain.Typical"}}</button>{{/if}}</div>
-    </div>
-    <p class="pdvf-hint">{{typical}}</p>
-    <p class="pdvf-hint">{{localize "PDVF.Domain.FavorValue"}} : F{{favorValue}}.</p>
+      <h4 class="pdvf-h4">{{localize "PDVF.Manor.Soldiers"}}</h4>
+      {{#if soldiers.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-table">
+        <tbody>
+          {{#each soldiers}}
+          <tr>
+            <td><select name="system.soldiers.{{index}}.type" aria-label="{{localize 'PDVF.Manor.Type'}}">{{#each choices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="number" class="pdvf-num" name="system.soldiers.{{index}}.count" value="{{count}}" step="1" min="0" aria-label="{{localize 'PDVF.Manor.Count'}}"></td>
+            <td>{{pay}} £</td>
+            <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="soldiers" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      {{#if editable}}<button type="button" class="pdvf-btn" data-action="addRow" data-list="soldiers">{{localize "PDVF.Manor.Add"}}</button>{{/if}}
+    </section>
 
-    <h3 class="pdvf-h3">{{localize "PDVF.Domain.Steward"}}</h3>
-    <div class="pdvf-battle-grid three">
-      <label class="pdvf-field"><span>{{localize "PDVF.Bio.name"}}</span><input type="text" name="system.steward.name" value="{{system.steward.name}}"></label>
-      <label class="pdvf-field"><span>{{localize "PDVF.Skill.stewardship"}}</span><input type="number" name="system.steward.skill" value="{{system.steward.skill}}" step="1" min="0"></label>
-    </div>
-    <label class="pdvf-field"><span>{{localize "PDVF.Domain.Obligations"}}</span><textarea name="system.obligations" rows="2">{{system.obligations}}</textarea></label>
+    {{!-- Registre --}}
+    <section class="tab {{tab.ledger}}" data-group="domain" data-tab="ledger">
+      <h3 class="pdvf-h3">{{localize "PDVF.Domain.Ledger"}}</h3>
+      {{#if ledger.length}}
+      <table class="pdvf-wiz-table compact pdvf-domain-ledger">
+        <thead><tr><th scope="col">{{localize "PDVF.Domain.YearCol"}}</th><th scope="col">{{localize "PDVF.Manor.Privy"}}</th><th scope="col">{{localize "PDVF.Domain.Note"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each ledger}}
+          <tr>
+            <td><input type="number" name="system.ledger.{{index}}.year" value="{{year}}" step="1" aria-label="{{localize 'PDVF.Domain.Year'}}"></td>
+            <td><input type="number" name="system.ledger.{{index}}.income" value="{{income}}" step="0.5" aria-label="{{localize 'PDVF.Manor.Privy'}}"></td>
+            <td><input type="text" name="system.ledger.{{index}}.note" value="{{note}}" aria-label="{{localize 'PDVF.Domain.Note'}}"></td>
+            <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-list="ledger" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{else}}<p class="pdvf-hint">{{localize "PDVF.Domain.NoLedger"}}</p>{{/if}}
+      {{#if editable}}<button type="button" class="pdvf-btn" data-action="addLedger">{{localize "PDVF.Domain.AddLedger"}}</button>{{/if}}
 
-    <h3 class="pdvf-h3">{{localize "PDVF.Domain.Ledger"}}</h3>
-    {{#if ledger.length}}
-    <table class="pdvf-wiz-table compact pdvf-domain-ledger">
-      <thead><tr><th scope="col">{{localize "PDVF.Domain.YearCol"}}</th><th scope="col">{{localize "PDVF.Domain.Income"}}</th><th scope="col">{{localize "PDVF.Domain.Note"}}</th><th></th></tr></thead>
-      <tbody>
-        {{#each ledger}}
-        <tr>
-          <td><input type="number" name="system.ledger.{{index}}.year" value="{{year}}" step="1" aria-label="{{localize 'PDVF.Domain.Year'}}"></td>
-          <td><input type="number" name="system.ledger.{{index}}.income" value="{{income}}" step="0.5" aria-label="{{localize 'PDVF.Domain.Income'}}"></td>
-          <td><input type="text" name="system.ledger.{{index}}.note" value="{{note}}" aria-label="{{localize 'PDVF.Domain.Note'}}"></td>
-          <td>{{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteLedger" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}</td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-    {{else}}<p class="pdvf-hint">{{localize "PDVF.Domain.NoLedger"}}</p>{{/if}}
-    {{#if editable}}<button type="button" class="pdvf-btn" data-action="addLedger">{{localize "PDVF.Domain.AddLedger"}}</button>{{/if}}
+      <h3 class="pdvf-h3">{{localize "PDVF.Gear.Description"}}</h3>
+      <textarea name="system.description" rows="5">{{system.description}}</textarea>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
 
-    <h3 class="pdvf-h3">{{localize "PDVF.Gear.Description"}}</h3>
-    <textarea name="system.description" rows="5">{{system.description}}</textarea>
-    <label class="pdvf-field"><span>{{localize "PDVF.Gear.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
-
-    {{#if holder}}{{#if editable}}
-    <div class="pdvf-combat-actions pdvf-domain-actions">
-      {{#if isFief}}<button type="button" class="pdvf-btn" data-action="transfer"><i class="fa-solid fa-people-arrows" aria-hidden="true"></i> {{localize "PDVF.Domain.Transfer"}}</button>
-      {{else}}<button type="button" class="pdvf-btn" data-action="giveBack"><i class="fa-solid fa-hand-holding" aria-hidden="true"></i> {{localize "PDVF.Domain.GiveBack"}}</button>{{/if}}
-    </div>
-    {{/if}}{{/if}}
-    <p class="pdvf-hint">{{localize "PDVF.Domain.RulesHint"}}</p>
+      {{#if holder}}{{#if editable}}
+      <div class="pdvf-combat-actions pdvf-domain-actions">
+        {{#if isFief}}<button type="button" class="pdvf-btn" data-action="transfer"><i class="fa-solid fa-people-arrows" aria-hidden="true"></i> {{localize "PDVF.Domain.Transfer"}}</button>
+        {{else}}<button type="button" class="pdvf-btn" data-action="giveBack"><i class="fa-solid fa-hand-holding" aria-hidden="true"></i> {{localize "PDVF.Domain.GiveBack"}}</button>{{/if}}
+      </div>
+      {{/if}}{{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Domain.RulesHint"}}</p>
+    </section>
   </div>
 </div>

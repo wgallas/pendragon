@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "folders": [
   {
    "_id": "2bc4625e14c02825",
@@ -28,7 +28,7 @@
    "_id": "fa737df9afbc2933",
    "name": "Paysans",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -57,7 +57,7 @@
    "_id": "75a1a912e425a174",
    "name": "Lanciers",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -88,7 +88,7 @@
    "_id": "20ed22cca736e88a",
    "name": "Fantassins",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -117,7 +117,7 @@
    "_id": "a04e27bf4c1af8a8",
    "name": "Archers",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -146,7 +146,7 @@
    "_id": "2f9329137fb9c749",
    "name": "Chevaliers à pied",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -174,7 +174,7 @@
    "_id": "57a876bbf877ea45",
    "name": "Chevaliers d'élite à pied",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -201,7 +201,7 @@
    "_id": "336b06ad41af9b38",
    "name": "Hobilars",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -230,7 +230,7 @@
    "_id": "2d23416c7239cbfb",
    "name": "Sergents montés",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -258,7 +258,7 @@
    "_id": "92fdbb728a7315c7",
    "name": "Chevaliers montés",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -286,7 +286,7 @@
    "_id": "7bc858dcdbe39615",
    "name": "Chevaliers montés d’élite",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "2bc4625e14c02825",
    "system": {
     "kind": "opponent",
@@ -313,7 +313,7 @@
    "_id": "7d49be49ad22cb0e",
    "name": "Guerriers tribaux pictes",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "f1a5410eb766d601",
    "system": {
     "kind": "opponent",
@@ -340,7 +340,7 @@
    "_id": "a5766d072871122a",
    "name": "Guerriers saxons",
    "type": "rencontre",
-   "img": "icons/svg/sword.svg",
+   "img": "systems/pendragon-vf/icons/types/encounter.svg",
    "folder": "f1a5410eb766d601",
    "system": {
     "kind": "opponent",
@@ -367,7 +367,7 @@
    "_id": "10bd521bce3cc5e6",
    "name": "Capturer la Bannière",
    "type": "rencontre",
-   "img": "icons/svg/aura.svg",
+   "img": "systems/pendragon-vf/icons/types/opportunity.svg",
    "folder": "9f7b4b2c99c657aa",
    "system": {
     "kind": "opportunity",
@@ -398,7 +398,7 @@
    "_id": "b7ba1d1e1c089c4b",
    "name": "Combattre le Commandant Ennemi",
    "type": "rencontre",
-   "img": "icons/svg/aura.svg",
+   "img": "systems/pendragon-vf/icons/types/opportunity.svg",
    "folder": "9f7b4b2c99c657aa",
    "system": {
     "kind": "opportunity",
@@ -429,7 +429,7 @@
    "_id": "0f93c4374421a77b",
    "name": "Rassembler la Division !",
    "type": "rencontre",
-   "img": "icons/svg/aura.svg",
+   "img": "systems/pendragon-vf/icons/types/opportunity.svg",
    "folder": "9f7b4b2c99c657aa",
    "system": {
     "kind": "opportunity",
@@ -460,7 +460,7 @@
    "_id": "b68f974f95d36d9e",
    "name": "Duel des Champions",
    "type": "rencontre",
-   "img": "icons/svg/aura.svg",
+   "img": "systems/pendragon-vf/icons/types/opportunity.svg",
    "folder": "9f7b4b2c99c657aa",
    "system": {
     "kind": "opportunity",
@@ -491,7 +491,7 @@
    "_id": "0657c36d5d0c31ff",
    "name": "Raid sur le Camp",
    "type": "rencontre",
-   "img": "icons/svg/aura.svg",
+   "img": "systems/pendragon-vf/icons/types/opportunity.svg",
    "folder": "9f7b4b2c99c657aa",
    "system": {
     "kind": "opportunity",
@@ -522,7 +522,7 @@
    "_id": "fffb2ee725086659",
    "name": "Raid sur le convoi de ravitaillement",
    "type": "rencontre",
-   "img": "icons/svg/aura.svg",
+   "img": "systems/pendragon-vf/icons/types/opportunity.svg",
    "folder": "9f7b4b2c99c657aa",
    "system": {
     "kind": "opportunity",

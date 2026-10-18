@@ -8,7 +8,8 @@ Usage : python3 tools/rencontres/build.py  (depuis la racine du dépôt)
 """
 import hashlib, json
 
-VERSION = 1
+VERSION = 2
+ICONS = "systems/pendragon-vf/icons/types"
 ADV = "Compendium.world.pendragon-adversaires.Actor."
 ALL = ["feudal", "feudalLesser", "saxon", "cymric", "pict"]
 
@@ -100,7 +101,7 @@ O = [
      "Les pillards sont à pied (Écuyer −5). (p. 147–148)"),
 ]
 
-def item(name, folder, kind, loss, mn, kv, per, npc, glory, flags, ransom, armies, desc, fixed=None, img="icons/svg/sword.svg"):
+def item(name, folder, kind, loss, mn, kv, per, npc, glory, flags, ransom, armies, desc, fixed=None, img=f"{ICONS}/encounter.svg"):
     system = {
         "kind": kind, "description": desc, "moraleLoss": loss, "moraleMin": mn, "kv": kv, "perKnight": per,
         "fixedCount": fixed, "npc": ADV + npc if npc else "", "glory": glory,
@@ -113,7 +114,7 @@ def item(name, folder, kind, loss, mn, kv, per, npc, glory, flags, ransom, armie
 items = [item(n, f, "opponent", l, m, kv, p, npc, g, fl, r, a, d) for (n, f, l, m, kv, p, npc, g, fl, r, a, d) in E]
 for (n, l, m, kv, p, npc, g, fl, r, a, d) in O:
     items.append(item(n, F_OPP, "opportunity", l, m, kv, p, npc, g, fl, r, a, d,
-                      fixed=1 if n == "Duel des Champions" else None, img="icons/svg/aura.svg"))
+                      fixed=1 if n == "Duel des Champions" else None, img=f"{ICONS}/opportunity.svg"))
 
 out = {"version": VERSION, "folders": FOLDERS, "items": items}
 json.dump(out, open("data/rencontres.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)

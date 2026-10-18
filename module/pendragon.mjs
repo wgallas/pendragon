@@ -25,6 +25,7 @@ import { CREATION } from "./creation/data.mjs";
 import { CreationWizard, openCreationWizard } from "./creation/wizard.mjs";
 import { newDayForAll, addNewDayControl, addNewDayDirectoryButton } from "./documents/new-day.mjs";
 import { PendragonItem } from "./documents/item.mjs";
+import { migrateDefaultIcons } from "./documents/icons.mjs";
 import { BatailleData } from "./data/bataille.mjs";
 import { RencontreData } from "./data/rencontre.mjs";
 import { BatailleSheet } from "./sheets/bataille-sheet.mjs";
@@ -98,6 +99,13 @@ Hooks.once("init", () => {
 
   // Version du compendium des équipements déjà importée dans ce monde
   game.settings.register(SYSTEM_ID, "equipmentVersion", {
+    scope: "world",
+    config: false,
+    type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 0 })
+  });
+
+  // Version de la mise à jour des icônes par défaut déjà faite dans ce monde
+  game.settings.register(SYSTEM_ID, "iconsVersion", {
     scope: "world",
     config: false,
     type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 0 })
@@ -200,6 +208,7 @@ Hooks.once("ready", async () => {
   await ensureAdversaries();
   await ensureEncounters();
   await ensureEquipment();
+  await migrateDefaultIcons();
 });
 
 // Boutons des cartes de chat (crise de passion…)

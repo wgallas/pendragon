@@ -1,6 +1,7 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { traitPair, gloryTestValue, samePassion } from "../rules/resolution.mjs";
 import { normalizeLabel } from "../rules/followers.mjs";
+import { actorIcon, actorIconUpdates } from "./icons.mjs";
 
 /**
  * Document Acteur du système.
@@ -8,9 +9,17 @@ import { normalizeLabel } from "../rules/followers.mjs";
  */
 export class PendragonActor extends Actor {
 
+  /** Icône par défaut du type (et de la catégorie d'un PNJ), pour l'acteur et son jeton. */
+  static getDefaultArtwork(actorData = {}) {
+    const icon = actorIcon(actorData.type, actorData.system);
+    return icon ? { img: icon, texture: { src: icon } } : super.getDefaultArtwork(actorData);
+  }
+
   /** Valeurs par défaut d'un nouveau chevalier. */
   async _preCreate(data, options, user) {
     if ((await super._preCreate(data, options, user)) === false) return false;
+    const icons = actorIconUpdates({ type: this.type, img: this._source.img, tokenSrc: this._source.prototypeToken?.texture?.src, system: this._source.system });
+    if (Object.keys(icons).length) this.updateSource(icons);
     if (this.type === "pnj") {
       // Écuyers et suivants sont des individus : jeton lié. Les autres PNJ restent génériques.
       const category = data.system?.category ?? "character";
@@ -43,6 +52,19 @@ export class PendragonActor extends Actor {
       updates["system.health.hp.value"] = (Number(c.siz.value) || 0) + (Number(c.con.value) || 0);
     }
     this.updateSource(updates);
+  }
+
+  /** Un PNJ qui change de catégorie change aussi d'icône, s'il avait encore l'icône par défaut. */
+  async _preUpdate(changed, options, user) {
+    if ((await super._preUpdate(changed, options, user)) === false) return false;
+    const category = foundry.utils.getProperty(changed, "system.category");
+    if (this.type !== "pnj" || category === undefined || category === this._source.system.category) return;
+    const icons = actorIconUpdates({
+      type: this.type, system: { category },
+      img: changed.img ?? this._source.img,
+      tokenSrc: foundry.utils.getProperty(changed, "prototypeToken.texture.src") ?? this._source.prototypeToken?.texture?.src
+    });
+    for (const [k, v] of Object.entries(icons)) foundry.utils.setProperty(changed, k, v);
   }
 
   /**

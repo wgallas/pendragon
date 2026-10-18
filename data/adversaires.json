@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "folders": [
   {
    "_id": "4a340e112fc011df",
@@ -49,7 +49,7 @@
    "_id": "c5e8a0f275012a6e",
    "name": "Chevalier débutant",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -161,14 +161,17 @@
    "prototypeToken": {
     "name": "Chevalier débutant",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "964f112e61713613",
    "name": "Chevalier ordinaire",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -280,14 +283,17 @@
    "prototypeToken": {
     "name": "Chevalier ordinaire",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "564fd89f4545f3f6",
    "name": "Chevalier vétéran",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -405,14 +411,17 @@
    "prototypeToken": {
     "name": "Chevalier vétéran",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "36b40e8050eab465",
    "name": "Chevalier respecté",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -524,14 +533,17 @@
    "prototypeToken": {
     "name": "Chevalier respecté",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "4389933148c752af",
    "name": "Chevalier notable",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -643,14 +655,17 @@
    "prototypeToken": {
     "name": "Chevalier notable",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "4003627b22af0f9e",
    "name": "Chevalier renommé",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -762,14 +777,17 @@
    "prototypeToken": {
     "name": "Chevalier renommé",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "beb284d8214949ee",
    "name": "Chevalier extraordinaire",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "4a340e112fc011df",
    "system": {
     "category": "character",
@@ -885,14 +903,17 @@
    "prototypeToken": {
     "name": "Chevalier extraordinaire",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "0bff3fad4e215127",
    "name": "Bandit",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -992,14 +1013,17 @@
    "prototypeToken": {
     "name": "Bandit",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "7867ac778b83a60c",
    "name": "Lancier",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1087,14 +1111,17 @@
    "prototypeToken": {
     "name": "Lancier",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "c5bde47cd807ef36",
    "name": "Lancier vétéran",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1182,14 +1209,17 @@
    "prototypeToken": {
     "name": "Lancier vétéran",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "97780a7a2fe0fa82",
    "name": "Archer",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1270,14 +1300,17 @@
    "prototypeToken": {
     "name": "Archer",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "3e245cde8a2bfe76",
    "name": "Arbalétrier",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1354,14 +1387,17 @@
    "prototypeToken": {
     "name": "Arbalétrier",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "9c8350ecf2455ac5",
    "name": "Sergent monté",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1457,14 +1493,17 @@
    "prototypeToken": {
     "name": "Sergent monté",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "6bb0d6886a4478b2",
    "name": "Homme des collines",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1555,14 +1594,17 @@
    "prototypeToken": {
     "name": "Homme des collines",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "f29e665f91046256",
    "name": "Berserker",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "6c9c308345c20c29",
    "system": {
     "category": "character",
@@ -1656,14 +1698,17 @@
    "prototypeToken": {
     "name": "Berserker",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "cffc5fb187253527",
    "name": "Chevalier saxon",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -1759,14 +1804,17 @@
    "prototypeToken": {
     "name": "Chevalier saxon",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "4d3c03b939ce2a15",
    "name": "Ceorl",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -1858,14 +1906,17 @@
    "prototypeToken": {
     "name": "Ceorl",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "fa325227dff238b6",
    "name": "Ceorl riche",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -1963,14 +2014,17 @@
    "prototypeToken": {
     "name": "Ceorl riche",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "6d6c3471c4dcdf78",
    "name": "Heorthgeneat",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -2068,14 +2122,17 @@
    "prototypeToken": {
     "name": "Heorthgeneat",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "548a7b899c25b482",
    "name": "Heorthgeneat à cheval",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -2167,14 +2224,17 @@
    "prototypeToken": {
     "name": "Heorthgeneat à cheval",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "4d4654fd88e06b1c",
    "name": "Ætheling",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -2282,14 +2342,17 @@
    "prototypeToken": {
     "name": "Ætheling",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "88a9d8a8f0ae94a8",
    "name": "Cyning",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "3440576d5ff5b701",
    "system": {
     "category": "character",
@@ -2397,14 +2460,17 @@
    "prototypeToken": {
     "name": "Cyning",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "686a478b9c17a638",
    "name": "Guerrier picte",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "ea43978ec4fb4b19",
    "system": {
     "category": "character",
@@ -2512,14 +2578,17 @@
    "prototypeToken": {
     "name": "Guerrier picte",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "d97766fb698cef7b",
    "name": "Guerrier picte supérieur",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "ea43978ec4fb4b19",
    "system": {
     "category": "character",
@@ -2623,14 +2692,17 @@
    "prototypeToken": {
     "name": "Guerrier picte supérieur",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "5505c99f384fd134",
    "name": "Paysans",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -2696,14 +2768,17 @@
    "prototypeToken": {
     "name": "Paysans",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "c4d36e0c2ea2837a",
    "name": "Lanciers",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -2775,14 +2850,17 @@
    "prototypeToken": {
     "name": "Lanciers",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "ba40b3149d025664",
    "name": "Fantassins",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -2860,14 +2938,17 @@
    "prototypeToken": {
     "name": "Fantassins",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "55ba3d7511dd7caf",
    "name": "Archers",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -2945,14 +3026,17 @@
    "prototypeToken": {
     "name": "Archers",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "6110aecec8af5f57",
    "name": "Chevaliers à pied",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3024,14 +3108,17 @@
    "prototypeToken": {
     "name": "Chevaliers à pied",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "5fa834e305afdee7",
    "name": "Chevaliers d'élite à pied",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3103,14 +3190,17 @@
    "prototypeToken": {
     "name": "Chevaliers d'élite à pied",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "136aeff7988ab9aa",
    "name": "Hobilars",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3181,14 +3271,17 @@
    "prototypeToken": {
     "name": "Hobilars",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "8ff1cf4edd4fd35e",
    "name": "Sergents montés",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3271,14 +3364,17 @@
    "prototypeToken": {
     "name": "Sergents montés",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "6c03100972673424",
    "name": "Chevaliers montés",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3361,14 +3457,17 @@
    "prototypeToken": {
     "name": "Chevaliers montés",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "9be892161f7a6be9",
    "name": "Chevaliers montés d’élite",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3451,14 +3550,17 @@
    "prototypeToken": {
     "name": "Chevaliers montés d’élite",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "7dbb48658a691973",
    "name": "Guerriers tribaux pictes",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3519,14 +3621,17 @@
    "prototypeToken": {
     "name": "Guerriers tribaux pictes",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "ba9a0eb388366b7a",
    "name": "Guerriers saxons",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3605,14 +3710,17 @@
    "prototypeToken": {
     "name": "Guerriers saxons",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "aec112688eed430a",
    "name": "Gardes de la Bannière",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3694,14 +3802,17 @@
    "prototypeToken": {
     "name": "Gardes de la Bannière",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "8bd88adbc1f3f88d",
    "name": "Commandant",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3778,14 +3889,17 @@
    "prototypeToken": {
     "name": "Commandant",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "3468abac19617484",
    "name": "Garde du Corps",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3867,14 +3981,17 @@
    "prototypeToken": {
     "name": "Garde du Corps",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "749d06a64a60aca1",
    "name": "Champion",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/character.svg",
    "folder": "aebeb7a473fb1846",
    "system": {
     "category": "character",
@@ -3956,14 +4073,17 @@
    "prototypeToken": {
     "name": "Champion",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/character.svg"
+    }
    }
   },
   {
    "_id": "630550a86e6c9f35",
    "name": "Taureau",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4041,14 +4161,17 @@
    "prototypeToken": {
     "name": "Taureau",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "549bcba04922989d",
    "name": "Auroch",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4126,14 +4249,17 @@
    "prototypeToken": {
     "name": "Auroch",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "ca5761b08bb71388",
    "name": "Éléphant",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4206,14 +4332,17 @@
    "prototypeToken": {
     "name": "Éléphant",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "b8066c32a17dbd9d",
    "name": "Ours",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4285,14 +4414,17 @@
    "prototypeToken": {
     "name": "Ours",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "68253233601f013f",
    "name": "Loup",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4358,14 +4490,17 @@
    "prototypeToken": {
     "name": "Loup",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "44883e55f926709d",
    "name": "Renard",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4431,14 +4566,17 @@
    "prototypeToken": {
     "name": "Renard",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "3e516adcfaed7f24",
    "name": "Sanglier",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4504,14 +4642,17 @@
    "prototypeToken": {
     "name": "Sanglier",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "090630689aa5f407",
    "name": "Faucon",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -4583,14 +4724,17 @@
    "prototypeToken": {
     "name": "Faucon",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "66d134cd26f117bd",
    "name": "Cheval féérique",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -4656,14 +4800,17 @@
    "prototypeToken": {
     "name": "Cheval féérique",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "c6baf494fea33a88",
    "name": "Barguest",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -4735,14 +4882,17 @@
    "prototypeToken": {
     "name": "Barguest",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "f72420edd06cdae4",
    "name": "Chien noir",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -4808,14 +4958,17 @@
    "prototypeToken": {
     "name": "Chien noir",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "b8eae912e5acd427",
    "name": "Cu Sith",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -4881,14 +5034,17 @@
    "prototypeToken": {
     "name": "Cu Sith",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "b0023930a5cf08e1",
    "name": "Coquatrice",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -4960,14 +5116,17 @@
    "prototypeToken": {
     "name": "Coquatrice",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "fb5eb25a5cf32a53",
    "name": "Dragon",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5040,14 +5199,17 @@
    "prototypeToken": {
     "name": "Dragon",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "7e1671a4a2df9c0e",
    "name": "Doppelganger",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5108,14 +5270,17 @@
    "prototypeToken": {
     "name": "Doppelganger",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "6016900542e84ab5",
    "name": "Fachan",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5181,14 +5346,17 @@
    "prototypeToken": {
     "name": "Fachan",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "055581afe4b2d4be",
    "name": "Licorne",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5270,14 +5438,17 @@
    "prototypeToken": {
     "name": "Licorne",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "c0d3e0959a6bd7f6",
    "name": "Toque-rouge",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5344,14 +5515,17 @@
    "prototypeToken": {
     "name": "Toque-rouge",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "0d13fc2a6416d01a",
    "name": "Cwn Annwn",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5418,14 +5592,17 @@
    "prototypeToken": {
     "name": "Cwn Annwn",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "858ec06e728d16fc",
    "name": "Chevalier démoniaque",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5521,14 +5698,17 @@
    "prototypeToken": {
     "name": "Chevalier démoniaque",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "8623a32dba1217cf",
    "name": "Petit géant",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5600,14 +5780,17 @@
    "prototypeToken": {
     "name": "Petit géant",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "797b2f9e761a7dd5",
    "name": "Grand géant",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5679,14 +5862,17 @@
    "prototypeToken": {
     "name": "Grand géant",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "32869e9105234e3f",
    "name": "Géant gargantuesque",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5764,14 +5950,17 @@
    "prototypeToken": {
     "name": "Géant gargantuesque",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "eb08699b17b8162c",
    "name": "Sauvageon",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5866,14 +6055,17 @@
    "prototypeToken": {
     "name": "Sauvageon",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "6d359d640210d88e",
    "name": "Brownie",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -5953,14 +6145,17 @@
    "prototypeToken": {
     "name": "Brownie",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "52926c61522417d8",
    "name": "Ogre",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -6026,14 +6221,17 @@
    "prototypeToken": {
     "name": "Ogre",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "f9665cffffc317ba",
    "name": "Elfe",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -6122,14 +6320,17 @@
    "prototypeToken": {
     "name": "Elfe",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "f0bcd17fb0eb46c6",
    "name": "Guenaude",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -6190,14 +6391,17 @@
    "prototypeToken": {
     "name": "Guenaude",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "6e1f7fa33279e6cf",
    "name": "Gobelin",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -6275,14 +6479,17 @@
    "prototypeToken": {
     "name": "Gobelin",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "8c644f9a0a69b2be",
    "name": "Nain",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "6dcb1b46feb437b6",
    "system": {
     "category": "creature",
@@ -6354,14 +6561,17 @@
    "prototypeToken": {
     "name": "Nain",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "cbddf58482c007f9",
    "name": "Bâtard",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6427,14 +6637,17 @@
    "prototypeToken": {
     "name": "Bâtard",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "52027562d65c1187",
    "name": "Chien courant",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6500,14 +6713,17 @@
    "prototypeToken": {
     "name": "Chien courant",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "d16944f40284f3de",
    "name": "Lévrier",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6585,14 +6801,17 @@
    "prototypeToken": {
     "name": "Lévrier",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "21cc837423b8f74f",
    "name": "Lévrier irlandais",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6658,14 +6877,17 @@
    "prototypeToken": {
     "name": "Lévrier irlandais",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "8c31f0c5f7381431",
    "name": "Cerf",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6737,14 +6959,17 @@
    "prototypeToken": {
     "name": "Cerf",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "7fadd44863e61b09",
    "name": "Chevreuil",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6810,14 +7035,17 @@
    "prototypeToken": {
     "name": "Chevreuil",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "f1f050ae559a0c4f",
    "name": "Daim",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6889,14 +7117,17 @@
    "prototypeToken": {
     "name": "Daim",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "609afc2fb097e165",
    "name": "Élan",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -6968,14 +7199,17 @@
    "prototypeToken": {
     "name": "Élan",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "103d416359032510",
    "name": "Lion",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -7047,14 +7281,17 @@
    "prototypeToken": {
     "name": "Lion",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "4d88f5916c8a1dbb",
    "name": "Lynx",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -7126,14 +7363,17 @@
    "prototypeToken": {
     "name": "Lynx",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   },
   {
    "_id": "df28e5564e07c433",
    "name": "Panthère",
    "type": "pnj",
-   "img": "icons/svg/mystery-man.svg",
+   "img": "systems/pendragon-vf/icons/types/creature.svg",
    "folder": "8b67d867104d2efd",
    "system": {
     "category": "creature",
@@ -7205,7 +7445,10 @@
    "prototypeToken": {
     "name": "Panthère",
     "actorLink": false,
-    "disposition": -1
+    "disposition": -1,
+    "texture": {
+     "src": "systems/pendragon-vf/icons/types/creature.svg"
+    }
    }
   }
  ]

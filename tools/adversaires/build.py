@@ -79,6 +79,7 @@ SELECTION = [
        "Ogre", "Elfe", "Guenaude", "Gobelin", "Nain"]],
 ]
 
+ICONS = "systems/pendragon-vf/icons/types"
 CATEGORY = {"Animaux": "creature", "Créatures féeriques et monstres": "creature"}
 TAGLINE = {"Chevaliers": "Chevalier", "Combattants": "Combattant", "Saxons": "Saxon", "Pictes": "Picte", "Unités de bataille": "Unité de bataille (chap. 6)",
            "Animaux": "Animal", "Créatures féeriques et monstres": ""}
@@ -245,7 +246,7 @@ for src, name, folder in SELECTION:
     fid = stable_id("folder." + folder)
     folders[folder] = fid
     actors.append({
-        "_id": stable_id(name), "name": name, "type": "pnj", "img": "icons/svg/mystery-man.svg", "folder": fid,
+        "_id": stable_id(name), "name": name, "type": "pnj", "img": f"{ICONS}/{category}.svg", "folder": fid,
         "system": {
             "category": category, "tagline": TAGLINE[folder],
             "characteristics": chars, "health": {"hp": {"value": hp or auto["hp"]}}, "overrides": overrides,
@@ -254,7 +255,7 @@ for src, name, folder in SELECTION:
             "attacks": attacks, "skills": skills, "traits": traits, "honor": honor, "passions": passions,
             "defaultSkill": 5, "possessions": "", "notes": "\n".join(notes)
         },
-        "prototypeToken": {"name": name, "actorLink": False, "disposition": -1}
+        "prototypeToken": {"name": name, "actorLink": False, "disposition": -1, "texture": {"src": f"{ICONS}/{category}.svg"}}
     })
 
 # Tables 8.2 à 8.4 (chiens, cervidés, grands félins) : saisies à la main
@@ -280,7 +281,7 @@ for (name, page, siz, dex, st, con, move, hp, unc, evade, armor, atts, glory, vm
     rnd = lambda x: int(x + 0.5)
     auto = {"hp": con + siz, "unconscious": rnd((con + siz) / 4), "move": rnd((st + dex) / 2) + 5}
     actors.append({
-        "_id": stable_id(name), "name": name, "type": "pnj", "img": "icons/svg/mystery-man.svg", "folder": fid,
+        "_id": stable_id(name), "name": name, "type": "pnj", "img": f"{ICONS}/creature.svg", "folder": fid,
         "system": {
             "category": "creature", "tagline": "Animal",
             "characteristics": {"siz": {"value": siz}, "dex": {"value": dex}, "str": {"value": st}, "con": {"value": con}, "app": {"value": 0}},
@@ -293,7 +294,7 @@ for (name, page, siz, dex, st, con, move, hp, unc, evade, armor, atts, glory, vm
             "skills": [{"name": "Évitement", "value": evade}], "traits": [], "honor": None, "passions": [],
             "defaultSkill": 5, "possessions": "", "notes": "\n".join([f"Livre du maître, p. {page}."] + extra)
         },
-        "prototypeToken": {"name": name, "actorLink": False, "disposition": -1}
+        "prototypeToken": {"name": name, "actorLink": False, "disposition": -1, "texture": {"src": f"{ICONS}/creature.svg"}}
     })
 
 # Bêtes sans ATT : 0 plutôt que 10
@@ -302,7 +303,7 @@ for a in actors:
         a["system"]["characteristics"]["app"]["value"] = 0
 
 out = {
-    "version": 1,
+    "version": 2,
     "folders": [{"_id": fid, "name": n, "type": "Actor", "sorting": "a"} for n, fid in folders.items()],
     "actors": actors
 }

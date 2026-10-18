@@ -9,6 +9,7 @@ import * as W from "../rules/wounds.mjs";
 import { attackProfiles } from "../rules/equipment.mjs";
 import { combatStats, receiveDamage, loseWeapon, undoChanges, postCombatCard, testValue } from "./damage.mjs";
 import { STATUS, setStatus } from "./status.mjs";
+import { invokePassion, postPassionCard } from "../dice/tests.mjs";
 
 const { DialogV2 } = foundry.applications.api;
 const L = (k) => game.i18n.localize(k);
@@ -103,6 +104,19 @@ function findOption(actor, ref) {
   return opts.find(o => o.ref === ref) ?? opts[0];
 }
 
+/**
+ * Compétence testée par une action (clé d'Attribut du chevalier), pour les inspirations des passions.
+ * Les actions qui testent le Mouvement (Esquiver, Se désengager) n'en ont pas.
+ */
+export function skillKeyFor(actor, decl, opt) {
+  if (actor?.type !== "chevalier" || !opt) return null;
+  const a = C.ACTIONS[decl.action] ?? C.ACTIONS.attack;
+  if (a.skill === "move" || a.skill === "none") return null;
+  if (decl.action === "charge") return opt.lance ? "skill.charge" : `skill.${opt.skill}`;
+  if (a.skill === "brawling") return "skill.brawling";
+  return `skill.${opt.skill}`;
+}
+
 /* -------------------------------------------- */
 /*  Acteurs et jetons                            */
 /* -------------------------------------------- */
@@ -135,7 +149,7 @@ function resolveActorSync(ref) {
  * Boîte de déclaration : action, arme et options.
  * @returns {Promise<object|null>}
  */
-async function declare(actor, { defending = false, preset = null, opponentName = "", attackerAction = "" } = {}) {
+async function declare(actor, { defending = false, preset = null, opponentName = "", attackerAction = "", modifier = 0, invoke = "" } = {}) {
   const st = combatStats(actor);
   const options = weaponOptions(actor);
   const presetOpt = preset ? options.find(o => o.ref === preset) : null;
@@ -160,7 +174,8 @@ async function declare(actor, { defending = false, preset = null, opponentName =
     <div class="form-group"><label>${L("PDVF.Combat.Weapon")}</label><select name="ref">${weaponOpts}</select></div>
     <div class="form-group"><label>${L("PDVF.Combat.Variant")}</label><select name="alt">${altOpts}</select></div>
     <div class="form-group"><label>${L("PDVF.Combat.Opponents")}</label><input type="number" name="opponents" value="1" min="1" max="3" step="1"></div>
-    <div class="form-group"><label>${L("PDVF.Combat.Modifier")}</label><input type="number" name="modifier" value="0" step="1"></div>
+    <div class="form-group"><label>${L("PDVF.Combat.Modifier")}</label><input type="number" name="modifier" value="${Number(modifier) || 0}" step="1"></div>
+    ${passionFields(actor, invoke)}
     <div class="form-group"><label>${L("PDVF.Combat.Pull")}</label><select name="pull">
       <option value="">—</option><option value="half">${L("PDVF.Combat.PullHalf")}</option>
       <option value="1">−1D6</option><option value="2">−2D6</option><option value="3">−3D6</option><option value="4">−4D6</option></select></div>
@@ -185,8 +200,50 @@ async function declare(actor, { defending = false, preset = null, opponentName =
   if (opt?.unarmed && action === "attack") action = "brawl";
   return {
     action, ref: result.ref, alt: result.alt || "", opponents: Number(result.opponents) || 1, modifier: Number(result.modifier) || 0,
-    pull: result.pull || "", longRange: !!result.longRange, aware: result.aware !== false
+    pull: result.pull || "", longRange: !!result.longRange, aware: result.aware !== false,
+    invoke: result.invoke || "", applyInspiration: !!result.applyInspiration
   };
+}
+
+/**
+ * Champs de passion de la déclaration (chevaliers) : passion à invoquer pour cet échange,
+ * inspirations en cours et inspirations qui n'ont pas encore de compétence.
+ */
+function passionFields(actor, invoke = "") {
+  if (actor.type !== "chevalier" || typeof actor.listInvokable !== "function") return "";
+  const invokable = actor.listInvokable();
+  const opts = [`<option value="">${L("PDVF.Combat.NoPassion")}</option>`,
+    ...invokable.map(p => `<option value="${p.key}" ${p.invoked ? "disabled" : ""} ${p.key === invoke && !p.invoked ? "selected" : ""}>${esc(p.label)} ${p.value}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}</option>`)];
+  const active = actor.activeInspirations();
+  const label = (k) => actor.getRollable(k)?.label ?? k;
+  const current = active.filter(i => i.target).map(i => `${esc(i.source)} ${signed(i.bonus)} → ${esc(label(i.target))}`);
+  const loose = active.filter(i => !i.target);
+  return `
+    <div class="form-group"><label>${L("PDVF.Combat.InvokePassion")}</label><select name="invoke">${opts.join("")}</select></div>
+    ${loose.length ? `<div class="form-group"><label>${F("PDVF.Combat.ApplyLoose", { list: loose.map(i => `${esc(i.source)} ${signed(i.bonus)}`).join(", ") })}</label><input type="checkbox" name="applyInspiration" checked></div>` : ""}
+    ${current.length ? `<p class="pdvf-hint">${L("PDVF.Combat.CurrentInspirations")} ${current.join(" ; ")}</p>` : ""}`;
+}
+
+/**
+ * Passion invoquée pour l'échange (sur le poste du joueur, qui possède le chevalier) : test de passion,
+ * carte de chat, inspiration portée sur la compétence de l'action. Les inspirations encore sans
+ * compétence peuvent être portées sur elle. Renvoie le bonus d'inspiration qui s'applique.
+ */
+async function preparePassions(actor, decl) {
+  if (actor.type !== "chevalier") return 0;
+  const opt = findOption(actor, decl.ref);
+  const key = skillKeyFor(actor, decl, opt);
+  if (decl.invoke && key) {
+    const inv = await invokePassion(actor, decl.invoke, { target: key });
+    if (inv) await postPassionCard(actor, inv, inv.effect.bonus ? [] : [L("PDVF.Combat.PassionFailedAct")]);
+  }
+  if (decl.applyInspiration && key) {
+    const rows = actor.activeInspirations().map(({ index, ...x }) => x);
+    let changed = false;
+    for (const r of rows) if (!r.target && !rows.some(o => o.target === key && o.bonus >= r.bonus)) { r.target = key; changed = true; }
+    if (changed) await actor.update({ "system.inspirations": rows });
+  }
+  return key ? actor.inspirationBonus(key) : 0;
 }
 
 /* -------------------------------------------- */
@@ -198,19 +255,21 @@ async function declare(actor, { defending = false, preset = null, opponentName =
  * @param {Actor} actor
  * @param {object} [opts] { weapon: référence d'arme proposée, token }
  */
-export async function engage(actor, { weapon = null, token = null } = {}) {
+export async function engage(actor, { weapon = null, token = null, modifier = 0, invoke = "" } = {}) {
   const target = [...(game.user.targets ?? [])][0];
   if (!target?.actor) return ui.notifications.warn(L("PDVF.Combat.Notify.NoTarget"));
   if (target.actor === actor || target.actor.uuid === actor.uuid) return ui.notifications.warn(L("PDVF.Combat.Notify.SelfTarget"));
-  const decl = await declare(actor, { preset: weapon, opponentName: target.name });
+  const decl = await declare(actor, { preset: weapon, opponentName: target.name, modifier, invoke });
   if (!decl) return null;
+  decl.inspiration = await preparePassions(actor, decl);
   const a = actorTokenRef(actor, token);
   const b = { actor: target.actor.uuid, token: target.document.uuid, name: target.name, img: target.actor.img };
   const state = { a: { ...a, decl }, b: { ...b, decl: null }, state: "declared" };
   // Tir : pas de réponse, le MJ résout aussitôt (le bouclier de la cible gêne le tireur si elle se sait visée)
   if (decl.action === "ranged") {
     const msg = await postDeclaration(actor, state);
-    return requestResolve(msg, { action: "none", ref: "", opponents: 1, modifier: 0, pull: "", longRange: false, aware: decl.aware });
+    await requestResolve(msg, { action: "none", ref: "", opponents: 1, modifier: 0, pull: "", longRange: false, aware: decl.aware });
+    return msg;
   }
   return postDeclaration(actor, state);
 }
@@ -243,6 +302,7 @@ export async function respond(message, { unopposed = false } = {}) {
   else {
     decl = await declare(defender, { defending: true, opponentName: ex.a.name, attackerAction: ex.a.decl.action });
     if (!decl) return;
+    decl.inspiration = await preparePassions(defender, decl);
   }
   return requestResolve(message, decl);
 }
@@ -323,11 +383,12 @@ function sideFor(actor, decl) {
   const chargeValue = knight ? actor.system.skills.charge.value : (opt?.skill === "charge" ? opt.skillValue : (weaponOptions(actor).find(o => o.skill === "charge")?.skillValue ?? 0));
   const brawling = knight ? actor.system.skills.brawling.value : (weaponOptions(actor).find(o => o.unarmed)?.skillValue ?? 10);
   const move = st.mounted && decl.action === "disengage" && st.horseMove ? st.horseMove : st.move;
-  const key = knight && opt ? `skill.${decl.action === "charge" && opt.lance ? "charge" : C.ACTIONS[decl.action]?.skill === "brawling" ? "brawling" : opt.skill}` : null;
+  const key = skillKeyFor(actor, decl, opt);
   return {
     actor, st, decl, opt, key,
     base: C.baseValue({ action: decl.action, weaponSkill: opt?.skillValue ?? 0, charge: chargeValue, horsemanship: st.horsemanship, move, brawling, mounted: st.mounted, lance: !!opt?.lance }),
-    inspiration: knight && key && typeof actor.inspirationBonus === "function" ? actor.inspirationBonus(key) : 0
+    // Bonus d'inspiration : celui que voit le MJ, ou celui que le joueur vient d'obtenir (la mise à jour peut arriver après)
+    inspiration: Math.max(knight && key && typeof actor.inspirationBonus === "function" ? actor.inspirationBonus(key) : 0, Number(decl.inspiration) || 0)
   };
 }
 

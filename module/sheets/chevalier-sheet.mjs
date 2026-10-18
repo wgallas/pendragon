@@ -609,9 +609,15 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /*  Combat et blessures                          */
   /* -------------------------------------------- */
 
-  static #onEngage(event, target) {
+  /** Engager la cible : le modificateur et la passion du « Prochain test » passent dans la déclaration. */
+  static async #onEngage(event, target) {
     const ref = target.dataset.id ? `item:${target.dataset.id}:${target.dataset.mode ?? "main"}` : null;
-    return engage(this.document, { weapon: ref, token: this.token ?? null });
+    const msg = await engage(this.document, { weapon: ref, token: this.token ?? null, modifier: this._modifier, invoke: this._invoke });
+    if (msg && (this._modifier !== 0 || this._invoke)) {
+      this._modifier = 0;
+      this._invoke = "";
+      this.render();
+    }
   }
 
   static #onCombatDamage() { return CD.promptDamage(this.document); }

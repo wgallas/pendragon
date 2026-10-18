@@ -2017,7 +2017,12 @@
         "Recovered": "{name} n'est plus Affaibli.",
         "FullHealth": "{name} est entièrement guéri.",
         "HpChange": "Points de vie : {from} → {to} / {max}."
-      }
+      },
+      "InvokePassion": "Invoquer une passion pour cet échange",
+      "NoPassion": "Aucune",
+      "ApplyLoose": "Porter sur cette compétence : {list}",
+      "CurrentInspirations": "Inspirations en cours :",
+      "PassionFailedAct": "Passion ratée : le chevalier agit tout de même, sans bonus."
     }
   }
 }

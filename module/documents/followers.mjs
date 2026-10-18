@@ -76,24 +76,9 @@ export async function createSquire(knight) {
     originRoll = await new Roll("1d20").evaluate();
     origin = squireOriginFromRoll(originRoll.total);
   }
-  const year = Number(game.settings.get(SYSTEM_ID, "currentYear")) || 508;
   const name = String(result.name || "").trim() || L("PDVF.Npc.Category.squire");
-
-  const npc = await Actor.implementation.create({
-    name,
-    type: "pnj",
-    folder: knight.folder?.id ?? null,
-    ownership: foundry.utils.deepClone(knight.ownership),
-    system: {
-      category: "squire",
-      tagline: F("PDVF.Npc.SquireOf", { name: knight.name }),
-      squire: { born: year - age, origin: origin.id, otherSkill: PDVF.squireDefaultOther, first: !!result.first },
-      passions: [{ name: L("PDVF.DefaultPassion.homage"), value: PDVF.squireHomage }],
-      armor: { value: 0, shield: 0, description: L("PDVF.Npc.SquireGear") }
-    }
-  });
+  const npc = await createSquireNpc(knight, { name, age, origin: origin.id, first: !!result.first });
   if (!npc) return null;
-  await addFollower(knight, npc);
 
   const lines = [
     F("PDVF.Npc.SquireAgeLine", { age, roll: ageRoll.total }),
@@ -107,6 +92,31 @@ export async function createSquire(knight) {
       <ul class="pdvf-card-notes">${lines.map(l => `<li>${l}</li>`).join("")}</ul></div>`,
     rolls: [ageRoll, originRoll].filter(Boolean)
   });
+  return npc;
+}
+
+/**
+ * Crée l'écuyer (PNJ) d'un chevalier avec un âge et une origine donnés, et le rattache à sa suite.
+ * Sert au dialogue « Nouvel écuyer » et aux personnages prétirés (écuyer de 14 ans).
+ */
+export async function createSquireNpc(knight, { name, age, origin = "secondSon", first = true } = {}) {
+  if (!game.user.can("ACTOR_CREATE")) { ui.notifications.warn(L("PDVF.Npc.NoCreatePermission")); return null; }
+  const year = Number(game.settings.get(SYSTEM_ID, "currentYear")) || 508;
+  const npc = await Actor.implementation.create({
+    name: String(name || "").trim() || L("PDVF.Npc.Category.squire"),
+    type: "pnj",
+    folder: knight.folder?.id ?? null,
+    ownership: foundry.utils.deepClone(knight.ownership),
+    system: {
+      category: "squire",
+      tagline: F("PDVF.Npc.SquireOf", { name: knight.name }),
+      squire: { born: year - age, origin: squireOrigin(origin).id, otherSkill: PDVF.squireDefaultOther, first: !!first },
+      passions: [{ name: L("PDVF.DefaultPassion.homage"), value: PDVF.squireHomage }],
+      armor: { value: 0, shield: 0, description: L("PDVF.Npc.SquireGear") }
+    }
+  });
+  if (!npc) return null;
+  await addFollower(knight, npc);
   return npc;
 }
 

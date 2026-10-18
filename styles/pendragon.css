@@ -728,7 +728,7 @@
 .pendragon-vf .pdvf-wiz-inline .pdvf-btn { margin: 0; flex: none; }
 .pendragon-vf .pdvf-wiz-narrow { max-width: 260px; }
 
-.pendragon-vf .pdvf-wiz-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border: 0; padding: 0; margin: 0 0 16px; }
+.pendragon-vf .pdvf-wiz-methods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; border: 0; padding: 0; margin: 0 0 16px; }
 .pendragon-vf .pdvf-wiz-methods legend { font-family: var(--pdvf-font-heading); color: var(--pdvf-lapis); font-size: 17px; margin-bottom: 6px; padding: 0; }
 .pendragon-vf .pdvf-wiz-method {
   display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left;
@@ -740,6 +740,23 @@
 .pendragon-vf .pdvf-wiz-method span { font-size: 14px; color: var(--pdvf-ink-soft); }
 .pendragon-vf .pdvf-wiz-method.selected { border-color: var(--pdvf-vermilion); outline: 1px solid var(--pdvf-vermilion); background: var(--pdvf-parchment-light); }
 .pendragon-vf .pdvf-wiz-method.selected strong { color: var(--pdvf-vermilion); }
+
+/* Personnages prétirés */
+.pendragon-vf .pdvf-wiz-pregens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; border: 0; padding: 0; margin: 0 0 10px; }
+.pendragon-vf .pdvf-wiz-pregens legend { font-family: var(--pdvf-font-heading); color: var(--pdvf-lapis); font-size: 17px; margin-bottom: 6px; padding: 0; }
+.pendragon-vf .pdvf-wiz-pregen {
+  display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left;
+  padding: 8px 10px; margin: 0; width: auto; height: auto;
+  background: var(--pdvf-parchment); border: 1.5px solid var(--pdvf-rule-strong); border-radius: 2px; cursor: pointer;
+  font-family: var(--pdvf-font-body); line-height: 1.25;
+}
+.pendragon-vf .pdvf-wiz-pregen strong { font-family: var(--pdvf-font-heading); font-weight: 400; font-size: 17px; color: var(--pdvf-ink); }
+.pendragon-vf .pdvf-wiz-pregen span { font-size: 13.5px; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-wiz-pregen .pdvf-wiz-faint { font-size: 12.5px; }
+.pendragon-vf .pdvf-wiz-pregen .playif em { color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-wiz-pregen.selected { border-color: var(--pdvf-vermilion); outline: 1px solid var(--pdvf-vermilion); background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-wiz-pregen.selected strong { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-wiz-grid2 select:disabled { opacity: 0.75; }
 
 .pendragon-vf .pdvf-wiz-roll { width: auto; padding: 0 22px; margin: 4px 0 14px; }
 .pendragon-vf .pdvf-wiz-dice { font-size: 13px; color: var(--pdvf-ink-faint); }
@@ -834,7 +851,7 @@
 .pendragon-vf .pdvf-wiz-foot .pdvf-btn { margin: 0; }
 .pendragon-vf .pdvf-wiz-next { width: auto; padding: 0 24px; }
 @media (max-width: 860px) {
-  .pendragon-vf .pdvf-wiz-grid2, .pendragon-vf .pdvf-wiz-grid3, .pendragon-vf .pdvf-wiz-methods { grid-template-columns: minmax(0, 1fr); }
+  .pendragon-vf .pdvf-wiz-grid2, .pendragon-vf .pdvf-wiz-grid3, .pendragon-vf .pdvf-wiz-methods, .pendragon-vf .pdvf-wiz-pregens { grid-template-columns: minmax(0, 1fr); }
 }
 .pendragon-vf .pdvf-wiz-warning p { margin: 0 0 4px; }
 .pendragon-vf .pdvf-wiz-warning ul { margin: 0 0 8px; padding-left: 20px; }

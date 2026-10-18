@@ -26,7 +26,26 @@
         <strong>{{localize "PDVF.Wizard.MethodRandom"}}</strong>
         <span>{{localize "PDVF.Wizard.MethodRandomHint"}}</span>
       </button>
+      <button type="button" class="pdvf-wiz-method {{#if isPregen}}selected{{/if}}" data-action="setMethod" data-value="pregen" aria-pressed="{{#if isPregen}}true{{else}}false{{/if}}">
+        <strong>{{localize "PDVF.Wizard.MethodPregen"}}</strong>
+        <span>{{localize "PDVF.Wizard.MethodPregenHint"}}</span>
+      </button>
     </fieldset>
+
+    {{#if isPregen}}
+    <fieldset class="pdvf-wiz-pregens">
+      <legend>{{localize "PDVF.Wizard.Pregen.Choose"}}</legend>
+      {{#each pregens}}
+      <button type="button" class="pdvf-wiz-pregen {{#if chosen}}selected{{/if}}" data-action="choosePregen" data-id="{{id}}" aria-pressed="{{#if chosen}}true{{else}}false{{/if}}">
+        <strong>{{label}}</strong>
+        <span class="pdvf-wiz-faint">{{religion}} · {{#each chars}}{{abbr}} {{value}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        <span>{{pitch}}</span>
+        <span class="playif"><em>{{localize "PDVF.Wizard.Pregen.PlayIf"}}</em> {{playIf}}</span>
+      </button>
+      {{/each}}
+    </fieldset>
+    <p class="pdvf-wiz-note">{{localize "PDVF.Wizard.Pregen.Hint"}}</p>
+    {{/if}}
 
     <div class="pdvf-wiz-grid2">
       <label class="pdvf-field"><span>{{localize "PDVF.Wizard.Origin.fn"}}</span>
@@ -34,12 +53,12 @@
       <label class="pdvf-field"><span>{{localize "PDVF.Bio.class"}}</span>
         <select data-bind="origin.klass">{{#each classList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
       <label class="pdvf-field"><span>{{localize "PDVF.Bio.culture"}}</span>
-        <select data-bind="origin.culture">{{#each cultureList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        <select data-bind="origin.culture" {{#if lockOrigin}}disabled{{/if}}>{{#each cultureList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
       <label class="pdvf-field"><span>{{localize "PDVF.Bio.homeland"}}</span>
-        <select data-bind="origin.homeland">{{#each homelandList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        <select data-bind="origin.homeland" {{#if lockOrigin}}disabled{{/if}}>{{#each homelandList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
       <div class="pdvf-field"><span>{{localize "PDVF.Bio.religion"}}</span>
         <div class="pdvf-wiz-inline">
-          <select data-bind="origin.religion" aria-label="{{localize 'PDVF.Bio.religion'}}">{{#each religionList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          <select data-bind="origin.religion" {{#if lockOrigin}}disabled{{/if}} aria-label="{{localize 'PDVF.Bio.religion'}}">{{#each religionList}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
           {{#if isRandom}}<button type="button" class="pdvf-btn" data-action="roll" data-what="religion">{{localize "PDVF.Wizard.RollTable32"}}</button>{{/if}}
         </div>
       </div>
@@ -60,15 +79,15 @@
     {{!-- ============ 2. Caractéristiques ============ --}}
     {{#if step.characteristics}}
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Wizard.Step.characteristics"}}</h2>
-    <p class="pdvf-wiz-intro">{{#if isBuilt}}{{localize "PDVF.Wizard.Intro.charsBuilt"}}{{else}}{{localize "PDVF.Wizard.Intro.charsRandom"}}{{/if}}</p>
+    <p class="pdvf-wiz-intro">{{#if isPregen}}{{localize "PDVF.Wizard.Intro.pregen"}}{{else}}{{#if isBuilt}}{{localize "PDVF.Wizard.Intro.charsBuilt"}}{{else}}{{localize "PDVF.Wizard.Intro.charsRandom"}}{{/if}}{{/if}}</p>
     {{#if isRandom}}{{#unless rolled}}<button type="button" class="pdvf-choose pdvf-wiz-roll" data-action="roll" data-what="chars">{{localize "PDVF.Wizard.RollChars"}}</button>{{/unless}}{{/if}}
     <table class="pdvf-wiz-table">
-      <thead><tr><th scope="col"></th><th scope="col">{{#if isBuilt}}{{localize "PDVF.Wizard.Col.points"}}{{else}}{{localize "PDVF.Wizard.Col.roll"}}{{/if}}</th><th scope="col">{{localize "PDVF.Wizard.Col.culture"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.final"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.max"}}</th></tr></thead>
+      <thead><tr><th scope="col"></th><th scope="col">{{#if isPregen}}{{localize "PDVF.Wizard.Col.pregen"}}{{else}}{{#if isBuilt}}{{localize "PDVF.Wizard.Col.points"}}{{else}}{{localize "PDVF.Wizard.Col.roll"}}{{/if}}{{/if}}</th><th scope="col">{{localize "PDVF.Wizard.Col.culture"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.final"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.max"}}</th></tr></thead>
       <tbody>
         {{#each charRows}}
         <tr>
           <th scope="row"><span class="pdvf-char-abbr">{{abbr}}</span> {{long}}</th>
-          <td>{{#if ../isBuilt}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=base min=min label=long}}{{else}}{{base}} <span class="pdvf-wiz-dice">({{dice}})</span>{{/if}}</td>
+          <td>{{#if ../isBuilt}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=base min=min label=long}}{{else}}{{base}}{{#unless ../isPregen}} <span class="pdvf-wiz-dice">({{dice}})</span>{{/unless}}{{/if}}</td>
           <td>{{mod}}</td>
           <td class="pdvf-wiz-final">{{final}}</td>
           <td class="pdvf-wiz-faint">{{max}}</td>
@@ -86,7 +105,7 @@
     {{!-- ============ 3. Traits ============ --}}
     {{#if step.traits}}
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Wizard.Step.traits"}}</h2>
-    <p class="pdvf-wiz-intro">{{#if isBuilt}}{{localize "PDVF.Wizard.Intro.traitsBuilt"}}{{else}}{{localize "PDVF.Wizard.Intro.traitsRandom"}}{{/if}} {{localize "PDVF.Wizard.VirtuesOf"}} {{religionLabel}}.</p>
+    <p class="pdvf-wiz-intro">{{#if isPregen}}{{localize "PDVF.Wizard.Intro.pregen"}}{{else}}{{#if isBuilt}}{{localize "PDVF.Wizard.Intro.traitsBuilt"}}{{else}}{{localize "PDVF.Wizard.Intro.traitsRandom"}}{{/if}}{{/if}} {{localize "PDVF.Wizard.VirtuesOf"}} {{religionLabel}}.</p>
     {{#if isRandom}}{{#unless rolled}}<button type="button" class="pdvf-choose pdvf-wiz-roll" data-action="roll" data-what="traits">{{localize "PDVF.Wizard.RollTraits"}}</button>{{/unless}}{{/if}}
     <div class="pdvf-wiz-traits">
       {{#each traitRows}}
@@ -117,7 +136,7 @@
     {{!-- ============ 4. Passions ============ --}}
     {{#if step.passions}}
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Wizard.Step.passions"}}</h2>
-    <p class="pdvf-wiz-intro">{{#if isBuilt}}{{localize "PDVF.Wizard.Intro.passionsBuilt"}}{{else}}{{localize "PDVF.Wizard.Intro.passionsRandom"}}{{/if}}</p>
+    <p class="pdvf-wiz-intro">{{#if isPregen}}{{localize "PDVF.Wizard.Intro.pregen"}}{{else}}{{#if isBuilt}}{{localize "PDVF.Wizard.Intro.passionsBuilt"}}{{else}}{{localize "PDVF.Wizard.Intro.passionsRandom"}}{{/if}}{{/if}}</p>
     {{#if isRandom}}{{#unless rolled}}<button type="button" class="pdvf-choose pdvf-wiz-roll" data-action="roll" data-what="passions">{{localize "PDVF.Wizard.RollPassions"}}</button>{{/unless}}{{/if}}
     <table class="pdvf-wiz-table">
       <thead><tr><th scope="col">{{localize "PDVF.Wizard.Col.passion"}}</th><th scope="col">{{localize "PDVF.Sheet.Court"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.base"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.points"}}</th><th scope="col">{{localize "PDVF.Wizard.Col.final"}}</th><th scope="col"><span class="visually-hidden">{{localize "PDVF.Sheet.Delete"}}</span></th></tr></thead>
@@ -127,15 +146,17 @@
           <th scope="row">{{#if extra}}<input type="text" data-bind="passions.extra.{{index}}.name" value="{{name}}" placeholder="{{localize 'PDVF.Wizard.PassionPlaceholder'}}" aria-label="{{localize 'PDVF.Sheet.PassionName'}}">{{else}}{{name}}{{/if}}</th>
           <td>{{#if extra}}<select data-bind="passions.extra.{{index}}.court" aria-label="{{localize 'PDVF.Sheet.Court'}}">{{#each courtChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{else}}{{courtLabel}}{{/if}}</td>
           <td>{{#if base}}{{base}}{{else}}{{#if extra}}0{{else}}—{{/if}}{{/if}}</td>
-          <td>{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=points label=name}}</td>
+          <td>{{#if ../isPregen}}<span class="pdvf-wiz-faint">—</span>{{else}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=points label=name}}{{/if}}</td>
           <td class="pdvf-wiz-final">{{afterCreation}}</td>
           <td>{{#if extra}}<button type="button" class="pdvf-icon-btn" data-action="removePassion" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>{{/if}}</td>
         </tr>
         {{/each}}
       </tbody>
     </table>
+    {{#unless isPregen}}
     <button type="button" class="pdvf-btn" data-action="addPassion">{{localize "PDVF.Sheet.AddPassion"}}</button>
     <p class="pdvf-wiz-budget {{#if passionLeft}}open{{/if}}">{{localize "PDVF.Wizard.PointsLeft"}} : <strong>{{passionLeft}}</strong> / {{passionPool}} · {{localize "PDVF.Wizard.PassionMax"}} {{passionMax}}</p>
+    {{/unless}}
     <div class="pdvf-wiz-derived">{{#each courts}}<span class="{{#if over}}over{{/if}}">{{label}} <strong>{{total}}</strong>/40</span>{{/each}}</div>
     {{/if}}
 
@@ -190,19 +211,19 @@
     {{!-- ============ 6. Compétences ============ --}}
     {{#if step.skills}}
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Wizard.Step.skills"}}</h2>
-    <p class="pdvf-wiz-intro">{{localize "PDVF.Wizard.Intro.skills"}}</p>
+    <p class="pdvf-wiz-intro">{{#if isPregen}}{{localize "PDVF.Wizard.Intro.skillsPregen"}}{{else}}{{localize "PDVF.Wizard.Intro.skills"}}{{/if}}</p>
     <div class="pdvf-field pdvf-wiz-family-trait"><span>{{localize "PDVF.Family.characteristic"}}</span>
-      {{#if isBuilt}}
+      {{#unless isRandom}}
       <select data-bind="familyTrait.id" aria-label="{{localize 'PDVF.Family.characteristic'}}">
         <option value="">{{localize "PDVF.Inspiration.Choose"}}</option>
         {{#each familyChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
       </select>
       {{else}}
       {{#if familyResult}}<strong>{{familyResult}}</strong>{{else}}<button type="button" class="pdvf-btn" data-action="roll" data-what="familyTrait">{{localize "PDVF.Wizard.RollFamilyTrait"}}</button>{{/if}}
-      {{/if}}
+      {{/unless}}
     </div>
     {{> "systems/pendragon-vf/templates/creation/knight-status.hbs" knight=knight}}
-    <p class="pdvf-wiz-budget {{#if skillLeft}}open{{/if}}">{{localize "PDVF.Wizard.PointsLeft"}} : <strong>{{skillLeft}}</strong> / {{skillBudget}} · {{localize "PDVF.Wizard.SkillRules"}}</p>
+    {{#unless isPregen}}<p class="pdvf-wiz-budget {{#if skillLeft}}open{{/if}}">{{localize "PDVF.Wizard.PointsLeft"}} : <strong>{{skillLeft}}</strong> / {{skillBudget}} · {{localize "PDVF.Wizard.SkillRules"}}</p>{{/unless}}
     <div class="pdvf-wiz-grid2 top">
       {{#each skillTables}}
       <table class="pdvf-wiz-table compact">
@@ -213,7 +234,7 @@
             <th scope="row">{{label}}{{#if knight}}<sup aria-label="{{localize 'PDVF.Wizard.KnightSkill'}}">*</sup>{{/if}}</th>
             <td data-tooltip="{{formulaLabel}}">{{start}}</td>
             <td>{{#if culture}}+{{culture}}{{/if}}{{#if family}} +{{family}}{{/if}}</td>
-            <td>{{#if locked}}<span class="pdvf-wiz-faint">—</span>{{else}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=points label=label}}{{/if}}</td>
+            <td>{{#if locked}}<span class="pdvf-wiz-faint">—</span>{{else}}{{#if pregen}}<span class="pdvf-wiz-faint">—</span>{{else}}{{> "systems/pendragon-vf/templates/creation/stepper.hbs" path=path value=points label=label}}{{/if}}{{/if}}</td>
             <td class="pdvf-wiz-final">{{afterCreation}}</td>
           </tr>
           {{/each}}
@@ -227,6 +248,10 @@
     {{!-- ============ 7. Écuyer ============ --}}
     {{#if step.apprentice}}
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Wizard.Step.apprentice"}}</h2>
+    {{#if isPregen}}
+    <p class="pdvf-wiz-intro">{{localize "PDVF.Wizard.Intro.apprenticePregen"}}</p>
+    {{> "systems/pendragon-vf/templates/creation/knight-status.hbs" knight=knight}}
+    {{else}}
     <p class="pdvf-wiz-intro">{{localize "PDVF.Wizard.Intro.apprentice"}}</p>
     <div class="pdvf-wiz-inline wrap">
       <label class="pdvf-field"><span>{{localize "PDVF.Wizard.Apprentice.years"}}</span>
@@ -270,6 +295,7 @@
         {{/each}}
       </section>
     </div>
+    {{/if}}
     {{/if}}
 
     {{!-- ============ 8. Adoubement & détails ============ --}}
@@ -327,6 +353,7 @@
           <h3 class="pdvf-h3">{{localize "PDVF.Wizard.Details.summary"}}</h3>
           <p><strong>{{summary.name}}</strong>, {{summary.age}} ans (né en {{summary.born}}) — {{summary.klass}}</p>
           <p>{{localize "PDVF.FamilyApp.InheritedGlory"}} : {{summary.inherited}}</p>
+          {{#if pregen}}<p>{{pregen.label}} — {{localize "PDVF.Wizard.Pregen.Retinue"}}</p>{{/if}}
           <p class="pdvf-wiz-faint">{{localize "PDVF.Wizard.Details.overwrite"}}</p>
         </div>
       </section>

@@ -28,6 +28,7 @@ export function defaultState(C = CREATION) {
     version: 1,
     step: 0,
     method: "built",
+    pregen: null,
     origin: {
       fn,
       klass: C.functions[fn].classes[0],
@@ -47,6 +48,31 @@ export function defaultState(C = CREATION) {
       skills: {}, traits: {}, chars: {} },
     details: { features: [], knighted: true, lordGlory: 0, jump: null, luck: null, ideal: "", blazon: "", motto: "" }
   };
+}
+
+/** Personnage prétiré choisi (méthode « pregen »), ou null. */
+export function pregenOf(state, C = CREATION) {
+  return state.method === "pregen" && state.pregen ? (C.pregens?.[state.pregen] ?? null) : null;
+}
+
+/**
+ * Choisit un prétiré : culture et religion imposées, âge d'adoubement, adoubement coché.
+ * Les étapes à points ne servent plus ; seuls l'origine, la famille, la particularité
+ * familiale et l'adoubement restent à remplir.
+ */
+export function choosePregen(state, id, C = CREATION) {
+  const p = C.pregens?.[id];
+  if (!p) return;
+  state.method = "pregen";
+  state.pregen = id;
+  state.origin.culture = p.culture ?? state.origin.culture;
+  const cult = C.cultures[state.origin.culture];
+  if (p.homeland) state.origin.homeland = p.homeland;
+  else if (!(cult?.homelands ?? []).includes(state.origin.homeland)) state.origin.homeland = cult?.homelands?.[0] ?? "";
+  state.origin.religion = p.religion ?? state.origin.religion;
+  const years = p.years ?? C.budgets.apprenticeYears;
+  state.apprentice = { years, alloc: { skills: 0, traits: 0, chars: 0 }, skills: {}, traits: {}, chars: {} };
+  state.details.knighted = true;
 }
 
 /** Objets de référence de l'origine choisie (repli sur la première option valide). */
@@ -75,14 +101,18 @@ export function rollCharacteristics(state, C = CREATION, rng = Math.random) {
 }
 
 /** Valeurs choisies ou tirées, avant modificateur culturel. */
-export function baseCharacteristics(state) {
+export function baseCharacteristics(state, C = CREATION) {
+  const p = pregenOf(state, C);
+  if (state.method === "pregen") return p ? { ...p.chars } : null;
   return state.method === "random" ? (state.chars.rolled ?? null) : state.chars.built;
 }
 
 /** Caractéristiques à 14 ans (avec le modificateur culturel). */
 export function characteristicsAt14(state, C = CREATION) {
-  const base = baseCharacteristics(state);
+  const base = baseCharacteristics(state, C);
   if (!base) return null;
+  // Prétiré : valeurs finales du livre, modificateur culturel déjà compris.
+  if (state.method === "pregen") return base;
   const { culture } = resolveOrigin(state, C);
   return Object.fromEntries(CHARS.map(c => [c, (Number(base[c]) || 0) + (culture.modifiers?.[c] ?? 0)]));
 }
@@ -91,6 +121,7 @@ export function characteristicsAt14(state, C = CREATION) {
 export function finalCharacteristics(state, C = CREATION) {
   const at14 = characteristicsAt14(state, C);
   if (!at14) return null;
+  if (state.method === "pregen") return { ...at14 };
   const { culture } = resolveOrigin(state, C);
   return Object.fromEntries(CHARS.map(c => [c,
     Math.min(culture.maxima?.[c] ?? 99, at14[c] + (Number(state.apprentice.chars[c]) || 0))]));
@@ -113,6 +144,10 @@ export function derivedFrom(ch) {
 
 /** Valeurs (côté gauche) avant les points de création. */
 export function traitBase(state, C = CREATION) {
+  if (state.method === "pregen") {
+    const p = pregenOf(state, C);
+    return p ? Object.fromEntries(PDVF.traits.map((t, i) => [t, p.traits[i]])) : null;
+  }
   if (state.method === "random") return state.traits.rolled ?? null;
   const { religion } = resolveOrigin(state, C);
   const b = C.budgets;
@@ -157,6 +192,7 @@ export function finalTraits(state, C = CREATION) {
   const t = traitsAfterCreation(state, C);
   if (!t) return null;
   const out = { ...t };
+  if (state.method === "pregen") return out;
   for (const id of PDVF.traits) {
     out[id] += (Number(state.apprentice.traits[`trait.${id}.left`]) || 0) - (Number(state.apprentice.traits[`trait.${id}.right`]) || 0);
   }
@@ -178,6 +214,20 @@ export function passionRows(state, C = CREATION) {
     rows.push({ key: `base.${i}`, court, name, built: p.built, random: p.random });
   });
   (homeland?.passions ?? []).forEach((p, i) => rows.push({ key: `home.${i}`, court: p.court, name: p.name, built: p.built, random: p.random }));
+  const pregen = pregenOf(state, C);
+  if (pregen) {
+    (pregen.extra ?? []).forEach((p, i) => rows.push({ key: `pregen.${i}`, court: p.court, name: p.name, pregenValue: p.value }));
+    const v = pregen.passions ?? {};
+    rows.forEach((r, i) => {
+      if (r.pregenValue !== undefined) return;
+      const role = r.honor ? "honor" : r.key.startsWith("base.") ? C.passions[Number(r.key.slice(5))]?.key : null;
+      r.pregenValue = role && v[role] !== undefined ? v[role] : (v[r.name] ?? r.built);
+    });
+    for (const r of rows) {
+      Object.assign(r, { base: r.pregenValue, points: 0, afterCreation: r.pregenValue, apprentice: 0, final: r.pregenValue });
+    }
+    return rows;
+  }
   state.passions.extra.forEach((p, i) => rows.push({ key: `extra.${i}`, court: p.court, name: p.name, built: 0, random: "0", extra: true }));
 
   const rolled = state.passions.rolled ?? {};
@@ -251,8 +301,19 @@ export function skillRows(state, C = CREATION) {
   const cultureMods = culture.skillModifiers?.[fn.skillModifiers] ?? {};
   const family = familyTraitResult(state, C);
   const familySkills = new Set(family?.skills ?? []);
+  const pregen = pregenOf(state, C);
   return Object.keys(PDVF.skills).map(id => {
     const formula = C.startingSkills[id] ?? 0;
+    if (pregen) {
+      // Valeurs du livre ; les compétences absentes de la fiche partent de la Table 3.5.
+      const start = pregen.skills?.[id] ?? formulaValue(formula, ch);
+      const familyBonus = familySkills.has(id) ? C.familyTraitBonus : 0;
+      return {
+        id, group: PDVF.skills[id].group, formula: start, start, culture: 0, family: familyBonus, points: 0, apprentice: 0,
+        attLinked: false, knight: C.knighthood.weapons.includes(id) || C.knighthood.others.includes(id), pregen: true,
+        afterCreation: start + familyBonus, final: start + familyBonus
+      };
+    }
     const start = formulaValue(formula, ch);
     const culture = cultureMods[id] ?? 0;
     const familyBonus = familySkills.has(id) ? C.familyTraitBonus : 0;
@@ -391,8 +452,14 @@ export function validateStep(step, state, C = CREATION) {
   const warnings = [];
   const b = C.budgets;
 
+  if (state.method === "pregen" && ["characteristics", "traits", "passions", "apprentice"].includes(step)) {
+    if (!pregenOf(state, C)) errors.push("Choisissez un personnage prétiré.");
+    return { errors, warnings };
+  }
+
   switch (step) {
     case "origin":
+      if (state.method === "pregen" && !pregenOf(state, C)) errors.push("Choisissez un personnage prétiré.");
       if (!state.origin.name?.trim()) errors.push("Donnez un nom au personnage.");
       break;
 
@@ -462,6 +529,7 @@ export function validateStep(step, state, C = CREATION) {
 
     case "skills": {
       if (!familyTraitResult(state, C)) errors.push(state.method === "random" ? "Lancez le dé pour la particularité familiale." : "Choisissez une particularité familiale.");
+      if (state.method === "pregen") break;
       const spent = sum(state.skills.points);
       if (spent > b.skillPoints) errors.push(`Vous ne disposez que de ${b.skillPoints} points.`);
       else if (spent < b.skillPoints) warnings.push(`Il reste ${b.skillPoints - spent} point(s) de compétence à répartir.`);
@@ -666,6 +734,6 @@ export function buildCharacter(state, year, C = CREATION, { skillLabel = (id) =>
       chronicle,
       notes: notes.join("\n\n")
     },
-    meta: { knighted, age, born, featureCategory: feat?.label ?? "" }
+    meta: { knighted, age, born, featureCategory: feat?.label ?? "", pregen: pregenOf(state, C) }
   };
 }

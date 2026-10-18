@@ -3,7 +3,7 @@ import * as R from "./rules.mjs";
 import { generateFamily } from "../family/generator.mjs";
 import { familyView } from "../family/view.mjs";
 import { applyFamilyHistory } from "../family/apply.mjs";
-import { createStartingHorses } from "../documents/followers.mjs";
+import { createStartingHorses, createSquireNpc } from "../documents/followers.mjs";
 import { traitPair, formatValue } from "../rules/resolution.mjs";
 import { signed } from "../dice/tests.mjs";
 
@@ -47,6 +47,7 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       inc: CreationWizard.#onInc,
       roll: CreationWizard.#onRoll,
       setMethod: CreationWizard.#onSetMethod,
+      choosePregen: CreationWizard.#onChoosePregen,
       addPassion: CreationWizard.#onAddPassion,
       removePassion: CreationWizard.#onRemovePassion,
       familyReroll: CreationWizard.#onFamilyReroll,
@@ -85,6 +86,8 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       stepId,
       isRandom: s.method === "random",
       isBuilt: s.method === "built",
+      isPregen: s.method === "pregen",
+      pregen: R.pregenOf(s, C),
       steps: R.STEPS.map((id, i) => ({
         id, i, number: i + 1, label: L(`PDVF.Wizard.Step.${id}`),
         current: i === s.step, done: i < s.step, reachable: i <= reachable
@@ -109,7 +112,13 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const homelandList = (o.culture.homelands ?? []).map(id => opt(id, C.homelands[id].label, o.homelandId));
     const religionList = (o.culture.religions ?? []).map(r => opt(r.id, PDVF.religions[r.id]?.label ?? r.id, o.religionId));
     const titles = o.fn.title ?? { male: "sire", female: "dame" };
+    const pregens = s.method === "pregen" ? Object.entries(C.pregens ?? {}).map(([id, p]) => ({
+      id, label: p.label, pitch: p.pitch, playIf: p.playIf, chosen: s.pregen === id,
+      religion: L(PDVF.religions[p.religion]?.label ?? p.religion),
+      chars: CHARS.map(c => ({ abbr: L(`PDVF.Char.${c}.abbr`), value: p.chars[c] }))
+    })) : [];
     return {
+      pregens, lockOrigin: s.method === "pregen",
       fnList, classList, cultureList, homelandList, religionList,
       sexList: [
         { value: "male", label: L(`PDVF.Title.${titles.male}`), selected: s.origin.sex !== "female" },
@@ -121,12 +130,13 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
 
   _ctx_characteristics(s, C, o) {
     const b = C.budgets;
-    const base = R.baseCharacteristics(s);
+    const base = R.baseCharacteristics(s, C);
+    const pregen = s.method === "pregen";
     const at14 = R.characteristicsAt14(s, C);
     const rows = CHARS.map(c => ({
       id: c, abbr: L(`PDVF.Char.${c}.abbr`), long: L(`PDVF.Char.${c}.long`),
       base: base?.[c] ?? "—",
-      mod: o.culture.modifiers?.[c] ? signed(o.culture.modifiers[c]) : "",
+      mod: !pregen && o.culture.modifiers?.[c] ? signed(o.culture.modifiers[c]) : "",
       final: at14?.[c] ?? "—",
       max: o.culture.maxima?.[c],
       path: `chars.built.${c}`, min: b.characteristicMin, maxBuilt: b.characteristicMax,
@@ -443,6 +453,12 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     this.render({ parts: ["body"] });
   }
 
+  /** Prétiré choisi : culture et religion imposées ; les étapes à points sont déjà remplies. */
+  static #onChoosePregen(event, target) {
+    R.choosePregen(this.draft, target.dataset.id, this.C);
+    this.render({ parts: ["body"] });
+  }
+
   static #onRoll(event, target) {
     const s = this.draft;
     const C = this.C;
@@ -560,6 +576,18 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       if (horses.length) ui.notifications.info(game.i18n.format("PDVF.Horse.StartingCreated", { count: horses.length }));
     } catch (err) {
       console.error("pendragon-vf | Chevaux de départ", err);
+    }
+    // Prétiré : un écuyer de 14 ans (compétence Écuyer 14) entre dans la suite.
+    const sq = out.meta.pregen?.squire;
+    if (sq && out.meta.knighted) {
+      try {
+        const names = this.C.names?.male ?? [];
+        const name = names.length ? names[Math.floor(Math.random() * names.length)] : L("PDVF.Npc.Category.squire");
+        const npc = await createSquireNpc(this.actor, { name, age: sq.age, origin: sq.origin, first: true });
+        if (npc) ui.notifications.info(game.i18n.format("PDVF.Wizard.Pregen.SquireCreated", { name: npc.name, age: sq.age }));
+      } catch (err) {
+        console.error("pendragon-vf | Écuyer du prétiré", err);
+      }
     }
     this._finished = true;
     return this.close();

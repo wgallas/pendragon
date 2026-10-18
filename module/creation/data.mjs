@@ -196,6 +196,76 @@ export const CREATION = {
     horses: "Fournis par le seigneur : un destrier (dégâts de charge 6D6, armure naturelle 5, 55 PV, Mouvement 16), deux roncins (armure 4, 54 PV, Mouvement 16) et un sommier (armure 3, 46 PV, Mouvement 14)."
   },
 
+  /**
+   * Appendice C : personnages prétirés. Valeurs de jeu seules (les présentations sont résumées).
+   * Les traits sont donnés côté gauche, dans l'ordre de PDVF.traits.
+   * Passions : « honor », « loyalty » (nom de la classe), « deity » (Dévotion de la religion),
+   * les autres par leur nom ; « extra » ajoute des passions qui ne sont pas de départ.
+   * Les compétences absentes de la fiche du livre partent de leur valeur de la Table 3.5.
+   */
+  pregens: (() => {
+    const T = (...v) => v;
+    const sk = (general, combat) => ({ ...general, ...combat });
+    const common = { culture: "cymric", years: 7, squire: { age: 14, origin: "youngerSon" } };
+    return {
+      adventurer: { ...common, label: "Le chevalier aventurier", religion: "christian",
+        pitch: "Chrétien, à l'aise partout : à la cour, en bataille comme dans la Forêt Sauvage.",
+        playIf: "vous voulez un chevalier sans faiblesse marquée.",
+        chars: { siz: 12, dex: 12, str: 12, con: 15, app: 12 },
+        traits: T(13, 12, 13, 12, 10, 10, 13, 10, 13, 13, 12, 13, 16),
+        passions: { honor: 15, loyalty: 15, deity: 5, "Amour (Famille)": 15, "Haine (Saxons)": 5, "Rang": 10, "Hospitalité": 10 },
+        skills: sk({ battle: 8, singing: 5, hunting: 8, compose: 5, courtesy: 10, dancing: 6, orate: 8, falconry: 5, folklore: 7,
+          stewardship: 5, recognize: 5, playInstrument: 6, intrigue: 7, gaming: 5, literacy: 0, firstAid: 8, religion: 5, flirting: 7, awareness: 10 },
+        { horsemanship: 15, greatWeapon: 6, charge: 17, sword: 15, hafted: 9, spear: 10, brawling: 10 }) },
+      champion: { ...common, label: "Le chevalier champion", religion: "christian",
+        pitch: "Chrétien, il rêve d'être le meilleur chevalier du pays et embrasse la chevalerie nouvelle.",
+        playIf: "vous voulez servir votre seigneur par vos idéaux chevaleresques, et viser un jour la Table Ronde.",
+        chars: { siz: 15, dex: 14, str: 12, con: 13, app: 9 },
+        traits: T(13, 10, 13, 12, 12, 10, 13, 12, 13, 13, 10, 13, 16),
+        passions: { honor: 15, loyalty: 15, deity: 5, "Amour (Famille)": 10, "Haine (Saxons)": 5, "Rang": 10, "Hospitalité": 10 },
+        extra: [{ court: "civilitas", name: "Chevalerie", value: 5 }],
+        skills: sk({ battle: 9, singing: 6, hunting: 7, compose: 5, courtesy: 7, dancing: 7, orate: 4, falconry: 5, folklore: 4,
+          stewardship: 5, recognize: 9, playInstrument: 7, intrigue: 4, gaming: 7, literacy: 0, firstAid: 7, religion: 5, flirting: 4, awareness: 10 },
+        { horsemanship: 15, greatWeapon: 7, charge: 15, sword: 15, hafted: 12, spear: 12, brawling: 10 }) },
+      hunter: { ...common, label: "Le chevalier chasseur", religion: "pagan",
+        pitch: "Païen, il n'est heureux qu'au fond des bois, au son de la meute et des cors.",
+        playIf: "vous voulez un maître de la nature et de la chasse.",
+        chars: { siz: 15, dex: 12, str: 13, con: 15, app: 8 },
+        traits: T(7, 10, 13, 16, 15, 13, 10, 10, 10, 5, 10, 8, 15),
+        passions: { honor: 15, loyalty: 10, deity: 5, "Amour (Famille)": 10, "Haine (Saxons)": 10, "Rang": 10, "Hospitalité": 15 },
+        skills: sk({ battle: 7, singing: 7, hunting: 14, compose: 5, courtesy: 6, dancing: 8, orate: 6, falconry: 8, folklore: 3,
+          stewardship: 5, recognize: 5, playInstrument: 8, intrigue: 3, gaming: 5, literacy: 0, firstAid: 10, religion: 5, flirting: 3, awareness: 10 },
+        { horsemanship: 14, bow: 10, greatWeapon: 8, charge: 14, sword: 12, hafted: 8, spear: 14, brawling: 12 }) },
+      courtier: { ...common, label: "Le chevalier courtisan", religion: "christian",
+        pitch: "Chrétien, jeune ambitieux qui compte autant sur sa parole que sur son épée.",
+        playIf: "vous voulez manœuvrer à la cour des puissants et porter la parole de votre seigneur en ambassade.",
+        chars: { siz: 12, dex: 11, str: 12, con: 14, app: 14 },
+        traits: T(13, 8, 13, 12, 10, 8, 13, 10, 13, 13, 16, 13, 15),
+        passions: { honor: 15, loyalty: 10, deity: 5, "Amour (Famille)": 10, "Haine (Saxons)": 5, "Rang": 15, "Hospitalité": 15 },
+        skills: sk({ battle: 5, singing: 5, hunting: 5, compose: 5, courtesy: 14, dancing: 8, orate: 12, falconry: 8, folklore: 9,
+          stewardship: 5, recognize: 10, playInstrument: 7, intrigue: 14, gaming: 5, literacy: 0, firstAid: 6, religion: 5, flirting: 10, awareness: 6 },
+        { horsemanship: 15, greatWeapon: 6, charge: 15, sword: 12, hafted: 6, spear: 9, brawling: 10 }) },
+      fierce: { ...common, label: "Le chevalier farouche", religion: "pagan",
+        pitch: "Païen, il méprise chevalerie et courtoisie : seule compte la loi du plus fort.",
+        playIf: "vous vous moquez des intrigues et des belles manières, ou voulez un chevalier qui frappe fort.",
+        chars: { siz: 15, dex: 12, str: 13, con: 15, app: 8 },
+        traits: T(7, 10, 13, 15, 13, 13, 10, 10, 8, 7, 8, 10, 16),
+        passions: { honor: 15, loyalty: 15, deity: 5, "Amour (Famille)": 10, "Haine (Saxons)": 5, "Rang": 15, "Hospitalité": 10 },
+        skills: sk({ battle: 10, singing: 5, hunting: 10, compose: 5, courtesy: 6, dancing: 6, orate: 3, falconry: 5, folklore: 3,
+          stewardship: 5, recognize: 6, playInstrument: 6, intrigue: 3, gaming: 8, literacy: 0, firstAid: 6, religion: 5, flirting: 3, awareness: 7 },
+        { horsemanship: 15, greatWeapon: 12, charge: 15, sword: 15, hafted: 6, spear: 6, brawling: 10 }) },
+      religious: { ...common, label: "Le chevalier religieux", religion: "christian",
+        pitch: "Chrétien, il tourne ses pensées vers les mystères de la foi et ses pouvoirs.",
+        playIf: "vous voulez un guerrier mystique, en route vers l'Idéal du Chevalier Religieux chrétien.",
+        chars: { siz: 12, dex: 14, str: 12, con: 15, app: 10 },
+        traits: T(15, 10, 16, 10, 10, 10, 13, 10, 13, 16, 10, 15, 15),
+        passions: { honor: 15, loyalty: 10, deity: 15, "Amour (Famille)": 10, "Haine (Saxons)": 5, "Rang": 10, "Hospitalité": 10 },
+        skills: sk({ battle: 5, singing: 8, hunting: 5, compose: 5, courtesy: 10, dancing: 6, orate: 7, falconry: 5, folklore: 10,
+          stewardship: 5, recognize: 5, playInstrument: 7, intrigue: 7, gaming: 5, literacy: 0, firstAid: 7, religion: 12, flirting: 7, awareness: 5 },
+        { horsemanship: 12, greatWeapon: 7, charge: 12, sword: 12, hafted: 10, spear: 10, brawling: 10 }) }
+    };
+  })(),
+
   /** Idéaux accessibles à la création. */
   ideals: [
     { id: "courteous", label: "Chevalier Courtois", traits: ["energetic.left", "generous.left", "just.left", "merciful.left", "modest.left", "valorous.left"], total: 96,

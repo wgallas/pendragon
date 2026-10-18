@@ -554,7 +554,10 @@
         "passionsRandom": "Lancez les dés pour les passions de départ, puis répartissez 4D6+1 points entre elles ou de nouvelles passions, sans dépasser 15.",
         "family": "La Gloire héritée vaut le quart de celle du parent, 4000 au plus. Choisissez un historique familial complet, ou seulement la Gloire du parent.",
         "skills": "Valeurs de départ de la Table 3.5, modificateurs culturels, particularité familiale, puis 10 points personnels.",
-        "apprentice": "Jusqu'à sept années d'écuyer avant l'adoubement. Chaque année : 5 points de compétences, ou +1 à un trait (19 au plus) ou à une passion (20 au plus), ou +1 à une caractéristique (maximum culturel). Les caractéristiques ainsi augmentées ne changent pas les compétences."
+        "apprentice": "Jusqu'à sept années d'écuyer avant l'adoubement. Chaque année : 5 points de compétences, ou +1 à un trait (19 au plus) ou à une passion (20 au plus), ou +1 à une caractéristique (maximum culturel). Les caractéristiques ainsi augmentées ne changent pas les compétences.",
+        "pregen": "Valeurs du personnage prétiré choisi, reprises telles quelles : rien à répartir ici. Vous pourrez les retoucher ensuite sur la fiche, en mode édition.",
+        "skillsPregen": "Valeurs du prétiré (les compétences absentes de sa fiche partent de la Table 3.5). Il ne reste qu'à choisir la particularité familiale, qui ajoute +3 à une compétence.",
+        "apprenticePregen": "Le prétiré a déjà fait ses années d'écuyer : il a 21 ans et remplit les conditions de l'adoubement."
       },
       "Method": "Méthode de création",
       "MethodBuilt": "Personnage construit",
@@ -577,7 +580,8 @@
         "passion": "Passion",
         "base": "Départ",
         "start": "Départ",
-        "bonus": "Bonus"
+        "bonus": "Bonus",
+        "pregen": "Prétiré"
       },
       "PointsLeft": "Points restants",
       "RollChars": "Lancer les caractéristiques",
@@ -651,7 +655,16 @@
       "ResetText": "Effacer tout ce qui a été choisi dans l'assistant et repartir de zéro ?",
       "FinishTitle": "Créer le personnage",
       "FinishText": "Les valeurs actuelles de la fiche (caractéristiques, compétences, traits, passions, chronique) seront remplacées par celles de l'assistant. Continuer ?",
-      "Done": "{name} est prêt à servir son seigneur."
+      "Done": "{name} est prêt à servir son seigneur.",
+      "MethodPregen": "Personnage prétiré",
+      "MethodPregenHint": "L'un des six chevaliers de l'appendice C : prêt à jouer, il ne reste que le nom, la lignée et l'adoubement.",
+      "Pregen": {
+        "Choose": "Choisissez votre chevalier",
+        "PlayIf": "Jouez-le si",
+        "Hint": "Culture et religion sont celles du prétiré. Choisissez la classe, Sire ou Dame et le nom ; la famille, la particularité familiale et l'adoubement se font ensuite comme d'habitude.",
+        "Retinue": "un écuyer de 14 ans (Écuyer 14), un destrier, deux roncins et un sommier",
+        "SquireCreated": "{name}, écuyer de {age} ans, rejoint la suite du chevalier."
+      }
     },
     "Npc": {
       "Category": {

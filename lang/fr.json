@@ -1705,7 +1705,8 @@
         "NoWinter": "Aucune phase d'hiver n'est ouverte.",
         "Reminded": "Assistant rouvert chez les joueurs."
       },
-      "Remaining": "Points restants :"
+      "Remaining": "Points restants :",
+      "GmOnly": "— (MJ)"
     }
   }
 }

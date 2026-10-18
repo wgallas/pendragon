@@ -174,7 +174,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMe
 Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));
 Hooks.on("renderActorDirectory", (app, html) => addNewDayDirectoryButton(app, html));
 Hooks.on("renderActorDirectory", (app, html) => winterGm.addWinterDirectoryButton(app, html));
-Hooks.on("updateActor", (actor) => winterGm.refreshPanel(actor));
+Hooks.on("updateActor", (actor, changes) => winterGm.refreshPanel(actor, changes));
 
 // Assistant de création : s'ouvre pour un chevalier tout neuf créé par cet utilisateur.
 Hooks.on("createActor", (actor, options, userId) => {

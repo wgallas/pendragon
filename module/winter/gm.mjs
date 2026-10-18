@@ -10,9 +10,10 @@ const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applicat
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
 
-/** Chevaliers concernés : ceux qu'un joueur possède. */
+/** Chevaliers concernés : tous les chevaliers en vie (ceux des joueurs d'abord). */
 function playerKnights() {
-  return game.actors.filter(a => a.type === "chevalier" && a.hasPlayerOwner && !a.system.dates?.died);
+  return game.actors.filter(a => a.type === "chevalier" && !a.system.dates?.died)
+    .sort((a, b) => (b.hasPlayerOwner - a.hasPlayerOwner) || a.name.localeCompare(b.name, "fr"));
 }
 
 export class WinterPanel extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -37,7 +38,7 @@ export class WinterPanel extends HandlebarsApplicationMixin(ApplicationV2) {
     const current = game.settings.get(SYSTEM_ID, "currentYear");
     const knights = playerKnights().map(a => {
       const st = year ? E.getState(a, year) : null;
-      const owners = game.users.filter(u => !u.isGM && a.testUserPermission(u, "OWNER")).map(u => u.name).join(", ");
+      const owners = game.users.filter(u => !u.isGM && a.testUserPermission(u, "OWNER")).map(u => u.name).join(", ") || L("PDVF.Winter.GmOnly");
       return { id: a.id, uuid: a.uuid, name: a.name, img: a.img, owners,
         stepLabel: st ? L(`PDVF.Winter.Step.${E.STEPS[st.step]}`) : "", stepNumber: st ? st.step + 1 : 0, finished: !!st?.finished };
     });
@@ -143,8 +144,12 @@ export function addWinterDirectoryButton(app, html) {
   actions.append(button);
 }
 
-/** Rafraîchit le tableau de suivi quand un chevalier avance. */
-export function refreshPanel(actor) {
+/** Rafraîchit le tableau de suivi quand un chevalier avance ; prévient le MJ quand un hiver est terminé. */
+export function refreshPanel(actor, changes) {
   if (actor.type !== "chevalier") return;
   foundry.applications.instances?.get?.("pdvf-winter-panel")?.render();
+  const w = changes?.flags?.[SYSTEM_ID]?.winter;
+  if (game.user.isGM && w?.finished === true && w.year === E.winterYear()) {
+    ui.notifications.info(F("PDVF.Winter.FinishedLine", { name: actor.name }));
+  }
 }

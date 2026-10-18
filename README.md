@@ -27,7 +27,7 @@ Système non officiel pour Pendragon 6e édition en français. Version 0.1.0 : p
 - Domaines (onglet Suite & domaine) : objet « Domaine » (rang et valeurs de la Table A.2 du Livre du maître, tenure fief ou don, seigneur, revenu, Gloire passive, intendant, obligations, registre des revenus). Recevoir un domaine fait passer le chevalier vassal (ou banneret) et inscrit la Gloire du titre une seule fois ; le fief se transmet à l'héritier, le don retourne au seigneur. En hiver, les revenus des domaines entrent au Trésor (bonne ou mauvaise année corrigée à la main) et le seigneur peut avancer l'entretien contre une faveur ; la Gloire passive des domaines est versée. Registre des faveurs (Table 12.6). La gestion détaillée d'un manoir (Livre des Nobles) n'est pas encore reprise.
 - Historique familial (onglet Lignée, mode édition) : trois propositions tirées au hasard sur trois générations (arrière-grand-père, grand-père, père), d'après l'historique de Salisbury de la 5.2 pour 439–484 et la chronologie de la 6e pour 483–507. Gloire héritée et passions héritées selon les règles de la 6e, traits dirigés, legs et obligations, famille vivante.
 
-Les onglets « Combat & équipement » et « Suite & domaine » sont partiels : objets (armes, armures), blessures et domaines arrivent aux étapes suivantes.
+À venir : la gestion détaillée des manoirs (Livre des Nobles) et les règles propres aux périodes ultérieures (suppléments).
 
 ## Si quelque chose ne marche pas
 

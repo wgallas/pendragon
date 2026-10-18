@@ -59,7 +59,10 @@ export class PnjData extends foundry.abstract.TypeDataModel {
         born: int(null, { nullable: true }),
         origin: new fields.StringField({ initial: "secondSon", choices: PDVF.squireOrigins.map(o => o.id) }),
         otherSkill: new fields.StringField({ initial: PDVF.squireDefaultOther }),
-        first: new fields.BooleanField({ initial: false })
+        first: new fields.BooleanField({ initial: false }),
+        // Progrès de la compétence Écuyer pendant les phases d'hiver ; esquire resté au service.
+        skillBonus: int(0),
+        esquire: new fields.BooleanField({ initial: false })
       })
     };
   }
@@ -88,10 +91,11 @@ export class PnjData extends foundry.abstract.TypeDataModel {
       if (this.squire.otherSkill && !ids.includes(this.squire.otherSkill)) ids.push(this.squire.otherSkill);
       this.squireView = {
         age, origin,
-        skill: squireSkill(origin.id),
+        skill: squireSkill(origin.id) + (Number(this.squire.skillBonus) || 0),
         knightly,
         knightlyIds: ids,
-        tooOld: age !== null && age >= PDVF.squireMaxAge
+        tooOld: !this.squire.esquire && age !== null && age >= PDVF.squireMaxAge,
+        esquire: this.squire.esquire
       };
     } else {
       this.squireView = null;

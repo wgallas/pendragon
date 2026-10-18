@@ -1163,3 +1163,40 @@
 .pdvf-battle-card .pdvf-battle-text { margin: 6px 8px; }
 .pdvf-battle-card .pdvf-card-buttons { flex-wrap: wrap; }
 .pendragon-vf .pdvf-warn { color: var(--pdvf-vermilion-dark); font-weight: 600; }
+
+/* -------------------------------------------- */
+/*  Phase d'hiver                                */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-winter-wiz .pdvf-wiz-steps { flex-wrap: wrap; }
+.pendragon-vf .pdvf-winter-event { font-size: 18px; margin: 4px 0 10px; }
+.pendragon-vf .pdvf-winter-event .pdvf-tag { font-size: 16px; padding: 0 8px; }
+.pendragon-vf .pdvf-winter-text { margin: 8px 0 12px; padding: 8px 14px; border-left: 3px solid var(--pdvf-vermilion); background: var(--pdvf-parchment-light); font-style: italic; }
+.pendragon-vf .pdvf-winter-effects { list-style: none; margin: 0 0 10px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.pendragon-vf .pdvf-winter-effects li { display: flex; align-items: center; gap: 8px; }
+.pendragon-vf .pdvf-winter-effects .fa-check, .pendragon-vf .pdvf-winter-wiz .fa-check { color: var(--pdvf-green); }
+.pendragon-vf .pdvf-winter-list { margin: 4px 0 12px; padding-left: 20px; columns: 2; }
+.pendragon-vf .pdvf-gain { color: var(--pdvf-green); }
+.pendragon-vf .pdvf-winter-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
+.pendragon-vf .pdvf-winter-choices .pdvf-wiz-method { min-height: 44px; }
+.pendragon-vf .pdvf-winter-choices .pdvf-wiz-method strong { font-size: 15px; }
+.pendragon-vf .pdvf-winter-choices .pdvf-wiz-method:disabled { opacity: 0.45; cursor: default; }
+.pendragon-vf .pdvf-winter-training .pdvf-btn-primary { margin-top: 12px; }
+.pendragon-vf .pdvf-winter-skillgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; }
+.pendragon-vf .pdvf-winter-skillgrid label { display: flex; align-items: center; gap: 6px; font-size: 15px; }
+.pendragon-vf .pdvf-winter-skillgrid input { width: 48px; margin-left: auto; }
+.pendragon-vf .pdvf-winter-prestige { display: flex; flex-direction: column; gap: 8px; }
+.pendragon-vf .pdvf-winter-prestige select { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-winter-upkeep { width: auto; }
+.pendragon-vf .pdvf-winter-upkeep td, .pendragon-vf .pdvf-winter-upkeep th { text-align: center; padding: 2px 12px; }
+.pendragon-vf .pdvf-wiz-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.pendragon-vf .pdvf-wiz-table tfoot th { border-top: 1.5px solid var(--pdvf-ink); }
+.pendragon-vf .pdvf-spouse { display: grid; grid-template-columns: 90px 70px auto auto; gap: 4px 12px; align-items: end; }
+.pendragon-vf .pdvf-spouse .pdvf-spouse-name { grid-column: 1 / -1; }
+.pendragon-vf .pdvf-child { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 3px 0; border-bottom: 1px dotted var(--pdvf-rule); }
+.pendragon-vf .pdvf-child input[type="text"] { flex: 1; min-width: 120px; }
+.pendragon-vf .pdvf-child select { width: auto; }
+.pendragon-vf .pdvf-child .pdvf-year { width: 70px; }
+.pendragon-vf .pdvf-child.dead input[type="text"] { text-decoration: line-through; color: var(--pdvf-ink-faint); }
+.pendragon-vf .pdvf-economy { display: grid; grid-template-columns: 140px 140px 220px; gap: 4px 16px; align-items: end; }
+.pendragon-vf .pdvf-economy-amount { font-size: 20px; font-variant-numeric: tabular-nums; }
+.pendragon-vf.pdvf-winter-panel .window-content { display: flex; flex-direction: column; }

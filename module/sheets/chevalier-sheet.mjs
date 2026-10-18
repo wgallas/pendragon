@@ -7,6 +7,9 @@ import { getFamilyHistory } from "../family/apply.mjs";
 import { CreationWizard } from "../creation/wizard.mjs";
 import { addFollower, removeFollower, resolveFollowers, createSquire, addHorse, removeHorse, resolveHorses, knightHorseGlory, promptNewHorse } from "../documents/followers.mjs";
 import { rollDamage } from "../dice/tests.mjs";
+import { formatDenarii } from "../rules/horses.mjs";
+import { openWinterWizard } from "../winter/wizard.mjs";
+import { winterYear } from "../winter/engine.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -14,7 +17,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 const TPL = `systems/${SYSTEM_ID}/templates/actor/chevalier`;
 const TAB_IDS = ["chevalier", "traits", "combat", "suite", "lignee", "chronique"];
 /** Chemins des tableaux du modèle, dont les lignes sont éditées dans le formulaire. */
-const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.horses", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents"];
+const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.horses", "system.extraSkills", "system.directedTraits", "system.chronicle", "system.family.parents", "system.family.children"];
 
 const L = (k) => game.i18n.localize(k);
 
@@ -69,7 +72,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       newHorse: ChevalierSheet.#onNewHorse,
       removeHorse: ChevalierSheet.#onRemoveHorse,
       setMainHorse: ChevalierSheet.#onSetMainHorse,
-      horseCharge: ChevalierSheet.#onHorseCharge
+      horseCharge: ChevalierSheet.#onHorseCharge,
+      openWinter: ChevalierSheet.#onOpenWinter
     }
   };
 
@@ -266,8 +270,19 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       id, label: L(`PDVF.Dates.${id}`), value: system.dates[id] || "", name: `system.dates.${id}`
     }));
     context.parents = system.family.parents.map((p, i) => ({ ...p, index: i }));
+    const curYear = game.settings.get(SYSTEM_ID, "currentYear");
+    context.spouse = system.family.spouse;
+    context.children = (system.family.children ?? []).map((c, i) => ({
+      ...c, index: i, age: c.born ? (c.alive ? curYear - c.born : (c.died ?? curYear) - c.born) : null,
+      sexChoices: ["m", "f"].map(v => ({ value: v, label: L(`PDVF.Winter.Sex.${v}`), selected: v === c.sex }))
+    }));
     const history = getFamilyHistory(actor);
     context.familyHistory = history?.result ? familyView(history.result) : null;
+
+    // Trésor et niveau de vie (onglet Suite & domaine)
+    context.treasury = { label: formatDenarii(system.economy?.treasury ?? 0), pounds: Math.round((system.economy?.treasury ?? 0) / 240 * 100) / 100 };
+    context.livingChoicesEco = PDVF.livingStandards.map(v => ({ value: v, label: L(`PDVF.Living.${v}`), selected: v === system.economy?.living }));
+    context.winterYear = winterYear();
 
     // Onglet Chronique
     context.chronicle = system.chronicleRows;
@@ -338,6 +353,12 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
 
     // Choix de la passion du prochain test : état de la fiche, pas une donnée de l'acteur.
+    // Trésor saisi en livres, gardé en deniers
+    if ("pdvfTreasury" in data) {
+      const pounds = Number(String(data.pdvfTreasury ?? 0).replace(",", ".")) || 0;
+      foundry.utils.setProperty(data, "system.economy.treasury", Math.round(pounds * 240));
+      delete data.pdvfTreasury;
+    }
     if ("pdvfInvoke" in data) {
       this._invoke = data.pdvfInvoke ?? "";
       delete data.pdvfInvoke;
@@ -401,7 +422,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       "system.passions": { court: target.dataset.court ?? "fervor", name: L("PDVF.Sheet.NewPassion"), value: 10, xp: false },
       "system.extraSkills": { name: L("PDVF.Sheet.NewSkill"), group: "general", value: 0, xp: false },
       "system.directedTraits": { name: "", value: 1 },
-      "system.chronicle": { year: game.settings.get(SYSTEM_ID, "currentYear"), event: "", living: "", glory: 0 }
+      "system.chronicle": { year: game.settings.get(SYSTEM_ID, "currentYear"), event: "", living: "", glory: 0 },
+      "system.family.children": { name: "", sex: "m", born: game.settings.get(SYSTEM_ID, "currentYear"), blessing: "", alive: true, died: null, notes: "" }
     };
     if (!(path in defaults)) return;
     rows.push(defaults[path]);
@@ -413,6 +435,10 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
     rows.splice(Number(index), 1);
     await this.document.update({ [path]: rows });
+  }
+
+  static #onOpenWinter() {
+    openWinterWizard(this.document);
   }
 
   static async #onRecordSession() {

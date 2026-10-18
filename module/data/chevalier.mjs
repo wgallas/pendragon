@@ -152,7 +152,31 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
           glory: int(0)
         }), { initial: [{ name: "", glory: 0 }, { name: "", glory: 0 }] }),
         characteristic: new fields.StringField({ initial: "" }),
-        notes: new fields.StringField({ initial: "" })
+        notes: new fields.StringField({ initial: "" }),
+        // Conjoint (nom vide : célibataire) et enfants, pour l'étape Famille de la phase d'hiver.
+        spouse: new fields.SchemaField({
+          name: new fields.StringField({ initial: "" }),
+          born: int(null, { nullable: true }),
+          con: int(13, { min: 0 }),
+          barren: new fields.BooleanField({ initial: false }),
+          alive: new fields.BooleanField({ initial: true })
+        }),
+        children: new fields.ArrayField(new fields.SchemaField({
+          name: new fields.StringField({ initial: "" }),
+          sex: new fields.StringField({ initial: "m", choices: ["m", "f"] }),
+          born: int(null, { nullable: true }),
+          blessing: new fields.StringField({ initial: "" }),
+          alive: new fields.BooleanField({ initial: true }),
+          died: int(null, { nullable: true }),
+          notes: new fields.StringField({ initial: "" })
+        }))
+      }),
+
+      // Trésor (en deniers : 240 d = 1 £) et niveau de vie de l'année en cours.
+      economy: new fields.SchemaField({
+        treasury: int(0),
+        living: new fields.StringField({ initial: "ordinary" }),
+        destituteYears: int(0, { min: 0 })
       }),
 
       chronicle: new fields.ArrayField(new fields.SchemaField({

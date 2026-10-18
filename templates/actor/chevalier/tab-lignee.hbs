@@ -66,6 +66,34 @@
     <label class="pdvf-field"><span>{{localize "PDVF.Family.notes"}}</span>
       <textarea name="system.family.notes" rows="4">{{system.family.notes}}</textarea></label>
 
+    <h3 class="pdvf-h3">{{localize "PDVF.Family.Spouse"}}</h3>
+    <div class="pdvf-spouse">
+      <label class="pdvf-field pdvf-spouse-name"><span>{{localize "PDVF.Family.SpouseName"}}</span>
+        <input type="text" name="system.family.spouse.name" value="{{spouse.name}}" placeholder="{{localize 'PDVF.Family.Single'}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Bio.born"}}</span>
+        <input type="number" name="system.family.spouse.born" value="{{spouse.born}}" step="1" placeholder="—"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Char.con.abbr"}}</span>
+        <input type="number" name="system.family.spouse.con" value="{{spouse.con}}" step="1" min="0"></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.family.spouse.barren" {{checked spouse.barren}}> <span>{{localize "PDVF.Family.Barren"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.family.spouse.alive" {{checked spouse.alive}}> <span>{{localize "PDVF.Family.Alive"}}</span></label>
+    </div>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Family.Children"}}</h3>
+    {{#each children}}
+    <div class="pdvf-child {{#unless alive}}dead{{/unless}}">
+      <input type="text" name="system.family.children.{{index}}.name" value="{{name}}" placeholder="{{localize 'PDVF.Family.ChildName'}}" aria-label="{{localize 'PDVF.Family.ChildName'}}">
+      <select name="system.family.children.{{index}}.sex" aria-label="{{localize 'PDVF.Family.Sex'}}">{{#each sexChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      <input type="number" name="system.family.children.{{index}}.born" value="{{born}}" step="1" placeholder="{{localize 'PDVF.Bio.born'}}" aria-label="{{localize 'PDVF.Bio.born'}}" class="pdvf-year">
+      <label class="pdvf-check"><input type="checkbox" name="system.family.children.{{index}}.alive" {{checked alive}}> {{localize "PDVF.Family.Alive"}}</label>
+      {{#if blessing}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Family.Blessing'}}">{{blessing}}</span>{{/if}}
+      {{#if notes}}<span class="pdvf-hint-inline">{{notes}}</span>{{/if}}
+      {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="deleteRow" data-path="system.family.children" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>{{/if}}
+    </div>
+    {{else}}
+    <p class="pdvf-hint">{{localize "PDVF.Family.NoChildren"}}</p>
+    {{/each}}
+    <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.family.children">{{localize "PDVF.Family.AddChild"}}</button>
+
     <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.FamilyHistory"}}</h2>
     {{#if familyHistory}}
     {{> "systems/pendragon-vf/templates/family/history.hbs" familyHistory choosing=false}}

@@ -35,6 +35,7 @@
     <div class="pdvf-chronicle-actions">
       <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.chronicle">{{localize "PDVF.Chronicle.Add"}}</button>
       <button type="button" class="pdvf-btn" data-action="recordSession">{{localize "PDVF.Chronicle.RecordSession"}} ({{system.glory.session}})</button>
+      {{#if winterYear}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="openWinter"><i class="fa-solid fa-snowflake"></i> {{localize "PDVF.Winter.Title"}} {{winterYear}}</button>{{/if}}
     </div>
   </div>
 

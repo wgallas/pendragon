@@ -1,0 +1,297 @@
+{{!-- Assistant de phase d'hiver — une étape à la fois --}}
+<div class="pdvf-wiz pdvf-winter-wiz">
+  <nav class="pdvf-wiz-steps" aria-label="{{localize 'PDVF.Winter.Steps'}}">
+    {{#each steps}}
+    <button type="button" class="pdvf-wiz-stepbtn {{#if current}}current{{/if}} {{#if done}}done{{/if}}" data-action="goto" data-step="{{i}}" {{#if current}}aria-current="step"{{/if}}>
+      <span class="num">{{number}}</span><span class="lbl">{{label}}</span>
+    </button>
+    {{/each}}
+  </nav>
+
+  <div class="pdvf-wiz-body">
+    <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize (concat "PDVF.Winter.Step." stepId)}}</h2>
+    <p class="pdvf-wiz-intro">{{intro}}</p>
+
+    {{!-- 1. Scénario en solo --}}
+    {{#if step.solo}}
+    <p>{{localize "PDVF.Winter.SoloText"}}</p>
+    <p class="pdvf-wiz-note">{{localize "PDVF.Winter.Treasury"}} : <strong>{{treasury}}</strong>{{#if ageNext}} · {{localize "PDVF.Winter.AgeNext"}} <strong>{{ageNext}}</strong>{{/if}}</p>
+    {{/if}}
+
+    {{!-- 2. Événement personnel --}}
+    {{#if step.event}}
+    {{#with event}}
+      {{#unless rolled}}
+      <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="rollEvent"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.RollEvent"}}</button>
+      {{else}}
+      <p class="pdvf-winter-event"><span class="pdvf-tag">{{roll}}</span> <strong>{{title}}</strong></p>
+        {{#unless tested}}
+          {{#if noOption}}
+          <p class="pdvf-wiz-warning">{{localize "PDVF.Winter.NoOption"}}</p>
+          <button type="button" class="pdvf-btn" data-action="run" data-op="rerollEvent">{{localize "PDVF.Winter.Reroll"}}</button>
+          {{else}}
+          <div class="pdvf-wiz-inline" data-group="event">
+            <select name="key" aria-label="{{localize 'PDVF.Winter.TestWhat'}}">{{#each options}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+            <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="testEvent"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.Test"}}</button>
+          </div>
+          {{/if}}
+        {{else}}
+        <p>{{testedLabel}} : <span class="pdvf-tag">{{outcomeLabel}}</span>{{#if opposite}} · {{opposite}}{{/if}}</p>
+        <blockquote class="pdvf-winter-text">{{text}}</blockquote>
+        {{#each notes}}<p class="pdvf-wiz-note">{{this}}</p>{{/each}}
+        {{#if active}}
+          {{#if effects.length}}
+          <ul class="pdvf-winter-effects">
+            {{#each effects}}
+            <li>
+              {{#if applied}}<i class="fa-solid fa-check"></i> {{label}} <span class="pdvf-hint-inline">{{result}}</span>
+              {{else if auto}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="effect" data-index="{{i}}">{{label}}</button>
+              {{else}}<span class="pdvf-hint-inline">{{label}}</span>{{/if}}
+            </li>
+            {{/each}}
+          </ul>
+          {{/if}}
+        {{else}}
+        <p class="pdvf-hint">{{localize "PDVF.Winter.NoEffect"}}</p>
+        {{/if}}
+        {{/unless}}
+      {{/unless}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 3. Tests d'expérience --}}
+    {{#if step.xp}}
+    {{#with xp}}
+      {{#if done}}
+      <table class="pdvf-wiz-table compact">
+        <thead><tr><th>{{localize "PDVF.Winter.Attribute"}}</th><th>{{localize "PDVF.Winter.Value"}}</th><th>1D20</th><th></th></tr></thead>
+        <tbody>{{#each rows}}<tr><td>{{label}}</td><td>{{value}}</td><td>{{die}}</td><td>{{#if gain}}<strong class="pdvf-gain">+1</strong>{{/if}}</td></tr>{{else}}<tr><td colspan="4">{{localize "PDVF.Winter.NoXp"}}</td></tr>{{/each}}</tbody>
+      </table>
+      {{else}}
+      <p>{{localize "PDVF.Winter.XpList"}}</p>
+      <ul class="pdvf-winter-list">{{#each list}}<li>{{label}} <span class="pdvf-hint-inline">{{value}}</span></li>{{else}}<li>{{localize "PDVF.Winter.NoXp"}}</li>{{/each}}</ul>
+      <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="xp"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.RollXp"}}</button>
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 4. Situation économique --}}
+    {{#if step.economy}}
+    {{#with economy}}
+      <p>{{localize "PDVF.Winter.Treasury"}} : <strong>{{@root.treasury}}</strong> · {{columnLabel}}</p>
+      <table class="pdvf-wiz-table compact pdvf-winter-upkeep">
+        <thead><tr>{{#each table}}<th>{{label}}</th>{{/each}}</tr></thead>
+        <tbody><tr>{{#each table}}<td>{{min}} £</td>{{/each}}</tr></tbody>
+      </table>
+      {{#if done}}
+      <p>{{localize "PDVF.Winter.LivingIs"}} <strong>{{levelLabel}}</strong>{{#if e.sumptuary}} · {{localize "PDVF.Winter.Sumptuary"}} +{{e.sumptuary}}{{/if}}</p>
+      {{#if poor}}
+      <div class="pdvf-wiz-warning">
+        <p>{{#if destitute}}{{localize "PDVF.Winter.DestituteText"}}{{else}}{{localize "PDVF.Winter.PoorText"}}{{/if}}</p>
+        <div class="pdvf-wiz-inline wrap">
+          {{#if effects.con}}<span class="pdvf-tag">{{localize "PDVF.Winter.PovertyCon"}} : {{conLabel}}</span>{{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="poverty" data-kind="con">{{localize "PDVF.Winter.PovertyCon"}}</button>{{/if}}
+          {{#if destitute}}{{#if effects.honor}}<span class="pdvf-tag">−2 {{localize "PDVF.Honor"}}</span>{{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="poverty" data-kind="honor">−2 {{localize "PDVF.Honor"}}</button>{{/if}}
+          {{else}}{{#if effects.horses}}<span class="pdvf-tag">{{localize "PDVF.Winter.PoorHorses"}}</span>{{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="poverty" data-kind="horses">{{localize "PDVF.Winter.PoorHorses"}}</button>{{/if}}{{/if}}
+        </div>
+      </div>
+      {{/if}}
+      {{else}}
+      <div class="pdvf-wiz-grid2" data-group="upkeep">
+        {{#if household}}
+        <p class="pdvf-wiz-note pdvf-span2">{{localize "PDVF.Winter.HouseholdText"}} ({{base}} £)</p>
+        {{/if}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Winter.Income"}}</span><input type="number" name="income" value="0" min="0" step="0.5"></label>
+        <label class="pdvf-field"><span>{{#if household}}{{localize "PDVF.Winter.ExtraSpend"}}{{else}}{{localize "PDVF.Winter.Spend"}}{{/if}}</span><input type="number" name="spend" value="{{suggested}}" min="0" step="0.5"></label>
+        <p class="pdvf-hint pdvf-span2">{{localize "PDVF.Winter.UpkeepHint"}}</p>
+        <div class="pdvf-span2"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="upkeep">{{localize "PDVF.Winter.Pay"}}</button></div>
+      </div>
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 5. Vieillissement --}}
+    {{#if step.aging}}
+    {{#with aging}}
+      {{#if unknown}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.NoBirth"}}</p>{{/if}}
+      {{#if age}}<p>{{localize "PDVF.Winter.AgeNext"}} <strong>{{age}}</strong>.</p>{{/if}}
+      {{#if done}}
+        {{#if a.skipped}}<p>{{localize "PDVF.Winter.TooYoungToAge"}}</p>
+        {{else}}
+        <p>2D6 = {{a.r2}} : {{a.count}} {{localize "PDVF.Winter.CharsHit"}}{{#if losses}} — {{losses}}{{/if}}</p>
+        {{#if a.infirm}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.Infirm"}}</p>{{/if}}
+        {{#if a.decrepit}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.Decrepit"}} (1D6 = {{a.decrepitDie}})</p>{{/if}}
+        {{#if a.dead}}<p class="pdvf-wiz-warning"><strong>{{localize "PDVF.Winter.Death"}}</strong></p>{{/if}}
+        {{/if}}
+      {{else}}
+      <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="aging">{{#if age}}{{localize "PDVF.Winter.RollAging"}}{{else}}{{localize "PDVF.Winter.Continue"}}{{/if}}</button>
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 6. Écuyer et suite --}}
+    {{#if step.squire}}
+    {{#with squire}}
+      {{#unless has}}<p>{{localize "PDVF.Winter.NoFollowers"}}</p>{{/unless}}
+      {{#if has}}
+      <table class="pdvf-wiz-table">
+        <thead><tr><th>{{localize "PDVF.Winter.Follower"}}</th><th>{{localize "PDVF.Winter.AgeShort"}}</th><th>{{localize "PDVF.Winter.Result"}}</th><th></th></tr></thead>
+        <tbody>
+        {{#each rows}}
+          <tr>
+            <td>{{name}}{{#if isSquire}} <span class="pdvf-hint-inline">{{#if esquire}}{{localize "PDVF.Winter.Esquire"}}{{else}}{{localize "PDVF.Npc.Category.squire"}}{{/if}} · {{localize "PDVF.Npc.SquireSkill"}} {{skill}}</span>{{/if}}</td>
+            <td>{{age}}</td>
+            <td>{{#if res}}
+              {{#if isSquire}}1D20 = {{res.die}}{{#if res.delta}} · <strong class="pdvf-gain">+{{res.delta}}</strong>{{/if}}{{#if esquire}} · {{#if res.leaves}}{{localize "PDVF.Winter.EsquireGoes"}}{{else}}{{localize "PDVF.Winter.EsquireStays"}}{{/if}}{{/if}}
+              {{else}}1D20 = {{res.die}} · {{departureLabel}}{{/if}}
+            {{/if}}</td>
+            <td>
+              {{#if decided}}<span class="pdvf-tag">{{localize (concat "PDVF.Winter.Decision." decided)}}</span>
+              {{else}}
+                {{#if comesOfAge}}
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="decide" data-uuid="{{uuid}}" data-decision="knight">{{localize "PDVF.Winter.Decision.knight"}}</button>
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="decide" data-uuid="{{uuid}}" data-decision="esquire">{{localize "PDVF.Winter.Decision.esquire"}}</button>
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="decide" data-uuid="{{uuid}}" data-decision="leave">{{localize "PDVF.Winter.Decision.leave"}}</button>
+                {{/if}}
+                {{#if esquire}}{{#if res}}{{#unless res.leaves}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="decide" data-uuid="{{uuid}}" data-decision="pay">{{localize "PDVF.Winter.Decision.pay"}}</button>{{/unless}}{{/if}}{{/if}}
+                {{#if leaves}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="decide" data-uuid="{{uuid}}" data-decision="leave">{{localize "PDVF.Winter.Decision.leave"}}</button>{{/if}}
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+      {{#unless done}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="followers"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.RollFollowers"}}</button>{{/unless}}
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 7. Survie des chevaux --}}
+    {{#if step.horses}}
+    {{#with horses}}
+      {{#unless has}}<p>{{localize "PDVF.Winter.NoHorses"}}</p>{{/unless}}
+      {{#if has}}
+      <table class="pdvf-wiz-table">
+        <thead><tr><th>{{localize "PDVF.Winter.Horse"}}</th><th>{{localize "PDVF.Winter.Modifier"}}</th><th>{{localize "PDVF.Winter.Result"}}</th><th></th></tr></thead>
+        <tbody>
+        {{#each rows}}
+          <tr>
+            <td>{{name}}</td>
+            <td>{{#if needs}}{{mod}}{{else}}<span class="pdvf-hint-inline">{{localize "PDVF.Winter.NoSurvival"}}</span>{{/if}}</td>
+            <td>{{#if res.needs}}1D20 = {{res.die}} ({{res.total}}){{#if testLabel}} · {{localize "PDVF.Skill.horsemanship"}} : {{testLabel}}{{/if}} · <strong>{{effectLabel}}</strong>{{#if res.hpLoss}} (−{{res.hpLoss}} PV){{/if}}{{/if}}</td>
+            <td>{{#if (eq res.effect "dead")}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="removeHorse" data-uuid="{{uuid}}">{{localize "PDVF.Suite.RemoveHorse"}}</button>{{/if}}</td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+      {{#unless done}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="horses"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.RollHorses"}}</button>{{/unless}}
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 8. Formation et entraînement --}}
+    {{#if step.training}}
+    {{#with training}}
+      {{#if skip}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.TrainingSkipped"}}</p>
+      {{else if done}}<p>{{localize (concat "PDVF.Winter.Training." tr.choice)}} : <strong>{{tr.summary}}</strong></p>
+      {{else}}
+      <div class="pdvf-winter-choices">
+        {{#each choices}}<button type="button" class="pdvf-wiz-method {{#if selected}}selected{{/if}}" data-action="setTraining" data-value="{{id}}" {{#if disabled}}disabled{{/if}} aria-pressed="{{#if selected}}true{{else}}false{{/if}}"><strong>{{label}}</strong></button>{{/each}}
+      </div>
+      <div data-group="training" class="pdvf-winter-training">
+        {{#if is.trait}}<label class="pdvf-field"><span>{{localize "PDVF.Winter.TraitPlus"}}</span><select name="key">{{#each traitOptions}}<option value="{{key}}" {{#if disabled}}disabled{{/if}}>{{label}}</option>{{/each}}</select></label>{{/if}}
+        {{#if is.passion}}
+        <div class="pdvf-wiz-grid2">
+          <label class="pdvf-field"><span>{{localize "PDVF.Invoke.Passion"}}</span><select name="key">{{#each passionOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select></label>
+          <label class="pdvf-field"><span>{{localize "PDVF.Winter.Direction"}}</span><select name="delta"><option value="1">+1</option><option value="-1">−1</option></select></label>
+          <label class="pdvf-field"><span>{{localize "PDVF.Winter.LowerIfFull"}}</span><select name="lower"><option value="">—</option>{{#each passionOptions}}<option value="{{index}}">{{label}}</option>{{/each}}</select></label>
+        </div>
+        {{/if}}
+        {{#if is.char}}<label class="pdvf-field"><span>{{localize "PDVF.Winter.CharPlus"}}</span><select name="key">{{#each charOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select></label>{{/if}}
+        {{#if is.embonpoint}}<p>{{localize "PDVF.Winter.EmbonpointText"}} <strong>{{embonpoint}}</strong></p>{{/if}}
+        {{#if is.skills}}
+        <p class="pdvf-hint">{{localize "PDVF.Winter.SkillsHint"}}</p>
+        <div class="pdvf-winter-skillgrid">{{#each lowSkills}}<label>{{label}} <span class="pdvf-hint-inline">{{value}}</span> <input type="number" data-points="{{id}}" value="0" min="0" max="6" step="1"></label>{{/each}}</div>
+        {{/if}}
+        {{#if is.skill20}}<label class="pdvf-field"><span>{{localize "PDVF.Winter.Skill20"}}</span><select name="key">{{#each highSkills}}<option value="{{id}}">{{label}} {{value}}</option>{{/each}}</select></label>{{/if}}
+        {{#if bonus}}
+        <h3 class="pdvf-h3">{{localize "PDVF.Winter.Bonus"}} ({{bonus}})</h3>
+        <div class="pdvf-winter-skillgrid">{{#each allSkills}}<label>{{label}} <span class="pdvf-hint-inline">{{value}}</span> <input type="number" data-bonus="{{id}}" value="0" min="0" max="2" step="1"></label>{{/each}}</div>
+        {{/if}}
+        {{#if hasChoice}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="training">{{localize "PDVF.Winter.ApplyTraining"}}</button>{{/if}}
+      </div>
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 9. Décompte de Gloire --}}
+    {{#if step.glory}}
+    {{#with glory}}
+      <table class="pdvf-wiz-table">
+        <tbody>{{#each rows}}<tr><td>{{label}}</td><td class="num">{{value}}</td></tr>{{/each}}</tbody>
+        <tfoot><tr><th>{{localize "PDVF.Winter.YearGlory"}}</th><th class="num">{{total}}</th></tr></tfoot>
+      </table>
+      <p>{{localize "PDVF.Winter.CurrentGlory"}} <strong>{{current}}</strong></p>
+      {{#if done}}<p><i class="fa-solid fa-check"></i> {{localize "PDVF.Winter.GloryRecorded"}}</p>
+      {{else}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="glory">{{localize "PDVF.Winter.RecordGlory"}}</button>{{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 10. Récompenses de prestige --}}
+    {{#if step.prestige}}
+    {{#with prestige}}
+      {{#if gloryFirst}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.GloryFirst"}}</p>{{/if}}
+      <p>{{localize "PDVF.Winter.PrestigeAvailable"}} <strong>{{available}}</strong></p>
+      {{#each uses}}<p><i class="fa-solid fa-check"></i> {{label}}</p>{{/each}}
+      {{#if available}}
+      <div class="pdvf-winter-prestige">
+        <div class="pdvf-wiz-inline" data-group="raise"><select name="key">{{#each raiseOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="prestige" data-kind="raise">{{localize "PDVF.Winter.PrestigeRaise"}}</button></div>
+        <div class="pdvf-wiz-inline" data-group="lower"><select name="key">{{#each lowerOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="prestige" data-kind="lower">{{localize "PDVF.Winter.PrestigeLower"}}</button></div>
+        <div class="pdvf-wiz-inline" data-group="child"><select name="sex"><option value="m">{{localize "PDVF.Winter.Sex.m"}}</option><option value="f">{{localize "PDVF.Winter.Sex.f"}}</option></select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="prestige" data-kind="child">{{localize "PDVF.Winter.PrestigeChild"}}</button></div>
+      </div>
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 11. Famille --}}
+    {{#if step.family}}
+    {{#with family}}
+      {{#if married}}<p>{{localize "PDVF.Family.Spouse"}} : <strong>{{spouse.name}}</strong>{{#if spouse.barren}} · {{localize "PDVF.Family.Barren"}}{{/if}}</p>
+      {{else}}<p>{{localize "PDVF.Winter.NoSpouse"}}</p>{{/if}}
+      {{#if children.length}}
+      <ul class="pdvf-winter-list">{{#each children}}<li>{{#if name}}{{name}}{{else}}{{sexLabel}}{{/if}}{{#if age}} · {{age}} ans{{/if}}{{#if blessing}} · {{blessing}}{{/if}}{{#unless alive}} · † {{died}}{{/unless}}</li>{{/each}}</ul>
+      {{/if}}
+      {{#if done}}
+        {{#each f.lines}}<p>{{this}}</p>{{else}}<p>{{localize "PDVF.Winter.NoFamilyEvent"}}</p>{{/each}}
+      {{else}}
+      <div data-group="family">
+        {{#if possible}}
+        <p>{{localize "PDVF.Winter.ConceptionValue"}} <strong>{{target}}</strong>{{#if sure}} · {{localize "PDVF.Winter.Sure"}}{{/if}}{{#if guarantee}} · {{localize "PDVF.Winter.Guaranteed"}} {{guarantee}}{{/if}}</p>
+        <label class="pdvf-check"><input type="checkbox" name="conceive" checked> {{localize "PDVF.Winter.Conceive"}}</label>
+        {{/if}}
+        <p><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="family"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.RollFamily"}}</button></p>
+        <p class="pdvf-hint">{{localize "PDVF.Winter.FamilyHint"}}</p>
+      </div>
+      {{/if}}
+    {{/with}}
+    {{/if}}
+
+    {{!-- 12. Fin --}}
+    {{#if step.end}}
+    {{#with end}}
+      {{#if missing}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.Missing"}} {{missing}}</p>{{/if}}
+      {{#if finished}}<p><i class="fa-solid fa-check"></i> {{localize "PDVF.Winter.Finished"}}</p>
+      {{else}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="finish">{{localize "PDVF.Winter.Finish"}}</button>{{/if}}
+    {{/with}}
+    {{/if}}
+  </div>
+
+  <footer class="pdvf-wiz-foot">
+    <span class="pdvf-hint-inline">{{localize "PDVF.Winter.Treasury"}} : {{treasury}}</span>
+    <span class="spacer"></span>
+    {{#unless isFirst}}<button type="button" class="pdvf-btn" data-action="prev">{{localize "PDVF.Wizard.Prev"}}</button>{{/unless}}
+    {{#unless isLast}}<button type="button" class="pdvf-choose pdvf-wiz-next" data-action="next">{{localize "PDVF.Wizard.Next"}}</button>{{/unless}}
+  </footer>
+</div>

@@ -11,6 +11,9 @@ import { ChevalData } from "./data/cheval.mjs";
 import { ChevalSheet } from "./sheets/cheval-sheet.mjs";
 import * as followers from "./documents/followers.mjs";
 import { ensureAdversaries, ensureEncounters } from "./documents/compendium.mjs";
+import * as winterEngine from "./winter/engine.mjs";
+import * as winterGm from "./winter/gm.mjs";
+import { openWinterWizard, WinterWizard } from "./winter/wizard.mjs";
 import * as tests from "./dice/tests.mjs";
 import * as rules from "./rules/resolution.mjs";
 import { CREATION } from "./creation/data.mjs";
@@ -32,7 +35,8 @@ Hooks.once("init", () => {
   PDVF.creation = CREATION;
   game.pendragon = {
     config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters,
-    tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient }
+    tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient },
+    winter: { engine: winterEngine, openPanel: winterGm.openWinterPanel, start: winterGm.startWinter, close: winterGm.closeWinter, open: openWinterWizard }
   };
 
   // Documents et modèles de données
@@ -59,6 +63,18 @@ Hooks.once("init", () => {
     onChange: () => {
       for (const app of foundry.applications.instances?.values?.() ?? []) {
         if (app instanceof ChevalierSheet || app instanceof PnjSheet || app instanceof ChevalSheet) app.render();
+      }
+    }
+  });
+
+  // Hiver en cours (année ; 0 : aucun) : l'assistant d'hiver des joueurs est ouvert
+  game.settings.register(SYSTEM_ID, "winterYear", {
+    scope: "world",
+    config: false,
+    type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 0 }),
+    onChange: () => {
+      for (const app of foundry.applications.instances?.values?.() ?? []) {
+        if (app instanceof ChevalierSheet || app instanceof winterGm.WinterPanel) app.render();
       }
     }
   });
@@ -144,6 +160,8 @@ Hooks.on("updateActor", (actor) => {
 // socket du système (demandes des joueurs pendant une bataille).
 Hooks.once("ready", async () => {
   game.socket.on(battleEngine.SOCKET, battleEngine.onSocket);
+  game.socket.on(winterEngine.SOCKET, winterGm.onWinterSocket);
+  winterGm.openOwnWizards();
   await ensureAdversaries();
   await ensureEncounters();
 });
@@ -155,6 +173,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMe
 // « Nouveau jour » du MJ (outils des jetons, barre de gauche)
 Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));
 Hooks.on("renderActorDirectory", (app, html) => addNewDayDirectoryButton(app, html));
+Hooks.on("renderActorDirectory", (app, html) => winterGm.addWinterDirectoryButton(app, html));
+Hooks.on("updateActor", (actor) => winterGm.refreshPanel(actor));
 
 // Assistant de création : s'ouvre pour un chevalier tout neuf créé par cet utilisateur.
 Hooks.on("createActor", (actor, options, userId) => {

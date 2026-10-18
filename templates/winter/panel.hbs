@@ -1,0 +1,35 @@
+<div class="pdvf-battle pdvf-winter-panel-body">
+  <header class="pdvf-battle-header">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">{{localize "PDVF.Winter.Title"}}{{#if active}} {{year}}{{/if}}</h1>
+      <div class="pdvf-line1">{{#if active}}{{localize "PDVF.Winter.Progress"}} {{finishedCount}} / {{total}}{{else}}{{localize "PDVF.Winter.CurrentYear"}} {{current}}{{/if}}</div>
+    </div>
+  </header>
+  <div class="pdvf-battle-body">
+    {{#if active}}
+    <table class="pdvf-table">
+      <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Winter.Player"}}</th><th>{{localize "PDVF.Winter.StepLabel"}}</th><th></th></tr></thead>
+      <tbody>
+      {{#each knights}}
+        <tr>
+          <td><img src="{{img}}" alt="" class="pdvf-mini-portrait"> {{name}}</td>
+          <td>{{owners}}</td>
+          <td>{{#if finished}}<span class="pdvf-tag"><i class="fa-solid fa-check"></i> {{localize "PDVF.Winter.Done"}}</span>{{else}}{{stepNumber}}. {{stepLabel}}{{/if}}</td>
+          <td><button type="button" class="pdvf-btn pdvf-mini" data-action="open" data-id="{{id}}">{{localize "PDVF.Winter.OpenWizard"}}</button></td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="pdvf-hint">{{localize "PDVF.Winter.NoKnights"}}</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+    <div class="pdvf-step-actions">
+      <button type="button" class="pdvf-btn" data-action="remind"><i class="fa-solid fa-bell"></i> {{localize "PDVF.Winter.Remind"}}</button>
+      <span class="pdvf-hint-inline">{{localize "PDVF.Winter.CloseHint"}}</span>
+      <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="closeWinter"><i class="fa-solid fa-seedling"></i> {{localize "PDVF.Winter.CloseTitle"}}</button>
+    </div>
+    {{else}}
+    <p>{{localize "PDVF.Winter.StartHint"}}</p>
+    <div class="pdvf-battle-go"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="start"><i class="fa-solid fa-snowflake"></i> {{localize "PDVF.Winter.Start"}} {{current}}</button></div>
+    {{/if}}
+  </div>
+</div>

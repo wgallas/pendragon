@@ -632,7 +632,11 @@ async function applyResults(ctx) {
   for (const row of sum.knights) {
     const actor = fromUuidSync(row.uuid);
     if (!actor) continue;
-    if (row.total) await actor.update({ "system.glory.session": (Number(actor.system.glory.session) || 0) + row.total });
+    const update = {};
+    if (row.total) update["system.glory.session"] = (Number(actor.system.glory.session) || 0) + row.total;
+    // Butin versé au trésor du chevalier (en deniers)
+    if (row.loot) update["system.economy.treasury"] = (Number(actor.system.economy?.treasury) || 0) + Math.round(row.loot * 240);
+    if (Object.keys(update).length) await actor.update(update);
     lines.push(F("PDVF.Battle.Card.KnightResult", {
       name: actor.name, glory: row.total, participation: row.participation, kills: row.killsGlory, loot: R.formatPounds(row.loot)
     }));

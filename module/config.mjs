@@ -307,3 +307,70 @@ PDVF.battle = {
   /** Valeur de chevalier d'un chevalier (PJ ou PNJ) perdu. */
   knightValue: 1
 };
+
+/* -------------------------------------------- */
+/*  Phase d'hiver (Livre du joueur, chap. 14)   */
+/* -------------------------------------------- */
+
+PDVF.winter = {
+  /** Table 14.2 : entretien annuel (£) à partir duquel on atteint Pauvre, Ordinaire, Riche, Somptueux. */
+  upkeep: {
+    alone: [1.5, 3, 4.5, 6],
+    squire: [2, 4, 6, 8],
+    family: [3, 6, 9, 12]
+  },
+  upkeepLevels: ["poor", "ordinary", "rich", "sumptuous"],
+  /** Chevaliers de maisonnée : entretenus par le seigneur au niveau Ordinaire (4 £, 6 £ marié). */
+  householdUpkeep: { single: 4, married: 6 },
+  /** Gloire passive du niveau de vie (Livre du joueur p. 55 : Ordinaire 10). */
+  livingPassive: { destitute: 0, poor: 0, ordinary: 10, rich: 10, sumptuous: 10, superlative: 10 },
+  /** Dépenses somptuaires (Livre du maître p. 232) : 10 Gloire par £ au-delà de 6 £, jusqu'à 10 £, puis 1 par £. */
+  sumptuary: { base: 6, rich: 10, perPound: 10, beyond: 1 },
+  /** Vieillissement : dès 35 ans ; Table 14.3 (2D6 → caractéristiques touchées) et Table 14.4 (1D6). */
+  agingFrom: 35,
+  agingCount: { 2: 4, 3: 3, 4: 2, 5: 1, 6: 0, 7: 0, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4 },
+  agingChars: ["siz", "dex", "str", "con", "app", null],
+  infirmity: 5,
+  /** Formation : aucune caractéristique améliorée après 35 ans ; traits 19 et passions 20 au plus. */
+  trainingCharMaxAge: 35,
+  trainingChars: ["str", "dex", "con", "app"],
+  trainingTraitMax: 19,
+  trainingPassionMax: 20,
+  trainingSkillPoints: 6,
+  trainingSkillCap: 15,
+  trainingSkillMax: 20,
+  /** Embonpoint : trois fois au plus, après 21 ans. */
+  embonpointFrom: 21,
+  embonpoint: [
+    { feature: "Corpulent", dex: 0, con: 0 },
+    { feature: "Adipeux", dex: -1, con: 0 },
+    { feature: "Obèse", dex: -1, con: -1 }
+  ],
+  /** Esquire : 1 £ par an ; départ sur 1D20 ≤ années après 20 ans + 5. */
+  esquireUpkeep: 1,
+  esquireLeaveBase: 5,
+  /** Table 14.6 : départ d'un personnage de soutien. */
+  departure: { 1: "dead", 2: "personal", 3: "offer" },
+  /** Table 14.7 : chevaux soumis au test de survie (de combat et « nobles »). */
+  survivalGroups: ["war", "fae"],
+  survivalTypes: ["courser", "genet"],
+  /** Pauvre : chaque cheval perd 10 de Mouvement, 3 de CON et un dé de charge. */
+  poorHorse: { move: -10, con: -3, chargeDice: -1 },
+  /** Conception (CON de la mère, 13 par défaut). */
+  conceptionCon: 13,
+  conceptionAfterBirth: -10,
+  conceptionAgeFrom: 35,
+  /** Table 14.9 : survie des enfants (mort sur 1–4 la première année, sur 1 de 2 à 5 ans). */
+  childDeath: { baby: 4, young: 1 },
+  childLiving: { destitute: -2, poor: -1 },
+  /** Table 14.12 : naissance bénie (1D20). */
+  blessings: [
+    { char: "con" }, { char: "app" }, { char: "dex" }, { char: "str" },
+    { skill: "awareness" }, { skill: "compose" }, { skill: "dancing" }, { skill: "flirting" }, { skill: "falconry" },
+    { skill: "firstAid" }, { skill: "folklore" }, { skill: "horsemanship" }, { skill: "hunting" }, { skill: "intrigue" },
+    { skill: "orate" }, { skill: "playInstrument" }, { skill: "literacy" }, { skill: "religion" }, { skill: "singing" },
+    { skill: "stewardship" }
+  ],
+  /** Adversaire d'un duel des événements personnels : compétence 8+2D6. */
+  duelSkill: "8+2D6"
+};

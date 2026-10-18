@@ -70,6 +70,16 @@
     <div class="pdvf-drop-hint">{{localize "PDVF.Suite.DropHorseHint"}}</div>
   </div>
 
+  <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Economy.Title"}}</h2>
+  <div class="pdvf-economy">
+    <label class="pdvf-field"><span>{{localize "PDVF.Economy.Treasury"}} (£)</span>
+      <input type="number" name="pdvfTreasury" value="{{treasury.pounds}}" step="0.25"></label>
+    <div class="pdvf-field"><span>&nbsp;</span><strong class="pdvf-economy-amount">{{treasury.label}}</strong></div>
+    <label class="pdvf-field"><span>{{localize "PDVF.Economy.Living"}}</span>
+      <select name="system.economy.living">{{#each livingChoicesEco}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+  </div>
+  <p class="pdvf-hint">{{localize "PDVF.Economy.Hint"}}</p>
+
   <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Suite.Domain"}}</h2>
   <p class="pdvf-upcoming">{{localize "PDVF.Upcoming.Suite"}}</p>
 </section>

@@ -11,7 +11,7 @@ import { formatDenarii } from "../rules/horses.mjs";
 import { openWinterWizard } from "../winter/wizard.mjs";
 import { winterYear } from "../winter/engine.mjs";
 import { gearView, attackNotes } from "./gear-view.mjs";
-import { attackProfiles } from "../rules/equipment.mjs";
+import { attackProfiles, conflictsWith } from "../rules/equipment.mjs";
 import { giveStartingEquipment, hasGear, GEAR_TYPES } from "../documents/equipment.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -509,9 +509,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     delete data._id;
     delete data.folder;
     if (item.pack) foundry.utils.setProperty(data, "_stats.compendiumSource", item.uuid);
-    // Porté d'office, sauf s'il prend la place d'une pièce déjà portée (heaume, armure de corps, bouclier)
-    const worn = this.document.items.filter(i => i.type === item.type && i.system.equipped);
-    data.system.equipped = item.type === "arme" || !worn.some(i => item.type === "bouclier" || i.system.kind === item.system.kind);
+    // Porté d'office, sauf s'il prend la place d'une pièce déjà portée ou ne se cumule pas avec elle
+    data.system.equipped = item.type === "arme" || !conflictsWith(item, this.document.items.contents).length;
     const [created] = await this.document.createEmbeddedDocuments("Item", [data]);
     if (created) { this.tabGroups.primary = "combat"; this.render(); }
     return created ?? null;
@@ -562,7 +561,13 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onGearEquip(event, target) {
     const item = this.document.items.get(target.dataset.id);
-    if (item) await item.update({ "system.equipped": !item.system.equipped });
+    if (!item) return;
+    if (item.system.equipped) return item.update({ "system.equipped": false });
+    // Porter une pièce range celles qu'elle remplace ou avec lesquelles elle ne se cumule pas.
+    const off = conflictsWith(item, this.document.items.contents);
+    const updates = [{ _id: item.id, "system.equipped": true }, ...off.map(i => ({ _id: i.id, "system.equipped": false }))];
+    await this.document.updateEmbeddedDocuments("Item", updates);
+    if (off.length) ui.notifications.info(game.i18n.format("PDVF.Gear.Stowed", { names: off.map(i => i.name).join(", ") }));
   }
 
   static #onGearOpen(event, target) {

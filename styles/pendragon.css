@@ -1261,3 +1261,4 @@
 .pendragon-vf .pdvf-armor-total strong { font-size: 22px; color: var(--pdvf-vermilion); font-family: var(--pdvf-font-heading); }
 .pendragon-vf .pdvf-armor-value { min-width: 34px; text-align: right; font-weight: 600; }
 .pendragon-vf .pdvf-gear-tag { font-size: 13px; color: var(--pdvf-ink-soft); white-space: nowrap; }
+.pendragon-vf .pdvf-armor-list li.ignored .pdvf-armor-value { text-decoration: line-through; color: var(--pdvf-ink-faint); }

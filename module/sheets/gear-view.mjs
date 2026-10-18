@@ -33,6 +33,7 @@ export function gearView(actor, stats) {
   const pieces = items.filter(i => i.type === "armure" || i.type === "bouclier").sort(byEquip).map(i => ({
     id: i.id, name: i.name, img: i.img, equipped: i.system.equipped, isShield: i.type === "bouclier",
     value: i.type === "armure" && i.system.equipped ? prot.pieceValue(i) : i.system.value,
+    ignored: i.system.equipped && (prot.ignored.has(i) || (i.type === "bouclier" && i !== prot.shieldItem)),
     detail: i.type === "bouclier" ? L(`PDVF.Gear.Size.${i.system.size}`) : L(`PDVF.Gear.Kind.${i.system.kind}`),
     tip: [i.system.notes, i.system.disadvantage].filter(Boolean).join(" — "),
     price: formatPrice(i.system.price)

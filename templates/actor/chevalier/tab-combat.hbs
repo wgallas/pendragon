@@ -38,7 +38,7 @@
       {{#if gear.pieces.length}}
       <ul class="pdvf-armor-list">
         {{#each gear.pieces}}
-        <li class="{{#unless equipped}}stowed{{/unless}}">
+        <li class="{{#unless equipped}}stowed{{/unless}} {{#if ignored}}ignored{{/if}}">
           <button type="button" class="pdvf-icon-btn pdvf-equip {{#if equipped}}on{{/if}}" data-action="gearEquip" data-id="{{id}}"
             aria-pressed="{{#if equipped}}true{{else}}false{{/if}}" data-tooltip="{{#if equipped}}{{localize 'PDVF.Gear.Unequip'}}{{else}}{{localize 'PDVF.Gear.Equip'}}{{/if}}"
             aria-label="{{localize 'PDVF.Gear.Equipped'}}"><i class="fa-solid {{#if equipped}}fa-shirt{{else}}fa-box-archive{{/if}}"></i></button>

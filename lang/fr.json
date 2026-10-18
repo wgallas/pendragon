@@ -1838,7 +1838,8 @@
       "ParryNote": "Parade +{value} si l'arme sert à parer.",
       "DeleteTitle": "Retirer un objet",
       "DeleteText": "Retirer « {name} » de la fiche ?",
-      "LuckItem": "Objet de famille ajouté à l'équipement : {name}."
+      "LuckItem": "Objet de famille ajouté à l'équipement : {name}.",
+      "Stowed": "Rangé (ne se cumule pas) : {names}."
     }
   }
 }

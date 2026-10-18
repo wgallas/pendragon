@@ -29,7 +29,7 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {
-      tab: BatailleSheet.#onTab,
+      battleTab: BatailleSheet.#onTab,
       gm: BatailleSheet.#onGm,
       player: BatailleSheet.#onPlayer,
       openActor: BatailleSheet.#onOpenActor,

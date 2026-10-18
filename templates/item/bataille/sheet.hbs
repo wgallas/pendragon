@@ -30,7 +30,7 @@
 
   <nav class="pdvf-battle-tabs" aria-label="{{localize 'PDVF.Battle.Title'}}">
     {{#each tabs}}
-    <button type="button" class="pdvf-battle-tab {{#if active}}active{{/if}}" data-action="tab" data-tab="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">{{label}}</button>
+    <button type="button" class="pdvf-battle-tab {{#if active}}active{{/if}}" data-action="battleTab" data-tab="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">{{label}}</button>
     {{/each}}
   </nav>
 

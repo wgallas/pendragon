@@ -42,7 +42,8 @@ export class ArmeData extends foundry.abstract.TypeDataModel {
       parry: int(0, { min: 0 }),
       twoHanded: bool(false),
       shieldBreaker: bool(false),
-      range: str("", { choices: ["", ...PDVF.ranges] }),
+      // Portée des armes de jet ; vide pour une arme de mêlée.
+      range: str("", { blank: true, choices: ["", ...PDVF.ranges] }),
       thrown: new fields.SchemaField({
         enabled: bool(false),
         skill: str("thrown"),

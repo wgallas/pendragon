@@ -9,7 +9,7 @@ Usage : python3 tools/equipement/build.py  (depuis la racine du dépôt)
 """
 import hashlib, json, os
 
-VERSION = 1
+VERSION = 2
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 ICON = "systems/pendragon-vf/icons/gear/{}.svg"
 

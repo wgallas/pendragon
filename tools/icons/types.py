@@ -36,12 +36,17 @@ def line(x1, y1, x2, y2, **kw):
     return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}"{extra}/>'
 
 
-def bust(cloak, collar=None):
-    """Buste vu de face : épaules drapées et cou ; la tête est dessinée à part."""
-    out = p("M10 59 Q11 43 24 40 L40 40 Q53 43 54 59 Z", cloak)
-    if collar:
-        out += p("M24 40 L32 49 L40 40", collar)
-    return out
+def niche(bg, dots=GOLD):
+    """Niche gothique au fond coloré semé de points d'or, comme dans les miniatures."""
+    arch = "M13 58 L13 27 Q14 13 32 6.5 Q50 13 51 27 L51 58 Z"
+    pts = "".join(c(x, y, 0.55, dots, stroke="none") for y in range(12, 58, 6) for x in range(16 + (y // 6 % 2) * 3, 50, 6))
+    return (f'<clipPath id="n"><path d="{arch}"/></clipPath>' + p(arch, bg)
+            + f'<g clip-path="url(#n)">{pts}</g>' + p(arch, "none", stroke=GOLD, stroke_width="1.6")
+            + p("M10 58 L54 58", "none", stroke=INK, stroke_width="1.6"))
+
+
+def face(cx=32, cy=16, r=4.3):
+    return c(cx, cy, r, SKIN) + c(cx - 1.5, cy - 0.3, 0.45, INK, stroke="none") + c(cx + 1.5, cy - 0.3, 0.45, INK, stroke="none")
 
 
 def sword(angle):
@@ -60,33 +65,56 @@ ICONS = {
                + line(32, 31, 32, 46, stroke_width="1.4")
                + "".join(c(x, y, 0.7, INK) for x, y in [(27, 36), (27, 40), (37, 36), (37, 40)])
                + p("M32 14 Q33 7 40 6 Q37 10 39 13 Q35 11 32 14 Z", VERM)),
-    # Personnage : buste au manteau bleu, capuchon
-    "character": (bust(LAPIS, GOLD) + c(32, 28, 9, SKIN)
-                  + p("M21 30 Q20 15 32 14 Q44 15 43 30 Q41 21 32 20 Q23 21 21 30 Z", LAPIS)
-                  + c(28.5, 29, 0.9, INK) + c(35.5, 29, 0.9, INK) + p("M29 33.5 Q32 35.5 35 33.5")),
-    # Écuyer : jeune homme à la cotte vermeille et au fanion
-    "squire": (line(49, 8, 49, 59, stroke=WOOD, stroke_width="2.4") + p("M49 9 L57.5 12 L49 15.5 Z", VERM)
-               + bust(VERM, CLOTH) + c(31, 28, 8.5, SKIN)
-               + p("M22.5 27 Q22 18 31 18 Q40 18 39.5 27 Q36 22 31 22 Q26 22 22.5 27 Z", WOOD)
-               + c(28, 29, 0.9, INK) + c(34, 29, 0.9, INK) + p("M28.5 33 Q31 34.5 33.5 33")),
-    # Suivant : homme au chaperon vert
-    "follower": (bust(GREEN, CLOTH) + c(32, 29, 8.5, SKIN)
-                 + p("M22 26 Q24 14 34 15 Q44 16 43 26 Q38 22 32 22 Q26 22 22 26 Z", GREEN)
-                 + p("M42 22 Q50 26 47 36", "none", stroke=GREEN, stroke_width="3")
-                 + c(29, 30, 0.9, INK) + c(35, 30, 0.9, INK) + p("M29.5 34 Q32 35.5 34.5 34")),
+    # Personnage : seigneur en houppelande et chaperon, dans une niche bleue
+    "character": (niche(LAPIS)
+                  + p("M26 22 Q32 20 38 22 L41 34 L44 57 L20 57 L23 34 Z", VERM)
+                  + p("M26 22 L20 40 L23 42 L27 30 M38 22 L44 40 L41 42 L37 30", GOLD, stroke_width="1")
+                  + r(23.5, 33, 17, 2.2, GOLD) + p("M32 35 L32 57", "none", stroke_width="0.8")
+                  + face(32, 16.5)
+                  + p("M28.5 19.5 Q32 24.5 35.5 19.5 Q34 21 32 21 Q30 21 28.5 19.5 Z", WOOD, stroke_width="0.8")
+                  + p("M36.5 12.5 Q41 15 40.5 27 L38.6 27 Q39 18 35.5 14 Z", VERM, stroke_width="0.9")
+                  + p("M27.4 14 Q27 9 32 8.6 Q37 9 36.6 14 Z", VERM, stroke_width="0.9")
+                  + '<ellipse cx="32" cy="13.4" rx="6.2" ry="2" fill="#b8892b"/>'
+                  + c(25.5, 40.5, 1.6, SKIN) + c(38.5, 40.5, 1.6, SKIN)),
+    # Écuyer : cotte courte et chausses, lance à fanion, dans une niche vermeille
+    "squire": (niche(VERM)
+               + line(42, 8, 42, 57, stroke=WOOD, stroke_width="1.8") + p("M42 8.5 L50 11 L42 14 Z", GOLD)
+               + p("M27 22 Q32 20 37 22 L39 34 L41 44 L23 44 L25 34 Z", LAPIS)
+               + p("M29 22 L32 44 L35 22", "none", stroke=GOLD, stroke_width="0.9")
+               + r(25, 33, 14, 2, WOOD)
+               + p("M27.5 44 L27 56 L30.5 56 L31 44 M33 44 L33.5 56 L37 56 L36.5 44", GREY)
+               + p("M26 56 L31 56 M33 56 L38 56", "none", stroke_width="1.6")
+               + p("M37 23 L41.5 31 L40.5 33 L36 27", LAPIS) + c(41.5, 31.5, 1.5, SKIN)
+               + face(32, 16.5)
+               + p("M27.6 16 Q27 10.5 32 10.5 Q37 10.5 36.4 16 Q35 13.5 32 13.5 Q29 13.5 27.6 16 Z", WOOD)),
+    # Suivant : homme du commun au capuchon à longue cornette, bâton de marche, dans une niche verte
+    "follower": (niche(GREEN)
+                 + line(22, 15, 20, 57, stroke=WOOD, stroke_width="1.8")
+                 + p("M27 23 Q32 21 37 23 L39 34 L41 46 L23 46 L25 34 Z", WOOD)
+                 + r(25, 33, 14, 1.8, INK)
+                 + p("M27.5 46 L27.5 56 L30.5 56 L30.5 46 M33.5 46 L33.5 56 L36.5 56 L36.5 46", CLOTH)
+                 + p("M26 56 L31 56 M33 56 L38 56", "none", stroke_width="1.6")
+                 + p("M27 24 L21.5 31 L23 33 L27.5 28", WOOD) + c(21.8, 31.5, 1.5, SKIN)
+                 + p("M26 21 Q25 9.5 32 9 Q39 9.5 38 21 L42 31 l-2 -1.6 l-2 1.6 l-2 -1.6 l-2 1.6 l-2 -1.6 l-2 1.6 l-2 -1.6 l-2 1.6 l-2 -1.6 l-2 1.6 Z", "#c8a24a")
+                 + face(32, 17)),
     # Créature : tête de loup
     "creature": (p("M15 12 L25 22 L39 22 L49 12 L48 30 Q48 40 40 47 L36 56 L28 56 L24 47 Q16 40 16 30 Z", GREY)
                  + p("M19 17 L24 23 L20 25 Z", WOOD) + p("M45 17 L40 23 L44 25 Z", WOOD)
                  + p("M24 34 L29 31 L29 35 Z", GOLD) + p("M40 34 L35 31 L35 35 Z", GOLD)
                  + p("M28 44 Q32 41 36 44 L35 49 L29 49 Z", INK)
                  + p("M29 52 L30 55 M35 52 L34 55", "none", stroke=PARCH)),
-    # Cheval : tête de profil, bride vermeille
-    "horse": (p("M40 8 L44 16 Q52 22 52 34 L52 58 L26 58 Q30 48 26 42 L14 46 Q8 44 10 38 L20 24 Q26 14 36 13 Z", WOOD)
-              + p("M40 8 L36 16 M44 16 Q44 22 52 30", "none")
-              + p("M38 14 Q46 20 50 34 L50 56", "none", stroke=INK, stroke_width="2.4")
-              + c(28, 25, 1.4, INK) + c(13.5, 41, 1, INK)
-              + p("M20 30 L28 27 L24 42 M14 37 L22 33", "none", stroke=VERM, stroke_width="2")
-              + c(24, 31, 1.6, GOLD)),
+    # Cheval : destrier caparaçonné, tête de profil avec chanfrein et plumet
+    "horse": (p("M33 13 L33.5 5.5 L38 12 Q49 18 53 30 L56 58 L28 58 Q31 51 28 45 L20 46 Q15 49 11 46.5 Q8 43.5 10 39.5 L20 25 Q25 17 33 13 Z", WOOD)
+              # caparaçon : bleu semé d'or, bord dentelé
+              + p("M39 13.5 Q49 19 53 30 L56 58 L29 58 Q31 52 29 46 L32.5 44 L31 40 L34.5 38 L33 34 L36.5 32 L35 28 L38.5 26 L37 22 L40.5 20 L39 16.5 Z", LAPIS)
+              + "".join(p(f"M{x} {y} l1.3 1.3 l-1.3 1.3 l-1.3 -1.3 Z", GOLD, stroke="none") for x, y in [(46, 24), (49, 33), (42, 37), (51, 43), (45, 47), (38, 51), (52, 53), (43, 30)])
+              # chanfrein d'acier, œillère et arête
+              + p("M32.5 13.6 L38 15.8 L19.5 41.5 L14.5 38.6 Z", STEEL) + p("M35 15 L17 40", "none", stroke_width="0.7")
+              + c(27.5, 24.5, 2.4, STEEL) + c(27.5, 24.5, 1, INK, stroke="none")
+              + p("M34.5 13 Q33 8 37 5.5 Q37.5 9 40.5 10.5 Q37.5 11 36.5 13.8 Z", VERM)
+              # bride et rênes
+              + p("M23 31 L26 43 M15 43 L29 41", "none", stroke=VERM, stroke_width="1.6")
+              + c(12.5, 43.5, 0.9, INK, stroke="none")),
     # --- Objets ---
     # Bataille : deux bannières croisées
     "battle": (line(17, 59, 44, 8, stroke=WOOD, stroke_width="2.4") + line(47, 59, 20, 8, stroke=WOOD, stroke_width="2.4")
@@ -102,13 +130,29 @@ ICONS = {
                               for (x, y, dx, dy, ex, ey) in [(16, 42, -6, -1, -5, -5), (14, 32, -6, 1, -5, -5), (16, 22, -5, 2, -3, -6),
                                                              (48, 42, 6, -1, 5, -5), (50, 32, 6, 1, 5, -5), (48, 22, 5, 2, 3, -6)])
                     + p("M32 18 L35 27 L44.5 27 L37 32.5 L40 41.5 L32 36 L24 41.5 L27 32.5 L19.5 27 L29 27 Z", GOLD)),
+    # Domaine : château à deux tours et donjon, porte à herse, bannière
+    "castle": (p("M6 58 Q32 50 58 58 Z", "#8a9a5b")
+               + r(23, 14, 18, 40, "#d9cba8") + p("M23 14 L23 10 L26 10 L26 14 M29 14 L29 10 L32 10 L32 14 M35 14 L35 10 L38 10 L38 14 M41 14 L41 10", "#d9cba8")
+               + p("M23 10 L26 10 L26 14 L29 14 L29 10 L32 10 L32 14 L35 14 L35 10 L38 10 L38 14 L41 14 L41 10 L41 14", "none")
+               + r(9, 24, 12, 32, "#e3d3ad") + r(43, 24, 12, 32, "#e3d3ad")
+               + p("M9 24 L9 20 L12 20 L12 24 L15 24 L15 20 L18 20 L18 24 L21 24 L21 20", "none") + r(9, 20, 3, 4, "#e3d3ad") + r(15, 20, 3, 4, "#e3d3ad") + r(18, 20, 3, 4, "#e3d3ad")
+               + r(43, 20, 3, 4, "#e3d3ad") + r(49, 20, 3, 4, "#e3d3ad") + r(52, 20, 3, 4, "#e3d3ad")
+               + r(21, 34, 22, 22, "#e3d3ad") + p("M21 34 L21 31 L24 31 L24 34 M27 34 L27 31 L30 31 L30 34 M34 34 L34 31 L37 31 L37 34 M40 34 L40 31 L43 31 L43 34", "#e3d3ad")
+               + p("M27 56 L27 46 Q32 40 37 46 L37 56 Z", INK)
+               + p("M28.5 56 L28.5 45.5 M31 56 L31 43.5 M33.5 56 L33.5 43.5 M36 56 L36 45.5 M27.5 49 L36.5 49 M27.5 52.5 L36.5 52.5", "none", stroke=GOLD, stroke_width="0.7")
+               + r(31, 18, 2.4, 5, INK, 1) + r(14, 30, 2, 4, INK, 1) + r(48, 30, 2, 4, INK, 1)
+               + line(32, 10, 32, 3) + p("M32 3 L40 5 L32 7.5 Z", VERM)
+               + p("M9 56 L55 56", "none", stroke_width="0.8")),
 }
+
+# Le domaine (objet « domaine ») garde son chemin d'icône d'équipement.
+EXTRA = {"castle": os.path.join(os.path.dirname(__file__), "..", "..", "icons", "gear", "domain.svg")}
 
 
 def main():
     os.makedirs(OUT, exist_ok=True)
     for name, body in ICONS.items():
-        with open(os.path.join(OUT, f"{name}.svg"), "w", encoding="utf-8") as f:
+        with open(EXTRA.get(name, os.path.join(OUT, f"{name}.svg")), "w", encoding="utf-8") as f:
             f.write(svg(body))
     print(f"{len(ICONS)} icônes dans {os.path.normpath(OUT)}")
 

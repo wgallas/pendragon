@@ -6,7 +6,10 @@ export class PendragonItem extends Item {
 
   static DEFAULT_ICONS = {
     bataille: "icons/svg/combat.svg",
-    rencontre: "icons/svg/sword.svg"
+    rencontre: "icons/svg/sword.svg",
+    arme: "systems/pendragon-vf/icons/gear/sword.svg",
+    armure: "systems/pendragon-vf/icons/gear/mail.svg",
+    bouclier: "systems/pendragon-vf/icons/gear/shield_norman.svg"
   };
 
   async _preCreate(data, options, user) {

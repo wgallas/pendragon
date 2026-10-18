@@ -7,7 +7,10 @@
     },
     "Item": {
       "bataille": "Bataille",
-      "rencontre": "Rencontre de bataille"
+      "rencontre": "Rencontre de bataille",
+      "arme": "Arme",
+      "armure": "Armure",
+      "bouclier": "Bouclier"
     }
   },
   "PDVF": {
@@ -19,7 +22,8 @@
       "pnj": "Fiche de PNJ (Pendragon VF)",
       "cheval": "Fiche de cheval (Pendragon VF)",
       "bataille": "Fiche de bataille (Pendragon VF)",
-      "rencontre": "Fiche de rencontre (Pendragon VF)"
+      "rencontre": "Fiche de rencontre (Pendragon VF)",
+      "equipement": "Fiche d'équipement (Pendragon VF)"
     },
     "Settings": {
       "currentYear": {
@@ -406,7 +410,7 @@
       "available": "Disponibles"
     },
     "Upcoming": {
-      "Combat": "Les armes, armures et boucliers à glisser sur la fiche, ainsi que la table des blessures, arrivent à la prochaine étape.",
+      "Combat": "Les blessures et le combat automatisé arrivent à une prochaine étape.",
       "Suite": "Le domaine arrive à une prochaine étape."
     },
     "Footer": {
@@ -758,7 +762,8 @@
     "Compendium": {
       "Adversaries": "Pendragon — Adversaires",
       "Imported": "Compendium « {label} » prêt : {count} entrées.",
-      "Encounters": "Pendragon — Rencontres de bataille"
+      "Encounters": "Pendragon — Rencontres de bataille",
+      "Equipment": "Pendragon — Équipement"
     },
     "Horse": {
       "New": "Nouveau cheval",
@@ -1720,6 +1725,120 @@
       },
       "Remaining": "Points restants :",
       "GmOnly": "— (MJ)"
+    },
+    "Period": {
+      "all": "Toutes Périodes",
+      "boyKing": "Période de l'Enfant-Roi",
+      "boyKingLate": "Fin de l'Enfant-Roi (515 et après)",
+      "conquest": "Période des Conquêtes",
+      "romance": "Période Romantique",
+      "tournament": "Période des Tournois",
+      "twilight": "Période du Crépuscule"
+    },
+    "Gear": {
+      "Group": {
+        "melee": "Arme de mêlée",
+        "brawl": "Arme de rixe",
+        "missile": "Arme de jet",
+        "thrown": "Arme de lancer"
+      },
+      "Use": {
+        "foot": "À pied",
+        "horse": "À cheval",
+        "both": "À pied et à cheval"
+      },
+      "Base": {
+        "character": "Dégâts du personnage",
+        "brawl": "Dégâts de Rixe",
+        "horse": "Charge du cheval",
+        "none": "Dés seulement"
+      },
+      "Range": {
+        "short": "Portée courte",
+        "medium": "Portée moyenne",
+        "long": "Portée longue"
+      },
+      "Kind": {
+        "padding": "Matelassage",
+        "body": "Armure de corps",
+        "overlay": "Par-dessus l'armure",
+        "helm": "Heaume"
+      },
+      "Material": {
+        "textile": "Textile",
+        "mail": "Mailles",
+        "plate": "Plates"
+      },
+      "Size": {
+        "small": "Petit",
+        "medium": "Moyen",
+        "large": "Grand"
+      },
+      "ThrownShort": "lancée",
+      "Protection": "Protection",
+      "Period": "Disponibilité",
+      "PeriodNote": "Précision (région…)",
+      "PriceD": "Prix (deniers)",
+      "Quantity": "Quantité",
+      "Equipped": "Porté",
+      "Equip": "Porter ou prendre en main",
+      "Unequip": "Ranger (ne plus porter)",
+      "Source": "Source",
+      "Attack": "Attaque",
+      "GroupLabel": "Catégorie",
+      "Skill": "Compétence",
+      "UseLabel": "À pied / à cheval",
+      "BaseLabel": "Dégâts de base",
+      "Dice": "Dés (±D6)",
+      "Flat": "Bonus fixe",
+      "Max": "Maximum (D6)",
+      "Quality": "Qualité (bonus aux dégâts)",
+      "Parry": "Parade",
+      "ParryShort": "Parade",
+      "RangeLabel": "Portée",
+      "TwoHanded": "À deux mains (pas de bouclier)",
+      "ShieldBreaker": "Enfonce les boucliers (protection réduite à 1D6)",
+      "DamageHint": "Dégâts :",
+      "DamageShort": "dégâts {damage}",
+      "Alts": "Variantes de dégâts",
+      "AltLabel": "Circonstance",
+      "AltPlaceholder": "Ex. : contre une armure de mailles",
+      "AddAlt": "Ajouter une variante",
+      "Thrown": "Peut être lancée",
+      "Advantage": "Avantage",
+      "Disadvantage": "Inconvénient",
+      "KindLabel": "Pièce",
+      "MaterialLabel": "Type d'armure",
+      "Value": "Valeur de protection",
+      "Layered": "Ajout par-dessus une armure de corps",
+      "Padding": "Se porte sur un auqueton",
+      "Closed": "Heaume fermé (−5 en Vigilance)",
+      "MoveFoot": "Mouvement à pied",
+      "Notes": "Notes",
+      "SizeLabel": "Catégorie",
+      "RangedPenalty": "Pénalité d'attaque à distance",
+      "MountedPenalty": "Pénalité à cheval",
+      "ChargeExempt": "Pas de pénalité pour la Charge à la lance",
+      "NoMissile": "Aucune protection contre le tir ni la charge",
+      "Weapons": "Armes",
+      "ArmorSection": "Armure et bouclier",
+      "ArmorPoints": "Armure",
+      "ShieldPoints": "Bouclier",
+      "ProtectionLine": "Armure {armor} · bouclier {shield}",
+      "NoWeapons": "Aucune arme. Faites glisser une arme du compendium « Pendragon — Équipement » sur la fiche.",
+      "DropHint": "Faites glisser armes, armures et boucliers du compendium « Pendragon — Équipement » sur la fiche, ou donnez l'équipement de départ.",
+      "StartingButton": "Équipement de départ",
+      "StartingCreated": "Équipement de départ : {count} objets ajoutés.",
+      "TestTip": "Test de la compétence (Maj : options)",
+      "DamageTip": "Jet de dégâts",
+      "NoHorse": "Choisissez un cheval principal (onglet Suite) : la lance de cavalerie inflige les dégâts de charge du cheval.",
+      "NoDamage": "Dégâts inconnus : vérifiez les caractéristiques du personnage.",
+      "MountedNote": "À cheval : {value} avec {shield}.",
+      "TwoHandedNote": "Arme à deux mains : {shield} ne protège pas.",
+      "ParryNote": "Parade +{value} si l'arme sert à parer.",
+      "DeleteTitle": "Retirer un objet",
+      "DeleteText": "Retirer « {name} » de la fiche ?",
+      "LuckItem": "Objet de famille ajouté à l'équipement : {name}."
     }
   }
 }

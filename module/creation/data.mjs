@@ -165,34 +165,34 @@ export const CREATION = {
     ]
   },
 
-  /** Table 3.9 : chance du débutant (1D20), résumés. */
+  /** Table 3.9 : chance du débutant (1D20), résumés ; « gear » : objet du compendium « Équipement ». */
   luck: [
     { r: 1, item: "Plats d'argent gravés des exploits de la famille", value: "3 £", effect: "Gloire passive 10" },
     { r: 2, item: "Cor saxon cerclé d'or, pris par le père", value: "5 £", effect: "+5 en Haine (Saxons) pour le combat après en avoir sonné" },
-    { r: 3, item: "Paire de lances offertes par un chef franc", value: "2 £", effect: "+1 en Valeureux quand on s'en sert ; croix annuelle en Fier" },
+    { r: 3, item: "Paire de lances offertes par un chef franc", value: "2 £", effect: "+1 en Valeureux quand on s'en sert ; croix annuelle en Fier", gear: "Lances du chef franc" },
     { r: 4, item: "Belle cape à épingle d'or", value: "3 £", effect: "+2 d'Engouement quand on la porte" },
     { r: 5, item: "Bride ornée de phalères de bronze et d'or", value: "2 £", effect: "Contrôle de monture réussi d'office avec cette bride" },
     { r: 6, item: "Médaillon de bronze d'un ancêtre héroïque", value: "1 £", effect: "+2 en Valeureux quand on le porte" },
-    { r: 7, item: "Fer de lance gravé d'une hure de sanglier", value: "1 £", effect: "+1D6 de dégâts contre les sangliers" },
-    { r: 8, item: "Spatha romaine au fourreau d'or et d'argent", value: "5 £", effect: "+5 en Courtoisie dans une cour romaine, ou faveur F5 si offerte à un seigneur romain" },
+    { r: 7, item: "Fer de lance gravé d'une hure de sanglier", value: "1 £", effect: "+1D6 de dégâts contre les sangliers", gear: "Lance à la hure de sanglier" },
+    { r: 8, item: "Spatha romaine au fourreau d'or et d'argent", value: "5 £", effect: "+5 en Courtoisie dans une cour romaine, ou faveur F5 si offerte à un seigneur romain", gear: "Spatha romaine" },
     { r: 9, item: "Cuiller et couteau taillés dans des os de géant", value: "1 £", effect: "+2 d'Engouement lors d'un festin" },
-    { r: 10, item: "Magnifique épée", value: "5 £", effect: "+1 aux dégâts" },
+    { r: 10, item: "Magnifique épée", value: "5 £", effect: "+1 aux dégâts", gear: "Magnifique épée" },
     { r: 11, item: "Magnifique selle", value: "2 £", effect: "+1 en Équitation" },
     { r: 12, item: "Ceinture brodée de cerfs bondissants", value: "1 £", effect: "+5 en Chasse contre les cervidés" },
     { r: 13, item: "Ceinture d'un ancêtre qui combattit Constantin le Grand", value: "3 £", effect: "Gloire passive 15" },
     { r: 14, item: "Lourd gobelet d'argent en forme de sanglier", value: "2 £", effect: "+5 en Éloquence pour porter un toast" },
     { r: 15, item: "Sous-vêtement de soie", value: "1 £", effect: "+5 aux tests de Chirurgie faits pour vous quand vous êtes Affaibli" },
-    { r: 16, item: "Bouclier d'if marqué des griffes d'un monstre", value: "1 £", effect: "+2 en Valeureux quand on s'en sert" },
-    { r: 17, item: "Lance de frêne offerte par les druides", value: "1 £", effect: "Croix annuelle à tous les traits païens, si on le souhaite" },
+    { r: 16, item: "Bouclier d'if marqué des griffes d'un monstre", value: "1 £", effect: "+2 en Valeureux quand on s'en sert", gear: "Bouclier d'if griffé" },
+    { r: 17, item: "Lance de frêne offerte par les druides", value: "1 £", effect: "Croix annuelle à tous les traits païens, si on le souhaite", gear: "Lance de frêne des druides" },
     { r: 18, item: "Torque d'or du Summerland", value: "5 £", effect: "+5 en Courtoisie chez les Faës, ou faveur F5 du roi Cadwy" },
-    { r: 19, item: "Lance bénie par saint Dewi", value: "1 £", effect: "Croix annuelle à tous les traits chrétiens, si on le souhaite" },
-    { r: 20, item: "Belle épée gravée d'or à la devise familiale", value: "1 £", effect: "+5 en Amour (Famille) au combat" }
+    { r: 19, item: "Lance bénie par saint Dewi", value: "1 £", effect: "Croix annuelle à tous les traits chrétiens, si on le souhaite", gear: "Lance bénie par saint Dewi" },
+    { r: 20, item: "Belle épée gravée d'or à la devise familiale", value: "1 £", effect: "+5 en Amour (Famille) au combat", gear: "Épée à la devise familiale" }
   ],
 
-  /** Équipement de départ (résumé, en attendant les objets). */
+  /** Équipement de départ hors armes et armures (celles-ci sont données en objets : PDVF.startingEquipment). */
   equipment: {
-    squire: "Gambison et heaume ouvert (5 points d'armure) ; bouclier rond (6 points, −2 à cheval) ; lance ; dague ; roncin (Mouvement 16, CON 18, 56 PV).",
-    knight: "Haubert, auqueton et heaume à nasal (10 points d'armure) ; bouclier normand (6 points) ; épée, quatre lances, une lance de cavalerie, une dague et une arme au choix. Coffre en bois à serrure ; vêtements ordinaires et une tenue de fête (1 £), cape de pluie, cape de laine ; matériel de voyage et d'équitation.",
+    squire: "Armes et armure de l'écuyer dans l'onglet Combat ; roncin (Mouvement 16, CON 18, 56 PV).",
+    knight: "Armes et armure dans l'onglet Combat, plus une arme au choix à prendre dans le compendium « Pendragon — Équipement ». Coffre en bois à serrure ; vêtements ordinaires et une tenue de fête (1 £), cape de pluie, cape de laine ; matériel de voyage et d'équitation.",
     horses: "Fournis par le seigneur : un destrier (dégâts de charge 6D6, armure naturelle 5, 55 PV, Mouvement 16), deux roncins (armure 4, 54 PV, Mouvement 16) et un sommier (armure 3, 46 PV, Mouvement 14)."
   },
 

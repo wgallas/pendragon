@@ -1,0 +1,118 @@
+<div class="pdvf-gear">
+  <header class="pdvf-npc-header">
+    <img class="pdvf-encounter-icon" src="{{item.img}}" alt="" data-action="editImage" data-edit="img">
+    <div class="pdvf-npc-identity">
+      <input type="text" class="pdvf-npc-name-input" name="name" value="{{item.name}}" aria-label="{{localize 'PDVF.Bio.name'}}">
+      <div class="pdvf-line1 pdvf-gear-summary">
+        <span class="pdvf-gear-type">{{typeLabel}}</span>
+        {{#if isWeapon}}<span>{{skillLabel}} · {{damageLabel}}{{#if thrownLabel}} · {{localize "PDVF.Gear.ThrownShort"}} {{thrownLabel}}{{/if}}</span>{{/if}}
+        {{#if isArmor}}<span>{{kindLabel}} · {{materialLabel}} · {{localize "PDVF.Gear.Protection"}} <strong>{{system.value}}</strong></span>{{/if}}
+        {{#if isShield}}<span>{{sizeLabel}} · {{localize "PDVF.Gear.Protection"}} <strong>{{system.value}}</strong></span>{{/if}}
+        {{#if priceLabel}}<span>{{priceLabel}}</span>{{/if}}
+      </div>
+    </div>
+  </header>
+
+  <div class="pdvf-gear-body">
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Period"}}</span>
+        <select name="system.period">{{#each periodChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.PeriodNote"}}</span><input type="text" name="system.periodNote" value="{{system.periodNote}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.PriceD"}}</span><input type="number" name="system.price" value="{{system.price}}" step="1" min="0" placeholder="—"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Quantity"}}</span><input type="number" name="system.quantity" value="{{system.quantity}}" step="1" min="0"></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.equipped" {{checked system.equipped}}> <span>{{localize "PDVF.Gear.Equipped"}}</span></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Source"}}</span><input type="text" name="system.source" value="{{system.source}}"></label>
+    </div>
+
+    {{#if isWeapon}}
+    <h3 class="pdvf-h3">{{localize "PDVF.Gear.Attack"}}</h3>
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.GroupLabel"}}</span>
+        <select name="system.group">{{#each groupChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Skill"}}</span>
+        <select name="system.skill">{{#each skillChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.UseLabel"}}</span>
+        <select name="system.use">{{#each useChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.BaseLabel"}}</span>
+        <select name="system.damage.base">{{#each baseChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Dice"}}</span><input type="number" name="system.damage.dice" value="{{system.damage.dice}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Flat"}}</span><input type="number" name="system.damage.flat" value="{{system.damage.flat}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Max"}}</span><input type="number" name="system.damage.max" value="{{system.damage.max}}" step="1" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Quality"}}</span><input type="number" name="system.quality" value="{{system.quality}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Parry"}}</span><input type="number" name="system.parry" value="{{system.parry}}" step="1" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.RangeLabel"}}</span>
+        <select name="system.range">{{#each rangeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.twoHanded" {{checked system.twoHanded}}> <span>{{localize "PDVF.Gear.TwoHanded"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.shieldBreaker" {{checked system.shieldBreaker}}> <span>{{localize "PDVF.Gear.ShieldBreaker"}}</span></label>
+    </div>
+    <p class="pdvf-hint">{{localize "PDVF.Gear.DamageHint"}} <strong>{{damageLabel}}</strong></p>
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Gear.Alts"}}</h3>
+    {{#each alts}}
+    <div class="pdvf-gear-alt">
+      <input type="text" name="system.alts.{{index}}.label" value="{{label}}" placeholder="{{localize 'PDVF.Gear.AltPlaceholder'}}" aria-label="{{localize 'PDVF.Gear.AltLabel'}}">
+      <label>+<input type="number" name="system.alts.{{index}}.dice" value="{{dice}}" step="1" aria-label="{{localize 'PDVF.Gear.Dice'}}">D6</label>
+      {{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteAlt" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+    </div>
+    {{/each}}
+    {{#if editable}}<button type="button" class="pdvf-btn" data-action="addAlt">{{localize "PDVF.Gear.AddAlt"}}</button>{{/if}}
+
+    <h3 class="pdvf-h3"><label class="pdvf-check"><input type="checkbox" name="system.thrown.enabled" {{checked system.thrown.enabled}}> {{localize "PDVF.Gear.Thrown"}}</label></h3>
+    {{#if system.thrown.enabled}}
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Skill"}}</span>
+        <select name="system.thrown.skill">{{#each thrownSkillChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.BaseLabel"}}</span>
+        <select name="system.thrown.damage.base">{{#each thrownBaseChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.RangeLabel"}}</span>
+        <select name="system.thrown.range">{{#each thrownRangeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Dice"}}</span><input type="number" name="system.thrown.damage.dice" value="{{system.thrown.damage.dice}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Flat"}}</span><input type="number" name="system.thrown.damage.flat" value="{{system.thrown.damage.flat}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Max"}}</span><input type="number" name="system.thrown.damage.max" value="{{system.thrown.damage.max}}" step="1" min="0"></label>
+    </div>
+    <p class="pdvf-hint">{{localize "PDVF.Gear.DamageHint"}} <strong>{{thrownLabel}}</strong></p>
+    {{/if}}
+
+    <div class="pdvf-battle-grid two">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Advantage"}}</span><textarea name="system.advantage" rows="3">{{system.advantage}}</textarea></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Disadvantage"}}</span><textarea name="system.disadvantage" rows="3">{{system.disadvantage}}</textarea></label>
+    </div>
+    {{/if}}
+
+    {{#if isArmor}}
+    <h3 class="pdvf-h3">{{localize "PDVF.Gear.Protection"}}</h3>
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.KindLabel"}}</span>
+        <select name="system.kind">{{#each kindChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.MaterialLabel"}}</span>
+        <select name="system.material">{{#each materialChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Value"}}</span><input type="number" name="system.value" value="{{system.value}}" step="1" min="0"></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.padding" {{checked system.padding}}> <span>{{localize "PDVF.Gear.Padding"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.closed" {{checked system.closed}}> <span>{{localize "PDVF.Gear.Closed"}}</span></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.MoveFoot"}}</span><input type="number" name="system.moveFoot" value="{{system.moveFoot}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Layered"}}</span><input type="number" name="system.layered" value="{{system.layered}}" step="1" min="0"></label>
+    </div>
+    <label class="pdvf-field"><span>{{localize "PDVF.Gear.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
+    {{/if}}
+
+    {{#if isShield}}
+    <h3 class="pdvf-h3">{{localize "PDVF.Gear.Protection"}}</h3>
+    <div class="pdvf-battle-grid three">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.SizeLabel"}}</span>
+        <select name="system.size">{{#each sizeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Value"}}</span><input type="number" name="system.value" value="{{system.value}}" step="1" min="0"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.RangedPenalty"}}</span><input type="number" name="system.rangedPenalty" value="{{system.rangedPenalty}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.MountedPenalty"}}</span><input type="number" name="system.mountedPenalty" value="{{system.mountedPenalty}}" step="1"></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.chargeExempt" {{checked system.chargeExempt}}> <span>{{localize "PDVF.Gear.ChargeExempt"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.noMissile" {{checked system.noMissile}}> <span>{{localize "PDVF.Gear.NoMissile"}}</span></label>
+    </div>
+    <div class="pdvf-battle-grid two">
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Disadvantage"}}</span><textarea name="system.disadvantage" rows="3">{{system.disadvantage}}</textarea></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Gear.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
+    </div>
+    {{/if}}
+
+    <h3 class="pdvf-h3">{{localize "PDVF.Battle.Description"}}</h3>
+    <textarea name="system.description" rows="6">{{system.description}}</textarea>
+  </div>
+</div>

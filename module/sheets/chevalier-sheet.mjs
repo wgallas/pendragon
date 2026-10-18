@@ -10,6 +10,9 @@ import { rollDamage } from "../dice/tests.mjs";
 import { formatDenarii } from "../rules/horses.mjs";
 import { openWinterWizard } from "../winter/wizard.mjs";
 import { winterYear } from "../winter/engine.mjs";
+import { gearView, attackNotes } from "./gear-view.mjs";
+import { attackProfiles } from "../rules/equipment.mjs";
+import { giveStartingEquipment, hasGear, GEAR_TYPES } from "../documents/equipment.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -73,7 +76,13 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       removeHorse: ChevalierSheet.#onRemoveHorse,
       setMainHorse: ChevalierSheet.#onSetMainHorse,
       horseCharge: ChevalierSheet.#onHorseCharge,
-      openWinter: ChevalierSheet.#onOpenWinter
+      openWinter: ChevalierSheet.#onOpenWinter,
+      gearRoll: ChevalierSheet.#onGearRoll,
+      gearDamage: ChevalierSheet.#onGearDamage,
+      gearEquip: ChevalierSheet.#onGearEquip,
+      gearOpen: ChevalierSheet.#onGearOpen,
+      gearDelete: ChevalierSheet.#onGearDelete,
+      startingGear: ChevalierSheet.#onStartingGear
     }
   };
 
@@ -295,7 +304,23 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       used: system.glory.prestigeUsed,
       available: Math.max(0, system.prestigeEarned - system.glory.prestigeUsed)
     };
+
+    // Onglet Combat : armes, armure, bouclier
+    context.gear = gearView(actor, this.#gearStats());
     return context;
+  }
+
+  /** Valeurs du chevalier utiles au calcul des attaques. */
+  #gearStats() {
+    const system = this.document.system;
+    let horseCharge = "";
+    try { horseCharge = system.mainHorse ? (globalThis.fromUuidSync?.(system.mainHorse)?.system?.charge ?? "") : ""; } catch (e) { horseCharge = ""; }
+    return {
+      damageDice: system.derived.damageDice,
+      brawl: system.derived.brawlDamage,
+      horseCharge,
+      skills: Object.fromEntries(Object.entries(system.skills).map(([k, v]) => [k, v.value]))
+    };
   }
 
   async _preparePartContext(partId, context, options) {
@@ -473,6 +498,94 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (input.max !== "") value = Math.min(Number(input.max), value);
     input.value = value;
     input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  /** Seuls les objets d'équipement se rangent sur la fiche (pas les batailles ni les rencontres). */
+  async _onDropItem(event, item) {
+    if (!this.isEditable || !GEAR_TYPES.includes(item?.type)) return null;
+    // Objet déjà sur la fiche : rien à créer
+    if (item.parent?.uuid === this.document.uuid) return item;
+    const data = item.toObject();
+    delete data._id;
+    delete data.folder;
+    if (item.pack) foundry.utils.setProperty(data, "_stats.compendiumSource", item.uuid);
+    // Porté d'office, sauf s'il prend la place d'une pièce déjà portée (heaume, armure de corps, bouclier)
+    const worn = this.document.items.filter(i => i.type === item.type && i.system.equipped);
+    data.system.equipped = item.type === "arme" || !worn.some(i => item.type === "bouclier" || i.system.kind === item.system.kind);
+    const [created] = await this.document.createEmbeddedDocuments("Item", [data]);
+    if (created) { this.tabGroups.primary = "combat"; this.render(); }
+    return created ?? null;
+  }
+
+  /* -------------------------------------------- */
+  /*  Équipement                                   */
+  /* -------------------------------------------- */
+
+  /** Test de la compétence d'une arme (mêmes options que les autres tests : modificateur, passion). */
+  static async #onGearRoll(event, target) {
+    const item = this.document.items.get(target.dataset.id);
+    if (!item) return;
+    const mode = target.dataset.mode ?? "main";
+    const skill = mode === "thrown" ? (item.system.thrown.skill || "thrown") : item.system.skill;
+    const key = `skill.${skill}`;
+    const rollable = this.document.getRollable(key);
+    if (!rollable) return;
+    let options = { modifier: this._modifier, invoke: this._invoke };
+    if (event.shiftKey) {
+      options = await promptTestOptions(this.document, rollable, this._modifier, options.invoke);
+      if (!options) return;
+    }
+    const profile = attackProfiles(item.system, this.#gearStats()).find(p => p.mode === mode);
+    options.title = item.name;
+    options.subtitle = `${rollable.label}${profile?.label ? ` · ${game.i18n.format("PDVF.Gear.DamageShort", { damage: profile.label })}` : ""}`;
+    options.notes = [...(options.notes ?? []), ...attackNotes(this.document, item, mode)];
+    await rollAttribute(this.document, key, options);
+    if (this._modifier !== 0 || (options.invoke && this._invoke)) {
+      this._modifier = 0;
+      if (options.invoke) this._invoke = "";
+      this.render();
+    }
+  }
+
+  /** Jet de dégâts d'une arme (profil principal, variante ou lancer). */
+  static async #onGearDamage(event, target) {
+    const item = this.document.items.get(target.dataset.id);
+    if (!item) return;
+    const profile = attackProfiles(item.system, this.#gearStats()).find(p => p.mode === (target.dataset.mode ?? "main"));
+    if (!profile) return;
+    const alt = target.dataset.alt !== undefined ? profile.alts[Number(target.dataset.alt)] : null;
+    const formula = alt ? alt.formula : profile.formula;
+    if (!formula) return ui.notifications.warn(game.i18n.localize(item.system.damage.base === "horse" ? "PDVF.Gear.NoHorse" : "PDVF.Gear.NoDamage"));
+    const label = [item.name, profile.mode === "thrown" ? L("PDVF.Gear.ThrownShort") : "", alt?.label ?? ""].filter(Boolean).join(", ");
+    await rollDamage(this.document, formula, label);
+  }
+
+  static async #onGearEquip(event, target) {
+    const item = this.document.items.get(target.dataset.id);
+    if (item) await item.update({ "system.equipped": !item.system.equipped });
+  }
+
+  static #onGearOpen(event, target) {
+    this.document.items.get(target.dataset.id)?.sheet?.render(true);
+  }
+
+  static async #onGearDelete(event, target) {
+    const item = this.document.items.get(target.dataset.id);
+    if (!item) return;
+    const ok = await foundry.applications.api.DialogV2.confirm({
+      window: { title: L("PDVF.Gear.DeleteTitle") },
+      content: `<p>${game.i18n.format("PDVF.Gear.DeleteText", { name: item.name })}</p>`,
+      rejectClose: false
+    });
+    if (ok) await item.delete();
+  }
+
+  /** Équipement de départ : celui du chevalier adoubé, ou celui de l'écuyer. */
+  static async #onStartingGear() {
+    if (hasGear(this.document)) return;
+    const kind = this.document.system.biography.knightClass === "squire" ? "squire" : "knight";
+    const created = await giveStartingEquipment(this.document, kind);
+    if (created.length) ui.notifications.info(game.i18n.format("PDVF.Gear.StartingCreated", { count: created.length }));
   }
 
   /** Un PNJ déposé sur la fiche rejoint la suite du chevalier. */

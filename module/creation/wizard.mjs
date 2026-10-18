@@ -4,6 +4,7 @@ import { generateFamily } from "../family/generator.mjs";
 import { familyView } from "../family/view.mjs";
 import { applyFamilyHistory } from "../family/apply.mjs";
 import { createStartingHorses, createSquireNpc } from "../documents/followers.mjs";
+import { giveStartingEquipment, giveItems, hasGear } from "../documents/equipment.mjs";
 import { traitPair, formatValue } from "../rules/resolution.mjs";
 import { signed } from "../dice/tests.mjs";
 
@@ -576,6 +577,20 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       if (horses.length) ui.notifications.info(game.i18n.format("PDVF.Horse.StartingCreated", { count: horses.length }));
     } catch (err) {
       console.error("pendragon-vf | Chevaux de départ", err);
+    }
+    // Équipement de départ (chevalier ou écuyer) et objet de famille de la chance du débutant
+    try {
+      if (!hasGear(this.actor)) {
+        const gear = await giveStartingEquipment(this.actor, out.meta.knighted ? "knight" : "squire");
+        if (gear.length) ui.notifications.info(game.i18n.format("PDVF.Gear.StartingCreated", { count: gear.length }));
+      }
+      const luck = s.details.luck ? this.C.luck.find(l => l.r === s.details.luck) : null;
+      if (luck?.gear) {
+        const [item] = await giveItems(this.actor, [{ name: luck.gear }]);
+        if (item) ui.notifications.info(game.i18n.format("PDVF.Gear.LuckItem", { name: item.name }));
+      }
+    } catch (err) {
+      console.error("pendragon-vf | Équipement de départ", err);
     }
     // Prétiré : un écuyer de 14 ans (compétence Écuyer 14) entre dans la suite.
     const sq = out.meta.pregen?.squire;

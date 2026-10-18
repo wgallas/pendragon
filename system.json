@@ -38,7 +38,10 @@
     },
     "Item": {
       "bataille": {},
-      "rencontre": {}
+      "rencontre": {},
+      "arme": {},
+      "armure": {},
+      "bouclier": {}
     }
   },
   "grid": {

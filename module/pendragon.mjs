@@ -10,7 +10,9 @@ import { PnjSheet } from "./sheets/pnj-sheet.mjs";
 import { ChevalData } from "./data/cheval.mjs";
 import { ChevalSheet } from "./sheets/cheval-sheet.mjs";
 import * as followers from "./documents/followers.mjs";
-import { ensureAdversaries, ensureEncounters } from "./documents/compendium.mjs";
+import { ensureAdversaries, ensureEncounters, ensureEquipment } from "./documents/compendium.mjs";
+import { ArmeData, ArmureData, BouclierData } from "./data/equipement.mjs";
+import { EquipementSheet } from "./sheets/equipement-sheet.mjs";
 import * as winterEngine from "./winter/engine.mjs";
 import * as winterGm from "./winter/gm.mjs";
 import { openWinterWizard, WinterWizard } from "./winter/wizard.mjs";
@@ -34,7 +36,7 @@ Hooks.once("init", () => {
   // Données de création : les suppléments peuvent les compléter dans leur propre hook « init ».
   PDVF.creation = CREATION;
   game.pendragon = {
-    config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters,
+    config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters, importEquipment: ensureEquipment,
     tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient },
     winter: { engine: winterEngine, openPanel: winterGm.openWinterPanel, start: winterGm.startWinter, close: winterGm.closeWinter, open: openWinterWizard }
   };
@@ -47,6 +49,9 @@ Hooks.once("init", () => {
   CONFIG.Item.documentClass = PendragonItem;
   CONFIG.Item.dataModels.bataille = BatailleData;
   CONFIG.Item.dataModels.rencontre = RencontreData;
+  CONFIG.Item.dataModels.arme = ArmeData;
+  CONFIG.Item.dataModels.armure = ArmureData;
+  CONFIG.Item.dataModels.bouclier = BouclierData;
   CONFIG.Actor.trackableAttributes = {
     chevalier: { bar: ["health.hp"], value: [] },
     pnj: { bar: ["health.hp"], value: [] },
@@ -77,6 +82,13 @@ Hooks.once("init", () => {
         if (app instanceof ChevalierSheet || app instanceof winterGm.WinterPanel) app.render();
       }
     }
+  });
+
+  // Version du compendium des équipements déjà importée dans ce monde
+  game.settings.register(SYSTEM_ID, "equipmentVersion", {
+    scope: "world",
+    config: false,
+    type: new foundry.data.fields.NumberField({ required: true, integer: true, initial: 0 })
   });
 
   // Version du compendium des rencontres de bataille déjà importée dans ce monde
@@ -133,6 +145,11 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "PDVF.SheetLabel.rencontre"
   });
+  DSC.registerSheet(Item, SYSTEM_ID, EquipementSheet, {
+    types: ["arme", "armure", "bouclier"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.equipement"
+  });
 
   // Gabarits partiels
   foundry.applications.handlebars.loadTemplates([
@@ -164,6 +181,7 @@ Hooks.once("ready", async () => {
   winterGm.openOwnWizards();
   await ensureAdversaries();
   await ensureEncounters();
+  await ensureEquipment();
 });
 
 // Boutons des cartes de chat (crise de passion…)

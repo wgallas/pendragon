@@ -28,6 +28,36 @@
         <label><input type="checkbox" name="system.health.madness" {{checked system.health.madness}}> {{localize "PDVF.Health.madness"}}</label>
       </div>
     </section>
+
+    <section class="pdvf-gear-section">
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Gear.ArmorSection"}}</h2>
+      <div class="pdvf-armor-total">
+        <span><span class="pdvf-derived-label">{{localize "PDVF.Gear.ArmorPoints"}}</span> <strong>{{gear.armor}}</strong></span>
+        <span><span class="pdvf-derived-label">{{localize "PDVF.Gear.ShieldPoints"}}</span> <strong>{{gear.shield}}</strong></span>
+      </div>
+      {{#if gear.pieces.length}}
+      <ul class="pdvf-armor-list">
+        {{#each gear.pieces}}
+        <li class="{{#unless equipped}}stowed{{/unless}}">
+          <button type="button" class="pdvf-icon-btn pdvf-equip {{#if equipped}}on{{/if}}" data-action="gearEquip" data-id="{{id}}"
+            aria-pressed="{{#if equipped}}true{{else}}false{{/if}}" data-tooltip="{{#if equipped}}{{localize 'PDVF.Gear.Unequip'}}{{else}}{{localize 'PDVF.Gear.Equip'}}{{/if}}"
+            aria-label="{{localize 'PDVF.Gear.Equipped'}}"><i class="fa-solid {{#if equipped}}fa-shirt{{else}}fa-box-archive{{/if}}"></i></button>
+          <img src="{{img}}" alt="" class="pdvf-gear-icon">
+          <button type="button" class="pdvf-link" data-action="gearOpen" data-id="{{id}}" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}</button>
+          <span class="pdvf-gear-tag">{{detail}}</span>
+          <span class="pdvf-armor-value">{{#if isShield}}<i class="fa-solid fa-shield-halved" aria-hidden="true"></i> {{/if}}{{value}}</span>
+          {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="gearDelete" data-id="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+      {{/if}}
+      {{#each gear.warnings}}<p class="pdvf-warn">{{this}}</p>{{/each}}
+      {{#each gear.notes}}<p class="pdvf-hint">{{this}}</p>{{/each}}
+      {{#unless gear.hasGear}}
+      <p class="pdvf-hint">{{localize "PDVF.Gear.DropHint"}}</p>
+      {{#if editable}}<button type="button" class="pdvf-btn" data-action="startingGear"><i class="fa-solid fa-chess-knight" aria-hidden="true"></i> {{localize "PDVF.Gear.StartingButton"}}</button>{{/if}}
+      {{/unless}}
+    </section>
   </div>
   <div class="pdvf-col-right">
     <section>
@@ -40,7 +70,43 @@
         <span class="pdvf-derived-label">{{localize "PDVF.Derived.brawlDamage.label"}}</span>
         <span class="pdvf-derived-value">{{system.derived.brawlDamage}}</span>
       </div>
-      <p class="pdvf-upcoming">{{localize "PDVF.Upcoming.Combat"}}</p>
+    </section>
+
+    <section class="pdvf-gear-section">
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Gear.Weapons"}}</h2>
+      {{#if gear.weapons.length}}
+      <ul class="pdvf-weapons">
+        {{#each gear.weapons}}
+        <li class="pdvf-weapon {{#unless equipped}}stowed{{/unless}}">
+          <div class="pdvf-weapon-head">
+            <button type="button" class="pdvf-icon-btn pdvf-equip {{#if equipped}}on{{/if}}" data-action="gearEquip" data-id="{{id}}"
+              aria-pressed="{{#if equipped}}true{{else}}false{{/if}}" data-tooltip="{{#if equipped}}{{localize 'PDVF.Gear.Unequip'}}{{else}}{{localize 'PDVF.Gear.Equip'}}{{/if}}"
+              aria-label="{{localize 'PDVF.Gear.Equipped'}}"><i class="fa-solid {{#if equipped}}fa-hand-fist{{else}}fa-box-archive{{/if}}"></i></button>
+            <img src="{{img}}" alt="" class="pdvf-gear-icon">
+            <button type="button" class="pdvf-link pdvf-weapon-name" data-action="gearOpen" data-id="{{id}}" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}{{#if multiple}} ×{{quantity}}{{/if}}</button>
+            {{#if parry}}<span class="pdvf-gear-tag" data-tooltip="{{localize 'PDVF.Gear.Parry'}}">{{localize "PDVF.Gear.ParryShort"}} +{{parry}}</span>{{/if}}
+            {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="gearDelete" data-id="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+          </div>
+          {{#each profiles}}
+          <div class="pdvf-weapon-profile">
+            {{#if modeLabel}}<span class="pdvf-weapon-mode">{{modeLabel}}</span>{{/if}}
+            <button type="button" class="pdvf-gear-test" data-action="gearRoll" data-id="{{../id}}" data-mode="{{mode}}"
+              data-tooltip="{{localize 'PDVF.Gear.TestTip'}}"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i> {{skillLabel}} <strong>{{skillValue}}</strong></button>
+            <button type="button" class="pdvf-gear-dmg {{#if missing}}missing{{/if}}" data-action="gearDamage" data-id="{{../id}}" data-mode="{{mode}}"
+              data-tooltip="{{localize 'PDVF.Gear.DamageTip'}}"><i class="fa-solid fa-burst" aria-hidden="true"></i> {{label}}</button>
+            {{#each alts}}
+            <button type="button" class="pdvf-gear-dmg alt" data-action="gearDamage" data-id="{{../../id}}" data-mode="{{../mode}}" data-alt="{{@index}}"
+              data-tooltip="{{label}}">{{damage}} <small>{{label}}</small></button>
+            {{/each}}
+            {{#if rangeLabel}}<span class="pdvf-gear-tag">{{rangeLabel}}</span>{{/if}}
+          </div>
+          {{/each}}
+        </li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <p class="pdvf-hint">{{localize "PDVF.Gear.NoWeapons"}}</p>
+      {{/if}}
     </section>
   </div>
 </section>

@@ -1219,3 +1219,45 @@
 .pendragon-vf .pdvf-economy { display: grid; grid-template-columns: 140px 140px 220px; gap: 4px 16px; align-items: end; }
 .pendragon-vf .pdvf-economy-amount { font-size: 20px; font-variant-numeric: tabular-nums; }
 .pendragon-vf.pdvf-winter-panel .window-content { display: flex; flex-direction: column; }
+
+/* Équipement : fiche d'objet */
+.pendragon-vf .pdvf-battle-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pendragon-vf .pdvf-gear { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.pendragon-vf .pdvf-gear-body { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 22px 22px; }
+.pendragon-vf .pdvf-gear textarea { width: 100%; font-family: var(--pdvf-font-body); font-size: 15px; }
+.pendragon-vf .pdvf-gear-summary { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 15px; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-gear-type { font-family: var(--pdvf-font-heading); color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-gear-alt { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
+.pendragon-vf .pdvf-gear-alt input[type="text"] { flex: 1; }
+.pendragon-vf .pdvf-gear-alt input[type="number"] { width: 52px; }
+.pendragon-vf .pdvf-gear .pdvf-field-check { flex-direction: row; align-items: center; gap: 6px; }
+.pendragon-vf .pdvf-gear .pdvf-h3 .pdvf-check { font: inherit; color: inherit; display: inline-flex; align-items: center; gap: 6px; }
+
+/* Équipement : onglet Combat du chevalier */
+.pendragon-vf .pdvf-gear-section { margin-top: 14px; }
+.pendragon-vf .pdvf-gear-icon { width: 28px; height: 28px; flex: none; border: 0; object-fit: contain; }
+.pendragon-vf .pdvf-weapons, .pendragon-vf .pdvf-armor-list { list-style: none; margin: 0; padding: 0; }
+.pendragon-vf .pdvf-weapon { padding: 6px 0 7px; border-bottom: 1px dotted var(--pdvf-rule); }
+.pendragon-vf .pdvf-weapon.stowed, .pendragon-vf .pdvf-armor-list li.stowed { opacity: 0.62; }
+.pendragon-vf .pdvf-weapon-head, .pendragon-vf .pdvf-armor-list li { display: flex; align-items: center; gap: 8px; }
+.pendragon-vf .pdvf-armor-list li { padding: 4px 0; border-bottom: 1px dotted var(--pdvf-rule); }
+.pendragon-vf .pdvf-weapon-name { font-family: var(--pdvf-font-heading); font-size: 16px; margin-right: auto; text-align: left; }
+.pendragon-vf .pdvf-armor-list .pdvf-link { margin-right: auto; text-align: left; font-size: 15px; }
+.pendragon-vf .pdvf-weapon-profile { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 6px; margin: 4px 0 0 36px; }
+.pendragon-vf .pdvf-weapon-mode { font-size: 13px; font-style: italic; color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-gear-test, .pendragon-vf .pdvf-gear-dmg {
+  width: auto; height: auto; line-height: 1.2; padding: 3px 9px; margin: 0; font-family: var(--pdvf-font-body); font-size: 14px;
+  background: var(--pdvf-parchment-light); border: 1px solid var(--pdvf-rule-strong); border-radius: 2px; color: var(--pdvf-ink); cursor: pointer;
+}
+.pendragon-vf .pdvf-gear-test strong { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-gear-dmg i { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-gear-dmg.alt { font-size: 13px; border-style: dashed; }
+.pendragon-vf .pdvf-gear-dmg.alt small { color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-gear-dmg.missing { color: var(--pdvf-ink-faint); }
+.pendragon-vf .pdvf-gear-test:hover, .pendragon-vf .pdvf-gear-dmg:hover { border-color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-equip { color: var(--pdvf-ink-faint); }
+.pendragon-vf .pdvf-equip.on { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-armor-total { display: flex; gap: 22px; margin: 0 0 6px; font-size: 15px; }
+.pendragon-vf .pdvf-armor-total strong { font-size: 22px; color: var(--pdvf-vermilion); font-family: var(--pdvf-font-heading); }
+.pendragon-vf .pdvf-armor-value { min-width: 34px; text-align: right; font-weight: 600; }
+.pendragon-vf .pdvf-gear-tag { font-size: 13px; color: var(--pdvf-ink-soft); white-space: nowrap; }

@@ -1,0 +1,2823 @@
+{
+ "version": 1,
+ "folders": [
+  {
+   "_id": "8c4a981be26c7e37",
+   "name": "Armes de mêlée",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 100,
+   "color": null
+  },
+  {
+   "_id": "9589aaec67c0520d",
+   "name": "Armes de rixe et improvisées",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 200,
+   "color": null
+  },
+  {
+   "_id": "c797929d06b1f54c",
+   "name": "Armes de jet",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 300,
+   "color": null
+  },
+  {
+   "_id": "40b99a1d12cb0b67",
+   "name": "Armures",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 400,
+   "color": null
+  },
+  {
+   "_id": "511df03b76ce8463",
+   "name": "Heaumes",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 500,
+   "color": null
+  },
+  {
+   "_id": "597f10cc882526c8",
+   "name": "Boucliers",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 600,
+   "color": null
+  },
+  {
+   "_id": "999e09480b8ff7d4",
+   "name": "Objets de famille et butin",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 700,
+   "color": null
+  },
+  {
+   "_id": "b029b79ea9be18b0",
+   "name": "Périodes ultérieures (appendice A)",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 800,
+   "color": null
+  }
+ ],
+ "items": [
+  {
+   "_id": "fff443e7d144de15",
+   "name": "Épée",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "L'arme du chevalier par excellence : lame droite à double tranchant de 70 à 80 cm, garde, poignée à une main et pommeau. Un chevalier a le droit de la porter partout, même à la cour.",
+    "period": "all",
+    "periodNote": "",
+    "price": 120,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +3 ; brise les autres armes sur une égalité ; ne se brise pas sur un échec critique.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "89a30622ffee2c51",
+   "name": "Épée bon marché",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Épée de moindre facture, citée seulement dans la liste des prix : on lui donne ici les valeurs de l'épée.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, prix p. 208",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +3 ; brise les autres armes sur une égalité ; ne se brise pas sur un échec critique.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "742a1d04d973710b",
+   "name": "Lance",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/spear.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Arme d'estoc de 2 à 2,50 m, la plus répandue des champs de bataille de Bretagne. Se manie à une main avec un bouclier ou à deux mains, à pied ou à cheval, et peut se lancer (Arme lancée).",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) et 8.2 ; prix p. 208",
+    "group": "melee",
+    "skill": "spear",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "à deux mains, sans bouclier",
+      "dice": 2
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 4
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue ; +2D6 aux dégâts à deux mains.",
+    "disadvantage": "Pas de bouclier à deux mains. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "8207fe0c6ba0e5a8",
+   "name": "Javelot",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/javelin.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Lance courte (1 à 1,50 m) faite pour être lancée, utilisable aussi en combat rapproché.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) et 8.2 ; prix p. 208",
+    "group": "melee",
+    "skill": "spear",
+    "use": "both",
+    "damage": {
+     "base": "brawl",
+     "dice": 1,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 3
+     },
+     "range": "medium"
+    },
+    "advantage": "",
+    "disadvantage": "Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "4ed2894c8f26c664",
+   "name": "Lance de cavalerie",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/lance.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Lance de combat en bois robuste (frêne, hêtre), réservée à la Charge montée ; hors charge, elle se manie comme une lance (compétence Lance).",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "charge",
+    "use": "horse",
+    "damage": {
+     "base": "horse",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue.",
+    "disadvantage": "Brisée sur une égalité, un succès partiel ou un échec critique lors d'une Charge montée."
+   }
+  },
+  {
+   "_id": "22551b32be2c6fbf",
+   "name": "Lance de joute",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/lance.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Lance de bois fragile, pour les joutes : elle casse bien plus souvent que la lance de cavalerie.",
+    "period": "boyKing",
+    "periodNote": "",
+    "price": 3,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "charge",
+    "use": "horse",
+    "damage": {
+     "base": "horse",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue.",
+    "disadvantage": "Pointe émoussée : dégâts amortis (moitié des dégâts). Se brise aussi sur une charge réussie dont le dé est pair (la table dit pair, le texte du chapitre dit impair)."
+   }
+  },
+  {
+   "_id": "80692f890cdd744f",
+   "name": "Hache de bataille",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/axe.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Hache à une main et à lame unique, de 60 à 90 cm, plus lourde qu'une hache de bûcheron : elle enfonce les boucliers.",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "hafted",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": true,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Réduit la protection du bouclier à 1D6. Contre un adversaire qui peut se servir de son bouclier, celui-ci ne bloque que 1D6 points (dans la limite de sa protection) ; sur un 1, il se brise.",
+    "disadvantage": "Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "1bc040a39432da73",
+   "name": "Masse d'armes",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/mace.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Gourdin à tête de fer d'environ 90 cm, souvent à ailettes, redoutable contre les mailles. On appelle « étoiles du matin » certaines masses à pointes.",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "hafted",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de mailles",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "+1D6 aux dégâts contre une armure de mailles.",
+    "disadvantage": "Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "483463e4149bbad3",
+   "name": "Gourdin",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/club.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Simple bâton d'arme à une main.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "hafted",
+    "use": "both",
+    "damage": {
+     "base": "brawl",
+     "dice": 1,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Brisée par une épée sur une égalité."
+   }
+  },
+  {
+   "_id": "9b517fcf1eb71b6b",
+   "name": "Francisque",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/francisca.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Petite hache à une main des Saxons et des Francs, faite pour être lancée ; en mêlée, ce n'est qu'une arme de secours.",
+    "period": "all",
+    "periodNote": "",
+    "price": 15,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) et 8.2 ; prix p. 208",
+    "group": "melee",
+    "skill": "hafted",
+    "use": "foot",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": true,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Lancée : dégâts normaux contre un adversaire équipé d'un bouclier.",
+    "disadvantage": "En mêlée, au contact ou en combat rapproché seulement ; brisée par une épée sur une égalité."
+   }
+  },
+  {
+   "_id": "db0661327ca48cac",
+   "name": "Grande hache",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greataxe.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Grande arme d'environ 1,50 m à lame simple ou double, surtout maniée par les Saxons.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": true,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Réduit la protection du bouclier à 1D6. Contre un adversaire qui peut se servir de son bouclier, celui-ci ne bloque que 1D6 points (dans la limite de sa protection) ; sur un 1, il se brise.",
+    "disadvantage": "Pas de bouclier ; brisée sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "bdb9b3bcb4ad64c0",
+   "name": "Grande masse d'armes",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greatmace.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Lourd gourdin de fer à ailettes d'environ 1,50 m, à deux mains.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de mailles",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Contre une cotte de mailles : +3D6 au lieu de +2D6.",
+    "disadvantage": "Pas de bouclier ; brisée sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "8a52be82eb9e6eef",
+   "name": "Maillet",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/maul.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Gros marteau à tête de bois d'environ 1,50 m, arme de paysan.",
+    "period": "all",
+    "periodNote": "",
+    "price": 15,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Pas de bouclier. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "25269469c90d485d",
+   "name": "Massue",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greatclub.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Grande pièce de bois massif, jusqu'à 2 m : une branche, voire un pied de table.",
+    "period": "all",
+    "periodNote": "",
+    "price": 20,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Pas de bouclier. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "113fb26f864766d8",
+   "name": "Bâton (Épée)",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/staff.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Bâton de combat manié comme une épée. Les écuyers s'en servent pour s'entraîner.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "sword",
+    "use": "foot",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 2,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +2.",
+    "disadvantage": "Pas de bouclier ; brisé sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "a1118d9db5ad92f4",
+   "name": "Bâton (Lance)",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/staff.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Bâton de combat manié comme une lance, avec un bouclier.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "spear",
+    "use": "foot",
+    "damage": {
+     "base": "brawl",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Brisé sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "667d52194371000a",
+   "name": "Bâton (Armes longues)",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/staff.svg",
+   "folder": "8c4a981be26c7e37",
+   "system": {
+    "description": "Bâton de combat manié à deux mains comme une arme longue.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "brawl",
+     "dice": 1,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 4,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +4.",
+    "disadvantage": "Pas de bouclier ; brisé sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "d439331dd1af0814",
+   "name": "Dague",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/dagger.svg",
+   "folder": "9589aaec67c0520d",
+   "system": {
+    "description": "Couteau à double tranchant et pointe aiguisée, porté par tous comme un outil ; l'arme de dernier recours du chevalier. Lancée, elle vole mal (dégâts de Rixe).",
+    "period": "all",
+    "periodNote": "",
+    "price": 20,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) et 8.2 ; prix p. 208",
+    "group": "brawl",
+    "skill": "brawling",
+    "use": "both",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "brawl",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "e9de48b8dc34a1f8",
+   "name": "Scramasaxe",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/seax.svg",
+   "folder": "9589aaec67c0520d",
+   "system": {
+    "description": "Grand couteau à un tranchant, arme secondaire des guerriers saxons ; rare hors de leurs terres, sauf comme prise de guerre.",
+    "period": "all",
+    "periodNote": "",
+    "price": 40,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.1 (p. 162) ; prix p. 208",
+    "group": "brawl",
+    "skill": "brawling",
+    "use": "foot",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 1,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +1.",
+    "disadvantage": "Brisé sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "6c5ba8f871093bbc",
+   "name": "Arme improvisée",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/club.svg",
+   "folder": "9589aaec67c0520d",
+   "system": {
+    "description": "Pierre, branche, outil, tabouret ou banc : Rixe en mêlée, Arme lancée à distance.",
+    "period": "all",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, p. 164",
+    "group": "brawl",
+    "skill": "brawling",
+    "use": "both",
+    "damage": {
+     "base": "brawl",
+     "dice": 1,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "à deux mains",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "none",
+      "dice": 1,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Lancée : 1D6 (objet léger, portée courte) ou 2D6 (objet lourd, portée de mêlée longue).",
+    "disadvantage": "−5 à tous les tests : ce n'est pas une arme."
+   }
+  },
+  {
+   "_id": "70b60386d87e72a1",
+   "name": "Arc simple",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/bow.svg",
+   "folder": "c797929d06b1f54c",
+   "system": {
+    "description": "Arc d'une seule pièce de bois, de 1 m à 1,20 m, pour la chasse et la guerre. Les chevaliers ne s'en servent qu'à la chasse, sauf en cas de siège.",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.2 (p. 166) ; prix p. 208",
+    "group": "missile",
+    "skill": "bow",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": -1,
+     "flat": 0,
+     "max": 3
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "medium",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Un archer entraîné (non chevalier) lance tous ses dés de dégâts, dans la limite du maximum.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "77b4032fb82796ad",
+   "name": "Arc long",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/longbow.svg",
+   "folder": "c797929d06b1f54c",
+   "system": {
+    "description": "Arc de chasse des tribus de Cambrie, introuvable ailleurs. Prix non indiqué (celui d'un arc : 30 d.).",
+    "period": "all",
+    "periodNote": "Cambrie",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.2 (p. 166)",
+    "group": "missile",
+    "skill": "bow",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": -1,
+     "flat": 0,
+     "max": 4
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "long",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Un archer entraîné (non chevalier) lance tous ses dés de dégâts, dans la limite du maximum.",
+    "disadvantage": "Il faut Arc 12 et FOR 12 pour en tirer tout le potentiel ; sinon, il compte comme un arc simple."
+   }
+  },
+  {
+   "_id": "e486f6b5db567d70",
+   "name": "Arc de guerre",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/longbow.svg",
+   "folder": "c797929d06b1f54c",
+   "system": {
+    "description": "Puissant arc long qui demande un entraînement particulier.",
+    "period": "all",
+    "periodNote": "Cambrie",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.2 (p. 166)",
+    "group": "missile",
+    "skill": "bow",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": -1,
+     "flat": 0,
+     "max": 5
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "long",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Un archer entraîné (non chevalier) lance tous ses dés de dégâts, dans la limite du maximum.",
+    "disadvantage": "Il faut Arc 15 et FOR 15 pour en tirer tout le potentiel ; sinon, il compte comme un arc simple."
+   }
+  },
+  {
+   "_id": "1bc4ee04e6171c8d",
+   "name": "Arbalète légère",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/crossbow.svg",
+   "folder": "c797929d06b1f54c",
+   "system": {
+    "description": "Arbalète « à un pied » : on glisse le pied dans l'étrier pour tendre la corde à la main. Plus souvent utilisée à la chasse qu'à la guerre.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 8.2 (p. 166) ; prix p. 208",
+    "group": "missile",
+    "skill": "crossbow",
+    "use": "both",
+    "damage": {
+     "base": "none",
+     "dice": 1,
+     "flat": 10,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "medium",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Il faut être à pied pour la recharger."
+   }
+  },
+  {
+   "_id": "91375a22b4589ad6",
+   "name": "Auqueton",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/aketon.svg",
+   "folder": "40b99a1d12cb0b67",
+   "system": {
+    "description": "Matelassage souple de tissu et de laine en couches épaisses, porté sous les mailles. Se revêt seul en autant de tours que sa protection.",
+    "period": "all",
+    "periodNote": "",
+    "price": 15,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.2 (p. 173) ; prix p. 208",
+    "kind": "padding",
+    "material": "textile",
+    "value": 2,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": ""
+   }
+  },
+  {
+   "_id": "b68056891e0dd2eb",
+   "name": "Gambison",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/gambison.svg",
+   "folder": "40b99a1d12cb0b67",
+   "system": {
+    "description": "Comme l'auqueton, mais bien plus épais et raide autour du torse. Porté seul par les fantassins, ou par les chevaliers à la chasse au gibier dangereux.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.2 (p. 173) ; prix p. 208",
+    "kind": "body",
+    "material": "textile",
+    "value": 4,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": ""
+   }
+  },
+  {
+   "_id": "b7447914ee7b57ce",
+   "name": "Haubergeon",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/hauberk_short.svg",
+   "folder": "40b99a1d12cb0b67",
+   "system": {
+    "description": "Cotte de mailles légère (broigne) : du cou à mi-cuisse, les bras jusqu'au-dessus des coudes.",
+    "period": "all",
+    "periodNote": "",
+    "price": 150,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.2 (p. 173) ; prix p. 208",
+    "kind": "body",
+    "material": "mail",
+    "value": 4,
+    "layered": 0,
+    "padding": true,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Se porte sur un auqueton (le prix comprend l'auqueton)."
+   }
+  },
+  {
+   "_id": "c99e66c4ebd9665c",
+   "name": "Haubert",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/mail.svg",
+   "folder": "40b99a1d12cb0b67",
+   "system": {
+    "description": "Cotte de mailles jusqu'aux genoux, fendue pour monter à cheval ; portée avec un heaume à nasal.",
+    "period": "all",
+    "periodNote": "",
+    "price": 390,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.2 (p. 173) ; prix p. 208",
+    "kind": "body",
+    "material": "mail",
+    "value": 6,
+    "layered": 0,
+    "padding": true,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Se porte sur un auqueton (le prix comprend l'auqueton)."
+   }
+  },
+  {
+   "_id": "980042694b83c590",
+   "name": "Haubert avancé",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/mail_adv.svg",
+   "folder": "40b99a1d12cb0b67",
+   "system": {
+    "description": "Haubert complété de gantelets et de chausses de mailles, de brassards et de grèves de cuir bouilli.",
+    "period": "boyKing",
+    "periodNote": "",
+    "price": 720,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.2 (p. 173) ; prix p. 208",
+    "kind": "body",
+    "material": "mail",
+    "value": 7,
+    "layered": 0,
+    "padding": true,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Se porte sur un auqueton (le prix comprend l'auqueton)."
+   }
+  },
+  {
+   "_id": "b20e0fd605e00e1a",
+   "name": "Cotte de plates",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/coat_plates.svg",
+   "folder": "40b99a1d12cb0b67",
+   "system": {
+    "description": "Plaques de métal rivetées sous un surcot de cuir ou de toile, dernière nouveauté de la fin de la période (515 et après). On ne l'achète pas : seuls les nobles fortunés l'ont, ou l'offrent à un chevalier fidèle.",
+    "period": "boyKingLate",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.2 (p. 173)",
+    "kind": "overlay",
+    "material": "plate",
+    "value": 6,
+    "layered": 1,
+    "padding": false,
+    "closed": false,
+    "moveFoot": -5,
+    "notes": "Portée sur un haubert : +1 de protection et plus de bonus des armes contre les mailles. −5 au Mouvement à pied."
+   }
+  },
+  {
+   "_id": "7069c0eee3aa5388",
+   "name": "Chapel de fer",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/kettle.svg",
+   "folder": "511df03b76ce8463",
+   "system": {
+    "description": "Heaume ouvert à large bord, commun chez les fantassins. Prix : celui du heaume ouvert.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.3 (p. 175) ; prix p. 208",
+    "kind": "helm",
+    "material": "mail",
+    "value": 1,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": ""
+   }
+  },
+  {
+   "_id": "9a057a47752d467a",
+   "name": "Heaume ouvert",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/helm_open.svg",
+   "folder": "511df03b76ce8463",
+   "system": {
+    "description": "Cervelière arrondie, le heaume le plus simple et le moins cher, des fantassins et des chevaliers désargentés. Camail compris.",
+    "period": "all",
+    "periodNote": "",
+    "price": 60,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.3 (p. 175) ; prix p. 208",
+    "kind": "helm",
+    "material": "mail",
+    "value": 1,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": ""
+   }
+  },
+  {
+   "_id": "ffbc360347d7ede4",
+   "name": "Heaume à nasal",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/helm_nasal.svg",
+   "folder": "511df03b76ce8463",
+   "system": {
+    "description": "Heaume conique standard des chevaliers de la période, avec une barre qui protège le nez et une jugulaire. Camail compris.",
+    "period": "all",
+    "periodNote": "",
+    "price": 90,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.3 (p. 175) ; prix p. 208",
+    "kind": "helm",
+    "material": "mail",
+    "value": 2,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": ""
+   }
+  },
+  {
+   "_id": "a7e7c0bc3a6aa751",
+   "name": "Heaume à nasal avancé",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/helm_nasal_adv.svg",
+   "folder": "511df03b76ce8463",
+   "system": {
+    "description": "Heaume à nasal complété de garde-joues, d'un couvre-nuque de mailles et d'une visagière : le premier heaume « fermé ».",
+    "period": "boyKing",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.3 (p. 175) ; prix p. 208",
+    "kind": "helm",
+    "material": "mail",
+    "value": 3,
+    "layered": 0,
+    "padding": false,
+    "closed": true,
+    "moveFoot": 0,
+    "notes": "Heaume fermé : −5 aux tests de Vigilance (vue, ouïe) ; visage méconnaissable."
+   }
+  },
+  {
+   "_id": "77e20283f34b91ea",
+   "name": "Bouclier normand",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_norman.svg",
+   "folder": "597f10cc882526c8",
+   "system": {
+    "description": "Long bouclier en larme des chevaliers de la période, tenu par une poignée, des attaches d'avant-bras et une guige ; conçu contre les flèches et pour la charge.",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.4 (p. 176) ; prix p. 208",
+    "size": "large",
+    "value": 6,
+    "rangedPenalty": -10,
+    "mountedPenalty": -2,
+    "chargeExempt": true,
+    "noMissile": false,
+    "disadvantage": "",
+    "notes": "Pas de pénalité à cheval pour une Charge à la lance (simple ou de cavalerie)."
+   }
+  },
+  {
+   "_id": "6d402c2863fee86e",
+   "name": "Bouclier rond",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_round.svg",
+   "folder": "597f10cc882526c8",
+   "system": {
+    "description": "Bouclier à umbo de l'infanterie, le favori des Saxons et des peuples germaniques.",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.4 (p. 176) ; prix p. 208",
+    "size": "large",
+    "value": 6,
+    "rangedPenalty": -10,
+    "mountedPenalty": -2,
+    "chargeExempt": false,
+    "noMissile": false,
+    "disadvantage": "",
+    "notes": ""
+   }
+  },
+  {
+   "_id": "9f4d3c20f316ca28",
+   "name": "Scutum",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/scutum.svg",
+   "folder": "597f10cc882526c8",
+   "system": {
+    "description": "Bouclier romain ovale, avec des attaches pour de petits javelots plombés (plumbatae).",
+    "period": "all",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.4 (p. 176) ; prix p. 208",
+    "size": "large",
+    "value": 6,
+    "rangedPenalty": -10,
+    "mountedPenalty": -2,
+    "chargeExempt": false,
+    "noMissile": false,
+    "disadvantage": "",
+    "notes": ""
+   }
+  },
+  {
+   "_id": "ea26248bca3aa2c2",
+   "name": "Bouclier simple",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_plain.svg",
+   "folder": "597f10cc882526c8",
+   "system": {
+    "description": "Bouclier de l'infanterie ordinaire, de la taille d'un bouclier rond mais de moindre facture.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.4 (p. 176) ; prix p. 208",
+    "size": "medium",
+    "value": 6,
+    "rangedPenalty": -5,
+    "mountedPenalty": 0,
+    "chargeExempt": false,
+    "noMissile": false,
+    "disadvantage": "Brisé s'il sert contre un succès critique de l'adversaire.",
+    "notes": ""
+   }
+  },
+  {
+   "_id": "23f1050bd7e85287",
+   "name": "Rondache",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/buckler.svg",
+   "folder": "597f10cc882526c8",
+   "system": {
+    "description": "Petit bouclier rond ou ovale à poignée centrale, pratique en combat rapproché.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.4 (p. 176) ; prix p. 208",
+    "size": "small",
+    "value": 4,
+    "rangedPenalty": 0,
+    "mountedPenalty": 0,
+    "chargeExempt": false,
+    "noMissile": true,
+    "disadvantage": "Aucune protection contre les armes de jet ni contre les charges.",
+    "notes": "+1D6 aux dégâts d'une attaque à mains nues ; peut être lâchée au début d'un tour sans pénalité."
+   }
+  },
+  {
+   "_id": "5946bf7c64531667",
+   "name": "Targe",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/targe.svg",
+   "folder": "597f10cc882526c8",
+   "system": {
+    "description": "Petit bouclier sanglé à l'avant-bras gauche.",
+    "period": "all",
+    "periodNote": "",
+    "price": 10,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 9.4 (p. 176) ; prix p. 208",
+    "size": "small",
+    "value": 4,
+    "rangedPenalty": 0,
+    "mountedPenalty": 0,
+    "chargeExempt": false,
+    "noMissile": true,
+    "disadvantage": "Aucune protection contre les armes de jet ni contre les charges ; aucune protection si la main est occupée.",
+    "notes": "Attachée au bras : laisse la main libre et ne gêne ni la Saisie ni la Rixe à deux mains ; ne peut pas être lâchée."
+   }
+  },
+  {
+   "_id": "26b7212453c68296",
+   "name": "Belle épée",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Épée de belle facture trouvée dans un camp pillé (valeur 1 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du maître, Tables 6.11 et 6.12 (butin de camp)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 1,
+    "alts": [],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "+1 aux dégâts. Parade +3 ; brise les autres armes sur une égalité ; ne se brise pas sur un échec critique.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "09e1447bdebe9452",
+   "name": "Magnifique épée",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille (chance du débutant), valeur 5 £.",
+    "period": "all",
+    "periodNote": "",
+    "price": 1200,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (10)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 1,
+    "alts": [],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "+1 aux dégâts. Parade +3 ; brise les autres armes sur une égalité ; ne se brise pas sur un échec critique.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "5d6343a3053e8e99",
+   "name": "Épée à la devise familiale",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : belle épée gravée d'or à la devise de la famille (valeur 1 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (20)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "+5 en Amour (Famille) au combat. Parade +3 ; brise les autres armes sur une égalité ; ne se brise pas sur un échec critique.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "c676794d8d41e411",
+   "name": "Spatha romaine",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : épée romaine au fourreau d'or et d'argent (valeur 5 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 1200,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (8)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "+5 en Courtoisie dans une cour romaine, ou une faveur F5 si on l'offre à un seigneur romain.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "50153de87917f7da",
+   "name": "Lances du chef franc",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/spear.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : paire de lances offertes par un chef franc (valeur 2 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 480,
+    "quantity": 2,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (3)",
+    "group": "melee",
+    "skill": "spear",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "à deux mains, sans bouclier",
+      "dice": 2
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 4
+     },
+     "range": "short"
+    },
+    "advantage": "+1 en Valeureux quand on s'en sert ; croix annuelle en Fier.",
+    "disadvantage": "Pas de bouclier à deux mains. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "dcf4a7f059d0545b",
+   "name": "Lance à la hure de sanglier",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/spear.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : fer de lance gravé d'une hure de sanglier (valeur 1 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (7)",
+    "group": "melee",
+    "skill": "spear",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre un sanglier",
+      "dice": 1
+     },
+     {
+      "label": "à deux mains, sans bouclier",
+      "dice": 2
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 4
+     },
+     "range": "short"
+    },
+    "advantage": "+1D6 aux dégâts contre les sangliers.",
+    "disadvantage": "Pas de bouclier à deux mains. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "655e5f95c1398f6c",
+   "name": "Lance de frêne des druides",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/spear.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : lance de frêne offerte par les druides (valeur 1 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (17)",
+    "group": "melee",
+    "skill": "spear",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "à deux mains, sans bouclier",
+      "dice": 2
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 4
+     },
+     "range": "short"
+    },
+    "advantage": "Croix annuelle à tous les traits païens, si on le souhaite.",
+    "disadvantage": "Pas de bouclier à deux mains. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "f03d90e6516b33e9",
+   "name": "Lance bénie par saint Dewi",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/spear.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : lance bénie par saint Dewi (valeur 1 £).",
+    "period": "all",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (19)",
+    "group": "melee",
+    "skill": "spear",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "à deux mains, sans bouclier",
+      "dice": 2
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": -1,
+      "flat": 0,
+      "max": 4
+     },
+     "range": "short"
+    },
+    "advantage": "Croix annuelle à tous les traits chrétiens, si on le souhaite.",
+    "disadvantage": "Pas de bouclier à deux mains. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "de61e26a40ae63f3",
+   "name": "Bouclier d'if griffé",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_norman.svg",
+   "folder": "999e09480b8ff7d4",
+   "system": {
+    "description": "Objet de famille : bouclier d'if marqué des griffes d'un monstre (valeur 1 £). Le livre n'en donne pas le type : valeurs d'un bouclier normand, à ajuster.",
+    "period": "all",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table 3.9 (16)",
+    "size": "large",
+    "value": 6,
+    "rangedPenalty": -10,
+    "mountedPenalty": -2,
+    "chargeExempt": true,
+    "noMissile": false,
+    "disadvantage": "",
+    "notes": "+2 en Valeureux quand on s'en sert."
+   }
+  },
+  {
+   "_id": "c8a10bf3081677dc",
+   "name": "Épée longue",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/sword.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Épée à une main et demie : +2D6 à deux mains, ou +3D6 contre les plates au combat rapproché, prise en demi-épée.",
+    "period": "tournament",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "à deux mains, sans bouclier",
+      "dice": 2
+     },
+     {
+      "label": "contre plates, en demi-épée",
+      "dice": 3
+     }
+    ],
+    "parry": 3,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +3 ; brise les armes à manche sur une égalité.",
+    "disadvantage": "Pas de bouclier à deux mains ou en demi-épée."
+   }
+  },
+  {
+   "_id": "57d0df7055241938",
+   "name": "Fauchon",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/seax.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Épée courbe à un tranchant.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre un ennemi sans armure",
+      "dice": 1
+     }
+    ],
+    "parry": 2,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +2 ; brise les armes à manche sur une égalité.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "d4769c1f71169796",
+   "name": "Fauchon à deux mains",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/seax.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Grand fauchon à deux mains : +1D6, ou +2D6 contre un adversaire sans armure.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 1,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre un adversaire sans armure",
+      "dice": 1
+     }
+    ],
+    "parry": 2,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +2 ; brise les armes à manche sur une égalité.",
+    "disadvantage": "Pas de bouclier. Brisée sur un échec critique ou sur une égalité avec une épée."
+   }
+  },
+  {
+   "_id": "f7ebf599c3cfd25e",
+   "name": "Fléau",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/mace.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arme à chaîne. Le livre lui donne une compétence Fléau, qui n'existe pas encore sur la fiche : la compétence Haches et masses est mise en attendant.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "hafted",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de mailles",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Ignore la protection de bouclier et la Parade de l'adversaire.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "a480ec83a33e98bf",
+   "name": "Fléau d'armes",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greatmace.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Grand fléau à deux mains (+3D6 contre les mailles). Compétence Fléau dans le livre : Armes longues en attendant.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de mailles",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Ignore la protection de bouclier et la Parade de l'adversaire.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "47d078099a1f09ed",
+   "name": "Guisarme",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greataxe.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arme d'hast à crochet.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": true,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue. Contre un adversaire qui peut se servir de son bouclier, celui-ci ne bloque que 1D6 points (dans la limite de sa protection) ; sur un 1, il se brise. L'adversaire subit −5 s'il tente de la désarmer.",
+    "disadvantage": "Pas de bouclier."
+   }
+  },
+  {
+   "_id": "1c5d327de60fac78",
+   "name": "Hache d'armes",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greataxe.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arme d'hast à hache et pointe, +3D6 contre les plates.",
+    "period": "twilight",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de plates",
+      "dice": 1
+     }
+    ],
+    "parry": 4,
+    "twoHanded": true,
+    "shieldBreaker": true,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +4. Contre un adversaire qui peut se servir de son bouclier, celui-ci ne bloque que 1D6 points (dans la limite de sa protection) ; sur un 1, il se brise.",
+    "disadvantage": "Pas de bouclier ; brisée par une épée seulement sur une égalité de deux succès critiques."
+   }
+  },
+  {
+   "_id": "2668d92277879ffe",
+   "name": "Hallebarde",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greataxe.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arme d'hast à lame de hache.",
+    "period": "twilight",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": true,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue. Contre un adversaire qui peut se servir de son bouclier, celui-ci ne bloque que 1D6 points (dans la limite de sa protection) ; sur un 1, il se brise.",
+    "disadvantage": "Pas de bouclier."
+   }
+  },
+  {
+   "_id": "c1c35a6c785fa8a2",
+   "name": "Lance de cavalerie à deux mains",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/lance.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Lance maniée à deux mains en mêlée montée.",
+    "period": "tournament",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "horse",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue ; +2D6 en mêlée.",
+    "disadvantage": "Pas de bouclier ; −5 pour engager des adversaires sur les côtés du cheval (pas droit devant)."
+   }
+  },
+  {
+   "_id": "587db737abb22cfb",
+   "name": "Lance de cavalerie fragile",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/lance.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Lance de cavalerie faite pour casser (dégâts spéciaux selon le livre).",
+    "period": "tournament",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "charge",
+    "use": "horse",
+    "damage": {
+     "base": "horse",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue.",
+    "disadvantage": "Se brise sur un succès."
+   }
+  },
+  {
+   "_id": "d04b7302ce1d189b",
+   "name": "Marteau",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/maul.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Marteau d'armes à une main.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "hafted",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 0,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de plates",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "+1D6 contre une armure de plates.",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "40af0c1f281acab8",
+   "name": "Marteau de guerre",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/maul.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Grand marteau à deux mains.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre une armure de plates",
+      "dice": 1
+     }
+    ],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue ; +3D6 contre les plates.",
+    "disadvantage": "Pas de bouclier."
+   }
+  },
+  {
+   "_id": "049caf13d2765743",
+   "name": "Vouge",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/greataxe.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arme d'hast à large lame.",
+    "period": "tournament",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.1 (p. 239)",
+    "group": "melee",
+    "skill": "greatWeapon",
+    "use": "foot",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Arme longue.",
+    "disadvantage": "Pas de bouclier."
+   }
+  },
+  {
+   "_id": "ad45f38d05775175",
+   "name": "Arbalète moyenne",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/crossbow.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arbalète plus puissante que l'arbalète légère.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.2 (p. 239)",
+    "group": "missile",
+    "skill": "crossbow",
+    "use": "both",
+    "damage": {
+     "base": "none",
+     "dice": 1,
+     "flat": 14,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "medium",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Un carreau tous les 2 tours."
+   }
+  },
+  {
+   "_id": "7cc79fe974ef1a39",
+   "name": "Arbalète lourde",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/crossbow.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Arbalète de guerre lourde.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.2 (p. 239)",
+    "group": "missile",
+    "skill": "crossbow",
+    "use": "both",
+    "damage": {
+     "base": "none",
+     "dice": 1,
+     "flat": 20,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "long",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Un carreau tous les 4 tours."
+   }
+  },
+  {
+   "_id": "e424b1a5c32b3008",
+   "name": "Dague de lancer",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/dagger.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Dague équilibrée pour le lancer : Rixe +2D6 lancée.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.2 (p. 239)",
+    "group": "brawl",
+    "skill": "brawling",
+    "use": "both",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "brawl",
+      "dice": 2,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": ""
+   }
+  },
+  {
+   "_id": "0f548c27beb60b66",
+   "name": "Haubert de mailles renforcé",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/mail_adv.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Futur harnois de mailles renforcé.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.3 (p. 240)",
+    "kind": "body",
+    "material": "mail",
+    "value": 13,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Valeur du harnois complet, heaume compris."
+   }
+  },
+  {
+   "_id": "2172b3f788d679b7",
+   "name": "Demi-plate",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/coat_plates.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Futur harnois de plates partiel.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.3 (p. 240)",
+    "kind": "body",
+    "material": "plate",
+    "value": 16,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Valeur du harnois complet, heaume compris."
+   }
+  },
+  {
+   "_id": "b16223330d4ae511",
+   "name": "Armure de plates",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/coat_plates.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Futur harnois de plates complet.",
+    "period": "tournament",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.3 (p. 240)",
+    "kind": "body",
+    "material": "plate",
+    "value": 18,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Valeur du harnois complet, heaume compris."
+   }
+  },
+  {
+   "_id": "acfde96680dd354c",
+   "name": "Armure de plates gothique",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/coat_plates.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Le harnois de plates de maître de la fin du règne d'Arthur.",
+    "period": "twilight",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.3 (p. 240)",
+    "kind": "body",
+    "material": "plate",
+    "value": 22,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "moveFoot": 0,
+    "notes": "Valeur du harnois complet, heaume compris."
+   }
+  },
+  {
+   "_id": "c60c5b2875291b27",
+   "name": "Écu",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_norman.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Bouclier triangulaire plus petit qui remplacera le bouclier normand.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.4 (p. 240)",
+    "size": "medium",
+    "value": 6,
+    "rangedPenalty": -5,
+    "mountedPenalty": 0,
+    "chargeExempt": false,
+    "noMissile": false,
+    "disadvantage": "",
+    "notes": ""
+   }
+  },
+  {
+   "_id": "906dbf1f7a3f0f6a",
+   "name": "Bouclier de joute",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_norman.svg",
+   "folder": "b029b79ea9be18b0",
+   "system": {
+    "description": "Bouclier réservé à la joute.",
+    "period": "romance",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.4 (p. 240)",
+    "size": "medium",
+    "value": 6,
+    "rangedPenalty": 0,
+    "mountedPenalty": 0,
+    "chargeExempt": false,
+    "noMissile": true,
+    "disadvantage": "Ne protège pas contre les projectiles.",
+    "notes": "Jamais utilisé à pied."
+   }
+  }
+ ]
+}

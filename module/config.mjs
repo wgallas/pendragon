@@ -374,3 +374,37 @@ PDVF.winter = {
   /** Adversaire d'un duel des événements personnels : compétence 8+2D6. */
   duelSkill: "8+2D6"
 };
+
+/* -------------------------------------------- */
+/*  Équipement (Livre du joueur, chap. 8 et 9)   */
+/* -------------------------------------------- */
+
+/** Périodes de disponibilité (Grande Campagne). */
+PDVF.periods = {
+  all: "PDVF.Period.all",
+  boyKing: "PDVF.Period.boyKing",
+  boyKingLate: "PDVF.Period.boyKingLate",
+  conquest: "PDVF.Period.conquest",
+  romance: "PDVF.Period.romance",
+  tournament: "PDVF.Period.tournament",
+  twilight: "PDVF.Period.twilight"
+};
+PDVF.weaponGroups = ["melee", "brawl", "missile", "thrown"];
+PDVF.damageBases = ["character", "brawl", "horse", "none"];
+PDVF.ranges = ["short", "medium", "long"];
+PDVF.armorKinds = ["padding", "body", "overlay", "helm"];
+PDVF.armorMaterials = ["textile", "mail", "plate"];
+PDVF.weaponSkills = ["sword", "spear", "charge", "hafted", "greatWeapon", "brawling", "bow", "crossbow", "thrown"];
+
+/** Équipement de départ (Livre du joueur p. 58 ; Table 9.1) : objets du compendium, par nom. */
+PDVF.startingEquipment = {
+  knight: [
+    { name: "Haubert", equipped: true }, { name: "Auqueton", equipped: true }, { name: "Heaume à nasal", equipped: true },
+    { name: "Bouclier normand", equipped: true }, { name: "Épée", equipped: true },
+    { name: "Lance", quantity: 4 }, { name: "Lance de cavalerie" }, { name: "Dague", equipped: true }
+  ],
+  squire: [
+    { name: "Gambison", equipped: true }, { name: "Heaume ouvert", equipped: true },
+    { name: "Bouclier rond", equipped: true }, { name: "Lance", equipped: true }, { name: "Dague", equipped: true }
+  ]
+};

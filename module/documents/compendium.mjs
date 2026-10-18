@@ -1,5 +1,5 @@
 /**
- * Compendiums du système (« Adversaires », « Rencontres de bataille ») : créés et tenus à jour dans
+ * Compendiums du système (« Adversaires », « Rencontres de bataille », « Équipement ») : créés et tenus à jour dans
  * le monde par le MJ, à partir des fichiers data/*.json (Livre du maître).
  *
  * On passe par un compendium du monde plutôt que par un compendium du système : les fichiers
@@ -74,4 +74,10 @@ export function ensureAdversaries({ force = false } = {}) {
 /** Compendium « Pendragon — Rencontres de bataille » (Livre du maître, chap. 6). */
 export function ensureEncounters({ force = false } = {}) {
   return ensurePack({ file: "rencontres.json", name: "pendragon-rencontres", type: "Item", label: "PDVF.Compendium.Encounters", setting: "encountersVersion", key: "items" }, force);
+}
+
+/** Compendium « Pendragon — Équipement » (Livre du joueur, chap. 8 et 9 ; appendice A). */
+export const EQUIPMENT_PACK = "pendragon-equipement";
+export function ensureEquipment({ force = false } = {}) {
+  return ensurePack({ file: "equipement.json", name: EQUIPMENT_PACK, type: "Item", label: "PDVF.Compendium.Equipment", setting: "equipmentVersion", key: "items" }, force);
 }

@@ -32,6 +32,7 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       next: WinterWizard.#onNext,
       prev: WinterWizard.#onPrev,
       run: WinterWizard.#onRun,
+      tstep: WinterWizard.#onTrainingStep,
       setTraining: WinterWizard.#onSetTraining
     }
   };
@@ -146,10 +147,11 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         const age = E.nextAge(actor, st.year);
         const choice = this.ui.training;
         const s = sys;
-        const skillRows = Object.keys(PDVF.skills).map(id => ({ id, label: L(`PDVF.Skill.${id}`), value: s.skills[id].value }))
+        const skillRows = Object.keys(PDVF.skills).map(id => ({ id, label: L(`PDVF.Skill.${id}`), value: s.skills[id].value,
+          room15: Math.max(0, PDVF.winter.trainingSkillCap - s.skills[id].value), room20: Math.max(0, PDVF.winter.trainingSkillMax - s.skills[id].value) }))
           .sort((a, b) => a.label.localeCompare(b.label, "fr"));
         return {
-          tr, skip: tr.skip, done: tr.done, bonus: tr.bonus,
+          tr, skip: tr.skip, done: tr.done, bonus: tr.bonus, points: PDVF.winter.trainingSkillPoints,
           choices: ["trait", "passion", "char", "embonpoint", "skills", "skill20"].map(c => ({ id: c, label: L(`PDVF.Winter.Training.${c}`), selected: c === choice,
             disabled: (c === "char" && age !== null && age > PDVF.winter.trainingCharMaxAge) || (c === "embonpoint" && W.embonpointLevel(s.biography.distinctiveFeatures, PDVF.winter) >= 3) })),
           is: { [choice]: true }, hasChoice: !!choice,
@@ -214,6 +216,42 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static async #onPrev() {
     this.wstate.step = Math.max(0, this.wstate.step - 1);
     this.render();
+  }
+
+  /** Boutons − et + des points de compétences : bornés par le budget restant et le plafond de chaque compétence. */
+  static #onTrainingStep(event, target) {
+    const input = target.parentElement.querySelector("input");
+    const kind = "points" in input.dataset ? "points" : "bonus";
+    const value = Math.max(0, Math.min(Number(input.dataset.cap) || 0, (Number(input.value) || 0) + Number(target.dataset.delta)));
+    const others = this.#spent(kind) - (Number(input.value) || 0);
+    const budget = Number(this.element.querySelector(`[data-remaining="${kind}"]`)?.dataset.budget) || 0;
+    input.value = Math.min(value, Math.max(0, budget - others));
+    this.#refreshTraining();
+  }
+
+  #spent(kind) {
+    return [...this.element.querySelectorAll(`[data-${kind}]`)].filter(el => el.tagName === "INPUT").reduce((a, el) => a + (Number(el.value) || 0), 0);
+  }
+
+  /** Points restants affichés, boutons grisés aux limites. */
+  #refreshTraining() {
+    for (const kind of ["points", "bonus"]) {
+      const box = this.element.querySelector(`[data-remaining="${kind}"]`);
+      if (!box) continue;
+      const left = (Number(box.dataset.budget) || 0) - this.#spent(kind);
+      box.querySelector("strong").textContent = left;
+      for (const input of this.element.querySelectorAll(`input[data-${kind}]`)) {
+        const [minus, plus] = input.parentElement.querySelectorAll("button");
+        const v = Number(input.value) || 0;
+        minus.disabled = v <= 0;
+        plus.disabled = left <= 0 || v >= (Number(input.dataset.cap) || 0);
+      }
+    }
+  }
+
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    this.#refreshTraining();
   }
 
   static #onSetTraining(event, target) {

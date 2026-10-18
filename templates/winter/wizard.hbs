@@ -210,12 +210,16 @@
         {{#if is.embonpoint}}<p>{{localize "PDVF.Winter.EmbonpointText"}} <strong>{{embonpoint}}</strong></p>{{/if}}
         {{#if is.skills}}
         <p class="pdvf-hint">{{localize "PDVF.Winter.SkillsHint"}}</p>
-        <div class="pdvf-winter-skillgrid">{{#each lowSkills}}<label>{{label}} <span class="pdvf-hint-inline">{{value}}</span> <input type="number" data-points="{{id}}" value="0" min="0" max="6" step="1"></label>{{/each}}</div>
+        <p class="pdvf-winter-remaining" data-remaining="points" data-budget="{{points}}">{{localize "PDVF.Winter.Remaining"}} <strong>{{points}}</strong></p>
+        <div class="pdvf-winter-skillgrid">{{#each lowSkills}}<div class="pdvf-winter-skill"><span>{{label}} <span class="pdvf-hint-inline">{{value}}</span></span>
+          <span class="pdvf-stepper"><button type="button" class="pdvf-step" data-action="tstep" data-delta="-1" aria-label="{{localize 'PDVF.Sheet.Decrease'}} {{label}}" disabled>−</button><input type="number" data-points="{{id}}" data-cap="{{room15}}" value="0" readonly aria-label="{{label}}"><button type="button" class="pdvf-step" data-action="tstep" data-delta="1" aria-label="{{localize 'PDVF.Sheet.Increase'}} {{label}}">+</button></span></div>{{/each}}</div>
         {{/if}}
         {{#if is.skill20}}<label class="pdvf-field"><span>{{localize "PDVF.Winter.Skill20"}}</span><select name="key">{{#each highSkills}}<option value="{{id}}">{{label}} {{value}}</option>{{/each}}</select></label>{{/if}}
         {{#if bonus}}
         <h3 class="pdvf-h3">{{localize "PDVF.Winter.Bonus"}} ({{bonus}})</h3>
-        <div class="pdvf-winter-skillgrid">{{#each allSkills}}<label>{{label}} <span class="pdvf-hint-inline">{{value}}</span> <input type="number" data-bonus="{{id}}" value="0" min="0" max="2" step="1"></label>{{/each}}</div>
+        <p class="pdvf-winter-remaining" data-remaining="bonus" data-budget="{{bonus}}">{{localize "PDVF.Winter.Remaining"}} <strong>{{bonus}}</strong></p>
+        <div class="pdvf-winter-skillgrid">{{#each allSkills}}<div class="pdvf-winter-skill"><span>{{label}} <span class="pdvf-hint-inline">{{value}}</span></span>
+          <span class="pdvf-stepper"><button type="button" class="pdvf-step" data-action="tstep" data-delta="-1" aria-label="{{localize 'PDVF.Sheet.Decrease'}} {{label}}" disabled>−</button><input type="number" data-bonus="{{id}}" data-cap="{{room20}}" value="0" readonly aria-label="{{label}}"><button type="button" class="pdvf-step" data-action="tstep" data-delta="1" aria-label="{{localize 'PDVF.Sheet.Increase'}} {{label}}">+</button></span></div>{{/each}}</div>
         {{/if}}
         {{#if hasChoice}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="training">{{localize "PDVF.Winter.ApplyTraining"}}</button>{{/if}}
       </div>

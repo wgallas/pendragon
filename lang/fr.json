@@ -1704,7 +1704,8 @@
         "NoGM": "Aucun MJ connecté pour mettre à jour ce suivant ou ce cheval.",
         "NoWinter": "Aucune phase d'hiver n'est ouverte.",
         "Reminded": "Assistant rouvert chez les joueurs."
-      }
+      },
+      "Remaining": "Points restants :"
     }
   }
 }

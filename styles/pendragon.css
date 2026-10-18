@@ -1182,8 +1182,10 @@
 .pendragon-vf .pdvf-winter-choices .pdvf-wiz-method:disabled { opacity: 0.45; cursor: default; }
 .pendragon-vf .pdvf-winter-training .pdvf-btn-primary { margin-top: 12px; }
 .pendragon-vf .pdvf-winter-skillgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; }
-.pendragon-vf .pdvf-winter-skillgrid label { display: flex; align-items: center; gap: 6px; font-size: 15px; }
-.pendragon-vf .pdvf-winter-skillgrid input { width: 48px; margin-left: auto; }
+.pendragon-vf .pdvf-winter-skill { display: flex; align-items: center; gap: 6px; font-size: 15px; padding: 1px 0; }
+.pendragon-vf .pdvf-winter-skill .pdvf-stepper { margin-left: auto; }
+.pendragon-vf .pdvf-winter-remaining { margin: 4px 0 8px; }
+.pendragon-vf .pdvf-winter-remaining strong { font-size: 18px; color: var(--pdvf-vermilion); }
 .pendragon-vf .pdvf-winter-prestige { display: flex; flex-direction: column; gap: 8px; }
 .pendragon-vf .pdvf-winter-prestige select { flex: 1; min-width: 0; }
 .pendragon-vf .pdvf-winter-upkeep { width: auto; }

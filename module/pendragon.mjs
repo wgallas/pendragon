@@ -28,6 +28,9 @@ import { BatailleSheet } from "./sheets/bataille-sheet.mjs";
 import { RencontreSheet } from "./sheets/rencontre-sheet.mjs";
 import * as battleEngine from "./battle/engine.mjs";
 import * as battleClient from "./battle/client.mjs";
+import * as combatExchange from "./combat/exchange.mjs";
+import * as combatDamage from "./combat/damage.mjs";
+import { registerStatuses } from "./combat/status.mjs";
 
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initialisation du système Pendragon (VF)`);
@@ -38,6 +41,7 @@ Hooks.once("init", () => {
   game.pendragon = {
     config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters, importEquipment: ensureEquipment,
     tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient },
+    combat: { engage: combatExchange.engage, receiveDamage: combatDamage.receiveDamage, stats: combatDamage.combatStats },
     winter: { engine: winterEngine, openPanel: winterGm.openWinterPanel, start: winterGm.startWinter, close: winterGm.closeWinter, open: openWinterWizard }
   };
 
@@ -52,6 +56,10 @@ Hooks.once("init", () => {
   CONFIG.Item.dataModels.arme = ArmeData;
   CONFIG.Item.dataModels.armure = ArmureData;
   CONFIG.Item.dataModels.bouclier = BouclierData;
+  // Combat : états des jetons (à cheval, désarmé) ; l'ordre du suivi de combat suit la DEX (pas d'initiative dans Pendragon)
+  registerStatuses();
+  CONFIG.Combat.initiative = { formula: "@characteristics.dex.value", decimals: 0 };
+
   CONFIG.Actor.trackableAttributes = {
     chevalier: { bar: ["health.hp"], value: [] },
     pnj: { bar: ["health.hp"], value: [] },
@@ -178,6 +186,7 @@ Hooks.on("updateActor", (actor) => {
 Hooks.once("ready", async () => {
   game.socket.on(battleEngine.SOCKET, battleEngine.onSocket);
   game.socket.on(winterEngine.SOCKET, winterGm.onWinterSocket);
+  game.socket.on(battleEngine.SOCKET, combatExchange.onCombatSocket);
   winterGm.openOwnWizards();
   await ensureAdversaries();
   await ensureEncounters();
@@ -187,6 +196,7 @@ Hooks.once("ready", async () => {
 // Boutons des cartes de chat (crise de passion…)
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMessage(message, html));
+Hooks.on("renderChatMessageHTML", (message, html) => combatExchange.onRenderCombatCard(message, html));
 
 // « Nouveau jour » du MJ (outils des jetons, barre de gauche)
 Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));

@@ -13,6 +13,8 @@ import { winterYear } from "../winter/engine.mjs";
 import { gearView, attackNotes } from "./gear-view.mjs";
 import { attackProfiles, conflictsWith } from "../rules/equipment.mjs";
 import { giveStartingEquipment, hasGear, GEAR_TYPES } from "../documents/equipment.mjs";
+import { engage } from "../combat/exchange.mjs";
+import * as CD from "../combat/dialogs.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -82,7 +84,16 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       gearEquip: ChevalierSheet.#onGearEquip,
       gearOpen: ChevalierSheet.#onGearOpen,
       gearDelete: ChevalierSheet.#onGearDelete,
-      startingGear: ChevalierSheet.#onStartingGear
+      startingGear: ChevalierSheet.#onStartingGear,
+      engage: ChevalierSheet.#onEngage,
+      combatDamage: ChevalierSheet.#onCombatDamage,
+      combatWeek: ChevalierSheet.#onCombatWeek,
+      combatAggravate: ChevalierSheet.#onCombatAggravate,
+      combatMount: ChevalierSheet.#onCombatMount,
+      combatStand: ChevalierSheet.#onCombatStand,
+      combatRearm: ChevalierSheet.#onCombatRearm,
+      woundAid: ChevalierSheet.#onWoundAid,
+      woundDelete: ChevalierSheet.#onWoundDelete
     }
   };
 
@@ -307,6 +318,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     // Onglet Combat : armes, armure, bouclier
     context.gear = gearView(actor, this.#gearStats());
+    context.combat = CD.woundsView(actor);
     return context;
   }
 
@@ -591,6 +603,29 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const kind = this.document.system.biography.knightClass === "squire" ? "squire" : "knight";
     const created = await giveStartingEquipment(this.document, kind);
     if (created.length) ui.notifications.info(game.i18n.format("PDVF.Gear.StartingCreated", { count: created.length }));
+  }
+
+  /* -------------------------------------------- */
+  /*  Combat et blessures                          */
+  /* -------------------------------------------- */
+
+  static #onEngage(event, target) {
+    const ref = target.dataset.id ? `item:${target.dataset.id}:${target.dataset.mode ?? "main"}` : null;
+    return engage(this.document, { weapon: ref, token: this.token ?? null });
+  }
+
+  static #onCombatDamage() { return CD.promptDamage(this.document); }
+  static #onCombatWeek() { return CD.promptWeek(this.document); }
+  static #onCombatAggravate() { return CD.quickAggravation(this.document); }
+  static #onCombatMount() { return CD.toggleMounted(this.document); }
+  static #onCombatStand() { return CD.standUp(this.document); }
+  static #onCombatRearm() { return CD.rearm(this.document); }
+  static #onWoundAid(event, target) { return CD.promptFirstAid(this.document, target.dataset.id); }
+
+  static async #onWoundDelete(event, target) {
+    const wounds = foundry.utils.deepClone(this.document._source.system.health.wounds ?? []);
+    wounds.splice(Number(target.dataset.index), 1);
+    await this.document.update({ "system.health.wounds": wounds });
   }
 
   /** Un PNJ déposé sur la fiche rejoint la suite du chevalier. */

@@ -1,4 +1,5 @@
 import { PDVF } from "../config.mjs";
+import { woundsField } from "./wounds.mjs";
 import { attributeLevel } from "../rules/resolution.mjs";
 import { derivedValues, squireSkill, squireKnightly, squireOrigin } from "../rules/followers.mjs";
 
@@ -26,7 +27,9 @@ export class PnjData extends foundry.abstract.TypeDataModel {
       tagline: text(),
       characteristics: new fields.SchemaField(characteristics),
       health: new fields.SchemaField({
-        hp: new fields.SchemaField({ value: int(20) })
+        hp: new fields.SchemaField({ value: int(20) }),
+        debilitated: new fields.BooleanField({ initial: false }),
+        wounds: woundsField()
       }),
       // Valeurs dérivées imposées (vide : calculées à partir des caractéristiques)
       overrides: new fields.SchemaField({

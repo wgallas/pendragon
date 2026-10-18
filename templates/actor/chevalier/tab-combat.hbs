@@ -22,10 +22,41 @@
         <span class="pdvf-derived-label">{{localize "PDVF.Health.deterioration"}}</span>
         <input type="number" class="pdvf-row-input" name="system.health.deterioration" value="{{system.health.deterioration}}" step="1" min="0">
       </label>
+      <div class="pdvf-combat-state">
+        <button type="button" class="pdvf-state-btn {{#if combat.mounted}}on{{/if}}" data-action="combatMount" aria-pressed="{{#if combat.mounted}}true{{else}}false{{/if}}"
+          data-tooltip="{{#if combat.horseName}}{{combat.horseName}}{{#if combat.horseCharge}} · {{localize 'PDVF.Horse.ChargeShort'}} {{combat.horseCharge}}{{/if}}{{else}}{{localize 'PDVF.Combat.NoMainHorse'}}{{/if}}">
+          <i class="fa-solid fa-horse" aria-hidden="true"></i> {{#if combat.mounted}}{{localize "PDVF.Status.mounted"}}{{else}}{{localize "PDVF.Combat.OnFoot"}}{{/if}}</button>
+        {{#if combat.prone}}<button type="button" class="pdvf-state-btn warn" data-action="combatStand"><i class="fa-solid fa-person-arrow-up-from-line" aria-hidden="true"></i> {{localize "PDVF.Combat.StandUp"}}</button>{{/if}}
+        {{#if combat.disarmed}}<button type="button" class="pdvf-state-btn warn" data-action="combatRearm"><i class="fa-solid fa-hand" aria-hidden="true"></i> {{localize "PDVF.Combat.Rearm"}}</button>{{/if}}
+        {{#if combat.unconscious}}<span class="pdvf-state-badge">{{localize "PDVF.Combat.UnconsciousBadge"}}</span>{{/if}}
+        {{#if combat.dying}}<span class="pdvf-state-badge dying">{{localize "PDVF.Combat.DyingBadge"}}</span>{{/if}}
+      </div>
       <div class="pdvf-checks">
         <label><input type="checkbox" name="system.health.debilitated" {{checked system.health.debilitated}}> {{localize "PDVF.Health.debilitated"}}</label>
         <label><input type="checkbox" name="system.health.melancholy" {{checked system.health.melancholy}}> {{localize "PDVF.Health.melancholy"}}</label>
         <label><input type="checkbox" name="system.health.madness" {{checked system.health.madness}}> {{localize "PDVF.Health.madness"}}</label>
+      </div>
+      <h3 class="pdvf-h3">{{localize "PDVF.Combat.Wounds"}}{{#if combat.total}} <small>{{combat.total}}</small>{{/if}}</h3>
+      {{#if combat.wounds.length}}
+      <ul class="pdvf-wounds">
+        {{#each combat.wounds}}
+        <li class="{{type}} {{#if aided}}aided{{/if}}">
+          <strong class="pdvf-wound-dmg">{{damage}}</strong>
+          <span class="pdvf-wound-type">{{typeLabel}}</span>
+          <span class="pdvf-wound-src">{{source}}</span>
+          {{#if aided}}<span class="pdvf-gear-tag" data-tooltip="{{localize 'PDVF.Combat.AidedTip'}}"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+          {{else}}<button type="button" class="pdvf-gear-test" data-action="woundAid" data-id="{{id}}"><i class="fa-solid fa-kit-medical" aria-hidden="true"></i> {{localize "PDVF.Combat.FirstAid"}}</button>{{/if}}
+          {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="woundDelete" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <p class="pdvf-hint">{{localize "PDVF.Combat.NoWounds"}}</p>
+      {{/if}}
+      <div class="pdvf-combat-actions">
+        <button type="button" class="pdvf-btn" data-action="combatDamage"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{localize "PDVF.Combat.Receive"}}</button>
+        <button type="button" class="pdvf-btn" data-action="combatWeek"><i class="fa-solid fa-bed" aria-hidden="true"></i> {{localize "PDVF.Combat.Week"}}</button>
+        <button type="button" class="pdvf-btn" data-action="combatAggravate" data-tooltip="{{localize 'PDVF.Combat.AggravateTip'}}"><i class="fa-solid fa-heart-crack" aria-hidden="true"></i> {{localize "PDVF.Combat.Aggravate"}}</button>
       </div>
     </section>
 
@@ -70,6 +101,7 @@
         <span class="pdvf-derived-label">{{localize "PDVF.Derived.brawlDamage.label"}}</span>
         <span class="pdvf-derived-value">{{system.derived.brawlDamage}}</span>
       </div>
+      <button type="button" class="pdvf-choose pdvf-engage-main" data-action="engage" data-tooltip="{{localize 'PDVF.Combat.EngageTip'}}"><i class="fa-solid fa-swords" aria-hidden="true"></i> {{localize "PDVF.Combat.EngageTarget"}}</button>
     </section>
 
     <section class="pdvf-gear-section">
@@ -99,6 +131,7 @@
               data-tooltip="{{label}}">{{damage}} <small>{{label}}</small></button>
             {{/each}}
             {{#if rangeLabel}}<span class="pdvf-gear-tag">{{rangeLabel}}</span>{{/if}}
+            <button type="button" class="pdvf-gear-engage" data-action="engage" data-id="{{../id}}" data-mode="{{mode}}" data-tooltip="{{localize 'PDVF.Combat.EngageWithTip'}}" aria-label="{{localize 'PDVF.Combat.EngageTarget'}}"><i class="fa-solid fa-swords"></i></button>
           </div>
           {{/each}}
         </li>

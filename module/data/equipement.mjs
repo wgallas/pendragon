@@ -38,7 +38,11 @@ export class ArmeData extends foundry.abstract.TypeDataModel {
       use: str("both", { choices: ["foot", "horse", "both"] }),
       damage: damage(),
       quality: int(0),
-      alts: new fields.ArrayField(new fields.SchemaField({ label: str(), dice: int(1) })),
+      // Variantes de dégâts ; « when » les applique d'office dans un échange (contre mailles, plates, sans armure)
+      alts: new fields.ArrayField(new fields.SchemaField({ label: str(), dice: int(1), when: str("", { blank: true, choices: ["", "mail", "plate", "unarmored"] }) })),
+      long: bool(false),
+      blunt: bool(false),
+      swordTie: bool(false),
       parry: int(0, { min: 0 }),
       twoHanded: bool(false),
       shieldBreaker: bool(false),

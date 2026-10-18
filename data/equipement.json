@@ -1,5 +1,5 @@
 {
- "version": 2,
+ "version": 3,
  "folders": [
   {
    "_id": "8c4a981be26c7e37",
@@ -93,6 +93,9 @@
     "quality": 0,
     "alts": [],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -137,6 +140,9 @@
     "quality": 0,
     "alts": [],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -182,10 +188,14 @@
     "alts": [
      {
       "label": "à deux mains, sans bouclier",
-      "dice": 2
+      "dice": 2,
+      "when": ""
      }
     ],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -230,6 +240,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -274,6 +287,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -318,6 +334,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": true,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -362,6 +381,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": true,
     "range": "",
@@ -407,10 +429,14 @@
     "alts": [
      {
       "label": "contre une armure de mailles",
-      "dice": 1
+      "dice": 1,
+      "when": "mail"
      }
     ],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -455,6 +481,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -499,6 +528,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": true,
     "range": "",
@@ -543,6 +575,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": true,
     "range": "",
@@ -588,10 +623,14 @@
     "alts": [
      {
       "label": "contre une armure de mailles",
-      "dice": 1
+      "dice": 1,
+      "when": "mail"
      }
     ],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -636,6 +675,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -680,6 +722,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -724,6 +769,9 @@
     "quality": 0,
     "alts": [],
     "parry": 2,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -768,6 +816,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -812,6 +863,9 @@
     "quality": 0,
     "alts": [],
     "parry": 4,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -856,6 +910,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -900,6 +957,9 @@
     "quality": 0,
     "alts": [],
     "parry": 1,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -945,10 +1005,14 @@
     "alts": [
      {
       "label": "à deux mains",
-      "dice": 1
+      "dice": 1,
+      "when": ""
      }
     ],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -993,6 +1057,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "medium",
@@ -1037,6 +1104,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "long",
@@ -1081,6 +1151,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "long",
@@ -1125,6 +1198,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "medium",
@@ -1553,6 +1629,9 @@
     "quality": 1,
     "alts": [],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1597,6 +1676,9 @@
     "quality": 1,
     "alts": [],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1641,6 +1723,9 @@
     "quality": 0,
     "alts": [],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1685,6 +1770,9 @@
     "quality": 0,
     "alts": [],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1730,10 +1818,14 @@
     "alts": [
      {
       "label": "à deux mains, sans bouclier",
-      "dice": 2
+      "dice": 2,
+      "when": ""
      }
     ],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1779,14 +1871,19 @@
     "alts": [
      {
       "label": "contre un sanglier",
-      "dice": 1
+      "dice": 1,
+      "when": ""
      },
      {
       "label": "à deux mains, sans bouclier",
-      "dice": 2
+      "dice": 2,
+      "when": ""
      }
     ],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1832,10 +1929,14 @@
     "alts": [
      {
       "label": "à deux mains, sans bouclier",
-      "dice": 2
+      "dice": 2,
+      "when": ""
      }
     ],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1881,10 +1982,14 @@
     "alts": [
      {
       "label": "à deux mains, sans bouclier",
-      "dice": 2
+      "dice": 2,
+      "when": ""
      }
     ],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -1954,14 +2059,19 @@
     "alts": [
      {
       "label": "à deux mains, sans bouclier",
-      "dice": 2
+      "dice": 2,
+      "when": ""
      },
      {
       "label": "contre plates, en demi-épée",
-      "dice": 3
+      "dice": 3,
+      "when": ""
      }
     ],
     "parry": 3,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -2007,10 +2117,14 @@
     "alts": [
      {
       "label": "contre un ennemi sans armure",
-      "dice": 1
+      "dice": 1,
+      "when": "unarmored"
      }
     ],
     "parry": 2,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -2056,10 +2170,14 @@
     "alts": [
      {
       "label": "contre un adversaire sans armure",
-      "dice": 1
+      "dice": 1,
+      "when": "unarmored"
      }
     ],
     "parry": 2,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -2105,10 +2223,14 @@
     "alts": [
      {
       "label": "contre une armure de mailles",
-      "dice": 1
+      "dice": 1,
+      "when": "mail"
      }
     ],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -2154,10 +2276,14 @@
     "alts": [
      {
       "label": "contre une armure de mailles",
-      "dice": 1
+      "dice": 1,
+      "when": "mail"
      }
     ],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -2202,6 +2328,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": true,
     "range": "",
@@ -2247,10 +2376,14 @@
     "alts": [
      {
       "label": "contre une armure de plates",
-      "dice": 1
+      "dice": 1,
+      "when": "plate"
      }
     ],
     "parry": 4,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": true,
     "range": "",
@@ -2295,6 +2428,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": true,
     "range": "",
@@ -2339,6 +2475,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -2383,6 +2522,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -2428,10 +2570,14 @@
     "alts": [
      {
       "label": "contre une armure de plates",
-      "dice": 1
+      "dice": 1,
+      "when": "plate"
      }
     ],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",
@@ -2477,10 +2623,14 @@
     "alts": [
      {
       "label": "contre une armure de plates",
-      "dice": 1
+      "dice": 1,
+      "when": "plate"
      }
     ],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -2525,6 +2675,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": true,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": true,
     "shieldBreaker": false,
     "range": "",
@@ -2569,6 +2722,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "medium",
@@ -2613,6 +2769,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "long",
@@ -2657,6 +2816,9 @@
     "quality": 0,
     "alts": [],
     "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
     "twoHanded": false,
     "shieldBreaker": false,
     "range": "",

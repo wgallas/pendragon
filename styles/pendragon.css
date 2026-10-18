@@ -1262,3 +1262,32 @@
 .pendragon-vf .pdvf-armor-value { min-width: 34px; text-align: right; font-weight: 600; }
 .pendragon-vf .pdvf-gear-tag { font-size: 13px; color: var(--pdvf-ink-soft); white-space: nowrap; }
 .pendragon-vf .pdvf-armor-list li.ignored .pdvf-armor-value { text-decoration: line-through; color: var(--pdvf-ink-faint); }
+
+/* Combat : états, blessures, échanges */
+.pendragon-vf .pdvf-combat-state { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 10px; }
+.pendragon-vf .pdvf-state-btn {
+  width: auto; height: auto; line-height: 1.2; padding: 4px 10px; margin: 0; font-family: var(--pdvf-font-body); font-size: 14px;
+  background: var(--pdvf-parchment-light); border: 1px solid var(--pdvf-rule-strong); border-radius: 2px; color: var(--pdvf-ink); cursor: pointer;
+}
+.pendragon-vf .pdvf-state-btn.on { border-color: var(--pdvf-lapis); color: var(--pdvf-lapis); font-weight: 600; }
+.pendragon-vf .pdvf-state-btn.warn { border-color: var(--pdvf-vermilion); color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-state-badge { font-size: 13px; padding: 3px 8px; border-radius: 2px; background: var(--pdvf-ink); color: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-state-badge.dying { background: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-wounds { list-style: none; margin: 0 0 8px; padding: 0; }
+.pendragon-vf .pdvf-wounds li { display: flex; align-items: center; gap: 8px; padding: 3px 0; border-bottom: 1px dotted var(--pdvf-rule); font-size: 14px; }
+.pendragon-vf .pdvf-wounds li.major .pdvf-wound-type, .pendragon-vf .pdvf-wounds li.mortal .pdvf-wound-type { color: var(--pdvf-vermilion); font-weight: 600; }
+.pendragon-vf .pdvf-wounds li.aided { opacity: 0.75; }
+.pendragon-vf .pdvf-wound-dmg { min-width: 26px; text-align: right; font-size: 16px; color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-wound-type { min-width: 64px; }
+.pendragon-vf .pdvf-wound-src { flex: 1; min-width: 0; color: var(--pdvf-ink-soft); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pendragon-vf .pdvf-combat-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.pendragon-vf .pdvf-combat-actions .pdvf-btn { width: auto; padding: 0 10px; }
+.pendragon-vf .pdvf-engage-main { width: 100%; margin-top: 10px; }
+.pendragon-vf .pdvf-gear-engage {
+  width: 28px; height: 26px; padding: 0; margin: 0; line-height: 1; background: var(--pdvf-vermilion); color: var(--pdvf-parchment-light);
+  border: 1px solid var(--pdvf-ink); border-radius: 2px; cursor: pointer;
+}
+.pendragon-vf .pdvf-gear-engage:hover { background: var(--pdvf-ink); }
+.pdvf-combat-card .pdvf-combat-section h4 { margin: 8px 0 0; font-size: 14px; color: var(--pdvf-vermilion); border-bottom: 1px solid var(--pdvf-rule); }
+.pdvf-combat-card .pdvf-card-notes li { margin: 2px 0; }
+.pdvf-exchange-dialog .form-group select, .pdvf-exchange-dialog .form-group input[type="number"] { max-width: 60%; }

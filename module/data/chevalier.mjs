@@ -1,9 +1,11 @@
 import { PDVF } from "../config.mjs";
+import { woundsField } from "./wounds.mjs";
 import {
   roundPendragon, traitPair, attributeLevel, passiveGloryFromValues, passiveGloryFromAppearance
 } from "../rules/resolution.mjs";
 
 const fields = foundry.data.fields;
+
 
 /** Champ numérique entier. */
 function int(initial = 0, { min = undefined, max = undefined, nullable = false } = {}) {
@@ -78,7 +80,9 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         aggravation: int(0, { min: 0 }),
         deterioration: int(0, { min: 0 }),
         melancholy: new fields.BooleanField({ initial: false }),
-        madness: new fields.BooleanField({ initial: false })
+        madness: new fields.BooleanField({ initial: false }),
+        // Blessures notées une à une (les Premiers soins se font blessure par blessure)
+        wounds: woundsField()
       }),
 
       skills: new fields.SchemaField(skills),

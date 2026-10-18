@@ -1,0 +1,19 @@
+<div class="pdvf-card pdvf-combat-card">
+  <header class="pdvf-card-header">
+    <h3 class="pdvf-card-title">{{title}}</h3>
+    {{#if subtitle}}<div class="pdvf-card-subtitle">{{subtitle}}</div>{{/if}}
+  </header>
+  {{#each sections}}
+  <section class="pdvf-combat-section">
+    {{#if title}}<h4>{{title}}</h4>{{/if}}
+    {{#if text}}<p>{{text}}</p>{{/if}}
+    <ul class="pdvf-card-notes">{{#each lines}}<li>{{this}}</li>{{/each}}</ul>
+  </section>
+  {{/each}}
+  {{#if buttons.length}}
+  <div class="pdvf-card-buttons">{{#each buttons}}<button type="button" data-pdvf-combat="{{action}}">{{#if icon}}<i class="{{icon}}" aria-hidden="true"></i> {{/if}}{{label}}</button>{{/each}}</div>
+  {{/if}}
+  {{#if canUndo}}
+  <div class="pdvf-card-buttons pdvf-undo"><button type="button" data-pdvf-combat="undo"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> {{localize "PDVF.Combat.Undo"}}</button></div>
+  {{/if}}
+</div>

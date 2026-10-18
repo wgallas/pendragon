@@ -9,7 +9,7 @@ Usage : python3 tools/equipement/build.py  (depuis la racine du dépôt)
 """
 import hashlib, json, os
 
-VERSION = 2
+VERSION = 3
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 ICON = "systems/pendragon-vf/icons/gear/{}.svg"
 
@@ -27,14 +27,28 @@ FOLDER_DOCS = [{"_id": FOLDER[k], "name": n, "type": "Item", "sorting": "a", "so
 def dmg(base="character", dice=0, flat=0, mx=0):
     return {"base": base, "dice": dice, "flat": flat, "max": mx}
 
+def alt_when(label):
+    l = label.lower()
+    if "demi-épée" in l: return ""   # prise particulière, à choisir à la main
+    if "mailles" in l: return "mail"
+    if "plates" in l: return "plate"
+    if "sans armure" in l: return "unarmored"
+    return ""
+
 def weapon(name, folder, icon, skill, use, damage, *, group="melee", price=None, period="all", periodNote="", parry=0,
-           twoHanded=False, shieldBreaker=False, alts=(), rng="", thrown=None, adv="", dis="", desc="", source="", quality=0, quantity=1):
+           twoHanded=False, shieldBreaker=False, alts=(), rng="", thrown=None, adv="", dis="", desc="", source="", quality=0, quantity=1,
+           long=None, blunt=False, swordTie=None):
+    if long is None:
+        long = "Arme longue" in adv or (skill == "spear" and name.startswith("Lance"))
+    if swordTie is None:
+        swordTie = "égalité avec une épée" in dis or "par une épée sur une égalité" in dis
     return {
         "_id": gid(name), "name": name, "type": "arme", "img": ICON.format(icon), "folder": FOLDER[folder],
         "system": {
             "description": desc, "period": period, "periodNote": periodNote, "price": price, "quantity": quantity,
             "equipped": False, "source": source, "group": group, "skill": skill, "use": use, "damage": damage,
-            "quality": quality, "alts": [{"label": l, "dice": d} for l, d in alts], "parry": parry,
+            "quality": quality, "alts": [{"label": l, "dice": d, "when": alt_when(l)} for l, d in alts], "parry": parry,
+            "long": long, "blunt": blunt, "swordTie": swordTie,
             "twoHanded": twoHanded, "shieldBreaker": shieldBreaker, "range": rng,
             "thrown": thrown or {"enabled": False, "skill": "thrown", "damage": dmg(), "range": "short"},
             "advantage": adv, "disadvantage": dis
@@ -92,7 +106,7 @@ ITEMS = [
     weapon("Lance de cavalerie", "melee", "lance", "charge", "horse", dmg("horse"), price=30, source=SRC(T81),
            adv="Arme longue.", dis="Brisée sur une égalité, un succès partiel ou un échec critique lors d'une Charge montée.",
            desc="Lance de combat en bois robuste (frêne, hêtre), réservée à la Charge montée ; hors charge, elle se manie comme une lance (compétence Lance)."),
-    weapon("Lance de joute", "melee", "lance", "charge", "horse", dmg("horse"), price=3, period="boyKing", source=SRC(T81),
+    weapon("Lance de joute", "melee", "lance", "charge", "horse", dmg("horse"), price=3, period="boyKing", source=SRC(T81), blunt=True,
            adv="Arme longue.", dis="Pointe émoussée : dégâts amortis (moitié des dégâts). Se brise aussi sur une charge réussie dont le dé est pair (la table dit pair, le texte du chapitre dit impair).",
            desc="Lance de bois fragile, pour les joutes : elle casse bien plus souvent que la lance de cavalerie."),
     weapon("Hache de bataille", "melee", "axe", "hafted", "both", dmg(), shieldBreaker=True, price=30, source=SRC(T81),

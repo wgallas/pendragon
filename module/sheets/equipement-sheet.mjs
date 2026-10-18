@@ -53,7 +53,8 @@ export class EquipementSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         thrownRangeChoices: choice(PDVF.ranges, "PDVF.Gear.Range", s.thrown.range),
         damageLabel: describeDamage(s.damage, { quality: s.quality }),
         thrownLabel: s.thrown.enabled ? describeDamage(s.thrown.damage, { quality: s.quality }) : "",
-        alts: s.alts.map((a, i) => ({ ...a, index: i })),
+        alts: s.alts.map((a, i) => ({ ...a, index: i,
+          whenChoices: ["", "mail", "plate", "unarmored"].map(w => ({ value: w, label: L(`PDVF.Gear.When.${w || "manual"}`), selected: w === (a.when ?? "") })) })),
         skillLabel: L(`PDVF.Skill.${s.skill}`),
         useLabel: L(`PDVF.Gear.Use.${s.use}`),
         rangeLabel: s.range ? L(`PDVF.Gear.Range.${s.range}`) : ""
@@ -85,7 +86,7 @@ export class EquipementSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   static #onAddAlt() {
     const alts = foundry.utils.deepClone(this.document._source.system.alts ?? []);
-    alts.push({ label: "", dice: 1 });
+    alts.push({ label: "", dice: 1, when: "" });
     return this.document.update({ "system.alts": alts });
   }
 

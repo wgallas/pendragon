@@ -2,6 +2,8 @@ import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { formatValue } from "../rules/resolution.mjs";
 import { rollAttribute, promptTestOptions, rollDamage, signed } from "../dice/tests.mjs";
 import { convertNpcToKnight } from "../documents/followers.mjs";
+import { engage } from "../combat/exchange.mjs";
+import * as CD from "../combat/dialogs.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -34,7 +36,14 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       editImage: PnjSheet.#onEditImage,
       convert: PnjSheet.#onConvert,
       openMaster: PnjSheet.#onOpenMaster,
-      squireAge: PnjSheet.#onSquireAge
+      squireAge: PnjSheet.#onSquireAge,
+      engage: PnjSheet.#onEngage,
+      combatDamage: PnjSheet.#onCombatDamage,
+      combatMount: PnjSheet.#onCombatMount,
+      combatStand: PnjSheet.#onCombatStand,
+      combatRearm: PnjSheet.#onCombatRearm,
+      woundAid: PnjSheet.#onWoundAid,
+      woundDelete: PnjSheet.#onWoundDelete
     }
   };
 
@@ -122,6 +131,7 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         originLabel: L(`PDVF.Npc.SquireOrigin.${v.origin.id}`)
       };
     }
+    context.combat = CD.woundsView(actor);
     return context;
   }
 
@@ -225,6 +235,21 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
    * Âge de l'écuyer, + ou − 1 an : l'âge se déduit de l'année de naissance et de l'année de jeu,
    * on déplace donc l'année de naissance. (La phase d'hiver fera vieillir tout le monde en avançant l'année.)
    */
+  static #onEngage(event, target) {
+    const ref = target.dataset.index !== undefined ? `attack:${target.dataset.index}` : null;
+    return engage(this.document, { weapon: ref, token: this.token ?? null });
+  }
+  static #onCombatDamage() { return CD.promptDamage(this.document); }
+  static #onCombatMount() { return CD.toggleMounted(this.document); }
+  static #onCombatStand() { return CD.standUp(this.document); }
+  static #onCombatRearm() { return CD.rearm(this.document); }
+  static #onWoundAid(event, target) { return CD.promptFirstAid(this.document, target.dataset.id); }
+  static async #onWoundDelete(event, target) {
+    const wounds = foundry.utils.deepClone(this.document._source.system.health.wounds ?? []);
+    wounds.splice(Number(target.dataset.index), 1);
+    await this.document.update({ "system.health.wounds": wounds });
+  }
+
   static async #onSquireAge(event, target) {
     const step = Number(target.dataset.step) || 0;
     const year = Number(game.settings.get(SYSTEM_ID, "currentYear")) || 508;

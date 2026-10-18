@@ -166,7 +166,8 @@
               <td>{{name}}</td>
               <td class="pdvf-faint">{{skill}}</td>
               <td><button type="button" class="pdvf-npc-roll" data-action="roll" data-key="{{key}}"><i class="pdvf-die-icon" aria-hidden="true"></i> <strong>{{display}}</strong></button></td>
-              <td>{{#if damageRollable}}<button type="button" class="pdvf-npc-roll damage" data-action="damage" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Npc.RollDamage'}}">{{damage}}</button>{{else}}{{damage}}{{/if}}</td>
+              <td>{{#if damageRollable}}<button type="button" class="pdvf-npc-roll damage" data-action="damage" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Npc.RollDamage'}}">{{damage}}</button>{{else}}{{damage}}{{/if}}
+                <button type="button" class="pdvf-gear-engage" data-action="engage" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Combat.EngageWithTip'}}" aria-label="{{localize 'PDVF.Combat.EngageTarget'}}"><i class="fa-solid fa-swords"></i></button></td>
               {{/if}}
             </tr>
             {{else}}
@@ -175,6 +176,27 @@
           </tbody>
         </table>
         {{#if editMode}}<button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.attacks">{{localize "PDVF.Npc.AddAttack"}}</button>{{/if}}
+
+        <div class="pdvf-combat-state">
+          <button type="button" class="pdvf-state-btn {{#if combat.mounted}}on{{/if}}" data-action="combatMount" aria-pressed="{{#if combat.mounted}}true{{else}}false{{/if}}"><i class="fa-solid fa-horse" aria-hidden="true"></i> {{#if combat.mounted}}{{localize "PDVF.Status.mounted"}}{{else}}{{localize "PDVF.Combat.OnFoot"}}{{/if}}</button>
+          {{#if combat.prone}}<button type="button" class="pdvf-state-btn warn" data-action="combatStand"><i class="fa-solid fa-person-arrow-up-from-line" aria-hidden="true"></i> {{localize "PDVF.Combat.StandUp"}}</button>{{/if}}
+          {{#if combat.disarmed}}<button type="button" class="pdvf-state-btn warn" data-action="combatRearm"><i class="fa-solid fa-hand" aria-hidden="true"></i> {{localize "PDVF.Combat.Rearm"}}</button>{{/if}}
+          {{#if combat.unconscious}}<span class="pdvf-state-badge">{{localize "PDVF.Combat.UnconsciousBadge"}}</span>{{/if}}
+          {{#if combat.dying}}<span class="pdvf-state-badge dying">{{localize "PDVF.Combat.DyingBadge"}}</span>{{/if}}
+          <button type="button" class="pdvf-state-btn" data-action="engage"><i class="fa-solid fa-swords" aria-hidden="true"></i> {{localize "PDVF.Combat.EngageTarget"}}</button>
+          <button type="button" class="pdvf-state-btn" data-action="combatDamage"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{localize "PDVF.Combat.Receive"}}</button>
+        </div>
+        {{#if combat.wounds.length}}
+        <ul class="pdvf-wounds">
+          {{#each combat.wounds}}
+          <li class="{{type}} {{#if aided}}aided{{/if}}">
+            <strong class="pdvf-wound-dmg">{{damage}}</strong><span class="pdvf-wound-type">{{typeLabel}}</span><span class="pdvf-wound-src">{{source}}</span>
+            {{#unless aided}}<button type="button" class="pdvf-gear-test" data-action="woundAid" data-id="{{id}}"><i class="fa-solid fa-kit-medical" aria-hidden="true"></i> {{localize "PDVF.Combat.FirstAid"}}</button>{{/unless}}
+            {{#if @root.editMode}}<button type="button" class="pdvf-icon-btn" data-action="woundDelete" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{/if}}
 
         <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Skills"}}</h2>
         <div class="pdvf-npc-list">

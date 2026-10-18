@@ -44,6 +44,9 @@
         <select name="system.range">{{#each rangeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
       <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.twoHanded" {{checked system.twoHanded}}> <span>{{localize "PDVF.Gear.TwoHanded"}}</span></label>
       <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.shieldBreaker" {{checked system.shieldBreaker}}> <span>{{localize "PDVF.Gear.ShieldBreaker"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.long" {{checked system.long}}> <span>{{localize "PDVF.Gear.Long"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.swordTie" {{checked system.swordTie}}> <span>{{localize "PDVF.Gear.SwordTie"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.blunt" {{checked system.blunt}}> <span>{{localize "PDVF.Gear.Blunt"}}</span></label>
     </div>
     <p class="pdvf-hint">{{localize "PDVF.Gear.DamageHint"}} <strong>{{damageLabel}}</strong></p>
 
@@ -52,6 +55,7 @@
     <div class="pdvf-gear-alt">
       <input type="text" name="system.alts.{{index}}.label" value="{{label}}" placeholder="{{localize 'PDVF.Gear.AltPlaceholder'}}" aria-label="{{localize 'PDVF.Gear.AltLabel'}}">
       <label>+<input type="number" name="system.alts.{{index}}.dice" value="{{dice}}" step="1" aria-label="{{localize 'PDVF.Gear.Dice'}}">D6</label>
+      <select name="system.alts.{{index}}.when" aria-label="{{localize 'PDVF.Gear.AltWhen'}}">{{#each whenChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
       {{#if ../editable}}<button type="button" class="pdvf-icon-btn" data-action="deleteAlt" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
     </div>
     {{/each}}

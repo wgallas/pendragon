@@ -114,6 +114,28 @@ function newWound(damage, type, source) {
   return { id: foundry.utils.randomID(), damage, type, source, aided: false, day };
 }
 
+/**
+ * Un PNJ à 0 point de vie ou moins est mort (les PNJ importants ont une fiche de chevalier
+ * et suivent la règle des personnages : mort à minuit sans Premiers soins).
+ */
+export function diesAtZero(actor) {
+  return actor?.type === "pnj";
+}
+
+/** Ligne de fin d'un combattant à 0 point de vie ou moins ; vrai s'il meurt sur-le-champ. */
+function zeroHp(actor, hp, lines) {
+  if (hp > 0) return false;
+  if (diesAtZero(actor)) { lines.push(F("PDVF.Combat.Line.Dead", { name: actor.name })); return true; }
+  lines.push(F("PDVF.Combat.Line.Dying", { name: actor.name }));
+  return false;
+}
+
+/** Pose l'état « mort » (et retire « inconscient »). */
+async function markDead(actor) {
+  await setStatus(actor, STATUS.unconscious, false);
+  await setStatus(actor, STATUS.dead, true);
+}
+
 /* -------------------------------------------- */
 /*  Recevoir des dégâts                          */
 /* -------------------------------------------- */
@@ -236,7 +258,11 @@ export async function receiveDamage(actor, hit, undo = null) {
     }
   }
   if (state.debilitated) health.debilitated = true;
-  if (health.hp.value <= 0) lines.push(F("PDVF.Combat.Line.Dying", { name: actor.name }));
+  if (zeroHp(actor, health.hp.value, lines)) {
+    statusOn.delete(STATUS.unconscious);
+    statusOff.add(STATUS.unconscious);
+    statusOn.add(STATUS.dead);
+  }
 
   // 6. Écriture
   const update = { "system.health": health };
@@ -247,9 +273,9 @@ export async function receiveDamage(actor, hit, undo = null) {
     undo.items.push({ actor: actor.uuid, _id: item.id, data: { "system.equipped": item.system.equipped } });
     await item.update(data);
   }
-  for (const id of statusOn) await setStatus(actor, id, true);
   for (const id of statusOff) await setStatus(actor, id, false);
-  return { lines, rolls, undo, real, type, out: state.unconscious || health.hp.value <= 0 };
+  for (const id of statusOn) await setStatus(actor, id, true);
+  return { lines, rolls, undo, real, type, out: state.unconscious || health.hp.value <= 0, dead: statusOn.has(STATUS.dead) };
 }
 
 /**
@@ -316,10 +342,11 @@ export async function firstAid(patient, woundId, healer) {
     health.debilitated = true;
     lines.push(F("PDVF.Combat.Line.FirstAidFumble", { name: patient.name, loss: r.total }));
   }
-  if (health.hp.value <= 0) lines.push(F("PDVF.Combat.Line.Dying", { name: patient.name }));
+  const dead = zeroHp(patient, health.hp.value, lines);
   const undo = snapshot(patient);
   await patient.update({ "system.health": health });
   for (const id of statusOff) await setStatus(patient, id, false);
+  if (dead) await markDead(patient);
   return { lines, rolls, undo };
 }
 
@@ -381,7 +408,7 @@ export async function convalescence(actor, { surgeon = null, unsanitary = false,
   lines.push(F("PDVF.Combat.Line.HpChange", { from: hp0, to: health.hp.value, max: st.hpTotal }));
   await actor.update({ "system.health": health });
   if (health.hp.value >= st.unconsciousAt && hasStatus(actor, STATUS.unconscious) && !health.debilitated) await setStatus(actor, STATUS.unconscious, false);
-  if (health.hp.value <= 0) lines.push(F("PDVF.Combat.Line.Dying", { name: actor.name }));
+  if (zeroHp(actor, health.hp.value, lines)) await markDead(actor);
   return { lines, rolls, undo };
 }
 
@@ -392,7 +419,9 @@ export async function aggravate(actor, points = 1) {
   health.hp.value -= points;
   health.aggravation = (Number(health.aggravation) || 0) + points;
   await actor.update({ "system.health": health });
-  return { lines: [F("PDVF.Combat.Line.Aggravation", { name: actor.name, loss: points })], rolls: [], undo };
+  const lines = [F("PDVF.Combat.Line.Aggravation", { name: actor.name, loss: points })];
+  if (zeroHp(actor, health.hp.value, lines)) await markDead(actor);
+  return { lines, rolls: [], undo };
 }
 
 /* -------------------------------------------- */

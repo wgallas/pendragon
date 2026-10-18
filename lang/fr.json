@@ -2022,7 +2022,8 @@
         "NoRest": "Sans repos, pas de guérison naturelle cette semaine.",
         "Recovered": "{name} n'est plus Affaibli.",
         "FullHealth": "{name} est entièrement guéri.",
-        "HpChange": "Points de vie : {from} → {to} / {max}."
+        "HpChange": "Points de vie : {from} → {to} / {max}.",
+        "Dead": "{name} tombe à 0 point de vie ou moins : il est mort."
       },
       "InvokePassion": "Invoquer une passion pour cet échange",
       "NoPassion": "Aucune",

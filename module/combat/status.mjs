@@ -28,6 +28,7 @@ export function hasStatus(actor, id) {
 export async function setStatus(actor, id, active) {
   if (!actor || hasStatus(actor, id) === !!active) return false;
   if (typeof actor.toggleStatusEffect !== "function") return false;
-  await actor.toggleStatusEffect(id, { active: !!active });
+  // La mort se pose en grand sur le jeton (tête de mort de Foundry).
+  await actor.toggleStatusEffect(id, { active: !!active, overlay: id === STATUS.dead && !!active });
   return true;
 }

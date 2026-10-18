@@ -45,6 +45,13 @@ def niche(bg, dots=GOLD):
             + p("M10 58 L54 58", "none", stroke=INK, stroke_width="1.6"))
 
 
+MAIL = ('<defs><pattern id="m" width="2.4" height="2.4" patternUnits="userSpaceOnUse">'
+        '<circle cx="1.2" cy="1.2" r="0.85" fill="none" stroke="#6f6c66" stroke-width="0.45"/></pattern></defs>')
+BODY = "M27 23 Q32 21 37 23 L40 34 L42 46 L33 46 L32 42 L31 46 L22 46 L24 34 Z"
+ARM = "M37 23 L41.6 32.6 L39.6 34.6 L36 28 Z"
+SHIELD = "M15.8 26.6 Q21 24.6 26.2 26.6 L26.2 36 Q25.2 44.5 21 49.4 Q16.8 44.5 15.8 36 Z"
+
+
 def face(cx=32, cy=16, r=4.3):
     return c(cx, cy, r, SKIN) + c(cx - 1.5, cy - 0.3, 0.45, INK, stroke="none") + c(cx + 1.5, cy - 0.3, 0.45, INK, stroke="none")
 
@@ -65,17 +72,22 @@ ICONS = {
                + line(32, 31, 32, 46, stroke_width="1.4")
                + "".join(c(x, y, 0.7, INK) for x, y in [(27, 36), (27, 40), (37, 36), (37, 40)])
                + p("M32 14 Q33 7 40 6 Q37 10 39 13 Q35 11 32 14 Z", VERM)),
-    # Personnage : seigneur en houppelande et chaperon, dans une niche bleue
-    "character": (niche(LAPIS)
-                  + p("M26 22 Q32 20 38 22 L41 34 L44 57 L20 57 L23 34 Z", VERM)
-                  + p("M26 22 L20 40 L23 42 L27 30 M38 22 L44 40 L41 42 L37 30", GOLD, stroke_width="1")
-                  + r(23.5, 33, 17, 2.2, GOLD) + p("M32 35 L32 57", "none", stroke_width="0.8")
-                  + face(32, 16.5)
-                  + p("M28.5 19.5 Q32 24.5 35.5 19.5 Q34 21 32 21 Q30 21 28.5 19.5 Z", WOOD, stroke_width="0.8")
-                  + p("M36.5 12.5 Q41 15 40.5 27 L38.6 27 Q39 18 35.5 14 Z", VERM, stroke_width="0.9")
-                  + p("M27.4 14 Q27 9 32 8.6 Q37 9 36.6 14 Z", VERM, stroke_width="0.9")
-                  + '<ellipse cx="32" cy="13.4" rx="6.2" ry="2" fill="#b8892b"/>'
-                  + c(25.5, 40.5, 1.6, SKIN) + c(38.5, 40.5, 1.6, SKIN)),
+    # Personnage : chevalier en haubert de mailles, heaume à nasal, écu et épée, dans une niche bleue
+    "character": (niche(LAPIS) + MAIL
+                  + p("M26.5 46 L26.5 56 L30.5 56 L30.5 46 M33.5 46 L33.5 56 L37.5 56 L37.5 46", STEEL)
+                  + p("M26.5 46 L26.5 56 L30.5 56 L30.5 46 M33.5 46 L33.5 56 L37.5 56 L37.5 46", "url(#m)", stroke="none")
+                  + p("M25.5 56 L31 56 M33 56 L38.5 56", "none", stroke_width="1.6")
+                  + p("M39 35 L44 51 L42.4 51.6 L37.6 35.6 Z", WOOD) + c(43.4, 51.6, 0.9, GOLD)
+                  + p(BODY, STEEL) + p(BODY, "url(#m)", stroke="none") + p(BODY, "none")
+                  + r(24.3, 33, 15.4, 1.9, WOOD)
+                  + p(ARM, STEEL) + p(ARM, "url(#m)", stroke="none") + p(ARM, "none")
+                  + line(36.6, 34.6, 40.8, 33.2, stroke=GOLD, stroke_width="1.6") + c(40.2, 34.4, 1.6, SKIN)
+                  + c(32, 16.6, 6, STEEL) + c(32, 16.6, 6, "url(#m)", stroke="none") + c(32, 16.6, 6, "none")
+                  + c(32, 18, 3.9, SKIN) + c(30.3, 17.6, 0.5, INK, stroke="none") + c(33.7, 17.6, 0.5, INK, stroke="none")
+                  + p("M30.6 20.4 Q32 21.2 33.4 20.4", "none", stroke_width="0.6")
+                  + p("M25.8 14 Q26.2 6.8 32 5.4 Q37.8 6.8 38.2 14 Z", STEEL) + r(25.6, 13, 12.8, 1.4, GOLD, 0.4)
+                  + r(31.4, 14.2, 1.2, 4.2, STEEL, 0.5)
+                  + p(SHIELD, VERM) + p("M21 25.6 L21 48.6 M16.3 31 L25.7 31", "none", stroke=GOLD, stroke_width="1.3") + c(21, 31, 1.3, GOLD)),
     # Écuyer : cotte courte et chausses, lance à fanion, dans une niche vermeille
     "squire": (niche(VERM)
                + line(42, 8, 42, 57, stroke=WOOD, stroke_width="1.8") + p("M42 8.5 L50 11 L42 14 Z", GOLD)
@@ -116,11 +128,12 @@ ICONS = {
               + p("M23 31 L26 43 M15 43 L29 41", "none", stroke=VERM, stroke_width="1.6")
               + c(12.5, 43.5, 0.9, INK, stroke="none")),
     # --- Objets ---
-    # Bataille : deux bannières croisées
+    # Bataille : deux étendards croisés, attachés à leur hampe
     "battle": (line(17, 59, 44, 8, stroke=WOOD, stroke_width="2.4") + line(47, 59, 20, 8, stroke=WOOD, stroke_width="2.4")
-               + p("M42 11 L58 14 L54 20 L58 26 L39 23 Z", VERM) + p("M22 11 L6 14 L10 20 L6 26 L25 23 Z", LAPIS)
+               + p("M42.4 11 L57 14 L53 19 L56.5 24.5 L36.5 22.1 Z", VERM) + p("M21.6 11 L7 14 L11 19 L7.5 24.5 L27.5 22.1 Z", LAPIS)
+               + line(43.4, 9.1, 35.8, 23.5, stroke=WOOD, stroke_width="2.4") + line(20.6, 9.1, 28.2, 23.5, stroke=WOOD, stroke_width="2.4")
                + c(44, 7, 1.8, GOLD) + c(20, 7, 1.8, GOLD)
-               + p("M46 15.5 L49 18.5 L46 21.5 L43 18.5 Z", GOLD) + p("M18 15.5 L21 18.5 L18 21.5 L15 18.5 Z", GOLD)),
+               + p("M48 14.6 L51 17.6 L48 20.6 L45 17.6 Z", GOLD) + p("M16 14.6 L19 17.6 L16 20.6 L13 17.6 Z", GOLD)),
     # Rencontre de bataille (adversaire) : épées croisées
     "encounter": sword(40) + sword(-40),
     # Rencontre de bataille (occasion de Gloire) : couronne de laurier et étoile

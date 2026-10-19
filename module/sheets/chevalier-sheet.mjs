@@ -17,7 +17,7 @@ import { engage } from "../combat/exchange.mjs";
 import * as CD from "../combat/dialogs.mjs";
 import { domainsOf, domainGlory, domainIncome, newDomainData } from "../documents/domains.mjs";
 import { isDefaultActorImg } from "../documents/icons.mjs";
-import { portraitView, setTokenImage } from "../documents/portrait.mjs";
+import { portraitView } from "../documents/portrait.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -69,8 +69,6 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       recordSession: ChevalierSheet.#onRecordSession,
       editHeraldry: ChevalierSheet.#onEditHeraldry,
       editPortrait: ChevalierSheet.#onEditPortrait,
-      portraitToken: ChevalierSheet.#onPortraitToken,
-      editTokenImage: ChevalierSheet.#onEditTokenImage,
       endInspiration: ChevalierSheet.#onEndInspiration,
       newDay: ChevalierSheet.#onNewDay,
       step: ChevalierSheet.#onStep,
@@ -519,25 +517,6 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const FP = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
     const current = isDefaultActorImg(actor._source.img, actor.type) ? "" : actor._source.img;
     return new FP({ type: "image", current, callback: (path) => actor.update({ img: path }) }).browse();
-  }
-
-  /** Jeton tiré du portrait : l'anneau dynamique de Foundry le découpe en cercle. */
-  static async #onPortraitToken() {
-    if (!this.isEditable) return;
-    const actor = this.document;
-    if (isDefaultActorImg(actor._source.img, actor.type)) return;
-    await setTokenImage(actor, actor._source.img, { ring: true });
-    ui.notifications.info(game.i18n.format("PDVF.Portrait.TokenSet", { name: actor.name }));
-  }
-
-  /** Image propre au jeton (déjà circulaire) : sans anneau. */
-  static async #onEditTokenImage() {
-    if (!this.isEditable) return;
-    const actor = this.document;
-    const FP = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
-    const src = actor._source.prototypeToken?.texture?.src ?? "";
-    return new FP({ type: "image", current: isDefaultActorImg(src, actor.type) ? "" : src,
-      callback: (path) => setTokenImage(actor, path, { ring: false }) }).browse();
   }
 
   static async #onEditHeraldry() {

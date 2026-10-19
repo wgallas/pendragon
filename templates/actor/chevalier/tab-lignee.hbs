@@ -12,16 +12,6 @@
         <img src="{{portrait.img}}" alt="{{localize 'PDVF.Portrait.Label'}}">
         {{#unless portrait.custom}}<span>{{localize "PDVF.Portrait.Choose"}}</span>{{/unless}}
       </button>
-      <div class="pdvf-token-block">
-        <span class="pdvf-token-label">{{localize "PDVF.Portrait.Token"}}</span>
-        <div class="pdvf-token-preview {{#if portrait.ring}}ring{{/if}}"><img src="{{portrait.token}}" alt="{{localize 'PDVF.Portrait.Token'}}"></div>
-        <p class="pdvf-hint">{{portrait.tokenState}}</p>
-        {{#if editable}}
-        <button type="button" class="pdvf-btn pdvf-mini" data-action="portraitToken" {{#unless portrait.custom}}disabled{{/unless}} data-tooltip="{{localize 'PDVF.Portrait.FromPortraitTip'}}">{{localize "PDVF.Portrait.FromPortrait"}}</button>
-        <button type="button" class="pdvf-btn pdvf-mini" data-action="editTokenImage" data-tooltip="{{localize 'PDVF.Portrait.OwnImageTip'}}">{{localize "PDVF.Portrait.OwnImage"}}</button>
-        {{/if}}
-      </div>
-    </div>
     <div class="pdvf-form-grid">
       <label class="pdvf-field"><span>{{localize "PDVF.Bio.born"}}</span>
         <input type="number" name="system.biography.born" value="{{#if system.biography.born}}{{system.biography.born}}{{/if}}" step="1"></label>
@@ -38,6 +28,7 @@
         <select name="system.biography.religion">{{selectOptions religionChoices selected=system.biography.religion valueAttr="value" labelAttr="label"}}</select></label>
       <label class="pdvf-field pdvf-span2"><span>{{localize "PDVF.Bio.features"}}</span>
         <input type="text" name="system.biography.distinctiveFeatures" value="{{system.biography.distinctiveFeatures}}"></label>
+    </div>
     </div>
 
     <h3 class="pdvf-h3">{{localize "PDVF.Section.Dates"}}</h3>

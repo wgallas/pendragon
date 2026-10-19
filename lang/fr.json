@@ -2446,6 +2446,20 @@
         "Rerolled": "relancé par la dame"
       },
       "EntourageGlory": "Gloire de la suite (professionnels)"
+    },
+    "Portrait": {
+      "Label": "Portrait",
+      "Edit": "Choisir le portrait du chevalier",
+      "Choose": "Cliquer pour choisir le portrait",
+      "Token": "Jeton",
+      "FromPortrait": "Jeton du portrait",
+      "FromPortraitTip": "Le portrait devient l'image du jeton, découpée en cercle par l'anneau dynamique de Foundry (réglable dans la configuration du jeton : couleurs, échelle du sujet).",
+      "OwnImage": "Image du jeton…",
+      "OwnImageTip": "Choisir une image propre au jeton (déjà circulaire) : l'anneau dynamique est retiré.",
+      "StateRing": "Portrait dans un anneau.",
+      "StateOwn": "Image propre au jeton.",
+      "StateDefault": "Icône par défaut.",
+      "TokenSet": "Le jeton de {name} prend son portrait."
     }
   }
 }

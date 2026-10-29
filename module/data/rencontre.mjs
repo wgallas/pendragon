@@ -9,7 +9,10 @@ export function encounterFields() {
   const bool = (initial = false) => new fields.BooleanField({ initial });
   return {
     kind: new fields.StringField({ initial: "opponent", choices: ["opponent", "opportunity"] }),
+    // Règles et texte guidé du MJ (cachés aux joueurs)
     description: new fields.StringField({ initial: "" }),
+    // Description évocatrice montrée aux joueurs, sans règles ni coûts
+    teaser: new fields.StringField({ initial: "" }),
     moraleLoss: new fields.StringField({ initial: "1D6" }),
     moraleMin: num(10, { integer: true }),
     kv: num(1, { min: 0 }),

@@ -60,9 +60,11 @@ export function clampMorale(value, start) {
 }
 
 /**
- * Modificateur du test de Bataille d'un commandant d'armée (Table 6.2).
+ * Modificateur du test de Bataille d'un commandant d'armée (Table 6.2), plus les modificateurs libres
+ * du scénario (« Aide de Merlin +5 », « Embuscade +10 »).
  * @param {"allied"|"enemy"} side
- * @param {{odds:string, favors:string, alliedMods:string[], enemyMods:string[]}} battle
+ * @param {{odds:string, favors:string, alliedMods:string[], enemyMods:string[],
+ *          alliedCustom?:{value:number}[], enemyCustom?:{value:number}[]}} battle
  */
 export function commanderModifier(side, battle, cfg) {
   const other = side === "allied" ? "enemy" : "allied";
@@ -73,16 +75,20 @@ export function commanderModifier(side, battle, cfg) {
   const theirs = side === "allied" ? battle.enemyMods : battle.alliedMods;
   for (const id of own ?? []) mod += cfg.commanderMods[id]?.mod ?? 0;
   for (const id of theirs ?? []) mod += cfg.commanderMods[id]?.other ?? 0;
+  const custom = side === "allied" ? battle.alliedCustom : battle.enemyCustom;
+  for (const c of custom ?? []) mod += Math.round(Number(c?.value) || 0);
   return mod;
 }
 
 /**
  * Effets des tests des commandants d'armée.
  * Sans test (batailles plus petites qu'un Affrontement), le premier tour est une charge.
+ * Le scénario peut imposer la première charge (« always ») ou l'interdire (« never »).
  */
-export function armyTestEffects(allied, enemy) {
+export function armyTestEffects(allied, enemy, firstChargeMode = "test") {
+  const byTest = !allied || isSuccess(allied);
   return {
-    firstCharge: !allied || isSuccess(allied),
+    firstCharge: firstChargeMode === "always" ? true : firstChargeMode === "never" ? false : byTest,
     firstRoundPenalty: allied === "fumble",
     enemyImposes: isSuccess(enemy),
     moraleImmunity: enemy === "fumble"
@@ -187,4 +193,62 @@ export function formatPounds(x) {
   const named = { 25: "¼", 50: "½", 75: "¾" }[frac];
   if (named) return `${whole ? whole + " " : ""}${named} £`;
   return `${String(v).replace(".", ",")} £`;
+}
+
+/**
+ * Une carte, une condition ou un événement est-il en vigueur à ce tour ?
+ * from / to vides : sans limite de ce côté.
+ */
+export function activeAt(item, round) {
+  const r = Number(round) || 0;
+  const from = Number(item?.from);
+  const to = Number(item?.to);
+  if (Number.isFinite(from) && from > 0 && r < from) return false;
+  if (Number.isFinite(to) && to > 0 && r > to) return false;
+  return true;
+}
+
+/** Libellé « tours 5–8 », « à partir du tour 5 », « jusqu'au tour 3 », « tour 5 » (clés de traduction passées). */
+export function roundRange(item, labels) {
+  const from = Number(item?.from) || null;
+  const to = Number(item?.to) || null;
+  if (from && to) return from === to ? labels.one.replace("{n}", from) : labels.range.replace("{from}", from).replace("{to}", to);
+  if (from) return labels.from.replace("{n}", from);
+  if (to) return labels.to.replace("{n}", to);
+  return labels.all;
+}
+
+/**
+ * Gloire de participation imposée par le scénario (déjà multipliée par le résultat),
+ * multipliée pour un poste de commandement (Table 6.8) si le scénario le prévoit.
+ */
+export function imposedParticipation(outcome, role, cfg) {
+  const g = Number(outcome?.glory);
+  if (!Number.isFinite(g) || outcome?.glory === null) return null;
+  const mult = role !== "none" && outcome.commanderDouble ? (cfg.commandGlory[role] || 1) : 1;
+  return roundPendragon(g * mult);
+}
+
+/** Butin imposé par le scénario : nombre de livres, 0 si aucun, null pour le calcul des règles. */
+export function imposedLoot(loot, role) {
+  if (!loot || loot.mode === "rules") return null;
+  if (loot.mode === "none") return 0;
+  const base = Number(loot.pounds) || 0;
+  const cmd = loot.commanderPounds;
+  if (role !== "none" && cmd !== null && cmd !== undefined && cmd !== "") return Number(cmd) || 0;
+  return base;
+}
+
+/** Gloire des bonus particuliers du bilan pour un chevalier (liste vide : tous les chevaliers). */
+export function bonusGlory(bonuses, uuid) {
+  return (bonuses ?? []).reduce((sum, b) => {
+    const list = b?.knights ?? [];
+    return sum + (!list.length || list.includes(uuid) ? Math.round(Number(b.glory) || 0) : 0);
+  }, 0);
+}
+
+/** Ligne d'une table d'événements pour un total donné. */
+export function tableRow(table, total) {
+  const t = Number(total);
+  return (table?.rows ?? []).find(r => t >= Number(r.min) && t <= Math.max(Number(r.min), Number(r.max))) ?? null;
 }

@@ -1,0 +1,24 @@
+{{!-- Éditeur d'effets : rows (effectRows), base (chemin de la liste), label (texte du bouton d'ajout) --}}
+<div class="pdvf-effects">
+  {{#each rows}}
+  <div class="pdvf-effect-row">
+    <select class="pdvf-effect-type" name="{{path}}.type" aria-label="{{localize 'PDVF.Battle.EffectType'}}">
+      {{#each typeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+    </select>
+    {{#if isNumber}}<input class="pdvf-effect-num" type="number" name="{{path}}.value" value="{{value}}" step="1" placeholder="±" aria-label="{{localize 'PDVF.Battle.EffectValue'}}">{{/if}}
+    {{#if isFormula}}<input class="pdvf-effect-num" type="text" name="{{path}}.value" value="{{value}}" placeholder="1D8" aria-label="{{localize 'PDVF.Battle.EffectValue'}}">{{/if}}
+    {{#if isChoice}}<select name="{{path}}.value" aria-label="{{localize 'PDVF.Battle.EffectValue'}}">{{#each valueChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>{{/if}}
+    {{#if isText}}<input class="pdvf-effect-text" type="text" name="{{path}}.value" value="{{value}}" placeholder="{{localize 'PDVF.Battle.EffectNotePlaceholder'}}" aria-label="{{localize 'PDVF.Battle.EffectValue'}}">{{/if}}
+    {{#if hasCards}}
+    {{#if cardChoices.length}}
+    <select class="pdvf-effect-cards" name="{{path}}.ids" multiple size="3" aria-label="{{localize 'PDVF.Battle.EffectCards'}}" data-tooltip="{{localize 'PDVF.Battle.EffectCardsTip'}}">
+      {{#each cardChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+    </select>
+    {{else}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.EffectNoCards"}}</span>{{/if}}
+    {{/if}}
+    <span class="pdvf-hint-inline pdvf-effect-hint">{{hint}}</span>
+    <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="{{base}}" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  {{/each}}
+  <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="{{base}}" data-kind="effect"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddEffect"}}</button>
+</div>

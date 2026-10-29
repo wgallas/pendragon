@@ -1,0 +1,39 @@
+{{!-- Une carte du paquet, réglable localement (contexte : la carte préparée par prepView) --}}
+<li class="pdvf-card-edit {{kind}} {{#if used}}used{{/if}}" data-drop="card" data-id="{{id}}">
+  <img class="pdvf-card-thumb" src="{{img}}" alt="">
+  <div class="pdvf-card-main">
+    <div class="pdvf-row-edit">
+      <input type="text" class="pdvf-card-name" name="{{path}}.name" value="{{name}}" aria-label="{{localize 'PDVF.Battle.CardLabel'}}" data-tooltip="{{localize 'PDVF.Battle.CardLabelTip'}}">
+      <label class="pdvf-inline pdvf-range">{{localize "PDVF.Battle.FromRound"}} <input type="number" class="pdvf-num" name="{{path}}.from" value="{{from}}" min="1" step="1" placeholder="—"></label>
+      <label class="pdvf-inline pdvf-range">{{localize "PDVF.Battle.ToRound"}} <input type="number" class="pdvf-num" name="{{path}}.to" value="{{to}}" min="1" step="1" placeholder="—"></label>
+      {{#if (eq kind "opponent")}}
+      <label class="pdvf-check" data-tooltip="{{localize 'PDVF.Battle.ForcedCardTip'}}"><input type="checkbox" name="{{path}}.forced" {{#if forced}}checked{{/if}}> {{localize "PDVF.Battle.ForcedCard"}}</label>
+      {{/if}}
+      <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeEncounter" data-id="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="pdvf-card-facts">
+      <span class="pdvf-deck-stats">{{localize "PDVF.Battle.MoraleLossShort"}} {{moraleLoss}} · {{localize "PDVF.Battle.MoraleMinShort"}} {{moraleMin}} · {{localize "PDVF.Battle.KV"}} {{kvLabel}} · {{countLabel}}{{#if limited}} · <strong>{{range}}</strong>{{/if}}</span>
+      <span class="pdvf-card-npc">
+        <i class="fa-solid fa-user-shield"></i>
+        {{#if npcName}}<button type="button" class="pdvf-link" data-action="openDoc" data-uuid="{{npcUuid}}">{{npcName}}</button>
+        <button type="button" class="pdvf-icon-btn" data-action="clearValue" data-path="{{path}}.npc" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+        {{else}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.DropNamedNpc"}}</span>{{/if}}
+        <label class="pdvf-inline" data-tooltip="{{localize 'PDVF.Battle.SkillBonusTip'}}">{{localize "PDVF.Battle.SkillBonus"}} <input type="number" class="pdvf-num" name="{{path}}.skillBonus" value="{{skillBonus}}" step="1"></label>
+      </span>
+    </div>
+    <textarea class="pdvf-card-teaser" name="{{path}}.teaser" rows="2" placeholder="{{localize 'PDVF.Battle.TeaserPlaceholder'}}">{{teaser}}</textarea>
+    <details class="pdvf-card-rules">
+      <summary>{{localize "PDVF.Battle.CardRules"}}</summary>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.MoraleLoss"}}</span><input type="text" name="{{path}}.moraleLoss" value="{{moraleLoss}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.MoraleMin"}}</span><input type="number" name="{{path}}.moraleMin" value="{{moraleMin}}" step="1"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.KV"}}</span><input type="number" name="{{path}}.kv" value="{{kv}}" step="0.0625" min="0"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.GloryEach"}}</span><input type="number" name="{{path}}.glory" value="{{glory}}" step="1" min="0"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.PerKnight"}}</span><input type="number" name="{{path}}.perKnight" value="{{perKnight}}" step="0.5" min="0"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.FixedCount"}}</span><input type="number" name="{{path}}.fixedCount" value="{{fixedCount}}" step="1" min="1" placeholder="—"></label>
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.Ransom"}}</span><input type="text" name="{{path}}.ransom" value="{{ransom}}"></label>
+      </div>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.Description"}}</span><textarea name="{{path}}.description" rows="5">{{description}}</textarea></label>
+    </details>
+  </div>
+</li>

@@ -5,6 +5,7 @@
 import { SYSTEM_ID } from "../config.mjs";
 import { enemyCount } from "../rules/battle.mjs";
 import { findEncounter, onField } from "./engine.mjs";
+import { viewBattleScene } from "./scene.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -33,6 +34,8 @@ export async function placeEnemies(battle) {
   const enc = findEncounter(s, s.state.selectedId);
   if (!enc) return ui.notifications.warn(L("PDVF.Battle.Notify.NoEncounter"));
   if (!enc.npc) return ui.notifications.warn(F("PDVF.Battle.Notify.NoNpc", { name: enc.name }));
+  // Les ennemis sont posés sur la scène de la bataille (affichée chez le MJ au besoin).
+  await viewBattleScene(battle);
   if (!canvas?.scene) return ui.notifications.warn(L("PDVF.Battle.Notify.NoScene"));
   const actor = await worldActorFor(enc.npc);
   if (!actor) return ui.notifications.warn(F("PDVF.Battle.Notify.NoNpc", { name: enc.name }));
@@ -62,9 +65,11 @@ export async function placeEnemies(battle) {
   ui.notifications.info(F("PDVF.Battle.Notify.Placed", { count, name: actor.name }));
 }
 
-/** Retire de la scène active les jetons posés par cette bataille. */
+/** Retire les jetons posés par cette bataille, sur toutes les scènes. */
 export async function removeEnemies(battle) {
-  if (!game.user.isGM || !canvas?.scene) return;
-  const ids = canvas.scene.tokens.filter(t => t.getFlag(SYSTEM_ID, "battle") === battle.uuid).map(t => t.id);
-  if (ids.length) await canvas.scene.deleteEmbeddedDocuments("Token", ids);
+  if (!game.user.isGM) return;
+  for (const scene of game.scenes) {
+    const ids = scene.tokens.filter(t => t.getFlag(SYSTEM_ID, "battle") === battle.uuid).map(t => t.id);
+    if (ids.length) await scene.deleteEmbeddedDocuments("Token", ids);
+  }
 }

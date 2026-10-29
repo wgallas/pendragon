@@ -31,7 +31,7 @@ jobs:
           cat system.json
 
       - name: Construire l'archive
-        run: zip -r system.zip system.json LICENSE.txt README.md module templates styles lang fonts
+        run: zip -r system.zip system.json LICENSE.txt README.md module templates styles lang fonts icons data
 
       - name: Joindre system.json et system.zip à la version
         uses: softprops/action-gh-release@v2

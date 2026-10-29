@@ -1,0 +1,40 @@
+{{!-- Un événement de tour (contexte : l'événement préparé par prepView) --}}
+<div class="pdvf-event-edit">
+  <div class="pdvf-battle-grid four">
+    <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.EventTitle"}}</span><input type="text" name="{{path}}.title" value="{{title}}" placeholder="{{localize 'PDVF.Battle.EventTitlePlaceholder'}}"></label>
+    <label class="pdvf-field" data-tooltip="{{localize 'PDVF.Battle.TriggerHint'}}"><span>{{localize "PDVF.Battle.TriggerLabel"}}</span>
+      <select name="{{path}}.trigger">{{#each triggerChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+    </label>
+    <label class="pdvf-field"><span>{{localize "PDVF.Battle.DurationLabel"}}</span>
+      <span class="pdvf-inline">
+        <select name="{{path}}.duration">{{#each durationChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        {{#if isUntil}}<input type="number" class="pdvf-num" name="{{path}}.until" value="{{until}}" min="1" step="1" placeholder="—" aria-label="{{localize 'PDVF.Battle.UntilRound'}}">{{/if}}
+      </span>
+    </label>
+    {{#if isCustom}}
+    <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.CustomCondition"}}</span><input type="text" name="{{path}}.condition" value="{{condition}}" placeholder="{{localize 'PDVF.Battle.CustomConditionPlaceholder'}}"></label>
+    {{/if}}
+  </div>
+  <label class="pdvf-field"><span>{{localize "PDVF.Battle.EventText"}}</span><textarea name="{{path}}.text" rows="3" placeholder="{{localize 'PDVF.Battle.EventTextPlaceholder'}}">{{text}}</textarea></label>
+  <label class="pdvf-field"><span>{{localize "PDVF.Battle.GmNote"}}</span><textarea name="{{path}}.gmNote" rows="2">{{gmNote}}</textarea></label>
+  <div class="pdvf-event-image">
+    {{#if img}}<div class="pdvf-banner-frame tiny"><img id="{{previewId}}" class="pdvf-banner-img" src="{{img}}" alt="" style="object-position: center {{focus}}%"></div>{{/if}}
+    <div class="pdvf-inline">
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="pickImage" data-path="{{path}}.img"><i class="fa-solid fa-image"></i> {{#if img}}{{localize "PDVF.Battle.ChangeImage"}}{{else}}{{localize "PDVF.Battle.RoundImage"}}{{/if}}</button>
+      {{#if img}}
+      <button type="button" class="pdvf-icon-btn" data-action="clearValue" data-path="{{path}}.img" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+      <label class="pdvf-inline">{{localize "PDVF.Battle.Focus"}} <input type="range" name="{{path}}.focus" value="{{focus}}" min="0" max="100" step="1" data-focus-preview="#{{previewId}}"></label>
+      {{/if}}
+    </div>
+  </div>
+  {{#if hasKnights}}
+  <label class="pdvf-field"><span>{{localize "PDVF.Battle.EventKnights"}}</span>
+    <select name="{{path}}.knights" multiple size="2" data-tooltip="{{localize 'PDVF.Battle.EventKnightsTip'}}">
+      {{#each knightChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+    </select>
+  </label>
+  {{/if}}
+  <div class="pdvf-field"><span>{{localize "PDVF.Battle.Effects"}}</span>
+    {{> "systems/pendragon-vf/templates/item/bataille/effects.hbs" rows=effectRows base=(concat path ".effects")}}
+  </div>
+</div>

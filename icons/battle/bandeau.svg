@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">
+  <!-- Bandeau neutre des batailles : plaine au petit matin, château sur la colline, lances et pennons. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E9DDBE"/>
+      <stop offset="0.55" stop-color="#F3E8CC"/>
+      <stop offset="1" stop-color="#E4D2A6"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.72" cy="0.3" r="0.35">
+      <stop offset="0" stop-color="#FBF3DC" stop-opacity="1"/>
+      <stop offset="1" stop-color="#FBF3DC" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="paper" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.37  0 0 0 0 0.3  0 0 0 0 0.2  0 0 0 0.09 0" in="noise" result="tint"/>
+      <feComposite in="tint" in2="SourceGraphic" operator="in" result="grain"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grain"/></feMerge>
+    </filter>
+    <g id="lance">
+      <line x1="0" y1="0" x2="0" y2="-300" stroke="#4A3826" stroke-width="5" stroke-linecap="round"/>
+      <path d="M-4 -300 L0 -326 L4 -300 Z" fill="#6B5A45"/>
+    </g>
+  </defs>
+
+  <g filter="url(#paper)">
+    <rect width="1200" height="420" fill="url(#sky)"/>
+    <rect width="1200" height="420" fill="url(#sun)"/>
+
+    <!-- Collines lointaines -->
+    <path d="M0 250 C120 215 220 228 330 210 C440 192 520 222 640 205 C760 188 860 200 980 182 C1080 168 1140 186 1200 178 L1200 420 L0 420 Z" fill="#CDBB97" opacity="0.75"/>
+    <!-- Château sur la colline -->
+    <g fill="#8C7A5E" opacity="0.85">
+      <rect x="902" y="140" width="22" height="48"/>
+      <rect x="930" y="152" width="64" height="36"/>
+      <rect x="998" y="132" width="24" height="56"/>
+      <path d="M900 140 h26 l-13 -16 z M996 132 h28 l-14 -18 z"/>
+      <rect x="954" y="126" width="16" height="30"/>
+      <path d="M952 126 h20 l-10 -13 z"/>
+      <line x1="962" y1="113" x2="962" y2="96" stroke="#8C7A5E" stroke-width="2"/>
+      <path d="M963 96 l16 5 l-16 5 z" fill="#A3281E" opacity="0.8"/>
+    </g>
+    <!-- Collines proches -->
+    <path d="M0 300 C140 268 260 290 380 272 C520 252 640 286 780 266 C900 250 1040 272 1200 252 L1200 420 L0 420 Z" fill="#9AA36A" opacity="0.6"/>
+    <path d="M0 345 C180 322 320 340 500 326 C680 312 820 338 1000 322 C1100 314 1160 320 1200 316 L1200 420 L0 420 Z" fill="#6E7D3E" opacity="0.75"/>
+
+    <!-- Lances et pennons, inclinés vers la droite -->
+    <g transform="translate(150 420) rotate(18)"><use href="#lance"/><path d="M2 -292 q40 6 70 -2 q-26 10 -6 18 q-34 -6 -64 4 z" fill="#A3281E"/></g>
+    <g transform="translate(230 420) rotate(14)"><use href="#lance"/><path d="M2 -292 q44 4 78 -4 q-30 12 -8 20 q-36 -6 -70 4 z" fill="#2B5283"/></g>
+    <g transform="translate(305 420) rotate(20)"><use href="#lance"/></g>
+    <g transform="translate(380 420) rotate(16)"><use href="#lance"/><path d="M2 -292 q40 6 70 -2 q-26 10 -6 18 q-34 -6 -64 4 z" fill="#C9A23A"/></g>
+    <g transform="translate(455 420) rotate(12)"><use href="#lance"/></g>
+    <g transform="translate(520 420) rotate(18)"><use href="#lance"/><path d="M2 -292 q44 4 78 -4 q-30 12 -8 20 q-36 -6 -70 4 z" fill="#A3281E"/></g>
+    <g transform="translate(600 420) rotate(15)"><use href="#lance"/></g>
+    <g transform="translate(670 420) rotate(19)"><use href="#lance"/><path d="M2 -292 q40 6 70 -2 q-26 10 -6 18 q-34 -6 -64 4 z" fill="#2B5283"/></g>
+
+    <!-- Herbe du premier plan -->
+    <path d="M0 390 C200 372 380 384 600 374 C820 364 1000 382 1200 370 L1200 420 L0 420 Z" fill="#4A6A2E" opacity="0.85"/>
+  </g>
+</svg>

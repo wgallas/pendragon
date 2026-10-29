@@ -1,40 +1,122 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import * as R from "../rules/battle.mjs";
 import { formatValue } from "../rules/resolution.mjs";
-import { request, perform, knightActor, findEncounter, candidates, onField, summary, moralePassion, showToPlayers } from "../battle/engine.mjs";
+import { request, perform, knightActor, findEncounter, candidates, onField, summary, moralePassion, showToPlayers, isCommanderUser } from "../battle/engine.mjs";
 import * as client from "../battle/client.mjs";
 import { placeEnemies, removeEnemies } from "../battle/tokens.mjs";
+import { bannerFor, pickImage } from "../battle/banner.mjs";
+import { battleScene, defaultBattlefield } from "../battle/scene.mjs";
+import { createNextDay, previousBattle } from "../battle/series.mjs";
+import { rollEventTable } from "../battle/tables.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
 
-const ARRAY_PATHS = ["system.knights", "system.events"];
-const NULLABLE = ["system.intensity", "system.rounds", "system.allied.battle", "system.enemy.battle", "system.conroi.commanderBattle"];
 const STEPS = ["define", "charge", "intensity", "battle", "select", "posture", "resolve", "squire"];
-const STATUSES = ["field", "rear", "escort", "alone", "left", "dead", "captured"];
+const STATUSES = ["field", "pending", "rear", "escort", "alone", "left", "dead", "captured"];
 const ROLES = ["none", "conroi", "division", "army"];
+const PREP_SECTIONS = ["general", "armies", "conroi", "deck", "rounds", "outcome"];
+const PREP_ICONS = { general: "fa-scroll", armies: "fa-chess-rook", conroi: "fa-shield-halved", deck: "fa-layer-group", rounds: "fa-hourglass-half", outcome: "fa-crown" };
+
+/** Valeurs par défaut d'une ligne ajoutée dans un éditeur de liste. */
+function rowDefaults(kind, battle, dataset) {
+  const s = battle.system;
+  switch (kind) {
+    case "effect": return { type: "battleMod", value: "", ids: [] };
+    case "custom": return { label: "", value: 0 };
+    case "condition": return { label: "", from: null, to: null, effects: [] };
+    case "event": return {
+      round: Number(dataset.round) || 1, title: "", text: "", gmNote: "", img: "", focus: PDVF.battle.bannerFocus,
+      trigger: "intensity", condition: "", duration: "round", until: null, knights: [], effects: []
+    };
+    case "bonus": return { label: "", glory: 0, knights: [] };
+    case "table": return { id: foundry.utils.randomID(), name: "", formula: "3D6", trigger: s.tables.some(t => t.trigger === "fumble") ? "manual" : "fumble", rows: [] };
+    case "tableRow": {
+      const table = s.tables[Number(dataset.table)];
+      const last = table?.rows?.at(-1);
+      const min = last ? Number(last.max) + 1 : 1;
+      return { min, max: min, text: "", table: "", effects: [] };
+    }
+    default: return {};
+  }
+}
+
+/** Champ du modèle de données au bout d'un chemin (« events.3.effects.0.value »), sans les indices. */
+export function fieldAt(schema, parts) {
+  let field = schema;
+  for (const part of parts) {
+    if (!field) return null;
+    if (field instanceof foundry.data.fields.ArrayField) {
+      field = field.element;
+      if (/^\d+$/.test(part)) continue;
+    }
+    if (/^\d+$/.test(part)) continue;
+    field = field.fields?.[part] ?? null;
+  }
+  return field;
+}
 
 /**
- * Fiche de bataille : préparation (MJ), conduite pas à pas (MJ et joueurs), bilan.
+ * Fusionne les valeurs envoyées par le formulaire (tableaux reçus en objets indexés) avec la source,
+ * à toute profondeur : un tableau reste un tableau, ses lignes non affichées sont conservées.
+ */
+export function mergeIndexed(source, incoming) {
+  const plain = (v) => v && typeof v === "object" && !Array.isArray(v);
+  if (Array.isArray(source) && plain(incoming)) {
+    const out = foundry.utils.deepClone(source);
+    for (const [k, v] of Object.entries(incoming)) {
+      const i = Number(k);
+      if (!Number.isInteger(i) || out[i] === undefined) continue;
+      out[i] = mergeIndexed(out[i], v);
+    }
+    return out;
+  }
+  if (plain(source) && plain(incoming)) {
+    const out = { ...source };
+    for (const [k, v] of Object.entries(incoming)) out[k] = mergeIndexed(source[k], v);
+    return out;
+  }
+  return incoming;
+}
+
+/** Premier tableau sur un chemin relatif à system (« events.3.effects » → « events »). */
+export function arrayRoot(system, rel) {
+  const parts = rel.split(".");
+  for (let n = 1; n <= parts.length; n++) {
+    const head = parts.slice(0, n).join(".");
+    if (Array.isArray(foundry.utils.getProperty(system, head))) return { root: head, rest: parts.slice(n) };
+  }
+  return null;
+}
+
+/**
+ * Fiche de bataille : préparation complète par le MJ, conduite pas à pas (MJ et joueurs), bilan.
  */
 export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   _tab = null;
+  _prep = "general";
 
   static DEFAULT_OPTIONS = {
     classes: [SYSTEM_ID, "pdvf-sheet", "pdvf-battle-sheet"],
-    position: { width: 980, height: 860 },
+    position: { width: 1020, height: 880 },
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {
       battleTab: BatailleSheet.#onTab,
+      prepSection: BatailleSheet.#onPrepSection,
       gm: BatailleSheet.#onGm,
       player: BatailleSheet.#onPlayer,
       openActor: BatailleSheet.#onOpenActor,
-      addEvent: BatailleSheet.#onAddEvent,
-      deleteEvent: BatailleSheet.#onDeleteEvent,
+      openDoc: BatailleSheet.#onOpenDoc,
+      addRow: BatailleSheet.#onAddRow,
+      removeRow: BatailleSheet.#onRemoveRow,
+      pickImage: BatailleSheet.#onPickImage,
+      clearValue: BatailleSheet.#onClearValue,
+      nextDay: BatailleSheet.#onNextDay,
+      rollTable: BatailleSheet.#onRollTable,
       place: BatailleSheet.#onPlace,
       unplace: BatailleSheet.#onUnplace,
       show: BatailleSheet.#onShow,
@@ -44,7 +126,7 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   };
 
   static PARTS = {
-    sheet: { template: `systems/${SYSTEM_ID}/templates/item/bataille/sheet.hbs`, scrollable: [".pdvf-battle-body"] }
+    sheet: { template: `systems/${SYSTEM_ID}/templates/item/bataille/sheet.hbs`, scrollable: [".pdvf-battle-body", ".pdvf-prep-main"] }
   };
 
   get title() { return this.document.name; }
@@ -52,10 +134,16 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const view = battleView(this.document, game.user);
-    if (!this._tab) this._tab = view.phase === "prep" ? "prep" : view.phase === "done" ? "results" : "conduct";
+    const isGM = !!game.user.isGM;
+    const tabs = isGM ? ["prep", "conduct", "results", "log"] : ["conduct", "results", "log"];
+    if (!this._tab || !tabs.includes(this._tab)) {
+      this._tab = isGM && view.phase === "prep" ? "prep" : view.phase === "done" ? "results" : "conduct";
+    }
     view.tab = this._tab;
     view.tabIs = { [this._tab]: true };
-    view.tabs = ["prep", "conduct", "results", "log"].map(id => ({ id, label: L(`PDVF.Battle.Tab.${id}`), active: id === this._tab }));
+    view.tabs = tabs.map(id => ({ id, label: L(`PDVF.Battle.Tab.${id}`), active: id === this._tab }));
+    view.banner = bannerFor(this.document, view.phase === "active" ? view.round : null);
+    if (isGM && this._tab === "prep") Object.assign(view, prepView(this.document, this._prep, view));
     return Object.assign(context, view);
   }
 
@@ -71,6 +159,13 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     if (!this.isEditable) {
       for (const el of this.element.querySelectorAll("button[data-action]")) el.disabled = false;
     }
+    // Hauteur de cadrage : l'aperçu suit le curseur sans attendre l'enregistrement.
+    for (const range of this.element.querySelectorAll("input[type=range][data-focus-preview]")) {
+      range.addEventListener("input", () => {
+        const img = this.element.querySelector(range.dataset.focusPreview);
+        if (img) img.style.objectPosition = `center ${range.value}%`;
+      });
+    }
   }
 
   async #onDrop(event) {
@@ -80,22 +175,32 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     if (!data?.uuid) return;
     const doc = await fromUuid(data.uuid);
     if (!doc) return;
+    const zone = event.target.closest?.("[data-drop]");
+    // Bataille de la veille
+    if (zone?.dataset.drop === "previous" && doc.documentName === "Item" && doc.type === "bataille" && doc.uuid !== this.document.uuid) {
+      return this.document.update({ "system.series.previous": doc.uuid, "system.series.name": this.document.system.series.name || doc.system.series.name || doc.name });
+    }
+    // Un PNJ nommé déposé sur une carte : il remplace l'adversaire générique de cette carte.
+    if (zone?.dataset.drop === "card" && doc.documentName === "Actor" && doc.type === "pnj") {
+      const rows = foundry.utils.deepClone(this.document._source.system.encounters);
+      const card = rows.find(e => e.id === zone.dataset.id);
+      if (!card) return;
+      card.npc = doc.uuid;
+      if (!card.glory) card.glory = doc.system.gloryReward ?? 0;
+      return this.document.update({ "system.encounters": rows });
+    }
     if (doc.documentName === "Actor" && doc.type === "chevalier") return request(this.document, "addKnight", { uuid: doc.uuid });
     if (doc.documentName === "Item" && doc.type === "rencontre") return request(this.document, "addEncounter", { data: doc.toObject(), source: doc.uuid });
     if (doc.documentName === "Actor" && doc.type === "pnj") {
-      // Un PNJ glissé : une rencontre simple contre lui (une par chevalier).
-      const data2 = { name: doc.name, system: { kind: "opponent", npc: doc.uuid, glory: doc.system.gloryReward ?? 0, perKnight: 1, kv: 1, moraleLoss: "1D6", moraleMin: 10 } };
-      const full = new Item.implementation({ name: doc.name, type: "rencontre", system: data2.system }).toObject();
+      // Un PNJ glissé ailleurs : une rencontre simple contre lui (une par chevalier).
+      const system = { kind: "opponent", npc: doc.uuid, glory: doc.system.gloryReward ?? 0, perKnight: 1, kv: 1, moraleLoss: "1D6", moraleMin: 10 };
+      const full = new Item.implementation({ name: doc.name, type: "rencontre", img: doc.img, system }).toObject();
       return request(this.document, "addEncounter", { data: full, source: doc.uuid });
     }
   }
 
   _processFormData(event, form, formData) {
     const data = super._processFormData(event, form, formData);
-    const flat = foundry.utils.flattenObject(data);
-    for (const [k, v] of Object.entries(flat)) {
-      if (v === null && !NULLABLE.includes(k) && !/^system\.knights\.\d+\.passion$/.test(k) && k !== "img") foundry.utils.setProperty(data, k, 0);
-    }
     // Cases des circonstances (Table 6.2) → listes
     const mods = data.mods;
     delete data.mods;
@@ -105,18 +210,18 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         foundry.utils.setProperty(data, `system.${side}.mods`, Object.entries(mods[side]).filter(([, v]) => v).map(([id]) => id));
       }
     }
-    for (const path of ARRAY_PATHS) {
-      const incoming = foundry.utils.getProperty(data, path);
-      if (!incoming || Array.isArray(incoming)) continue;
-      const rows = foundry.utils.deepClone(foundry.utils.getProperty(this.document._source, path) ?? []);
-      for (const [i, row] of Object.entries(incoming)) {
-        if (!rows[Number(i)]) continue;
-        if ("passion" in row && (row.passion === "" || row.passion === null)) row.passion = null;
-        else if ("passion" in row) row.passion = Number(row.passion);
-        rows[Number(i)] = foundry.utils.mergeObject(rows[Number(i)], row, { inplace: false });
-      }
-      foundry.utils.setProperty(data, path, rows);
+    // Nombres vides : null si le champ l'admet, sinon sa valeur initiale.
+    const schema = this.document.system.schema;
+    for (const [k, v] of Object.entries(foundry.utils.flattenObject(data))) {
+      if (!k.startsWith("system.") || (v !== null && v !== "")) continue;
+      const parts = k.split(".").slice(1);
+      const field = fieldAt(schema, parts);
+      if (!field || (v === "" && !(field instanceof foundry.data.fields.NumberField))) continue;
+      if (field.nullable) { foundry.utils.setProperty(data, k, null); continue; }
+      const initial = typeof field.initial === "function" ? field.initial() : field.initial;
+      foundry.utils.setProperty(data, k, initial ?? 0);
     }
+    if (data.system) data.system = mergeIndexed(foundry.utils.deepClone(this.document._source.system), data.system);
     return data;
   }
 
@@ -128,6 +233,64 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     this._tab = target.dataset.tab;
     this.render();
   }
+
+  static #onPrepSection(event, target) {
+    this._prep = target.dataset.section;
+    this.render();
+  }
+
+  /** Ajoute une ligne à une liste, à n'importe quelle profondeur (« system.events.2.effects »). */
+  static async #onAddRow(event, target) {
+    const { path, kind } = target.dataset;
+    const system = foundry.utils.deepClone(this.document._source.system);
+    const rel = path.replace(/^system\./, "");
+    const found = arrayRoot(system, rel);
+    if (!found) return;
+    const list = foundry.utils.getProperty(system, rel);
+    if (!Array.isArray(list)) return;
+    list.push(rowDefaults(kind, this.document, target.dataset));
+    return this.document.update({ [`system.${found.root}`]: foundry.utils.getProperty(system, found.root) });
+  }
+
+  /** Retire une ligne d'une liste (data-path, data-index). */
+  static async #onRemoveRow(event, target) {
+    const { path, index } = target.dataset;
+    const system = foundry.utils.deepClone(this.document._source.system);
+    const rel = path.replace(/^system\./, "");
+    const found = arrayRoot(system, rel);
+    const list = foundry.utils.getProperty(system, rel);
+    if (!found || !Array.isArray(list)) return;
+    list.splice(Number(index), 1);
+    return this.document.update({ [`system.${found.root}`]: foundry.utils.getProperty(system, found.root) });
+  }
+
+  /** Choisit une image (bandeau de la bataille ou d'un tour) dans les fichiers de Foundry. */
+  static async #onPickImage(event, target) {
+    const path = target.dataset.path;
+    const current = foundry.utils.getProperty(this.document, path) ?? "";
+    const chosen = await pickImage(current);
+    if (!chosen) return;
+    const rel = path.replace(/^system\./, "");
+    const system = foundry.utils.deepClone(this.document._source.system);
+    const found = arrayRoot(system, rel);
+    if (!found) return this.document.update({ [path]: chosen });
+    foundry.utils.setProperty(system, rel, chosen);
+    return this.document.update({ [`system.${found.root}`]: foundry.utils.getProperty(system, found.root) });
+  }
+
+  /** Vide un champ texte (image, bataille précédente, PNJ d'une carte…). */
+  static async #onClearValue(event, target) {
+    const path = target.dataset.path;
+    const rel = path.replace(/^system\./, "");
+    const system = foundry.utils.deepClone(this.document._source.system);
+    const found = arrayRoot(system, rel);
+    if (!found) return this.document.update({ [path]: "" });
+    foundry.utils.setProperty(system, rel, "");
+    return this.document.update({ [`system.${found.root}`]: foundry.utils.getProperty(system, found.root) });
+  }
+
+  static #onNextDay() { return createNextDay(this.document); }
+  static #onRollTable(event, target) { return rollEventTable(this.document, target.dataset.id); }
 
   /** Action du MJ (ou du commandant) traitée par le moteur. */
   static async #onGm(event, target) {
@@ -170,16 +333,10 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     fromUuidSync(target.dataset.uuid)?.sheet?.render(true);
   }
 
-  static async #onAddEvent() {
-    const rows = foundry.utils.deepClone(this.document._source.system.events);
-    rows.push({ round: Math.max(1, this.document.system.state.round || 1), text: "" });
-    return this.document.update({ "system.events": rows });
-  }
-
-  static async #onDeleteEvent(event, target) {
-    const rows = foundry.utils.deepClone(this.document._source.system.events);
-    rows.splice(Number(target.dataset.index), 1);
-    return this.document.update({ "system.events": rows });
+  static async #onOpenDoc(event, target) {
+    const doc = await fromUuid(target.dataset.uuid);
+    if (doc?.documentName === "Scene") return doc.view();
+    doc?.sheet?.render(true);
   }
 
   static #onPlace() { return placeEnemies(this.document); }
@@ -210,7 +367,7 @@ export function battleView(battle, user) {
   const st = s.state;
   const isGM = !!user.isGM;
   const owns = (uuid) => isGM || !!fromUuidSync(uuid)?.testUserPermission?.(user, "OWNER");
-  const isCommander = isGM || (!!s.conroi.commander && owns(s.conroi.commander));
+  const isCommander = isCommanderUser(s, user);
   const enc = findEncounter(s, st.selectedId);
   const def = findEncounter(s, st.defaultId);
   const field = onField(s);
@@ -301,7 +458,7 @@ export function battleView(battle, user) {
     })) : [],
     knights, opponents, opportunities, hasEncounters: s.encounters.length > 0,
     events: s.events.map((e, index) => ({ ...e, index, current: e.round === st.round })),
-    roundEvents: s.events.filter(e => e.round === st.round && e.text),
+    roundEvents: s.events.filter(e => e.round === st.round && (e.text || e.title)),
     intensityLabel: s.effectiveIntensity ?? "—",
     morale: { value: s.conroi.morale, start: s.conroi.moraleStart, pct: moralePct, minPct, low: moralePct < 34 },
     positionLabel: L(`PDVF.Battle.Position.${st.position}`),
@@ -353,6 +510,174 @@ function groupLog(log) {
     rounds.get(row.round).push(row.text);
   }
   return [...rounds.entries()].map(([round, lines]) => ({ round, label: round ? F("PDVF.Battle.RoundN", { round }) : L("PDVF.Battle.Tab.prep"), lines }));
+}
+
+
+/* -------------------------------------------- */
+/*  Préparation (MJ)                             */
+/* -------------------------------------------- */
+
+const signedLabel = (v) => (v > 0 ? `+${v}` : String(v));
+
+/** Choix d'une liste (valeurs, étiquettes traduites). */
+function choices(ids, current, prefix, { empty = null } = {}) {
+  const out = ids.map(id => ({ value: id, label: L(`${prefix}.${id}`), selected: id === current }));
+  if (empty !== null) out.unshift({ value: "", label: empty, selected: !current });
+  return out;
+}
+
+/** Libellé d'une plage de tours. */
+function rangeLabel(item) {
+  return R.roundRange(item, {
+    one: L("PDVF.Battle.Range.one"), range: L("PDVF.Battle.Range.range"),
+    from: L("PDVF.Battle.Range.from"), to: L("PDVF.Battle.Range.to"), all: L("PDVF.Battle.Range.all")
+  });
+}
+
+/** Éditeur d'effets : une ligne par effet, avec le bon champ de valeur selon le type. */
+function effectRows(list, base, s) {
+  const cfg = PDVF.battle.effects;
+  return (list ?? []).map((e, i) => {
+    const def = cfg[e.type] ?? cfg.note;
+    const cards = def.cards ? s.encounters.filter(c => c.kind === def.cards) : [];
+    return {
+      path: `${base}.${i}`, index: i, base, value: e.value,
+      typeChoices: Object.keys(cfg).map(id => ({ value: id, label: L(`PDVF.Battle.Effect.${id}`), selected: id === e.type })),
+      isNumber: def.input === "number", isFormula: def.input === "formula", isChoice: def.input === "choice", isText: def.input === "text",
+      valueChoices: def.choices ? def.choices.map(c => ({ value: c, label: L(`PDVF.Battle.EffectChoice.${e.type}.${c}`), selected: c === e.value })) : [],
+      hasCards: !!def.cards,
+      cardChoices: cards.map(c => ({ value: c.id, label: c.name, selected: e.ids.includes(c.id) })),
+      hint: L(`PDVF.Battle.EffectHint.${e.type}`)
+    };
+  });
+}
+
+/** Tout ce que la préparation affiche. */
+export function prepView(battle, section, view) {
+  const s = battle.system;
+  const cfg = PDVF.battle;
+  const sec = PREP_SECTIONS.includes(section) ? section : "general";
+  const knightOptions = (selected = []) => s.knights.map(k => ({ value: k.uuid, label: knightActor(k)?.name ?? L("PDVF.Battle.MissingActor"), selected: selected.includes(k.uuid) }));
+  const out = {
+    prep: sec,
+    prepIs: { [sec]: true },
+    prepSections: PREP_SECTIONS.map(id => ({ id, icon: PREP_ICONS[id], label: L(`PDVF.Battle.Prep.${id}`), active: id === sec })),
+    prepHint: L(`PDVF.Battle.PrepHint.${sec}`)
+  };
+
+  if (sec === "general") {
+    const previous = previousBattle(battle);
+    const scene = battleScene(battle);
+    const fallback = defaultBattlefield();
+    Object.assign(out, {
+      kindChoices: choices(["battle", "offsystem"], s.kind, "PDVF.Battle.BattleKind"),
+      previous: previous ? { uuid: previous.uuid, name: previous.name } : (s.series.previous ? { uuid: "", name: L("PDVF.Battle.MissingBattle") } : null),
+      sceneChoices: [
+        { value: "", label: F("PDVF.Battle.DefaultSceneChoice", { name: fallback?.name ?? L("PDVF.Battle.DefaultScene") }), selected: !s.scene },
+        ...(game.scenes?.contents ?? []).filter(sc => sc.id !== fallback?.id).map(sc => ({ value: sc.uuid, label: sc.name, selected: sc.uuid === s.scene }))
+      ],
+      sceneDoc: scene ? { uuid: scene.uuid, name: scene.name } : null,
+      ownBanner: !!s.banner.img
+    });
+  }
+
+  if (sec === "armies") {
+    const b = { odds: s.odds, favors: s.favors, alliedMods: s.allied.mods, enemyMods: s.enemy.mods, alliedCustom: s.allied.custom, enemyCustom: s.enemy.custom };
+    Object.assign(out, {
+      firstChargeChoices: choices(cfg.firstChargeModes, s.firstCharge, "PDVF.Battle.FirstCharge"),
+      sides: ["allied", "enemy"].map(side => {
+        const a = s[side];
+        const modifier = R.commanderModifier(side, b, cfg);
+        return {
+          side, label: L(`PDVF.Battle.Side.${side}`), data: a,
+          battleLabel: a.battle === null ? "2D6+10" : formatValue(a.battle),
+          modifier: signedLabel(modifier),
+          effective: a.battle === null ? "" : formatValue(a.battle + modifier),
+          mods: Object.keys(cfg.commanderMods).map(id => ({ id, label: L(`PDVF.Battle.Mod.${id}`), checked: a.mods.includes(id), value: signedLabel(cfg.commanderMods[id].mod) })),
+          modsName: `mods.${side}`,
+          custom: a.custom.map((c, i) => ({ ...c, index: i, path: `system.${side}.custom.${i}` })),
+          customPath: `system.${side}.custom`,
+          forcedChoices: choices(cfg.outcomes, a.forced, "PDVF.Outcome", { empty: L("PDVF.Battle.RollIt") }),
+          forcedEffect: a.forced ? L(`PDVF.Battle.ArmyResult.${side}.${a.forced}`) : ""
+        };
+      }),
+      conditions: s.conditions.map((c, i) => ({
+        ...c, index: i, path: `system.conditions.${i}`, range: rangeLabel(c),
+        effectRows: effectRows(c.effects, `system.conditions.${i}.effects`, s)
+      }))
+    });
+  }
+
+  if (sec === "conroi") {
+    const users = (game.users?.contents ?? []).filter(u => !u.isGM);
+    Object.assign(out, {
+      playerChoices: [{ value: "", label: L("PDVF.Battle.GmPlays"), selected: !s.conroi.commanderPlayer },
+        ...users.map(u => ({ value: u.id, label: u.name, selected: u.id === s.conroi.commanderPlayer }))]
+    });
+  }
+
+  if (sec === "deck") {
+    const card = (e, i) => {
+      let npc = null;
+      try { npc = e.npc ? fromUuidSync(e.npc) : null; } catch (err) { npc = null; }
+      return {
+        ...e, index: i, path: `system.encounters.${i}`,
+        img: e.img || (e.kind === "opportunity" ? "systems/pendragon-vf/icons/types/opportunity.svg" : "systems/pendragon-vf/icons/types/encounter.svg"),
+        range: rangeLabel(e), limited: !!(e.from || e.to),
+        npcName: npc?.name ?? (e.npc ? L("PDVF.Battle.MissingActor") : ""), npcUuid: e.npc,
+        kvLabel: kvLabel(e.kv), countLabel: e.fixedCount ? String(e.fixedCount) : `×${String(e.perKnight).replace(".", ",")}`
+      };
+    };
+    const rows = s.encounters.map(card);
+    Object.assign(out, {
+      deckOpponents: rows.filter(e => e.kind === "opponent"),
+      deckOpportunities: rows.filter(e => e.kind === "opportunity")
+    });
+  }
+
+  if (sec === "rounds") {
+    const max = s.maxRounds;
+    const eventAt = (r) => s.events.findIndex(e => e.round === r);
+    const eventView = (e, i) => ({
+      ...e, index: i, path: `system.events.${i}`,
+      triggerChoices: choices(cfg.eventTriggers, e.trigger, "PDVF.Battle.Trigger"),
+      durationChoices: choices(cfg.eventDurations, e.duration, "PDVF.Battle.Duration"),
+      isCustom: e.trigger === "custom", isUntil: e.duration === "until",
+      knightChoices: knightOptions(e.knights), hasKnights: s.knights.length > 0,
+      effectRows: effectRows(e.effects, `system.events.${i}.effects`, s),
+      previewId: `pdvf-ev-${i}`
+    });
+    out.roundCards = Array.from({ length: max }, (_, n) => {
+      const round = n + 1;
+      const i = eventAt(round);
+      const conds = s.conditions.filter(c => R.activeAt(c, round)).map(c => c.label).filter(Boolean);
+      const cards = s.encounters.filter(e => (e.from || e.to) && R.activeAt(e, round)).map(e => e.name);
+      return { round, event: i >= 0 ? eventView(s.events[i], i) : null, conditions: conds.join(" · "), limitedCards: cards.join(" · ") };
+    });
+    out.extraEvents = s.events.map((e, i) => ({ e, i })).filter(({ e }) => e.round > max).map(({ e, i }) => eventView(e, i));
+    out.tables = s.tables.map((t, ti) => ({
+      ...t, index: ti, path: `system.tables.${ti}`,
+      triggerChoices: choices(cfg.tableTriggers, t.trigger, "PDVF.Battle.TableTrigger"),
+      rows: t.rows.map((r, ri) => ({
+        ...r, index: ri, path: `system.tables.${ti}.rows.${ri}`,
+        subChoices: [{ value: "", label: "—", selected: !r.table },
+          ...s.tables.filter(x => x.id !== t.id).map(x => ({ value: x.id, label: x.name || L("PDVF.Battle.Table"), selected: x.id === r.table }))],
+        effectRows: effectRows(r.effects, `system.tables.${ti}.rows.${ri}.effects`, s)
+      }))
+    }));
+  }
+
+  if (sec === "outcome") {
+    const o = s.outcome;
+    Object.assign(out, {
+      resultChoices: choices(cfg.results.map(r => r.id), o.result, "PDVF.Battle.Result", { empty: L("PDVF.Battle.ResultAuto") }),
+      lootChoices: choices(cfg.lootModes, o.loot.mode, "PDVF.Battle.LootMode"),
+      lootFixed: o.loot.mode === "fixed",
+      bonuses: o.bonuses.map((b, i) => ({ ...b, index: i, path: `system.outcome.bonuses.${i}`, knightChoices: knightOptions(b.knights) })),
+      hasKnights: s.knights.length > 0
+    });
+  }
+  return out;
 }
 
 export { request, perform };

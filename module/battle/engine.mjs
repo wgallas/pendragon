@@ -79,8 +79,15 @@ function allowed(battle, who, payload, user) {
     const k = s.knights[Number(payload.index)];
     return !!k && !!fromUuidSync(k.uuid)?.testUserPermission?.(user, "OWNER");
   }
-  if (who === "commander") return !!s.conroi.commander && !!fromUuidSync(s.conroi.commander)?.testUserPermission?.(user, "OWNER");
+  if (who === "commander") return isCommanderUser(s, user);
   return false;
+}
+
+/** L'utilisateur tient-il le rôle du commandant du conroi (son chevalier, ou le PNJ qu'on lui a confié) ? */
+export function isCommanderUser(s, user) {
+  if (user.isGM) return true;
+  if (s.conroi.commander) return !!fromUuidSync(s.conroi.commander)?.testUserPermission?.(user, "OWNER");
+  return !!s.conroi.commanderPlayer && s.conroi.commanderPlayer === user.id;
 }
 
 /** Carte de chat de la bataille (annonce, boutons pour les joueurs). */
@@ -129,12 +136,12 @@ export function candidates(sys) {
   const ids = new Set();
   const st = sys.state;
   if (st.charge === "enemyCharges") {
-    for (const e of sys.encounters) if (e.kind === "opponent" && e.mounted) ids.add(e.id);
+    for (const e of sys.encounters) if (e.kind === "opponent" && e.mounted && R.activeAt(e, st.round)) ids.add(e.id);
     return [...ids];
   }
   if (st.defaultId) ids.add(st.defaultId);
   for (const k of sys.knights) if (k.proposal) ids.add(k.proposal);
-  if (st.intensityOutcome === "fumble") for (const e of sys.encounters) if (e.kind === "opportunity" && !e.used) ids.add(e.id);
+  if (st.intensityOutcome === "fumble") for (const e of sys.encounters) if (e.kind === "opportunity" && !e.used && R.activeAt(e, st.round)) ids.add(e.id);
   // Une opportunité proposée doit être résolue.
   const opps = [...ids].filter(id => findEncounter(sys, id)?.kind === "opportunity");
   if (opps.length && st.intensityOutcome !== "fumble") return opps;
@@ -158,13 +165,18 @@ export function summary(sys) {
   const ownKV = (sys.result.npcLost + pcLost) * cfg.knightValue + (Number(sys.result.otherLosses) || 0);
   const mult = R.oddsResultMultiplier(sys.odds, sys.favors, cfg);
   const computed = R.battleResult(enemyKV, ownKV, mult, cfg);
-  const resultId = sys.result.override || computed.id;
+  const imposed = sys.outcome ?? {};
+  const resultId = sys.result.override || imposed.result || computed.id;
   const knights = sys.knights.map((k, index) => {
     const role = k.role !== "none" ? k.role : (k.uuid === sys.conroi.commander ? "conroi" : "none");
-    const participation = k.participated ? R.participationGlory({ size: sys.size, tournament: sys.tournament, resultId, role }, cfg) : 0;
+    const fixedGlory = R.imposedParticipation(imposed, role, cfg);
+    const participation = k.participated ? (fixedGlory ?? R.participationGlory({ size: sys.size, tournament: sys.tournament, resultId, role }, cfg)) : 0;
     const killsGlory = k.kills.reduce((s, x) => s + (Number(x.glory) || 0), 0);
-    const loot = k.participated ? R.lootFor({ army: sys.army, resultId, odds: sys.odds, favors: sys.favors, role, size: sys.size, decisiveBonus: sys.result.decisiveBonus }, cfg) : 0;
-    return { index, uuid: k.uuid, role, participation, killsGlory, total: participation + killsGlory, loot,
+    const bonus = k.participated ? R.bonusGlory(imposed.bonuses, k.uuid) : 0;
+    const fixedLoot = R.imposedLoot(imposed.loot, role);
+    const loot = k.participated ? (fixedLoot ?? R.lootFor({ army: sys.army, resultId, odds: sys.odds, favors: sys.favors, role, size: sys.size, decisiveBonus: sys.result.decisiveBonus }, cfg)) : 0;
+    return { index, uuid: k.uuid, role, participation, killsGlory, bonus, total: participation + killsGlory + bonus, loot,
+      lootItems: k.participated && imposed.loot?.mode === "fixed" ? imposed.loot.items : "",
       captives: k.kills.filter(x => x.captured), kills: k.kills.length };
   });
   return { enemyKV, ownKV, pcLost, mult, ratio: computed.ratio, computedId: computed.id, resultId, knights };
@@ -179,7 +191,7 @@ const ACTIONS = {
   addKnight: { who: "gm", fn: async ({ sys }, { uuid }) => {
     const actor = fromUuidSync(uuid);
     if (actor?.type !== "chevalier" || sys.knights.some(k => k.uuid === uuid)) return false;
-    sys.knights.push({ uuid, role: "none", status: "field", passion: moralePassion(actor, sys.conroi.court, null)?.index ?? null,
+    sys.knights.push({ uuid, role: "none", status: "field", arrival: null, passion: moralePassion(actor, sys.conroi.court, null)?.index ?? null,
       posture: "", pendingMorale: "", battleRoll: "", proposal: "", invoked: "", invokedTarget: "", invokedRound: 0,
       squire: "", squireLost: false, participated: false, kills: [] });
     if (!sys.conroi.commander && !sys.conroi.commanderName) sys.conroi.commander = uuid;
@@ -191,7 +203,7 @@ const ACTIONS = {
   addEncounter: { who: "gm", fn: async ({ sys }, { data, source = "" }) => {
     if (!data?.system) return false;
     if (source && sys.encounters.some(e => e.source === source)) return false;
-    sys.encounters.push({ ...foundry.utils.deepClone(data.system), id: foundry.utils.randomID(), name: data.name, source, used: false });
+    sys.encounters.push({ ...foundry.utils.deepClone(data.system), id: foundry.utils.randomID(), name: data.name, source, used: false, img: data.img ?? "" });
   } },
   removeEncounter: { who: "gm", fn: async ({ sys }, { id }) => {
     sys.encounters = sys.encounters.filter(e => e.id !== id);
@@ -206,6 +218,7 @@ const ACTIONS = {
 
   start: { who: "gm", fn: async (ctx) => {
     const { sys, battle } = ctx;
+    if (sys.kind === "offsystem") { ui.notifications.warn(L("PDVF.Battle.Notify.OffSystem")); return false; }
     if (!sys.knights.length) { ui.notifications.warn(L("PDVF.Battle.Notify.NoKnights")); return false; }
     // Paquet vide : on prend le paquet type de l'armée adverse.
     if (!sys.encounters.some(e => e.kind === "opponent")) await addPreset(sys, sys.army);
@@ -214,15 +227,20 @@ const ACTIONS = {
     if (sys.intensity === null) sys.intensity = await rollFormula(cfg.sizes[sys.size].intensity, L("PDVF.Battle.RollIntensity"), battle);
     if (!sys.conroi.moraleStart) computeMorale(ctx);
     if (cfg.sizes[sys.size]?.armyTests && !sys.allied.outcome) await armyTests(ctx);
-    if (!cfg.sizes[sys.size]?.armyTests) Object.assign(sys.state, R.armyTestEffects(null, null));
+    if (!cfg.sizes[sys.size]?.armyTests) Object.assign(sys.state, R.armyTestEffects(null, null, sys.firstCharge));
     resetRound(sys);
     Object.assign(sys.state, { phase: "active", round: 1, step: "define", position: "field", engagedLast: false });
-    for (const k of sys.knights) Object.assign(k, { participated: false, kills: [], invoked: "", invokedTarget: "", invokedRound: 0, squireLost: false });
+    for (const k of sys.knights) {
+      Object.assign(k, { participated: false, kills: [], invoked: "", invokedTarget: "", invokedRound: 0, squireLost: false });
+      // Arrivée différée : le chevalier rejoint le champ au tour indiqué.
+      if (k.arrival > 1 && ["field", "pending"].includes(k.status)) k.status = "pending";
+      else if (k.status === "pending") k.status = "field";
+    }
     const intensity = R.effectiveIntensity(sys.intensity, sys.tournament, cfg);
     const rounds = R.maxRounds(sys.size, sys.rounds, cfg);
     ctx.log(F("PDVF.Battle.Log.Start", { intensity, rounds, morale: sys.conroi.morale }));
     ctx.chat.push({
-      title: battle.name, subtitle: L("PDVF.Battle.Begins"),
+      title: battle.name, subtitle: L("PDVF.Battle.Begins"), text: sys.intro,
       lines: [
         F("PDVF.Battle.Card.Intensity", { intensity }), F("PDVF.Battle.Card.Rounds", { rounds }),
         F("PDVF.Battle.Card.Morale", { morale: sys.conroi.morale }),
@@ -531,20 +549,20 @@ async function addPreset(sys, army) {
   let entries = [];
   const pack = game.packs.get(`world.${ENCOUNTER_PACK}`);
   if (pack) {
-    try { entries = (await pack.getDocuments()).map(d => ({ name: d.name, system: d.toObject().system, source: d.uuid })); }
+    try { entries = (await pack.getDocuments()).map(d => ({ name: d.name, img: d.img, system: d.toObject().system, source: d.uuid })); }
     catch (err) { console.warn(`${SYSTEM_ID} | Compendium des rencontres illisible`, err); }
   }
   if (!entries.length) {
     try {
       const data = await (await fetch(foundry.utils.getRoute(`systems/${SYSTEM_ID}/data/rencontres.json`))).json();
-      entries = data.items.map(i => ({ name: i.name, system: i.system, source: `${SYSTEM_ID}.rencontres.${i._id}` }));
+      entries = data.items.map(i => ({ name: i.name, img: i.img, system: i.system, source: `${SYSTEM_ID}.rencontres.${i._id}` }));
     } catch (err) { console.error(`${SYSTEM_ID} | Lecture des rencontres impossible`, err); }
   }
   let n = 0;
   for (const e of entries) {
     if (!e.system.armies?.includes(army)) continue;
     if (sys.encounters.some(x => x.source === e.source || x.name === e.name)) continue;
-    sys.encounters.push({ ...foundry.utils.deepClone(e.system), id: foundry.utils.randomID(), name: e.name, source: e.source, used: false });
+    sys.encounters.push({ ...foundry.utils.deepClone(e.system), id: foundry.utils.randomID(), name: e.name, source: e.source, used: false, img: e.img ?? "" });
     n++;
   }
   return n;
@@ -566,9 +584,17 @@ function computeMorale(ctx) {
 async function armyTests(ctx) {
   const { sys, battle } = ctx;
   const cfg = C();
-  const b = { odds: sys.odds, favors: sys.favors, alliedMods: sys.allied.mods, enemyMods: sys.enemy.mods };
+  const b = { odds: sys.odds, favors: sys.favors, alliedMods: sys.allied.mods, enemyMods: sys.enemy.mods,
+    alliedCustom: sys.allied.custom, enemyCustom: sys.enemy.custom };
   for (const side of ["allied", "enemy"]) {
     const army = sys[side];
+    // Résultat imposé par le scénario : pas de jet.
+    if (army.forced) {
+      army.outcome = army.forced;
+      ctx.chat.push({ title: L("PDVF.Battle.ArmyTest"), subtitle: army.name || L(`PDVF.Battle.Side.${side}`),
+        text: `${L(`PDVF.Outcome.${army.forced}`)} (${L("PDVF.Battle.Forced")}) — ${L(`PDVF.Battle.ArmyResult.${side}.${army.forced}`)}` });
+      continue;
+    }
     if (army.battle === null) army.battle = await rollFormula(cfg.commanderSkill, F("PDVF.Battle.RollCommander", { side: L(`PDVF.Battle.Side.${side}`) }), battle);
     const modifier = R.commanderModifier(side, b, cfg);
     const { outcome } = await rollPlain({
@@ -578,7 +604,7 @@ async function armyTests(ctx) {
     });
     army.outcome = outcome;
   }
-  const fx = R.armyTestEffects(sys.allied.outcome, sys.enemy.outcome);
+  const fx = R.armyTestEffects(sys.allied.outcome, sys.enemy.outcome, sys.firstCharge);
   Object.assign(sys.state, fx, { enemyImposeUsed: false, moraleImmunityUsed: false });
   ctx.log(F("PDVF.Battle.Log.ArmyTests", { allied: L(`PDVF.Outcome.${sys.allied.outcome}`), enemy: L(`PDVF.Outcome.${sys.enemy.outcome}`) }));
 }
@@ -612,6 +638,11 @@ async function advance(ctx) {
     if (k.status === "rear" && st.position === "field") k.status = "field";
   }
   st.round += 1;
+  for (const k of sys.knights) {
+    if (k.status !== "pending" || !(k.arrival <= st.round)) continue;
+    k.status = "field";
+    ctx.log(F("PDVF.Battle.Log.Arrival", { name: knightActor(k)?.name ?? "?" }));
+  }
   if (st.round > R.maxRounds(sys.size, sys.rounds, C())) {
     st.round -= 1;
     st.step = "over";

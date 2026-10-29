@@ -1,0 +1,400 @@
+{{!-- Préparation de la bataille par le MJ --}}
+<div class="pdvf-prep">
+  <nav class="pdvf-prep-nav" aria-label="{{localize 'PDVF.Battle.Tab.prep'}}">
+    {{#each prepSections}}
+    <button type="button" class="pdvf-prep-link {{#if active}}active{{/if}}" data-action="prepSection" data-section="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">
+      <i class="fa-solid {{icon}}"></i><span>{{label}}</span>
+    </button>
+    {{/each}}
+    {{#if isPrep}}
+    <div class="pdvf-prep-go">
+      {{#if system.offSystem}}
+      <p class="pdvf-hint">{{localize "PDVF.Battle.OffSystemHint"}}</p>
+      {{else}}
+      <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="start"><i class="fa-solid fa-flag"></i> {{localize "PDVF.Battle.Op.start"}}</button>
+      {{/if}}
+    </div>
+    {{/if}}
+  </nav>
+
+  <div class="pdvf-prep-main">
+    <p class="pdvf-prep-hint">{{prepHint}}</p>
+
+    {{!-- ======================= PRÉSENTATION ======================= --}}
+    {{#if prepIs.general}}
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Identity"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Bio.name"}}</span><input type="text" name="name" value="{{battle.name}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Year"}}</span><input type="number" name="system.year" value="{{system.year}}" step="1" placeholder="—"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.KindLabelBattle"}}</span>
+          <select name="system.kind">{{#each kindChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.PlaceName"}}</span><input type="text" name="system.place" value="{{system.place}}"></label>
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.War"}}</span><input type="text" name="system.war" value="{{system.war}}"></label>
+      </div>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Series"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.SeriesName"}}</span><input type="text" name="system.series.name" value="{{system.series.name}}" placeholder="{{battle.name}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Day"}}</span><input type="number" name="system.series.day" value="{{system.series.day}}" step="1" min="1" placeholder="1"></label>
+        <div class="pdvf-field"><span>&nbsp;</span><button type="button" class="pdvf-btn" data-action="nextDay"><i class="fa-solid fa-sun"></i> {{localize "PDVF.Battle.NextDay"}}</button></div>
+      </div>
+      <div class="pdvf-drop-zone" data-drop="previous">
+        <span class="pdvf-drop-label">{{localize "PDVF.Battle.Previous"}}</span>
+        {{#if previous}}
+          {{#if previous.uuid}}<button type="button" class="pdvf-link" data-action="openDoc" data-uuid="{{previous.uuid}}">{{previous.name}}</button>{{else}}<span class="pdvf-warn">{{previous.name}}</span>{{/if}}
+          <button type="button" class="pdvf-icon-btn" data-action="clearValue" data-path="system.series.previous" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+        {{else}}<span class="pdvf-hint-inline">{{localize "PDVF.Battle.DropPrevious"}}</span>{{/if}}
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.SeriesHint"}}</p>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Banner"}}</h3>
+      <div class="pdvf-banner-edit">
+        <div class="pdvf-banner-frame small">
+          <img id="pdvf-banner-preview" class="pdvf-banner-img" src="{{banner.src}}" alt="" style="object-position: center {{banner.focus}}%">
+        </div>
+        <div class="pdvf-banner-controls">
+          <div class="pdvf-inline">
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="pickImage" data-path="system.banner.img"><i class="fa-solid fa-image"></i> {{localize "PDVF.Battle.ChooseImage"}}</button>
+            {{#if ownBanner}}<button type="button" class="pdvf-btn pdvf-mini" data-action="clearValue" data-path="system.banner.img"><i class="fa-solid fa-rotate-left"></i> {{localize "PDVF.Battle.DefaultImage"}}</button>{{/if}}
+          </div>
+          <label class="pdvf-field"><span>{{localize "PDVF.Battle.Focus"}}</span>
+            <input type="range" name="system.banner.focus" value="{{system.banner.focus}}" min="0" max="100" step="1" data-focus-preview="#pdvf-banner-preview">
+          </label>
+          <p class="pdvf-hint">{{#if ownBanner}}{{system.banner.img}}{{else}}{{localize "PDVF.Battle.BannerDefaultHint"}}{{/if}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Scene"}}</h3>
+      <div class="pdvf-inline">
+        <select name="system.scene" aria-label="{{localize 'PDVF.Battle.Scene'}}">{{#each sceneChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        {{#if sceneDoc}}<button type="button" class="pdvf-btn pdvf-mini" data-action="openDoc" data-uuid="{{sceneDoc.uuid}}"><i class="fa-solid fa-map"></i> {{localize "PDVF.Battle.ViewScene"}}</button>{{/if}}
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.SceneHint"}}</p>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Texts"}}</h3>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.Intro"}}</span><textarea name="system.intro" rows="5" placeholder="{{localize 'PDVF.Battle.IntroPlaceholder'}}">{{system.intro}}</textarea></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.Interlude"}}</span><textarea name="system.interlude" rows="3" placeholder="{{localize 'PDVF.Battle.InterludePlaceholder'}}">{{system.interlude}}</textarea></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.Notes"}}</span><textarea name="system.notes" rows="4">{{system.notes}}</textarea></label>
+    </section>
+    {{/if}}
+
+    {{!-- ======================= ARMÉES ======================= --}}
+    {{#if prepIs.armies}}
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Setup"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.SizeLabel"}}</span>
+          <select name="system.size">{{#each sizeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Intensity"}}</span>
+          <span class="pdvf-inline">
+            <input type="number" name="system.intensity" value="{{system.intensity}}" step="1" min="0" placeholder="—">
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="rollIntensity" data-tooltip="{{sizeInfo}}"><i class="fa-solid fa-dice"></i></button>
+          </span>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.MaxRounds"}}</span>
+          <input type="number" name="system.rounds" value="{{system.rounds}}" step="1" min="1" placeholder="{{maxRounds}}">
+        </label>
+        <label class="pdvf-check pdvf-field-check"><input type="checkbox" name="system.tournament" {{#if system.tournament}}checked{{/if}}> {{localize "PDVF.Battle.Tournament"}}</label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.ArmyLabel"}}</span>
+          <select name="system.army">{{#each armyChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.OddsLabel"}}</span>
+          <select name="system.odds">{{#each oddsChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.FavorsLabel"}}</span>
+          <select name="system.favors">{{#each favorsChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.FirstChargeLabel"}}</span>
+          <select name="system.firstCharge">{{#each firstChargeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+      </div>
+      <p class="pdvf-hint">{{sizeInfo}}</p>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.ArmyCommanders"}}</h3>
+      {{#unless system.armyTests}}<p class="pdvf-hint">{{localize "PDVF.Battle.NoArmyTests"}}</p>{{/unless}}
+      <div class="pdvf-battle-armies">
+        {{#each sides}}
+        <div class="pdvf-battle-army">
+          <h4 class="pdvf-h4">{{label}}</h4>
+          <div class="pdvf-battle-grid two">
+            <label class="pdvf-field"><span>{{localize "PDVF.Battle.CommanderName"}}</span><input type="text" name="system.{{side}}.name" value="{{data.name}}"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Skill.battle"}} <em class="pdvf-hint-inline">{{battleLabel}}</em></span><input type="number" name="system.{{side}}.battle" value="{{data.battle}}" step="1" min="0" placeholder="2D6+10"></label>
+          </div>
+          <div class="pdvf-checks">
+            {{#each mods}}
+            <label class="pdvf-check"><input type="checkbox" name="{{../modsName}}.{{id}}" {{#if checked}}checked{{/if}}> {{label}} <span class="pdvf-hint-inline">{{value}}</span></label>
+            {{/each}}
+          </div>
+          <div class="pdvf-custom-mods">
+            {{#each custom}}
+            <div class="pdvf-row-edit">
+              <input type="text" name="{{path}}.label" value="{{label}}" placeholder="{{localize 'PDVF.Battle.CustomModPlaceholder'}}" aria-label="{{localize 'PDVF.Battle.CustomMod'}}">
+              <input type="number" class="pdvf-num" name="{{path}}.value" value="{{value}}" step="1" aria-label="{{localize 'PDVF.Battle.Modifier'}}">
+              <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="{{../customPath}}" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            {{/each}}
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="{{customPath}}" data-kind="custom"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddCustomMod"}}</button>
+          </div>
+          <label class="pdvf-field"><span>{{localize "PDVF.Battle.ForcedOutcome"}}</span>
+            <select name="system.{{side}}.forced">{{#each forcedChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          </label>
+          <div class="pdvf-army-result">
+            {{localize "PDVF.Battle.Modifier"}} <strong>{{modifier}}</strong>
+            {{#if effective}} · {{localize "PDVF.Battle.EffectiveSkill"}} <strong>{{effective}}</strong>{{/if}}
+            {{#if forcedEffect}}<br><span class="pdvf-hint-inline">{{forcedEffect}}</span>{{/if}}
+            {{#if data.outcome}}<br><span class="pdvf-tag">{{localize "PDVF.Battle.LastOutcome"}} {{localize (concat "PDVF.Outcome." data.outcome)}}</span>{{/if}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Conditions"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.ConditionsHint"}}</p>
+      {{#each conditions}}
+      <div class="pdvf-condition">
+        <div class="pdvf-row-edit">
+          <input type="text" name="{{path}}.label" value="{{label}}" placeholder="{{localize 'PDVF.Battle.ConditionPlaceholder'}}" aria-label="{{localize 'PDVF.Battle.Condition'}}">
+          <label class="pdvf-inline pdvf-range">{{localize "PDVF.Battle.FromRound"}} <input type="number" class="pdvf-num" name="{{path}}.from" value="{{from}}" min="1" step="1" placeholder="—"></label>
+          <label class="pdvf-inline pdvf-range">{{localize "PDVF.Battle.ToRound"}} <input type="number" class="pdvf-num" name="{{path}}.to" value="{{to}}" min="1" step="1" placeholder="—"></label>
+          <span class="pdvf-hint-inline">{{range}}</span>
+          <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="system.conditions" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        {{> "systems/pendragon-vf/templates/item/bataille/effects.hbs" rows=effectRows base=(concat path ".effects")}}
+      </div>
+      {{/each}}
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="system.conditions" data-kind="condition"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddCondition"}}</button>
+    </section>
+    {{/if}}
+
+    {{!-- ======================= CONROI ======================= --}}
+    {{#if prepIs.conroi}}
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Conroi"}}</h3>
+      {{#if knights.length}}
+      <table class="pdvf-table pdvf-battle-knights">
+        <thead><tr>
+          <th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Skill.battle"}}</th>
+          <th>{{localize "PDVF.Battle.MoralePassion"}}</th><th>{{localize "PDVF.Battle.RoleLabel"}}</th>
+          <th data-tooltip="{{localize 'PDVF.Battle.ArrivalTip'}}">{{localize "PDVF.Battle.Arrival"}}</th><th></th>
+        </tr></thead>
+        <tbody>
+          {{#each knights}}
+          <tr>
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="{{uuid}}"><img src="{{img}}" alt="" class="pdvf-mini-portrait"> {{name}}</button>
+              {{#if isCommander}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Battle.Commander'}}"><i class="fa-solid fa-flag"></i></span>{{/if}}</td>
+            <td class="num">{{battleSkill}}</td>
+            <td>
+              <select name="system.knights.{{index}}.passion">
+                <option value="">{{localize "PDVF.Battle.BestPassion"}}</option>
+                {{#each passionChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+              </select>
+            </td>
+            <td><select name="system.knights.{{index}}.role">{{#each roleChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input type="number" class="pdvf-num" name="system.knights.{{index}}.arrival" value="{{arrival}}" min="1" step="1" placeholder="1"></td>
+            <td><button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeKnight" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <p class="pdvf-drop-zone"><span class="pdvf-hint">{{localize "PDVF.Battle.DropKnights"}}</span></p>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.CommanderLabel"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.CommanderLabel"}}</span>
+          <select name="system.conroi.commander">{{#each commanderChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        {{#unless system.conroi.commander}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.CommanderName"}}</span><input type="text" name="system.conroi.commanderName" value="{{system.conroi.commanderName}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Skill.battle"}}</span><input type="number" name="system.conroi.commanderBattle" value="{{system.conroi.commanderBattle}}" step="1" min="0"></label>
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.CommanderPlayer"}}</span>
+          <select name="system.conroi.commanderPlayer">{{#each playerChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        {{/unless}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.NpcKnights"}}</span><input type="number" name="system.conroi.npcKnights" value="{{system.conroi.npcKnights}}" step="1" min="0"></label>
+      </div>
+      {{#unless system.conroi.commander}}<p class="pdvf-hint">{{localize "PDVF.Battle.CommanderPlayerHint"}}</p>{{/unless}}
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.StartingMorale"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.CourtLabel"}}</span>
+          <select name="system.conroi.court">{{#each courtChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <div class="pdvf-field"><span>{{localize "PDVF.Battle.StartingMorale"}}</span>
+          <span class="pdvf-inline"><strong class="pdvf-big">{{system.conroi.moraleStart}}</strong>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="computeMorale">{{localize "PDVF.Battle.Op.computeMorale"}}</button></span>
+        </div>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.MoraleHint"}}</p>
+    </section>
+    {{/if}}
+
+    {{!-- ======================= PAQUET ======================= --}}
+    {{#if prepIs.deck}}
+    <section class="pdvf-prep-card">
+      <div class="pdvf-inline" data-group="preset">
+        <select aria-label="{{localize 'PDVF.Battle.ArmyLabel'}}">{{#each armyChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="addPreset">{{localize "PDVF.Battle.Op.addPreset"}}</button>
+        <span class="pdvf-hint-inline">{{localize "PDVF.Battle.DropEncounters"}}</span>
+      </div>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Opponents"}}</h3>
+      <ul class="pdvf-card-list">
+        {{#each deckOpponents}}{{> "systems/pendragon-vf/templates/item/bataille/card-edit.hbs"}}{{else}}<li class="pdvf-empty">{{localize "PDVF.Battle.EmptyDeck"}}</li>{{/each}}
+      </ul>
+    </section>
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Opportunities"}}</h3>
+      <ul class="pdvf-card-list">
+        {{#each deckOpportunities}}{{> "systems/pendragon-vf/templates/item/bataille/card-edit.hbs"}}{{else}}<li class="pdvf-empty">—</li>{{/each}}
+      </ul>
+    </section>
+    {{/if}}
+
+    {{!-- ======================= TOURS ======================= --}}
+    {{#if prepIs.rounds}}
+    {{#each roundCards}}
+    <article class="pdvf-round-card {{#if event}}has-event{{/if}}">
+      <header class="pdvf-round-head">
+        <span class="pdvf-round-num">{{localize "PDVF.Battle.Round"}} {{round}}</span>
+        {{#if conditions}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Battle.Conditions'}}"><i class="fa-solid fa-cloud-rain"></i> {{conditions}}</span>{{/if}}
+        {{#if limitedCards}}<span class="pdvf-hint-inline"><i class="fa-solid fa-layer-group"></i> {{limitedCards}}</span>{{/if}}
+        <span class="pdvf-spacer"></span>
+        {{#if event}}
+        <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="system.events" data-index="{{event.index}}" aria-label="{{localize 'PDVF.Battle.RemoveEvent'}}" data-tooltip="{{localize 'PDVF.Battle.RemoveEvent'}}"><i class="fa-solid fa-trash"></i></button>
+        {{else}}
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="system.events" data-kind="event" data-round="{{round}}"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddEvent"}}</button>
+        {{/if}}
+      </header>
+      {{#if event}}{{> "systems/pendragon-vf/templates/item/bataille/event-edit.hbs" event}}{{/if}}
+    </article>
+    {{/each}}
+
+    {{#if extraEvents.length}}
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.ExtraEvents"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.ExtraEventsHint"}}</p>
+      {{#each extraEvents}}
+      <article class="pdvf-round-card has-event">
+        <header class="pdvf-round-head">
+          <label class="pdvf-inline">{{localize "PDVF.Battle.Round"}} <input type="number" class="pdvf-num" name="{{path}}.round" value="{{round}}" min="1" step="1"></label>
+          <span class="pdvf-spacer"></span>
+          <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="system.events" data-index="{{index}}" aria-label="{{localize 'PDVF.Battle.RemoveEvent'}}"><i class="fa-solid fa-trash"></i></button>
+        </header>
+        {{> "systems/pendragon-vf/templates/item/bataille/event-edit.hbs"}}
+      </article>
+      {{/each}}
+    </section>
+    {{/if}}
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Tables"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.TablesHint"}}</p>
+      {{#each tables}}
+      <div class="pdvf-table-edit">
+        <div class="pdvf-row-edit">
+          <input type="text" name="{{path}}.name" value="{{name}}" placeholder="{{localize 'PDVF.Battle.TableNamePlaceholder'}}" aria-label="{{localize 'PDVF.Battle.Table'}}">
+          <input type="text" class="pdvf-num wide" name="{{path}}.formula" value="{{formula}}" aria-label="{{localize 'PDVF.Battle.Formula'}}" data-tooltip="{{localize 'PDVF.Battle.Formula'}}">
+          <select name="{{path}}.trigger" aria-label="{{localize 'PDVF.Battle.TableTriggerLabel'}}">{{#each triggerChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="rollTable" data-id="{{id}}"><i class="fa-solid fa-dice"></i> {{localize "PDVF.Battle.RollTable"}}</button>
+          <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="system.tables" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <table class="pdvf-table pdvf-table-rows">
+          <thead><tr><th>{{localize "PDVF.Battle.RowFrom"}}</th><th>{{localize "PDVF.Battle.RowTo"}}</th><th>{{localize "PDVF.Battle.RowText"}}</th><th>{{localize "PDVF.Battle.Subtable"}}</th><th></th></tr></thead>
+          <tbody>
+            {{#each rows}}
+            <tr>
+              <td><input type="number" class="pdvf-num" name="{{path}}.min" value="{{min}}" step="1"></td>
+              <td><input type="number" class="pdvf-num" name="{{path}}.max" value="{{max}}" step="1"></td>
+              <td class="pdvf-row-text">
+                <input type="text" name="{{path}}.text" value="{{text}}" aria-label="{{localize 'PDVF.Battle.RowText'}}">
+                <details class="pdvf-row-effects" {{#if effects.length}}open{{/if}}><summary>{{localize "PDVF.Battle.Effects"}} ({{effects.length}})</summary>
+                  {{> "systems/pendragon-vf/templates/item/bataille/effects.hbs" rows=effectRows base=(concat path ".effects")}}
+                </details>
+              </td>
+              <td><select name="{{path}}.table" aria-label="{{localize 'PDVF.Battle.Subtable'}}">{{#each subChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+              <td><button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="{{../path}}.rows" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="{{path}}.rows" data-kind="tableRow" data-table="{{index}}"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddTableRow"}}</button>
+      </div>
+      {{/each}}
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="system.tables" data-kind="table"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddTable"}}</button>
+    </section>
+    {{/if}}
+
+    {{!-- ======================= BILAN IMPOSÉ ======================= --}}
+    {{#if prepIs.outcome}}
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.ImposedResult"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.ResultLabel"}}</span>
+          <select name="system.outcome.result">{{#each resultChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.Participation"}}</span><input type="number" name="system.outcome.glory" value="{{system.outcome.glory}}" step="1" min="0" placeholder="{{localize 'PDVF.Battle.Computed'}}"></label>
+        <label class="pdvf-check pdvf-field-check"><input type="checkbox" name="system.outcome.commanderDouble" {{#if system.outcome.commanderDouble}}checked{{/if}}> {{localize "PDVF.Battle.CommanderDouble"}}</label>
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Battle.ImposedGloryHint"}}</p>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Bonuses"}}</h3>
+      {{#each bonuses}}
+      <div class="pdvf-row-edit">
+        <input type="text" name="{{path}}.label" value="{{label}}" placeholder="{{localize 'PDVF.Battle.BonusPlaceholder'}}" aria-label="{{localize 'PDVF.Battle.Bonus'}}">
+        <input type="number" class="pdvf-num" name="{{path}}.glory" value="{{glory}}" step="1" aria-label="{{localize 'PDVF.Glory'}}">
+        {{#if @root.hasKnights}}
+        <select name="{{path}}.knights" multiple size="2" aria-label="{{localize 'PDVF.Battle.BonusKnights'}}" data-tooltip="{{localize 'PDVF.Battle.BonusKnightsTip'}}">
+          {{#each knightChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+        {{/if}}
+        <button type="button" class="pdvf-icon-btn" data-action="removeRow" data-path="system.outcome.bonuses" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      {{/each}}
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="addRow" data-path="system.outcome.bonuses" data-kind="bonus"><i class="fa-solid fa-plus"></i> {{localize "PDVF.Battle.AddBonus"}}</button>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.Loot"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.LootModeLabel"}}</span>
+          <select name="system.outcome.loot.mode">{{#each lootChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+        </label>
+        {{#if lootFixed}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.LootPounds"}}</span><input type="number" name="system.outcome.loot.pounds" value="{{system.outcome.loot.pounds}}" step="0.25" min="0"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Battle.LootCommander"}}</span><input type="number" name="system.outcome.loot.commanderPounds" value="{{system.outcome.loot.commanderPounds}}" step="0.25" min="0" placeholder="—"></label>
+        <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.LootItems"}}</span><input type="text" name="system.outcome.loot.items" value="{{system.outcome.loot.items}}" placeholder="{{localize 'PDVF.Battle.LootItemsPlaceholder'}}"></label>
+        {{/if}}
+      </div>
+    </section>
+
+    <section class="pdvf-prep-card">
+      <h3 class="pdvf-h3">{{localize "PDVF.Battle.OutcomeNote"}}</h3>
+      <textarea name="system.outcome.note" rows="3" placeholder="{{localize 'PDVF.Battle.OutcomeNotePlaceholder'}}">{{system.outcome.note}}</textarea>
+    </section>
+    {{/if}}
+  </div>
+</div>

@@ -32,6 +32,8 @@ import { BatailleSheet } from "./sheets/bataille-sheet.mjs";
 import { RencontreSheet } from "./sheets/rencontre-sheet.mjs";
 import * as battleEngine from "./battle/engine.mjs";
 import * as battleClient from "./battle/client.mjs";
+import { ensureBattlefield } from "./battle/scene.mjs";
+import { BANNER_SETTING } from "./battle/banner.mjs";
 import * as combatExchange from "./combat/exchange.mjs";
 import * as combatDamage from "./combat/damage.mjs";
 import { registerStatuses } from "./combat/status.mjs";
@@ -93,6 +95,22 @@ Hooks.once("init", () => {
     onChange: () => {
       for (const app of foundry.applications.instances?.values?.() ?? []) {
         if (app instanceof ChevalierSheet || app instanceof winterGm.WinterPanel) app.render();
+      }
+    }
+  });
+
+  // Bandeau par défaut des batailles (image des fichiers de Foundry ; vide : bandeau neutre du système)
+  game.settings.register(SYSTEM_ID, BANNER_SETTING, {
+    name: "PDVF.Settings.battleBanner.name",
+    hint: "PDVF.Settings.battleBanner.hint",
+    scope: "world",
+    config: true,
+    type: String,
+    default: "",
+    filePicker: "image",
+    onChange: () => {
+      for (const app of foundry.applications.instances?.values?.() ?? []) {
+        if (app instanceof BatailleSheet && app.rendered) app.render();
       }
     }
   });
@@ -183,7 +201,11 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/family/history.hbs`,
     `systems/${SYSTEM_ID}/templates/creation/stepper.hbs`,
     `systems/${SYSTEM_ID}/templates/creation/knight-status.hbs`,
-    `systems/${SYSTEM_ID}/templates/actor/pnj/row.hbs`
+    `systems/${SYSTEM_ID}/templates/actor/pnj/row.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/bataille/prep.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/bataille/effects.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/bataille/card-edit.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/bataille/event-edit.hbs`
   ]);
 });
 
@@ -209,6 +231,7 @@ Hooks.once("ready", async () => {
   await ensureEncounters();
   await ensureEquipment();
   await migrateDefaultIcons();
+  await ensureBattlefield();
 });
 
 // Boutons des cartes de chat (crise de passion…)

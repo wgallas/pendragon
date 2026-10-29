@@ -307,7 +307,45 @@ PDVF.battle = {
   tournamentIntensity: 0.5,
   tournamentGlory: 0.1,
   /** Valeur de chevalier d'un chevalier (PJ ou PNJ) perdu. */
-  knightValue: 1
+  knightValue: 1,
+
+  /** Résultats possibles d'un test (pour imposer celui d'un commandant d'armée). */
+  outcomes: ["critical", "success", "failure", "fumble"],
+  /** Première charge du premier tour : selon le test du commandant allié, toujours, jamais. */
+  firstChargeModes: ["test", "always", "never"],
+  /**
+   * Effets des événements de tour, des conditions et des tables d'événements.
+   * input : number (entier signé), formula (dés), choice (liste), text (note pour le MJ) ;
+   * cards : le réglage vise des cartes du paquet (opposants ou opportunités).
+   */
+  effects: {
+    battleMod:      { input: "number" },
+    combatPc:       { input: "number" },
+    combatEnemy:    { input: "number" },
+    combatAll:      { input: "number" },
+    height:         { input: "number" },
+    intensity:      { input: "number" },
+    morale:         { input: "formula" },
+    moraleLossMult: { input: "number" },
+    enemyCount:     { input: "number" },
+    charge:         { input: "choice", choices: ["none", "auto", "enemy"] },
+    encounter:      { input: "choice", choices: ["impose", "restrict", "barrage"], cards: "opponent" },
+    opportunity:    { input: "choice", choices: ["open", "openTest", "restrict"], cards: "opportunity" },
+    end:            { input: "choice", choices: ["rout", "routFinal", "retreat"] },
+    note:           { input: "text" }
+  },
+  /** Déclencheur d'un événement de tour : test d'Intensité réussi (règle des batailles scénarisées), toujours, condition libre. */
+  eventTriggers: ["intensity", "always", "custom"],
+  /** Durée d'un événement de tour. */
+  eventDurations: ["round", "next", "until", "end"],
+  /** Déclencheur d'une table d'événements : bouton du MJ, ou échec critique au test de Bataille d'un PJ. */
+  tableTriggers: ["manual", "fumble"],
+  /** Butin du bilan imposé : selon les règles, fixé, aucun. */
+  lootModes: ["rules", "fixed", "none"],
+  /** Hauteur de cadrage par défaut d'une image de bandeau (en %). */
+  bannerFocus: 45,
+  /** Bandeau neutre du système quand aucune image n'est réglée. */
+  defaultBanner: "systems/pendragon-vf/icons/battle/bandeau.svg"
 };
 
 /* -------------------------------------------- */

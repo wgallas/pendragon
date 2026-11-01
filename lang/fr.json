@@ -759,7 +759,9 @@
       "ConvertWizard": "Avec l'assistant de création",
       "ConvertDirect": "Convertir tel quel",
       "ConvertWizardHint": "Avec l'assistant, on construit un chevalier complet selon le chapitre 3 (caractéristiques, traits, passions, famille, compétences), en reprenant le nom de l'écuyer et ses années d'écuyer déjà accomplies.",
-      "ConvertedWizard": "{name} : fiche de chevalier créée, l'assistant de création s'ouvre."
+      "ConvertedWizard": "{name} : fiche de chevalier créée, l'assistant de création s'ouvre.",
+      "MountedDefault": "Combat à cheval (jetons posés à cheval)",
+      "MountedDefaultTip": "Chaque nouveau jeton de ce PNJ reçoit l'état « À cheval » (cavaliers, sergents montés)."
     },
     "Suite": {
       "Title": "Suite",
@@ -2125,7 +2127,7 @@
       "LongRange": "Arme longue à distance Longue (+5)",
       "TargetAware": "La cible se sait visée (son bouclier gêne le tir)",
       "TargetShield": "Bouclier de la cible",
-      "DeclareHint": "Les modificateurs de hauteur, de lance couchée, de bouclier à cheval, d'outrance et le plafond d'Équitation sont calculés d'après l'état des jetons (à cheval, au sol).",
+      "DeclareHint": "Les modificateurs de hauteur, de lance couchée, de bouclier à cheval, d'outrance et le plafond d'Équitation sont calculés d'après l'état des jetons (à cheval, au sol) : mettez « À cheval » sur le jeton ou la fiche avant d'engager.",
       "Engage": "Engager",
       "EngageTitle": "Engager le combat",
       "EngageVs": "Contre {name}",
@@ -2269,7 +2271,10 @@
       "NoPassion": "Aucune",
       "ApplyLoose": "Porter sur cette compétence : {list}",
       "CurrentInspirations": "Inspirations en cours :",
-      "PassionFailedAct": "Passion ratée : le chevalier agit tout de même, sans bonus."
+      "PassionFailedAct": "Passion ratée : le chevalier agit tout de même, sans bonus.",
+      "Prone": "Au sol",
+      "Stances": "Vous : {self} · adversaire : {other}",
+      "HeightHint": "hauteur {value}"
     },
     "Domain": {
       "NewName": "Nouveau manoir",

@@ -36,7 +36,7 @@ import { ensureBattlefield } from "./battle/scene.mjs";
 import { BANNER_SETTING } from "./battle/banner.mjs";
 import * as combatExchange from "./combat/exchange.mjs";
 import * as combatDamage from "./combat/damage.mjs";
-import { registerStatuses } from "./combat/status.mjs";
+import { registerStatuses, setStatus, STATUS } from "./combat/status.mjs";
 
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initialisation du système Pendragon (VF)`);
@@ -248,6 +248,15 @@ Hooks.on("getSceneControlButtons", (controls) => addNewDayControl(controls));
 Hooks.on("renderActorDirectory", (app, html) => addNewDayDirectoryButton(app, html));
 Hooks.on("renderActorDirectory", (app, html) => winterGm.addWinterDirectoryButton(app, html));
 Hooks.on("updateActor", (actor, changes) => winterGm.refreshPanel(actor, changes));
+
+// Combattants montés (sergents, chevaliers montés) : leurs nouveaux jetons sont posés « À cheval »,
+// pour que l'avantage de hauteur joue dès le premier échange (aussi pour « Placer les ennemis »).
+Hooks.on("createToken", (token, options, userId) => {
+  if (userId !== game.user.id) return;
+  const actor = token.actor;
+  if (actor?.type !== "pnj" || !actor.system.mountedDefault) return;
+  setStatus(actor, STATUS.mounted, true).catch(err => console.error(`${SYSTEM_ID} | Jeton à cheval`, err));
+});
 
 // Assistant de création : s'ouvre pour un chevalier tout neuf créé par cet utilisateur.
 Hooks.on("createActor", (actor, options, userId) => {

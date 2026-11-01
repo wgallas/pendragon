@@ -91,16 +91,18 @@ export function exchangeModifiers(self, other) {
   const n = Math.max(1, Number(self.opponents) || 1);
   if (n > 1) add(`${n} adversaires`, -5 * (n - 1));
 
-  // Hauteur : cavalier contre piéton, debout contre au sol
+  // Hauteur (p. 147) : cavalier contre piéton, debout contre au sol, +5 / −5 réfléchis.
+  // Vaut aussi pour les tests de Mouvement (le bandit qui se désengage d'un cavalier, p. 157),
+  // mais pas pour le tir. Le piéton qui se bat avec une lance ou une arme d'hast ignore le −5.
   const selfHigh = (self.mounted ? 2 : self.prone ? 0 : 1);
   const otherHigh = (other.mounted ? 2 : other.prone ? 0 : 1);
-  if (a.skill !== "move" && a.skill !== "none" && self.action !== "ranged") {
+  if (a.skill !== "none" && self.action !== "ranged") {
     if (selfHigh > otherHigh) add("Avantage de hauteur", 5);
     if (selfHigh < otherHigh) {
-      const ignores = selfHigh === 1 && other.mounted && w.long;
+      const ignores = a.skill !== "move" && selfHigh === 1 && other.mounted && w.long;
       if (!ignores) add("Désavantage de hauteur", -5);
     }
-    if (self.mounted && other.prone && !w.lance) warnings.push("À cheval, seule une lance peut frapper un adversaire au sol.");
+    if (a.skill !== "move" && self.mounted && other.prone && !w.lance) warnings.push("À cheval, seule une lance peut frapper un adversaire au sol.");
   }
 
   // Attaque à outrance de l'adversaire : +5 à qui se sert d'une compétence d'arme

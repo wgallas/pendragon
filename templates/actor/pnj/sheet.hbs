@@ -177,6 +177,7 @@
         </table>
         {{#if editMode}}<button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.attacks">{{localize "PDVF.Npc.AddAttack"}}</button>{{/if}}
 
+        {{#if editMode}}<label class="pdvf-check pdvf-mounted-default" data-tooltip="{{localize 'PDVF.Npc.MountedDefaultTip'}}"><input type="checkbox" name="system.mountedDefault" {{checked system.mountedDefault}}> {{localize "PDVF.Npc.MountedDefault"}}</label>{{/if}}
         <div class="pdvf-combat-state">
           <button type="button" class="pdvf-state-btn {{#if combat.mounted}}on{{/if}}" data-action="combatMount" aria-pressed="{{#if combat.mounted}}true{{else}}false{{/if}}"><i class="fa-solid fa-horse" aria-hidden="true"></i> {{#if combat.mounted}}{{localize "PDVF.Status.mounted"}}{{else}}{{localize "PDVF.Combat.OnFoot"}}{{/if}}</button>
           {{#if combat.prone}}<button type="button" class="pdvf-state-btn warn" data-action="combatStand"><i class="fa-solid fa-person-arrow-up-from-line" aria-hidden="true"></i> {{localize "PDVF.Combat.StandUp"}}</button>{{/if}}

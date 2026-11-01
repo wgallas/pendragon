@@ -46,6 +46,8 @@ export class PnjData extends foundry.abstract.TypeDataModel {
         description: text()
       }),
       gloryReward: int(0),
+      // Combattant monté (sergents, chevaliers montés) : ses nouveaux jetons sont posés « À cheval ».
+      mountedDefault: new fields.BooleanField({ initial: false }),
       valorousMod: int(null, { nullable: true }),
 
       attacks: row({ name: text(), skill: text(), value: int(10), damage: text("") }),

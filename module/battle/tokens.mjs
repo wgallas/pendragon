@@ -13,7 +13,14 @@ const F = (k, d) => game.i18n.format(k, d);
 /** Acteur du monde correspondant à l'adversaire (importé du compendium au besoin). */
 async function worldActorFor(uuid) {
   const existing = game.actors.find(a => a.getFlag(SYSTEM_ID, "battleSource") === uuid || a._stats?.compendiumSource === uuid);
-  if (existing) return existing;
+  if (existing) {
+    // Copie faite avant que le compendium ne marque les combattants montés : on reprend la marque.
+    if (existing.type === "pnj" && !existing.system.mountedDefault && existing.getFlag(SYSTEM_ID, "battleSource") === uuid) {
+      const src = await fromUuid(uuid).catch(() => null);
+      if (src?.system?.mountedDefault) await existing.update({ "system.mountedDefault": true });
+    }
+    return existing;
+  }
   const doc = await fromUuid(uuid);
   if (!doc) return null;
   if (!doc.pack) return doc;

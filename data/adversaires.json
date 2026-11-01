@@ -1,5 +1,5 @@
 {
- "version": 2,
+ "version": 3,
  "folders": [
   {
    "_id": "4a340e112fc011df",
@@ -156,7 +156,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier débutant",
@@ -278,7 +279,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 13+1D3, Hommage (Seigneur) 13+1D3, Honneur 13+1D3."
+    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 13+1D3, Hommage (Seigneur) 13+1D3, Honneur 13+1D3.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier ordinaire",
@@ -406,7 +408,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D6, Honneur 13+1D6."
+    "notes": "Livre du maître, p. 156.\nATT 2D6+3 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D6, Honneur 13+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier vétéran",
@@ -528,7 +531,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 157.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D3, Honneur 13+1D6."
+    "notes": "Livre du maître, p. 157.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D3, Honneur 13+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier respecté",
@@ -650,7 +654,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 157.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D6, Honneur 12+1D6."
+    "notes": "Livre du maître, p. 157.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 14+1D6, Honneur 12+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier notable",
@@ -772,7 +777,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 157.\nPassions : plus une ou plusieurs passions à 16.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 15+1D3, Honneur 14+1D6."
+    "notes": "Livre du maître, p. 157.\nPassions : plus une ou plusieurs passions à 16.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 15+1D3, Honneur 14+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier renommé",
@@ -898,7 +904,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 157.\nPassions : plus une ou plusieurs passions à 16.\nToutes les autres compétences d'armes à 10.\nATT 2D6+5 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 15+1D6, Chevalerie 8+1D6, Loyauté (Roi Arthur) 12+1D6, Honneur 15+1D6."
+    "notes": "Livre du maître, p. 157.\nPassions : plus une ou plusieurs passions à 16.\nToutes les autres compétences d'armes à 10.\nATT 2D6+5 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Valeureux 15+1D6, Chevalerie 8+1D6, Loyauté (Roi Arthur) 12+1D6, Honneur 15+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier extraordinaire",
@@ -1008,7 +1015,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 158.\nATT 1D6+5 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 158.\nATT 1D6+5 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Bandit",
@@ -1106,7 +1114,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 158.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 158.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lancier",
@@ -1204,7 +1213,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 158.\nATT 2D6+2 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 158.\nATT 2D6+2 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lancier vétéran",
@@ -1295,7 +1305,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 158.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 158.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Archer",
@@ -1382,7 +1393,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Arbalétrier",
@@ -1488,7 +1500,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": true
    },
    "prototypeToken": {
     "name": "Sergent monté",
@@ -1589,7 +1602,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 159.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Homme des collines",
@@ -1693,7 +1707,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 162.\nATT 2D6+1 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 162.\nATT 2D6+1 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Berserker",
@@ -1799,7 +1814,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 160.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 160.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier saxon",
@@ -1901,7 +1917,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 160.\nATT 2D6+2 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 160.\nATT 2D6+2 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Ceorl",
@@ -2009,7 +2026,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 160.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 160.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Ceorl riche",
@@ -2117,7 +2135,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 161.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 161.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Heorthgeneat",
@@ -2219,7 +2238,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 161.\nATT 2D6+3 (valeur moyenne reportée)."
+    "notes": "Livre du maître, p. 161.\nATT 2D6+3 (valeur moyenne reportée).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Heorthgeneat à cheval",
@@ -2337,7 +2357,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 161.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Honneur 12+1D6."
+    "notes": "Livre du maître, p. 161.\nATT 2D6+4 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Honneur 12+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Ætheling",
@@ -2455,7 +2476,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 161.\nATT 2D6+5 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Honneur 12+1D6."
+    "notes": "Livre du maître, p. 161.\nATT 2D6+5 (valeur moyenne reportée).\nValeurs variables (moyenne reportée) : Honneur 12+1D6.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Cyning",
@@ -2573,7 +2595,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 162."
+    "notes": "Livre du maître, p. 162.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Guerrier picte",
@@ -2687,7 +2710,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 162."
+    "notes": "Livre du maître, p. 162.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Guerrier picte supérieur",
@@ -2763,7 +2787,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 137.\nBataille : perte de Moral 1D3, Moral minimum 5, valeur de chevalier 1/16."
+    "notes": "Livre du maître, p. 137.\nBataille : perte de Moral 1D3, Moral minimum 5, valeur de chevalier 1/16.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Paysans",
@@ -2845,7 +2870,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 137.\nBataille : perte de Moral 1D6, Moral minimum 8, valeur de chevalier 1/8."
+    "notes": "Livre du maître, p. 137.\nBataille : perte de Moral 1D6, Moral minimum 8, valeur de chevalier 1/8.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lanciers",
@@ -2933,7 +2959,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 138.\nHache de bataille : −1D6 à la protection du bouclier.\nMasse d'armes : +1D6 contre la maille.\nArme tirée au 1D6 : 1–2 épée, 3–4 hache, 5–6 masse.\nBataille : perte de Moral 1D6, Moral minimum 7, valeur de chevalier 1/8."
+    "notes": "Livre du maître, p. 138.\nHache de bataille : −1D6 à la protection du bouclier.\nMasse d'armes : +1D6 contre la maille.\nArme tirée au 1D6 : 1–2 épée, 3–4 hache, 5–6 masse.\nBataille : perte de Moral 1D6, Moral minimum 7, valeur de chevalier 1/8.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Fantassins",
@@ -3021,7 +3048,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 138.\nBataille : perte de Moral 1D6, Moral minimum 5, valeur de chevalier 1/8."
+    "notes": "Livre du maître, p. 138.\nBataille : perte de Moral 1D6, Moral minimum 5, valeur de chevalier 1/8.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Archers",
@@ -3103,7 +3131,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 139.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nBataille : perte de Moral 1D6, Moral minimum 10, valeur de chevalier 1/2."
+    "notes": "Livre du maître, p. 139.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nBataille : perte de Moral 1D6, Moral minimum 10, valeur de chevalier 1/2.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevaliers à pied",
@@ -3185,7 +3214,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 139.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 1/2."
+    "notes": "Livre du maître, p. 139.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 1/2.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevaliers d'élite à pied",
@@ -3266,7 +3296,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 140.\nBataille : perte de Moral 1D6+3, Moral minimum 10, valeur de chevalier 1/2."
+    "notes": "Livre du maître, p. 140.\nBataille : perte de Moral 1D6+3, Moral minimum 10, valeur de chevalier 1/2.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Hobilars",
@@ -3359,7 +3390,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 140.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 3/4."
+    "notes": "Livre du maître, p. 140.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 3/4.",
+    "mountedDefault": true
    },
    "prototypeToken": {
     "name": "Sergents montés",
@@ -3452,7 +3484,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 141.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 1."
+    "notes": "Livre du maître, p. 141.\nBataille : perte de Moral 1D6+2, Moral minimum 12, valeur de chevalier 1.",
+    "mountedDefault": true
    },
    "prototypeToken": {
     "name": "Chevaliers montés",
@@ -3545,7 +3578,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 141.\nBataille : perte de Moral 2D6, Moral minimum 12, valeur de chevalier 1."
+    "notes": "Livre du maître, p. 141.\nBataille : perte de Moral 2D6, Moral minimum 12, valeur de chevalier 1.",
+    "mountedDefault": true
    },
    "prototypeToken": {
     "name": "Chevaliers montés d’élite",
@@ -3616,7 +3650,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 142.\nBataille : perte de Moral 1D6+1, Moral minimum 8, valeur de chevalier 1/8."
+    "notes": "Livre du maître, p. 142.\nBataille : perte de Moral 1D6+1, Moral minimum 8, valeur de chevalier 1/8.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Guerriers tribaux pictes",
@@ -3705,7 +3740,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 142.\nHaches : −1D6 à la protection du bouclier.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nArme tirée au 1D6 : 1–2 épée, 3–4 hache de bataille, 5–6 lance ; pas de bouclier avec la grande hache (armure 5).\nBataille : perte de Moral 1D6+2, Moral minimum 8, valeur de chevalier 1/4."
+    "notes": "Livre du maître, p. 142.\nHaches : −1D6 à la protection du bouclier.\nLance : ignore la pénalité de hauteur contre les cavaliers.\nArme tirée au 1D6 : 1–2 épée, 3–4 hache de bataille, 5–6 lance ; pas de bouclier avec la grande hache (armure 5).\nBataille : perte de Moral 1D6+2, Moral minimum 8, valeur de chevalier 1/4.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Guerriers saxons",
@@ -3797,7 +3833,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 143."
+    "notes": "Livre du maître, p. 143.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Gardes de la Bannière",
@@ -3884,7 +3921,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 144.\nCompétences d'armes déjà réduites de 5 pour la cotte de mailles double.\nRançon : 100 £ ou plus selon le rang."
+    "notes": "Livre du maître, p. 144.\nCompétences d'armes déjà réduites de 5 pour la cotte de mailles double.\nRançon : 100 £ ou plus selon le rang.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Commandant",
@@ -3976,7 +4014,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 144.\n+1D6 de Chevalier farouche compris dans les dégâts."
+    "notes": "Livre du maître, p. 144.\n+1D6 de Chevalier farouche compris dans les dégâts.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Garde du Corps",
@@ -4068,7 +4107,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 146.\nCharge : dégâts selon le meilleur cheval de guerre de la période.\n+1D6 de Chevalier farouche à l'épée.\nLe MJ peut remplacer l'Épée par une autre compétence d'arme."
+    "notes": "Livre du maître, p. 146.\nCharge : dégâts selon le meilleur cheval de guerre de la période.\n+1D6 de Chevalier farouche à l'épée.\nLe MJ peut remplacer l'Épée par une autre compétence d'arme.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Champion",
@@ -4156,7 +4196,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 175.\nCharge : dégâts complets en chargeant.\nEmpalement : à pleine vitesse, avec les cornes.\nPiétinement : seulement contre une victime à terre."
+    "notes": "Livre du maître, p. 175.\nCharge : dégâts complets en chargeant.\nEmpalement : à pleine vitesse, avec les cornes.\nPiétinement : seulement contre une victime à terre.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Taureau",
@@ -4244,7 +4285,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 176.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149).\nEmpalement : à pleine vitesse, avec les cornes.\nPiétinement : seulement contre une victime à terre."
+    "notes": "Livre du maître, p. 176.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149).\nEmpalement : à pleine vitesse, avec les cornes.\nPiétinement : seulement contre une victime à terre.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Auroch",
@@ -4327,7 +4369,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 177.\nPiétinement : la cible esquive par un test opposé de DEX (la sienne ou celle de sa monture) ; succès partiel = demi-dégâts.\nEmpalement : +2D6 contre une armure de plaques.\nSaisie et lancé : projette la cible à 1D6+5 m (6D6)."
+    "notes": "Livre du maître, p. 177.\nPiétinement : la cible esquive par un test opposé de DEX (la sienne ou celle de sa monture) ; succès partiel = demi-dégâts.\nEmpalement : +2D6 contre une armure de plaques.\nSaisie et lancé : projette la cible à 1D6+5 m (6D6).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Éléphant",
@@ -4409,7 +4452,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 179.\nBlessure majeure et Inconscience : voir Férocité.\nGriffes : deux jets de 4D6 si l'ours l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.\nFérocité : continue d'attaquer un tour après Inconscience ou Blessure majeure (sauf face à un épieu à sanglier)."
+    "notes": "Livre du maître, p. 179.\nBlessure majeure et Inconscience : voir Férocité.\nGriffes : deux jets de 4D6 si l'ours l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.\nFérocité : continue d'attaquer un tour après Inconscience ou Blessure majeure (sauf face à un épieu à sanglier).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Ours",
@@ -4485,7 +4529,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 179.\nChasse en meute : un loup ignoré par sa cible fait une attaque téméraire."
+    "notes": "Livre du maître, p. 179.\nChasse en meute : un loup ignoré par sa cible fait une attaque téméraire.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Loup",
@@ -4561,7 +4606,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 180.\nÉvite le combat ; mord s'il est acculé."
+    "notes": "Livre du maître, p. 180.\nÉvite le combat ; mord s'il est acculé.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Renard",
@@ -4637,7 +4683,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 180.\nDéfenses : contre un cavalier, attaque toujours le cheval d'abord.\nFérocité : continue d'attaquer un tour après Inconscience ou Blessure majeure (sauf face à un épieu à sanglier)."
+    "notes": "Livre du maître, p. 180.\nDéfenses : contre un cavalier, attaque toujours le cheval d'abord.\nFérocité : continue d'attaquer un tour après Inconscience ou Blessure majeure (sauf face à un épieu à sanglier).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Sanglier",
@@ -4719,7 +4766,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 175.\nMouvement 80 en vol.\nValeurs variables (moyenne reportée) : Évitement 20 (+20) en vol.\nÉvitement +20 en vol.\nPlongée : attaque en piqué depuis les airs."
+    "notes": "Livre du maître, p. 175.\nMouvement 80 en vol.\nValeurs variables (moyenne reportée) : Évitement 20 (+20) en vol.\nÉvitement +20 en vol.\nPlongée : attaque en piqué depuis les airs.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Faucon",
@@ -4795,7 +4843,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 184.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 184.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Cheval féérique",
@@ -4877,7 +4926,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 185.\nRegard terrifiant (30 m, chaque tour) : opposé au Valeureux ; échec = coche Couard et fuite 1D6 tours ; succès partiel = fuite sans coche.\nDocile auprès d'une jeune fille vierge… jusqu'à son réveil.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 185.\nRegard terrifiant (30 m, chaque tour) : opposé au Valeureux ; échec = coche Couard et fuite 1D6 tours ; succès partiel = fuite sans coche.\nDocile auprès d'une jeune fille vierge… jusqu'à son réveil.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Barguest",
@@ -4953,7 +5003,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 185.\nInvisibilité à volonté (n'attaque pas invisible) ; tactiques de meute.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 185.\nInvisibilité à volonté (n'attaque pas invisible) ; tactiques de meute.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chien noir",
@@ -5029,7 +5080,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 186.\nChien des chasseurs féeriques, silencieux, garde les entrées des collines creuses.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 186.\nChien des chasseurs féeriques, silencieux, garde les entrées des collines creuses.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Cu Sith",
@@ -5111,7 +5163,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 186.\nCrache-venin (une fois par tour, 30 m, attaque à distance) : test de CON contre venin 30 ; l'armure protège de la première attaque (1 ou 2 selon le métal) puis se dégrade.\nVenin rampant : les armes en bois qui la touchent se dissolvent ; les lames se briseront sur un échec critique.\nFuit la fouine ; le chant du coq lui inflige 6D6.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 186.\nCrache-venin (une fois par tour, 30 m, attaque à distance) : test de CON contre venin 30 ; l'armure protège de la première attaque (1 ou 2 selon le métal) puis se dégrade.\nVenin rampant : les armes en bois qui la touchent se dissolvent ; les lames se briseront sur un échec critique.\nFuit la fouine ; le chant du coq lui inflige 6D6.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Coquatrice",
@@ -5194,7 +5247,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 187.\nMouvement 25 au sol, 85 en vol.\nGriffes : deux attaques par tour, éventuellement sur deux cibles.\nMorsure : saisie (maintien au sol) ; avale toute créature de TAI ≤ moitié de la sienne.\nCoup de queue : peut être attaqué par deux fois plus d'adversaires ; la queue frappe ceux de flanc et de dos sans pénalité.\nAttaque en vol : en passant, +5 à l'attaque, −15 à celle de la cible.\nUne panthère qui rote l'apaise et l'endort."
+    "notes": "Livre du maître, p. 187.\nMouvement 25 au sol, 85 en vol.\nGriffes : deux attaques par tour, éventuellement sur deux cibles.\nMorsure : saisie (maintien au sol) ; avale toute créature de TAI ≤ moitié de la sienne.\nCoup de queue : peut être attaqué par deux fois plus d'adversaires ; la queue frappe ceux de flanc et de dos sans pénalité.\nAttaque en vol : en passant, +5 à l'attaque, −15 à celle de la cible.\nUne panthère qui rote l'apaise et l'endort.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Dragon",
@@ -5265,7 +5319,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 187.\nChangeforme : prend la forme et les caractéristiques physiques de quiconque, pas ses compétences, traits ni passions.\nCraint les objets bénis.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 187.\nChangeforme : prend la forme et les caractéristiques physiques de quiconque, pas ses compétences, traits ni passions.\nCraint les objets bénis.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Doppelganger",
@@ -5341,7 +5396,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 188.\nDeux dimensions : invisible et inattaquable de face ou de dos ; garde un adversaire en face ; plusieurs attaquants peuvent le prendre de flanc. Le voir : Vigilance contre son Évitement 20.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 188.\nDeux dimensions : invisible et inattaquable de face ou de dos ; garde un adversaire en face ; plusieurs attaquants peuvent le prendre de flanc. Le voir : Vigilance contre son Évitement 20.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Fachan",
@@ -5433,7 +5489,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 189.\nCorne : charge (au moins 6 m d'élan).\nPiétinement : seulement contre une cible à terre.\nMagie féerique une fois par rencontre (invisibilité, obstacle pour fuir) ; Évitement +10 lors d'une chasse.\nSoigne entièrement une créature une fois par rencontre ; attaque les éléphants à vue.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 189.\nCorne : charge (au moins 6 m d'élan).\nPiétinement : seulement contre une cible à terre.\nMagie féerique une fois par rencontre (invisibilité, obstacle pour fuir) ; Évitement +10 lors d'une chasse.\nSoigne entièrement une créature une fois par rencontre ; attaque les éléphants à vue.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Licorne",
@@ -5510,7 +5567,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 191.\nDésarmé : deux attaques de griffes par tour, éventuellement sur deux cibles.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 191.\nDésarmé : deux attaques de griffes par tour, éventuellement sur deux cibles.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Toque-rouge",
@@ -5587,7 +5645,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 194.\nMorsure démoniaque : l'armure ne compte pas ; la victime oppose sa valeur de Croyant comme armure.\nLangue de feu : après chaque morsure réussie, attaque de Tromperie ; la victime résiste par un test de Dévotion.\nDémon : le fer inflige +1D6 dégâts (autres faiblesses au choix du MJ)."
+    "notes": "Livre du maître, p. 194.\nMorsure démoniaque : l'armure ne compte pas ; la victime oppose sa valeur de Croyant comme armure.\nLangue de feu : après chaque morsure réussie, attaque de Tromperie ; la victime résiste par un test de Dévotion.\nDémon : le fer inflige +1D6 dégâts (autres faiblesses au choix du MJ).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Cwn Annwn",
@@ -5693,7 +5752,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 194.\nSes illusions (Tromperie démoniaque) se percent par un test de Croyant (voir le livre).\nDémon : le fer inflige +1D6 dégâts (autres faiblesses au choix du MJ)."
+    "notes": "Livre du maître, p. 194.\nSes illusions (Tromperie démoniaque) se percent par un test de Croyant (voir le livre).\nDémon : le fer inflige +1D6 dégâts (autres faiblesses au choix du MJ).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevalier démoniaque",
@@ -5775,7 +5835,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+5 pour les pister avec Chasse).\nAllonge : pas de désavantage de hauteur contre les cavaliers.\nPisté avec Chasse +5."
+    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+5 pour les pister avec Chasse).\nAllonge : pas de désavantage de hauteur contre les cavaliers.\nPisté avec Chasse +5.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Petit géant",
@@ -5857,7 +5918,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+10 pour les pister avec Chasse).\nChaque tour : un coup de gourdin, ou deux piétinements sur deux cibles sans pénalité.\nDéfenses adverses +5 ; modificateur réfléchi +5/−5 contre les combattants à pied ; pas de +5 aux armes longues contre lui.\nPisté avec Chasse +10."
+    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+10 pour les pister avec Chasse).\nChaque tour : un coup de gourdin, ou deux piétinements sur deux cibles sans pénalité.\nDéfenses adverses +5 ; modificateur réfléchi +5/−5 contre les combattants à pied ; pas de +5 aux armes longues contre lui.\nPisté avec Chasse +10.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Grand géant",
@@ -5945,7 +6007,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+20 pour les pister avec Chasse).\nChaque tour : un coup de gourdin, ou deux piétinements ; Écrasement contre une cible déjà à terre.\nDéfenses adverses +10 ; modificateur réfléchi +10/−10 à pied, +5/−5 à cheval ; pas de bonus de charge à la lance.\nPisté avec Chasse +20."
+    "notes": "Livre du maître, p. 198.\nValeurs variables (moyenne reportée) : Évitement 0 (+20 pour les pister avec Chasse).\nChaque tour : un coup de gourdin, ou deux piétinements ; Écrasement contre une cible déjà à terre.\nDéfenses adverses +10 ; modificateur réfléchi +10/−10 à pied, +5/−5 à cheval ; pas de bonus de charge à la lance.\nPisté avec Chasse +20.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Géant gargantuesque",
@@ -6050,7 +6113,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 200.\nFuit et se recroqueville plutôt que de combattre."
+    "notes": "Livre du maître, p. 200.\nFuit et se recroqueville plutôt que de combattre.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Sauvageon",
@@ -6140,7 +6204,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 200.\nInvisible à volonté pour les mortels.\nEsprit domestique : influence la Gestion du domaine lors de la phase d'hiver (voir le livre).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 200.\nInvisible à volonté pour les mortels.\nEsprit domestique : influence la Gestion du domaine lors de la phase d'hiver (voir le livre).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Brownie",
@@ -6216,7 +6281,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 200.\nManie un lourd maillet à deux mains."
+    "notes": "Livre du maître, p. 200.\nManie un lourd maillet à deux mains.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Ogre",
@@ -6315,7 +6381,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 202.\nPassions : au moins une passion à 16 au choix du MJ.\nArmure en métal d'étoile, toujours d'une période en avance (18 + bouclier à l'époque de l'Enfant-roi).\nMagie féerique une fois par rencontre (invisibilité, illusion, métamorphose, soins).\nDon féerique (Table 8.5) ; monte un cheval féerique.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 202.\nPassions : au moins une passion à 16 au choix du MJ.\nArmure en métal d'étoile, toujours d'une période en avance (18 + bouclier à l'époque de l'Enfant-roi).\nMagie féerique une fois par rencontre (invisibilité, illusion, métamorphose, soins).\nDon féerique (Table 8.5) ; monte un cheval féerique.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Elfe",
@@ -6386,7 +6453,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 205.\nDeux attaques de griffes par tour, éventuellement sur deux cibles (cheval et cavalier compris).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 205.\nDeux attaques de griffes par tour, éventuellement sur deux cibles (cheval et cavalier compris).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Guenaude",
@@ -6474,7 +6542,8 @@
     ],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 205.\nMagie féerique : invisibilité une fois par rencontre.\nTir elfe : la victime fait aussitôt un test comme pour la Sénescence.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 205.\nMagie féerique : invisibilité une fois par rencontre.\nTir elfe : la victime fait aussitôt un test comme pour la Sénescence.\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Gobelin",
@@ -6556,7 +6625,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 206.\nMagie féerique : invisibilité une fois par rencontre.\nCombat à mains nues (Rixe).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure."
+    "notes": "Livre du maître, p. 206.\nMagie féerique : invisibilité une fois par rencontre.\nCombat à mains nues (Rixe).\nSurnaturel : seules les armes de fer (+1D6) ou de fer béni (+2D6) le blessent ; les autres peuvent seulement le faire chuter. Une substance bénie inflige 1D6 en ignorant l'armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Nain",
@@ -6632,7 +6702,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 175."
+    "notes": "Livre du maître, p. 175.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Bâtard",
@@ -6708,7 +6779,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 175.\nChien de piste (odorat)."
+    "notes": "Livre du maître, p. 175.\nChien de piste (odorat).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chien courant",
@@ -6796,7 +6868,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 175.\nChien de vue, très rapide."
+    "notes": "Livre du maître, p. 175.\nChien de vue, très rapide.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lévrier",
@@ -6872,7 +6945,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 175."
+    "notes": "Livre du maître, p. 175.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lévrier irlandais",
@@ -6954,7 +7028,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149)."
+    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Cerf",
@@ -7030,7 +7105,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 177.\nTrop petit pour inquiéter un chevalier en armure."
+    "notes": "Livre du maître, p. 177.\nTrop petit pour inquiéter un chevalier en armure.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Chevreuil",
@@ -7112,7 +7188,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149)."
+    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Daim",
@@ -7194,7 +7271,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149)."
+    "notes": "Livre du maître, p. 177.\nCharge : dégâts complets en chargeant (règles de passage, Livre du joueur p. 149).",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Élan",
@@ -7276,7 +7354,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe."
+    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lion",
@@ -7358,7 +7437,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe."
+    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Lynx",
@@ -7440,7 +7520,8 @@
     "passions": [],
     "defaultSkill": 5,
     "possessions": "",
-    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.\nSon rot apaise les dragons."
+    "notes": "Livre du maître, p. 179.\nGriffes : deux jets de dégâts séparés si le félin l'emporte, blessures distinctes, additionnées pour la Chute.\nMutilation : au tour suivant une Chute, morsure mortelle ; défense à −5 sauf en Rixe.\nSon rot apaise les dragons.",
+    "mountedDefault": false
    },
    "prototypeToken": {
     "name": "Panthère",

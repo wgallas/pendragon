@@ -149,7 +149,21 @@ function resolveActorSync(ref) {
  * Boîte de déclaration : action, arme et options.
  * @returns {Promise<object|null>}
  */
-async function declare(actor, { defending = false, preset = null, opponentName = "", attackerAction = "", modifier = 0, invoke = "" } = {}) {
+/** Rappel de la hauteur dans la déclaration (« avantage de hauteur : +5 »). */
+function heightHint(self, other) {
+  if (!other) return "";
+  const h = (x) => (x.mounted ? 2 : x.prone ? 0 : 1);
+  if (h(self) > h(other)) return ` — ${F("PDVF.Combat.HeightHint", { value: "+5" })}`;
+  if (h(self) < h(other)) return ` — ${F("PDVF.Combat.HeightHint", { value: "−5" })}`;
+  return "";
+}
+
+/** État d'un combattant pour la hauteur : à cheval, à pied ou au sol. */
+function stanceLabel(st) {
+  return st.mounted ? L("PDVF.Status.mounted") : st.prone ? L("PDVF.Combat.Prone") : L("PDVF.Combat.OnFoot");
+}
+
+async function declare(actor, { defending = false, preset = null, opponentName = "", opponent = null, attackerAction = "", modifier = 0, invoke = "" } = {}) {
   const st = combatStats(actor);
   const options = weaponOptions(actor);
   const presetOpt = preset ? options.find(o => o.ref === preset) : null;
@@ -168,7 +182,8 @@ async function declare(actor, { defending = false, preset = null, opponentName =
   if (st.disarmed) warn.push(L("PDVF.Combat.Warn.Disarmed"));
   if (st.prone) warn.push(L("PDVF.Combat.Warn.Prone"));
   const content = `
-    ${opponentName ? `<p class="pdvf-hint">${F(defending ? "PDVF.Combat.RespondTo" : "PDVF.Combat.EngageVs", { name: esc(opponentName) })}${st.mounted ? ` · ${L("PDVF.Status.mounted")}` : ` · ${L("PDVF.Combat.OnFoot")}`}</p>` : ""}
+    ${opponentName ? `<p class="pdvf-hint">${F(defending ? "PDVF.Combat.RespondTo" : "PDVF.Combat.EngageVs", { name: esc(opponentName) })}</p>
+    <p class="pdvf-hint">${F("PDVF.Combat.Stances", { self: stanceLabel(st), other: opponent ? stanceLabel(combatStats(opponent)) : "?" })}${heightHint(st, opponent ? combatStats(opponent) : null)}</p>` : ""}
     ${warn.map(w => `<p class="pdvf-warn">${w}</p>`).join("")}
     <div class="form-group"><label>${L("PDVF.Combat.ActionLabel")}</label><select name="action">${actionOpts}</select></div>
     <div class="form-group"><label>${L("PDVF.Combat.Weapon")}</label><select name="ref">${weaponOpts}</select></div>
@@ -259,7 +274,7 @@ export async function engage(actor, { weapon = null, token = null, modifier = 0,
   const target = [...(game.user.targets ?? [])][0];
   if (!target?.actor) return ui.notifications.warn(L("PDVF.Combat.Notify.NoTarget"));
   if (target.actor === actor || target.actor.uuid === actor.uuid) return ui.notifications.warn(L("PDVF.Combat.Notify.SelfTarget"));
-  const decl = await declare(actor, { preset: weapon, opponentName: target.name, modifier, invoke });
+  const decl = await declare(actor, { preset: weapon, opponentName: target.name, opponent: target.actor, modifier, invoke });
   if (!decl) return null;
   decl.inspiration = await preparePassions(actor, decl);
   const a = actorTokenRef(actor, token);
@@ -300,7 +315,7 @@ export async function respond(message, { unopposed = false } = {}) {
   let decl;
   if (unopposed) decl = { action: "none", ref: "", opponents: 1, modifier: 0, pull: "", longRange: false };
   else {
-    decl = await declare(defender, { defending: true, opponentName: ex.a.name, attackerAction: ex.a.decl.action });
+    decl = await declare(defender, { defending: true, opponentName: ex.a.name, opponent: await resolveActor(ex.a), attackerAction: ex.a.decl.action });
     if (!decl) return;
     decl.inspiration = await preparePassions(defender, decl);
   }

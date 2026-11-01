@@ -253,7 +253,9 @@ for src, name, folder in SELECTION:
             "armor": {"value": armor_value, "shield": armor_shield, "description": re.sub(r"\s*\([^)]*$", "", (raw_lines(b, "Armure") or raw_lines(b, "Equipement"))[:200]).rstrip(" ,") if src != "Elfe" else "métal d'étoile (voir les notes)"},
             "gloryReward": glory, "valorousMod": b.get("valorousMod"),
             "attacks": attacks, "skills": skills, "traits": traits, "honor": honor, "passions": passions,
-            "defaultSkill": 5, "possessions": "", "notes": "\n".join(notes)
+            "defaultSkill": 5, "possessions": "", "notes": "\n".join(notes),
+            # Unités et combattants montés : jetons posés « À cheval » (avantage de hauteur)
+            "mountedDefault": "monté" in name.lower()
         },
         "prototypeToken": {"name": name, "actorLink": False, "disposition": -1, "texture": {"src": f"{ICONS}/{category}.svg"}}
     })
@@ -303,7 +305,7 @@ for a in actors:
         a["system"]["characteristics"]["app"]["value"] = 0
 
 out = {
-    "version": 2,
+    "version": 3,
     "folders": [{"_id": fid, "name": n, "type": "Actor", "sorting": "a"} for n, fid in folders.items()],
     "actors": actors
 }

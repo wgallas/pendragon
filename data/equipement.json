@@ -1,5 +1,5 @@
 {
- "version": 3,
+ "version": 4,
  "folders": [
   {
    "_id": "8c4a981be26c7e37",
@@ -55,6 +55,14 @@
    "type": "Item",
    "sorting": "a",
    "sort": 700,
+   "color": null
+  },
+  {
+   "_id": "a3ab0be74287e9b9",
+   "name": "Période des Conquêtes",
+   "type": "Item",
+   "sorting": "a",
+   "sort": 750,
    "color": null
   },
   {
@@ -1239,6 +1247,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": ""
    }
@@ -1263,6 +1273,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": ""
    }
@@ -1287,6 +1299,8 @@
     "layered": 0,
     "padding": true,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Se porte sur un auqueton (le prix comprend l'auqueton)."
    }
@@ -1311,6 +1325,8 @@
     "layered": 0,
     "padding": true,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Se porte sur un auqueton (le prix comprend l'auqueton)."
    }
@@ -1335,6 +1351,8 @@
     "layered": 0,
     "padding": true,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Se porte sur un auqueton (le prix comprend l'auqueton)."
    }
@@ -1346,19 +1364,21 @@
    "img": "systems/pendragon-vf/icons/gear/coat_plates.svg",
    "folder": "40b99a1d12cb0b67",
    "system": {
-    "description": "Plaques de métal rivetées sous un surcot de cuir ou de toile, dernière nouveauté de la fin de la période (515 et après). On ne l'achète pas : seuls les nobles fortunés l'ont, ou l'offrent à un chevalier fidèle.",
+    "description": "Plaques de métal rivetées sous un surcot de cuir ou de toile, nouveauté de la fin de l'Enfant-roi (515 et après) : on ne l'achète pas encore, seuls les nobles fortunés l'ont. Elle devient courante à la Période des Conquêtes (4 £).",
     "period": "boyKingLate",
     "periodNote": "",
-    "price": null,
+    "price": 960,
     "quantity": 1,
     "equipped": false,
-    "source": "Livre du joueur, Table 9.2 (p. 173)",
+    "source": "Livre du joueur, Table 9.2 (p. 173) ; The Boy King, prix p. 153",
     "kind": "overlay",
     "material": "plate",
     "value": 6,
     "layered": 1,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": -5,
     "notes": "Portée sur un haubert : +1 de protection et plus de bonus des armes contre les mailles. −5 au Mouvement à pied."
    }
@@ -1383,6 +1403,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": ""
    }
@@ -1407,6 +1429,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": ""
    }
@@ -1431,6 +1455,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": ""
    }
@@ -1455,6 +1481,8 @@
     "layered": 0,
     "padding": false,
     "closed": true,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Heaume fermé : −5 aux tests de Vigilance (vue, ouïe) ; visage méconnaissable."
    }
@@ -2033,6 +2061,255 @@
    }
   },
   {
+   "_id": "d4769c1f71169796",
+   "name": "Fauchon à deux mains",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/seax.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Lourde lame courbe à un tranchant au bout d'un long manche, pour tailler plutôt que d'estoc : +2D6, ou +3D6 contre un adversaire sans armure. Le Livre du joueur (Table A.1) donnait +1D6 et +2D6.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": 30,
+    "quantity": 1,
+    "equipped": false,
+    "source": "The Boy King, Table 3.1 (p. 150) ; The Boy King, prix p. 153",
+    "group": "melee",
+    "skill": "sword",
+    "use": "both",
+    "damage": {
+     "base": "character",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [
+     {
+      "label": "contre un adversaire sans armure",
+      "dice": 1,
+      "when": "unarmored"
+     }
+    ],
+    "parry": 2,
+    "long": false,
+    "blunt": false,
+    "swordTie": true,
+    "twoHanded": true,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "Parade +2 ; brise les armes à manche sur une égalité.",
+    "disadvantage": "Pas de bouclier ; brisé par une autre épée sur une égalité."
+   }
+  },
+  {
+   "_id": "ad45f38d05775175",
+   "name": "Arbalète moyenne",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/crossbow.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Arbalète « à deux pieds » (on la tend les deux pieds dans l'étrier), à arc composite de bois et de corne.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": 65,
+    "quantity": 1,
+    "equipped": false,
+    "source": "The Boy King, Table 3.1 (p. 150) ; The Boy King, prix p. 153",
+    "group": "missile",
+    "skill": "crossbow",
+    "use": "both",
+    "damage": {
+     "base": "none",
+     "dice": 1,
+     "flat": 14,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "medium",
+    "thrown": {
+     "enabled": false,
+     "skill": "thrown",
+     "damage": {
+      "base": "character",
+      "dice": 0,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Un carreau tous les 2 tours ; se recharge à pied."
+   }
+  },
+  {
+   "_id": "e424b1a5c32b3008",
+   "name": "Dague de lancer",
+   "type": "arme",
+   "img": "systems/pendragon-vf/icons/gear/dagger.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Dague équilibrée pour le lancer (Rixe +2D6 lancée, portée courte), qui sert aussi de dague ordinaire au corps à corps.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": 75,
+    "quantity": 1,
+    "equipped": false,
+    "source": "The Boy King, Table 3.1 (p. 150) ; The Boy King, prix p. 153",
+    "group": "brawl",
+    "skill": "brawling",
+    "use": "both",
+    "damage": {
+     "base": "brawl",
+     "dice": 2,
+     "flat": 0,
+     "max": 0
+    },
+    "quality": 0,
+    "alts": [],
+    "parry": 0,
+    "long": false,
+    "blunt": false,
+    "swordTie": false,
+    "twoHanded": false,
+    "shieldBreaker": false,
+    "range": "",
+    "thrown": {
+     "enabled": true,
+     "skill": "thrown",
+     "damage": {
+      "base": "brawl",
+      "dice": 2,
+      "flat": 0,
+      "max": 0
+     },
+     "range": "short"
+    },
+    "advantage": "",
+    "disadvantage": "Lancée : une dague par tour."
+   }
+  },
+  {
+   "_id": "0f548c27beb60b66",
+   "name": "Haubert de mailles renforcé",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/mail_adv.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Haubert renforcé de plaques aux genoux, aux épaules et aux coudes, avec des manches de mailles. Le Livre du joueur (Table A.3) donnait 13 pour le harnois complet.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": 1680,
+    "quantity": 1,
+    "equipped": false,
+    "source": "The Boy King, Table 3.2 (p. 151) ; The Boy King, prix p. 153",
+    "kind": "body",
+    "material": "mail",
+    "value": 8,
+    "layered": 0,
+    "padding": true,
+    "closed": false,
+    "cap": false,
+    "overCap": false,
+    "moveFoot": 0,
+    "notes": "Se porte sur un auqueton. Avec l'auqueton, un grand heaume et sa cervelière : 15 points."
+   }
+  },
+  {
+   "_id": "d885a49044f4cca6",
+   "name": "Grand heaume",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/helm_nasal_adv.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Heaume cylindrique qui couvre toute la tête, percé d'une fente pour voir et de trous pour respirer, avec un camail. On l'ôte souvent après la charge ; une chaîne le retient à la ceinture.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": 240,
+    "quantity": 1,
+    "equipped": false,
+    "source": "The Boy King, Table 3.2 (p. 151) ; The Boy King, prix p. 153",
+    "kind": "helm",
+    "material": "mail",
+    "value": 4,
+    "layered": 0,
+    "padding": false,
+    "closed": true,
+    "cap": false,
+    "overCap": true,
+    "moveFoot": 0,
+    "notes": "Se porte sur une cervelière (leurs protections s'additionnent). −5 aux tests de Vigilance. Le prix comprend la cervelière."
+   }
+  },
+  {
+   "_id": "06b1a20542e9e866",
+   "name": "Cervelière",
+   "type": "armure",
+   "img": "systems/pendragon-vf/icons/gear/helm_open.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Calotte de fer ronde portée sous le grand heaume, et seule après la charge.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": null,
+    "quantity": 1,
+    "equipped": false,
+    "source": "The Boy King, Table 3.2 (p. 151)",
+    "kind": "helm",
+    "material": "mail",
+    "value": 1,
+    "layered": 0,
+    "padding": false,
+    "closed": false,
+    "cap": true,
+    "overCap": false,
+    "moveFoot": 0,
+    "notes": "Se porte sous le grand heaume ; seule, elle vaut un heaume ouvert."
+   }
+  },
+  {
+   "_id": "c60c5b2875291b27",
+   "name": "Écu",
+   "type": "bouclier",
+   "img": "systems/pendragon-vf/icons/gear/shield_norman.svg",
+   "folder": "a3ab0be74287e9b9",
+   "system": {
+    "description": "Bouclier en forme de fer à repasser, tenu au bras gauche ; il remplace vite le bouclier normand.",
+    "period": "conquest",
+    "periodNote": "",
+    "price": 120,
+    "quantity": 1,
+    "equipped": false,
+    "source": "Livre du joueur, Table A.4 (p. 240) ; The Boy King, Table 3.2 (p. 151) ; The Boy King, prix p. 153",
+    "size": "medium",
+    "value": 6,
+    "rangedPenalty": -5,
+    "mountedPenalty": 0,
+    "chargeExempt": false,
+    "noMissile": false,
+    "disadvantage": "",
+    "notes": "Pas de pénalité à cheval."
+   }
+  },
+  {
    "_id": "c8a10bf3081677dc",
    "name": "Épée longue",
    "type": "arme",
@@ -2141,59 +2418,6 @@
     },
     "advantage": "Parade +2 ; brise les armes à manche sur une égalité.",
     "disadvantage": ""
-   }
-  },
-  {
-   "_id": "d4769c1f71169796",
-   "name": "Fauchon à deux mains",
-   "type": "arme",
-   "img": "systems/pendragon-vf/icons/gear/seax.svg",
-   "folder": "b029b79ea9be18b0",
-   "system": {
-    "description": "Grand fauchon à deux mains : +1D6, ou +2D6 contre un adversaire sans armure.",
-    "period": "conquest",
-    "periodNote": "",
-    "price": null,
-    "quantity": 1,
-    "equipped": false,
-    "source": "Livre du joueur, Table A.1 (p. 239)",
-    "group": "melee",
-    "skill": "sword",
-    "use": "both",
-    "damage": {
-     "base": "character",
-     "dice": 1,
-     "flat": 0,
-     "max": 0
-    },
-    "quality": 0,
-    "alts": [
-     {
-      "label": "contre un adversaire sans armure",
-      "dice": 1,
-      "when": "unarmored"
-     }
-    ],
-    "parry": 2,
-    "long": false,
-    "blunt": false,
-    "swordTie": true,
-    "twoHanded": true,
-    "shieldBreaker": false,
-    "range": "",
-    "thrown": {
-     "enabled": false,
-     "skill": "thrown",
-     "damage": {
-      "base": "character",
-      "dice": 0,
-      "flat": 0,
-      "max": 0
-     },
-     "range": "short"
-    },
-    "advantage": "Parade +2 ; brise les armes à manche sur une égalité.",
-    "disadvantage": "Pas de bouclier. Brisée sur un échec critique ou sur une égalité avec une épée."
    }
   },
   {
@@ -2697,53 +2921,6 @@
    }
   },
   {
-   "_id": "ad45f38d05775175",
-   "name": "Arbalète moyenne",
-   "type": "arme",
-   "img": "systems/pendragon-vf/icons/gear/crossbow.svg",
-   "folder": "b029b79ea9be18b0",
-   "system": {
-    "description": "Arbalète plus puissante que l'arbalète légère.",
-    "period": "conquest",
-    "periodNote": "",
-    "price": null,
-    "quantity": 1,
-    "equipped": false,
-    "source": "Livre du joueur, Table A.2 (p. 239)",
-    "group": "missile",
-    "skill": "crossbow",
-    "use": "both",
-    "damage": {
-     "base": "none",
-     "dice": 1,
-     "flat": 14,
-     "max": 0
-    },
-    "quality": 0,
-    "alts": [],
-    "parry": 0,
-    "long": false,
-    "blunt": false,
-    "swordTie": false,
-    "twoHanded": false,
-    "shieldBreaker": false,
-    "range": "medium",
-    "thrown": {
-     "enabled": false,
-     "skill": "thrown",
-     "damage": {
-      "base": "character",
-      "dice": 0,
-      "flat": 0,
-      "max": 0
-     },
-     "range": "short"
-    },
-    "advantage": "",
-    "disadvantage": "Un carreau tous les 2 tours."
-   }
-  },
-  {
    "_id": "7cc79fe974ef1a39",
    "name": "Arbalète lourde",
    "type": "arme",
@@ -2791,77 +2968,6 @@
    }
   },
   {
-   "_id": "e424b1a5c32b3008",
-   "name": "Dague de lancer",
-   "type": "arme",
-   "img": "systems/pendragon-vf/icons/gear/dagger.svg",
-   "folder": "b029b79ea9be18b0",
-   "system": {
-    "description": "Dague équilibrée pour le lancer : Rixe +2D6 lancée.",
-    "period": "conquest",
-    "periodNote": "",
-    "price": null,
-    "quantity": 1,
-    "equipped": false,
-    "source": "Livre du joueur, Table A.2 (p. 239)",
-    "group": "brawl",
-    "skill": "brawling",
-    "use": "both",
-    "damage": {
-     "base": "brawl",
-     "dice": 2,
-     "flat": 0,
-     "max": 0
-    },
-    "quality": 0,
-    "alts": [],
-    "parry": 0,
-    "long": false,
-    "blunt": false,
-    "swordTie": false,
-    "twoHanded": false,
-    "shieldBreaker": false,
-    "range": "",
-    "thrown": {
-     "enabled": true,
-     "skill": "thrown",
-     "damage": {
-      "base": "brawl",
-      "dice": 2,
-      "flat": 0,
-      "max": 0
-     },
-     "range": "short"
-    },
-    "advantage": "",
-    "disadvantage": ""
-   }
-  },
-  {
-   "_id": "0f548c27beb60b66",
-   "name": "Haubert de mailles renforcé",
-   "type": "armure",
-   "img": "systems/pendragon-vf/icons/gear/mail_adv.svg",
-   "folder": "b029b79ea9be18b0",
-   "system": {
-    "description": "Futur harnois de mailles renforcé.",
-    "period": "conquest",
-    "periodNote": "",
-    "price": null,
-    "quantity": 1,
-    "equipped": false,
-    "source": "Livre du joueur, Table A.3 (p. 240)",
-    "kind": "body",
-    "material": "mail",
-    "value": 13,
-    "layered": 0,
-    "padding": false,
-    "closed": false,
-    "moveFoot": 0,
-    "notes": "Valeur du harnois complet, heaume compris."
-   }
-  },
-  {
    "_id": "2172b3f788d679b7",
    "name": "Demi-plate",
    "type": "armure",
@@ -2881,6 +2987,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Valeur du harnois complet, heaume compris."
    }
@@ -2905,6 +3013,8 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Valeur du harnois complet, heaume compris."
    }
@@ -2929,32 +3039,10 @@
     "layered": 0,
     "padding": false,
     "closed": false,
+    "cap": false,
+    "overCap": false,
     "moveFoot": 0,
     "notes": "Valeur du harnois complet, heaume compris."
-   }
-  },
-  {
-   "_id": "c60c5b2875291b27",
-   "name": "Écu",
-   "type": "bouclier",
-   "img": "systems/pendragon-vf/icons/gear/shield_norman.svg",
-   "folder": "b029b79ea9be18b0",
-   "system": {
-    "description": "Bouclier triangulaire plus petit qui remplacera le bouclier normand.",
-    "period": "conquest",
-    "periodNote": "",
-    "price": null,
-    "quantity": 1,
-    "equipped": false,
-    "source": "Livre du joueur, Table A.4 (p. 240)",
-    "size": "medium",
-    "value": 6,
-    "rangedPenalty": -5,
-    "mountedPenalty": 0,
-    "chargeExempt": false,
-    "noMissile": false,
-    "disadvantage": "",
-    "notes": ""
    }
   },
   {

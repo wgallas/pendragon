@@ -7,6 +7,7 @@ import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { resolveTest } from "../rules/resolution.mjs";
 import { protection } from "../rules/equipment.mjs";
 import * as W from "../rules/wounds.mjs";
+import { coldRecovery } from "../rules/hazards.mjs";
 import { STATUS, hasStatus, setStatus } from "./status.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -224,7 +225,8 @@ export async function receiveDamage(actor, hit, undo = null) {
   }
 
   // 3. Dégâts réels, blessure
-  const armor = hit.ignoreArmor ? st.virtueArmor : st.armor;
+  // armorValue : protection imposée (feu, chute : armure de vertu seule…) ; sinon armure, ou armure de vertu si l'armure est ignorée
+  const armor = Number.isFinite(hit.armorValue) ? hit.armorValue : hit.ignoreArmor ? st.virtueArmor : st.armor;
   const real = W.realDamage(base, { armor, shield, half: !!hit.half });
   const type = W.woundType(real, { majorWound: st.majorWound, hpTotal: st.hpTotal });
   lines.push(F("PDVF.Combat.Line.Damage", {
@@ -422,7 +424,17 @@ export async function convalescence(actor, { surgeon = null, unsanitary = false,
     if (!health.debilitated) lines.push(F("PDVF.Combat.Line.FullHealth", { name: actor.name }));
   }
   lines.push(F("PDVF.Combat.Line.HpChange", { from: hp0, to: health.hp.value, max: st.hpTotal }));
-  await actor.update({ "system.health": health });
+  // CON perdue au poison : rendue au rythme du Taux de guérison (p. 196)
+  const update = { "system.health": health };
+  const owed = Number(health.poisonCon) || 0;
+  if (owed > 0) {
+    const back = Math.min(owed, Math.max(1, st.healRate));
+    const con = (Number(actor._source.system.characteristics?.con?.value) || 0) + back;
+    update["system.characteristics.con.value"] = con;
+    health.poisonCon = owed - back;
+    lines.push(F("PDVF.Hazard.Line.ConBack", { name: actor.name, back, con }));
+  }
+  await actor.update(update);
   if (health.hp.value >= st.unconsciousAt && hasStatus(actor, STATUS.unconscious) && !health.debilitated) await setStatus(actor, STATUS.unconscious, false);
   if (zeroHp(actor, health.hp.value, lines)) await markDead(actor);
   return { lines, rolls, undo };
@@ -457,4 +469,79 @@ export async function postCombatCard({ actor = null, title, subtitle = "", secti
     content, rolls,
     flags: { [SYSTEM_ID]: { kind: "combat", undo, undone: false, ...flags } }
   });
+}
+
+/* -------------------------------------------- */
+/*  Dangers hors combat (chap. 11)               */
+/* -------------------------------------------- */
+
+/**
+ * Points de vie perdus sans blessure (asphyxie, froid, maladie) ; sous le seuil d'Inconscience,
+ * le personnage s'évanouit et devient Affaibli.
+ * @returns {Promise<{lines:string[], undo:object}>}
+ */
+export async function loseHitPoints(actor, points, { cold = 0, debilitate = false } = {}) {
+  const st = combatStats(actor);
+  const undo = snapshot(actor);
+  const health = foundry.utils.deepClone(actor._source.system.health);
+  const lines = [];
+  const n = Math.max(0, Math.round(Number(points) || 0));
+  health.hp.value -= n;
+  if (cold) health.cold = (Number(health.cold) || 0) + cold;
+  if (n) lines.push(F("PDVF.Hazard.Line.HpLoss", { name: actor.name, loss: n, hp: health.hp.value }));
+  if (debilitate && !health.debilitated) { health.debilitated = true; lines.push(F("PDVF.Hazard.Line.Debilitated", { name: actor.name })); }
+  let unconscious = false;
+  if (health.hp.value < st.unconsciousAt && !st.unconscious) {
+    unconscious = true;
+    health.debilitated = true;
+    lines.push(F("PDVF.Combat.Line.Unconscious", { name: actor.name }));
+  }
+  const dead = zeroHp(actor, health.hp.value, lines);
+  await actor.update({ "system.health": health });
+  if (unconscious && !dead) await setStatus(actor, STATUS.unconscious, true);
+  if (dead) await markDead(actor);
+  return { lines, undo };
+}
+
+/**
+ * Caractéristique diminuée (poison, maladie) ; la CON du poison est notée pour être rendue.
+ * Une CON à 0 tue. Les PV ne dépassent pas le nouveau total.
+ */
+export async function loseCharacteristic(actor, char, points, { poison = false } = {}) {
+  const undo = snapshot(actor);
+  const lines = [];
+  const cur = Number(actor._source.system.characteristics?.[char]?.value) || 0;
+  const n = Math.min(cur, Math.max(0, Math.round(Number(points) || 0)));
+  const next = cur - n;
+  const update = { [`system.characteristics.${char}.value`]: next };
+  if (poison && n) update["system.health.poisonCon"] = (Number(actor._source.system.health.poisonCon) || 0) + n;
+  if (n) lines.push(F("PDVF.Hazard.Line.CharLoss", { name: actor.name, loss: n, char: L(`PDVF.Char.${char}.long`), value: next }));
+  await actor.update(update);
+  // Total de PV recalculé (CON) : les PV actuels ne le dépassent pas
+  const max = Number(actor.system.health?.hp?.max) || 0;
+  if (max && actor.system.health.hp.value > max) await actor.update({ "system.health.hp.value": max });
+  if (char === "con" && next <= 0) {
+    lines.push(F("PDVF.Hazard.Line.ConZero", { name: actor.name }));
+    await markDead(actor);
+  }
+  return { lines, undo };
+}
+
+/** Chirurgie après le froid : la moitié des PV perdus au froid sur un succès, tout sur un critique (p. 195). */
+export async function treatCold(actor, surgeon) {
+  const st = combatStats(actor);
+  const undo = snapshot(actor);
+  const health = foundry.utils.deepClone(actor._source.system.health);
+  const cold = Number(health.cold) || 0;
+  const t = await testValue(surgeon.value, 0);
+  const lines = [F("PDVF.Combat.Line.Surgery", { healer: surgeon.name, value: surgeon.value, mod: "", die: t.result.die, outcome: outcomeLabel(t.result.outcome) })];
+  const back = Math.min(coldRecovery(t.result.outcome, cold), Math.max(0, st.hpTotal - health.hp.value));
+  if (back) {
+    health.hp.value += back;
+    lines.push(F("PDVF.Combat.Line.Healed", { name: actor.name, heal: back }));
+  }
+  if (["critical", "success"].includes(t.result.outcome)) health.cold = 0;
+  await actor.update({ "system.health": health });
+  if (health.hp.value >= st.unconsciousAt && hasStatus(actor, STATUS.unconscious) && !health.debilitated) await setStatus(actor, STATUS.unconscious, false);
+  return { lines, rolls: [t.roll], undo };
 }

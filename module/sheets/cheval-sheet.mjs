@@ -2,6 +2,8 @@ import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { rollAttribute, promptTestOptions, rollDamage, rollHorseExhaustion } from "../dice/tests.mjs";
 import { horseFromType, horsePrice, formatDenarii } from "../rules/horses.mjs";
 import { isRollableFormula } from "./pnj-sheet.mjs";
+import { horseTypeLabel } from "../documents/followers.mjs";
+import { periodAvailable } from "../documents/period.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -52,7 +54,7 @@ export class ChevalSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const groups = ["war", "riding", "work", "fae"].map(g => ({
       label: L(`PDVF.Horse.Group.${g}`),
       options: Object.entries(PDVF.horseTypes).filter(([, t]) => t.group === g)
-        .map(([id]) => ({ value: id, label: L(`PDVF.Horse.Type.${id}`), selected: id === s.horseType }))
+        .map(([id]) => ({ value: id, label: horseTypeLabel(id), selected: id === s.horseType }))
     }));
     const type = PDVF.horseTypes[s.horseType];
     const price = horsePrice(s);
@@ -94,7 +96,7 @@ export class ChevalSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       colorGlory: s.colorGlory,
       bardingChoices: Object.entries(PDVF.horseBarding).map(([id, b]) => ({
         value: id, selected: id === s.barding,
-        label: `${L(`PDVF.Horse.Barding.${id}`)}${b.armor ? ` (+${b.armor}${b.str ? `, ${L("PDVF.Char.str.abbr")} ${b.str}` : ""})` : ""}`
+        label: `${L(`PDVF.Horse.Barding.${id}`)}${b.armor ? ` (+${b.armor}${b.str ? `, ${L("PDVF.Char.str.abbr")} ${b.str}` : ""})` : ""}${b.period && !periodAvailable(b.period) ? ` — ${L(PDVF.periods[b.period])}` : ""}`
       })),
       bardingLabel: L(`PDVF.Horse.Barding.${s.barding}`),
       tricks: PDVF.horseTricks.map(id => ({ id, label: L(`PDVF.Horse.Trick.${id}`), checked: s.tricks.includes(id) })),

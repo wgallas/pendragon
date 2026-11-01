@@ -1523,3 +1523,10 @@
 
 /* Bilan imposé */
 .pendragon-vf .pdvf-prep select[multiple] { height: auto; min-width: 200px; padding: 2px; }
+
+/* Compagnons du roi Arthur, dangers hors combat */
+.pendragon-vf .pdvf-companions-verdict.ok { color: var(--pdvf-green); }
+.pendragon-vf .pdvf-companions-verdict.missing { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-companions-exam li.ok .pdvf-ideal-check-value { color: var(--pdvf-green); font-weight: 600; }
+.pendragon-vf .pdvf-hazard-note { margin: 2px 0; }
+.pendragon-vf .pdvf-hazard-note .fa-solid { color: var(--pdvf-lapis); }

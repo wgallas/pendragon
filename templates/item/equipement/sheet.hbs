@@ -93,6 +93,10 @@
       <label class="pdvf-field"><span>{{localize "PDVF.Gear.Value"}}</span><input type="number" name="system.value" value="{{system.value}}" step="1" min="0"></label>
       <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.padding" {{checked system.padding}}> <span>{{localize "PDVF.Gear.Padding"}}</span></label>
       <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.closed" {{checked system.closed}}> <span>{{localize "PDVF.Gear.Closed"}}</span></label>
+      {{#if (eq system.kind "helm")}}
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.cap" {{checked system.cap}}> <span>{{localize "PDVF.Gear.Cap"}}</span></label>
+      <label class="pdvf-field pdvf-field-check"><input type="checkbox" name="system.overCap" {{checked system.overCap}}> <span>{{localize "PDVF.Gear.OverCap"}}</span></label>
+      {{/if}}
       <label class="pdvf-field"><span>{{localize "PDVF.Gear.MoveFoot"}}</span><input type="number" name="system.moveFoot" value="{{system.moveFoot}}" step="1"></label>
       <label class="pdvf-field"><span>{{localize "PDVF.Gear.Layered"}}</span><input type="number" name="system.layered" value="{{system.layered}}" step="1" min="0"></label>
     </div>

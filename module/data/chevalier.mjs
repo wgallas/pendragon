@@ -96,7 +96,11 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         melancholy: new fields.BooleanField({ initial: false }),
         madness: new fields.BooleanField({ initial: false }),
         // Blessures notées une à une (les Premiers soins se font blessure par blessure)
-        wounds: woundsField()
+        wounds: woundsField(),
+        // Dangers hors combat (chap. 11) : PV perdus au froid (la Chirurgie en rend une part),
+        // CON perdue au poison (rendue au rythme du Taux de guérison par semaine).
+        cold: new fields.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        poisonCon: new fields.NumberField({ required: true, integer: true, min: 0, initial: 0 })
       }),
 
       skills: new fields.SchemaField(skills),
@@ -178,6 +182,7 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         knighted: int(null, { nullable: true }),
         landed: int(null, { nullable: true }),
         roundTable: int(null, { nullable: true }),
+        companions: int(null, { nullable: true }),
         ennobled: int(null, { nullable: true }),
         died: int(null, { nullable: true })
       }),

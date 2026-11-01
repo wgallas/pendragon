@@ -36,6 +36,8 @@
         <label><input type="checkbox" name="system.health.melancholy" {{checked system.health.melancholy}}> {{localize "PDVF.Health.melancholy"}}</label>
         <label><input type="checkbox" name="system.health.madness" {{checked system.health.madness}}> {{localize "PDVF.Health.madness"}}</label>
       </div>
+      {{#if combat.cold}}<p class="pdvf-hint pdvf-hazard-note"><i class="fa-solid fa-snowflake" aria-hidden="true"></i> {{combat.coldLine}}</p>{{/if}}
+      {{#if combat.poisonCon}}<p class="pdvf-hint pdvf-hazard-note"><i class="fa-solid fa-skull-crossbones" aria-hidden="true"></i> {{combat.poisonLine}}</p>{{/if}}
       <h3 class="pdvf-h3">{{localize "PDVF.Combat.Wounds"}}{{#if combat.total}} <small>{{combat.total}}</small>{{/if}}</h3>
       {{#if combat.wounds.length}}
       <ul class="pdvf-wounds">
@@ -55,6 +57,7 @@
       {{/if}}
       <div class="pdvf-combat-actions">
         <button type="button" class="pdvf-btn" data-action="combatDamage"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{localize "PDVF.Combat.Receive"}}</button>
+        <button type="button" class="pdvf-btn" data-action="combatHazard" data-tooltip="{{localize 'PDVF.Hazard.ButtonTip'}}"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{localize "PDVF.Hazard.Button"}}</button>
         <button type="button" class="pdvf-btn" data-action="combatWeek"><i class="fa-solid fa-bed" aria-hidden="true"></i> {{localize "PDVF.Combat.Week"}}</button>
         <button type="button" class="pdvf-btn" data-action="combatAggravate" data-tooltip="{{localize 'PDVF.Combat.AggravateTip'}}"><i class="fa-solid fa-heart-crack" aria-hidden="true"></i> {{localize "PDVF.Combat.Aggravate"}}</button>
       </div>

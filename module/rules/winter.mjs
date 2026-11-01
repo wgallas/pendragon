@@ -190,3 +190,17 @@ export function embonpointFeatures(features, level, cfg) {
   f = f.trim().replace(/^,\s*/, "");
   return label ? (f ? `${f}, ${label}` : label) : f;
 }
+
+/**
+ * Solde (mercenaire) ou pension (chevalier retenu) de l'année selon la Gloire, ou null pour une autre classe.
+ * @param {string} klass
+ * @param {number} glory
+ * @param {object} cfg  PDVF.winter
+ */
+export function knightPay(klass, glory, cfg) {
+  const p = cfg.pay?.[klass];
+  if (!p) return null;
+  let pounds = p.base;
+  for (const l of p.levels ?? []) if ((Number(glory) || 0) >= l.glory) pounds = l.pounds;
+  return pounds;
+}

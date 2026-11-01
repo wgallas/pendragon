@@ -87,6 +87,21 @@ Hooks.once("init", () => {
     }
   });
 
+  // Période de jeu : d'après l'année, ou imposée par le MJ (équipement, chevaux, manoirs, Gloire des nouveautés).
+  game.settings.register(SYSTEM_ID, "period", {
+    name: "PDVF.Settings.period.name",
+    hint: "PDVF.Settings.period.hint",
+    scope: "world",
+    config: true,
+    type: new foundry.data.fields.StringField({ required: true, initial: "auto",
+      choices: { auto: "PDVF.Settings.period.auto", ...Object.fromEntries(PDVF.periodOrder.filter(p => !p.sub).map(p => [p.id, PDVF.periods[p.id]])) } }),
+    onChange: () => {
+      for (const app of foundry.applications.instances?.values?.() ?? []) {
+        if (app instanceof ChevalierSheet || app instanceof PnjSheet || app instanceof ChevalSheet) app.render();
+      }
+    }
+  });
+
   // Hiver en cours (année ; 0 : aucun) : l'assistant d'hiver des joueurs est ouvert
   game.settings.register(SYSTEM_ID, "winterYear", {
     scope: "world",

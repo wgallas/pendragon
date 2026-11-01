@@ -136,6 +136,17 @@ PDVF.ideals = {
 };
 
 /**
+ * Compagnons du roi Arthur (The Boy King, p. 146–147), à partir de 522 : l'examen retient les traits
+ * et passions listés ; cinq à 16 ou plus, c'est réussi ; moins de cinq et l'un à 4 ou moins, c'est raté ;
+ * sinon le MJ en décide (discours sur les idéaux d'Arthur). 100 points de Gloire, une fois.
+ */
+PDVF.companions = {
+  from: 522, glory: 100, pass: 5, high: 16, low: 4,
+  traits: ["energetic.left", "generous.left", "honest.left", "just.left", "merciful.left", "modest.left", "valorous.left"],
+  passions: [{ match: "hommage", label: "Hommage" }, { match: "allegeance", label: "Allégeance" }, { match: "honor", label: "Honneur" }, { match: "adoration", label: "Adoration" }]
+};
+
+/**
  * Table Ronde (Livre du joueur, p. 128–129) : bénéfices à l'admission et chaque année,
  * passions conseillées (motifs comme pour les idéaux) et seuil de Gloire des candidats.
  */
@@ -152,7 +163,7 @@ PDVF.roundTable = {
 };
 
 /** Classes de chevaliers proposées dans la liste (champ libre accepté aussi). */
-PDVF.knightClasses = ["squire", "household", "mercenary", "vassal", "banneret"];
+PDVF.knightClasses = ["squire", "household", "mercenary", "retainer", "vassal", "banneret"];
 
 /** Niveaux de vie. */
 PDVF.livingStandards = ["destitute", "poor", "ordinary", "rich", "sumptuous", "superlative"];
@@ -246,8 +257,33 @@ PDVF.horseTypes = {
   sumpterStrong:  { group: "work",   damage: "4D6", move: 15, armor: 4, siz: 32, dex: 13, str: 35, con: 16, price: 240, note: "pack" },
   haquenee:       { group: "work",   damage: "3D6", move: 14, armor: 3, siz: 34, dex: 10, str: 34, con: 14, price: 180, note: "draught" },
   donkey:         { group: "work",   damage: "3D6", move: 12, armor: 3, siz: 26, dex: 18, str: 30, con: 15, price: 60,  note: "pack" },
-  mule:           { group: "work",   damage: "4D6", move: 16, armor: 6, siz: 32, dex: 17, str: 38, con: 25, price: 60,  note: "draughtPack" }
+  mule:           { group: "work",   damage: "4D6", move: 16, armor: 6, siz: 32, dex: 17, str: 38, con: 25, price: 60,  note: "draughtPack" },
+  // Période des Conquêtes (The Boy King, Tables 3.3 et 3.4, prix p. 153). imported : cheval importé,
+  // 20 points de Gloire une fois par type au premier acquis.
+  destrierLarge:  { group: "war",    damage: "4D6", charge: "7D6", move: 17, armor: 6, siz: 43, dex: 13, str: 35, con: 15, price: 5760, period: "conquest", note: "heavyBarding" },
+  barbary:        { group: "war",    damage: "3D6", charge: "6D6", move: 18, armor: 5, siz: 36, dex: 18, str: 36, con: 17, price: 9600, period: "conquest", imported: true, note: "barbary" },
+  palfrey:        { group: "riding", damage: "2D6", move: 16, armor: 3, siz: 26, dex: 13, str: 24, con: 15, price: 4800, period: "conquest", note: "ambles" },
+  ponyIrish:      { group: "riding", damage: "2D6", move: 14, armor: 4, siz: 25, dex: 17, str: 21, con: 20, price: 960,  period: "conquest", imported: true, note: "hills" }
 };
+
+/**
+ * Dangers hors combat (Livre du joueur, chap. 11). Poisons : efficacité (p. 196) et prix en deniers
+ * (Livre des Nobles, Table 4.2).
+ */
+PDVF.poisons = [
+  { id: "foxglove", potency: 5, price: 240 },
+  { id: "belladonna", potency: 10, price: 480 },
+  { id: "hemlock", potency: 15, price: 720 },
+  { id: "arsenic", potency: 20, price: 960 },
+  { id: "aconite", potency: 25, price: 1200 }
+];
+PDVF.hazards = ["fall", "objects", "fire", "asphyxia", "cold", "disease", "poison"];
+
+/** Gloire passive des nouveautés de la période (Livre du maître, p. 232). */
+PDVF.newestGearGlory = { armor: 25, horse: 25 };
+
+/** Gloire unique d'un cheval importé, au premier acquis de son type (The Boy King, p. 153). */
+PDVF.importedHorseGlory = 20;
 
 /** Robes : Gloire passive annuelle (une fois par robe) et supplément de prix en livres (Période de l'Enfant-roi). */
 PDVF.horseColors = {
@@ -282,7 +318,11 @@ PDVF.horseBarding = {
   caparisonFull:  { armor: 0, str: 0 },
   paddedFull:     { armor: 1, str: 30 },
   gambisonHalf:   { armor: 2, str: 32 },
-  gambisonFull:   { armor: 4, str: 34 }
+  gambisonFull:   { armor: 4, str: 34 },
+  // Caparaçons de mailles de la Période des Conquêtes (The Boy King, Table 3.5) : vulnérables aux
+  // armes contondantes. Valeurs mal lisibles dans le PDF : 2 + 2 et 4 + 3 (rembourrage + mailles), à vérifier.
+  trapperHalf:    { armor: 4, str: 32, period: "conquest", mail: true },
+  trapperFull:    { armor: 7, str: 34, period: "conquest", mail: true }
 };
 
 /** Chevaux de départ d'un chevalier (Livre du joueur, p. 54 et Table 3.8) : type et rôle. */
@@ -415,6 +455,14 @@ PDVF.battle = {
 /* -------------------------------------------- */
 
 PDVF.winter = {
+  /**
+   * Solde et pension annuelles (£), selon la Gloire : chevalier mercenaire (Livre du joueur, Table 1.2 :
+   * 4 £, +1 Notable, +2 Renommé, +4 Illustre) et chevalier retenu (The Boy King, p. 148 : 3 £, puis 4, 5 et 6 £).
+   */
+  pay: {
+    mercenary: { base: 4, levels: [{ glory: 6000, pounds: 5 }, { glory: 8000, pounds: 6 }, { glory: 12000, pounds: 8 }] },
+    retainer: { base: 3, levels: [{ glory: 6000, pounds: 4 }, { glory: 8000, pounds: 5 }, { glory: 12000, pounds: 6 }], from: "conquest" }
+  },
   /** Table 14.2 : entretien annuel (£) à partir duquel on atteint Pauvre, Ordinaire, Riche, Somptueux. */
   upkeep: {
     alone: [1.5, 3, 4.5, 6],
@@ -482,6 +530,20 @@ PDVF.winter = {
 /* -------------------------------------------- */
 
 /** Périodes de disponibilité (Grande Campagne). */
+/**
+ * Périodes de la Grande Campagne, dans l'ordre. `from` : première année (The Boy King : Enfant-roi
+ * 510–518, Conquêtes 519–528). Les périodes suivantes viendront avec leurs suppléments ; leurs
+ * années sont celles de la Grande Campagne de 2006, à revoir.
+ */
+PDVF.periodOrder = [
+  { id: "boyKing", from: 0 },
+  { id: "boyKingLate", from: 515, sub: true },
+  { id: "conquest", from: 519 },
+  { id: "romance", from: 529 },
+  { id: "tournament", from: 540 },
+  { id: "twilight", from: 555 }
+];
+
 PDVF.periods = {
   all: "PDVF.Period.all",
   boyKing: "PDVF.Period.boyKing",
@@ -533,6 +595,6 @@ PDVF.domainRanks = {
 /** Gloire des titres (Livre du maître p. 229). */
 PDVF.titleGlory = { household: 50, vassal: 250, banneret: 500, baron: 1000, earl: 1000, king: 1000 };
 /** Ordre des classes de chevalier (pour ne jamais rétrograder un chevalier en lui donnant un domaine). */
-PDVF.knightClassOrder = ["squire", "mercenary", "household", "vassal", "banneret"];
+PDVF.knightClassOrder = ["squire", "mercenary", "retainer", "household", "vassal", "banneret"];
 /** Gestion du manoir (Livre des Nobles, chap. 3). */
 PDVF.manor = MANOR;

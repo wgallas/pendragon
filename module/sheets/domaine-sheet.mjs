@@ -1,6 +1,7 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import * as R from "../rules/domains.mjs";
 import { transferDomain, returnDomain, checkLabel, payFromTreasury, rollTable } from "../documents/domains.mjs";
+import { periodAvailable } from "../documents/period.mjs";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -199,7 +200,7 @@ export class DomaineSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     if (!entry || entry.id === "nothing") return;
     const rows = this.#rows(list);
     const row = { type: entry.id, name: "" };
-    if (list === "improvements") row.pending = !!entry.period;
+    if (list === "improvements") row.pending = !!entry.period && !periodAvailable(entry.period);
     rows.push(row);
     return this.#setRows(list, rows);
   }
@@ -288,7 +289,7 @@ export class DomaineSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const rows = this.#rows("improvements");
     for (let i = 0; i < n; i++) {
       const entry = await rollTable(this.document, "improvements");
-      if (entry && entry.id !== "nothing") rows.push({ type: entry.id, name: "", pending: !!entry.period });
+      if (entry && entry.id !== "nothing") rows.push({ type: entry.id, name: "", pending: !!entry.period && !periodAvailable(entry.period) });
     }
     return this.#setRows("improvements", rows);
   }

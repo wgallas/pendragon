@@ -72,6 +72,10 @@ export class ArmureData extends foundry.abstract.TypeDataModel {
       layered: int(0, { min: 0 }),
       padding: bool(false),
       closed: bool(false),
+      // Heaumes de la Période des Conquêtes : la cervelière (cap) se porte sous le grand heaume (overCap),
+      // et leurs protections s'additionnent.
+      cap: bool(false),
+      overCap: bool(false),
       moveFoot: int(0),
       notes: str()
     };

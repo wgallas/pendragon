@@ -29,7 +29,11 @@ export class PnjData extends foundry.abstract.TypeDataModel {
       health: new fields.SchemaField({
         hp: new fields.SchemaField({ value: int(20) }),
         debilitated: new fields.BooleanField({ initial: false }),
-        wounds: woundsField()
+        wounds: woundsField(),
+        // Dangers hors combat (chap. 11) : PV perdus au froid (la Chirurgie en rend une part),
+        // CON perdue au poison (rendue au rythme du Taux de guérison par semaine).
+        cold: new fields.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+        poisonCon: new fields.NumberField({ required: true, integer: true, min: 0, initial: 0 })
       }),
       // Valeurs dérivées imposées (vide : calculées à partir des caractéristiques)
       overrides: new fields.SchemaField({

@@ -103,3 +103,25 @@ export async function afterIdealsUpdate(actor, before, changed) {
   const next = delta > 0 ? hp + delta : Math.min(hp, hpMax);
   if (next !== hp) await actor.update({ "system.health.hp.value": next });
 }
+
+/**
+ * Compagnons du roi Arthur (The Boy King, p. 147) : serment prêté à la Pentecôte, 100 points de Gloire une fois.
+ */
+export async function admitCompanions(actor) {
+  if (!game.user.isGM) return ui.notifications.warn(L("PDVF.Ideal.GMOnly"));
+  if (actor.system.dates?.companions) return;
+  const cfg = PDVF.companions;
+  const year = Number(game.settings.get(SYSTEM_ID, "currentYear")) || null;
+  const ok = await DialogV2.confirm({
+    window: { title: L("PDVF.Companions.Admit") }, classes: [SYSTEM_ID, "pdvf-dialog"],
+    content: `<p>${F("PDVF.Companions.AdmitConfirm", { name: actor.name, year, glory: cfg.glory })}</p>`, rejectClose: false
+  });
+  if (!ok) return;
+  const chronicle = foundry.utils.deepClone(actor._source.system.chronicle);
+  chronicle.push({ year, event: L("PDVF.Companions.ChronicleEvent"), living: "", glory: cfg.glory });
+  await actor.update({ "system.dates.companions": year, "system.chronicle": chronicle });
+  const content = await foundry.applications.handlebars.renderTemplate(`systems/${SYSTEM_ID}/templates/chat/battle-card.hbs`, {
+    title: L("PDVF.Companions.Title"), subtitle: String(year ?? ""), lines: [F("PDVF.Companions.AdmitDone", { name: actor.name, glory: cfg.glory })], buttons: []
+  });
+  await ChatMessage.implementation.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
+}

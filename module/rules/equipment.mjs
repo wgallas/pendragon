@@ -107,9 +107,21 @@ function ignoredPieces(worn) {
   const bodies = worn.filter(i => i.system.kind === "body");
   const body = best(bodies);
   for (const b of bodies) if (b !== body) ignored.set(b, `une seule armure de corps compte (${body.name})`);
-  const helms = worn.filter(i => i.system.kind === "helm");
+  // Heaumes : un seul compte, sauf la cervelière (cap) portée sous un grand heaume (overCap),
+  // qui s'y ajoute (The Boy King, Table 3.2).
+  const caps = worn.filter(i => i.system.kind === "helm" && i.system.cap);
+  const helms = worn.filter(i => i.system.kind === "helm" && !i.system.cap);
   const helm = best(helms);
   for (const h of helms) if (h !== helm) ignored.set(h, `un seul heaume compte (${helm.name})`);
+  const cap = best(caps);
+  for (const c of caps) {
+    if (c !== cap) ignored.set(c, `une seule cervelière compte (${cap.name})`);
+    else if (helm && !helm.system.overCap) {
+      // Cervelière avec un heaume ordinaire : on garde la meilleure des deux protections.
+      if ((Number(c.system.value) || 0) > (Number(helm.system.value) || 0)) ignored.set(helm, `un seul heaume compte (${c.name})`);
+      else ignored.set(c, `${helm.name} ne se porte pas sur une cervelière`);
+    }
+  }
   const paddings = worn.filter(i => i.system.kind === "padding");
   const padding = best(paddings);
   for (const p of paddings) {
@@ -133,7 +145,14 @@ export function conflictsWith(item, items = []) {
   if (item.type === "bouclier") return worn;
   if (item.type !== "armure") return [];
   const k = item.system.kind;
-  if (k === "helm" || k === "overlay") return worn.filter(i => i.system.kind === k);
+  if (k === "helm") {
+    // La cervelière et le grand heaume se portent ensemble ; sinon un seul heaume à la fois.
+    const helms = worn.filter(i => i.system.kind === "helm");
+    if (item.system.cap) return helms.filter(i => i.system.cap || !i.system.overCap);
+    if (item.system.overCap) return helms.filter(i => !i.system.cap);
+    return helms;
+  }
+  if (k === "overlay") return worn.filter(i => i.system.kind === k);
   if (k === "body") {
     return worn.filter(i => i.system.kind === "body" || (!item.system.padding && i.system.kind === "padding"));
   }

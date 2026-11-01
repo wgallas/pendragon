@@ -4,6 +4,7 @@ import { rollAttribute, promptTestOptions, rollDamage, signed } from "../dice/te
 import { convertNpcToKnight } from "../documents/followers.mjs";
 import { engage } from "../combat/exchange.mjs";
 import * as CD from "../combat/dialogs.mjs";
+import { promptHazard } from "../combat/hazards.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -39,6 +40,7 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       squireAge: PnjSheet.#onSquireAge,
       engage: PnjSheet.#onEngage,
       combatDamage: PnjSheet.#onCombatDamage,
+      combatHazard: PnjSheet.#onCombatHazard,
       combatMount: PnjSheet.#onCombatMount,
       combatStand: PnjSheet.#onCombatStand,
       combatRearm: PnjSheet.#onCombatRearm,
@@ -240,6 +242,7 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     return engage(this.document, { weapon: ref, token: this.token ?? null });
   }
   static #onCombatDamage() { return CD.promptDamage(this.document); }
+  static #onCombatHazard() { return promptHazard(this.document); }
   static #onCombatMount() { return CD.toggleMounted(this.document); }
   static #onCombatStand() { return CD.standUp(this.document); }
   static #onCombatRearm() { return CD.rearm(this.document); }

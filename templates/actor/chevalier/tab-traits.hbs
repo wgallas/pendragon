@@ -115,6 +115,22 @@
       {{#if canAdmit}}<button type="button" class="pdvf-btn" data-action="roundTableAdmit" data-tooltip="{{admitTip}}"><i class="fa-solid fa-circle-dot" aria-hidden="true"></i> {{localize "PDVF.RoundTable.Admit"}}</button>{{/if}}
       {{/if}}
       {{/with}}
+
+      {{#with ideals.companions}}
+      <h3 class="pdvf-h3">{{localize "PDVF.Companions.Title"}}</h3>
+      {{#if member}}
+      <p class="pdvf-round-table member"><i class="fa-solid fa-crown" aria-hidden="true"></i> {{memberLine}}</p>
+      {{else}}
+      <p class="pdvf-hint">{{count}} — <strong class="pdvf-companions-verdict {{verdictCls}}">{{verdict}}</strong></p>
+      <ul class="pdvf-ideal-checks pdvf-companions-exam">
+        {{#each rows}}
+        <li class="{{cls}}"><span class="pdvf-ideal-check-label">{{label}}</span><span class="pdvf-ideal-check-value">{{value}}</span></li>
+        {{/each}}
+      </ul>
+      <p class="pdvf-hint">{{localize "PDVF.Companions.Hint"}}</p>
+      {{#if canAdmit}}<button type="button" class="pdvf-btn" data-action="companionsAdmit" data-tooltip="{{admitTip}}"><i class="fa-solid fa-crown" aria-hidden="true"></i> {{localize "PDVF.Companions.Admit"}}</button>{{/if}}
+      {{/if}}
+      {{/with}}
     </section>
   </div>
 

@@ -12,6 +12,7 @@ import { resolveFollowers, resolveHorses, knightHorseGlory } from "../documents/
 import { domainsOf, domainGlory, domainIncome, addFavor } from "../documents/domains.mjs";
 import { lordHelp, landsUpkeep, entourageGlory } from "../rules/domains.mjs";
 import { idealsChange } from "../rules/ideals.mjs";
+import { newestGearGlory } from "../documents/period.mjs";
 import { winterEvent, PASSION_MATCH, WINTER_EVENTS } from "./events.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -394,7 +395,9 @@ export function economyInfo(actor) {
   const rt = s.dates?.roundTable ? PDVF.roundTable : null;
   const roundTable = rt ? { gift: rt.giftPounds, living: rt.living, base: W.upkeepFor(rt.living, column, C()) } : null;
   if (roundTable) base = Math.max(base, roundTable.base);
-  return { household, squire, family, married, column, base, lands, roundTable, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
+  // Solde du mercenaire, pension du chevalier retenu (selon la Gloire) : proposées comme revenu de l'année.
+  const pay = W.knightPay(s.biography.knightClass, s.gloryTotal, C());
+  return { household, squire, family, married, column, base, lands, roundTable, pay, klass: s.biography.knightClass, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
 }
 
 /**
@@ -699,6 +702,8 @@ export function gloryRows(actor, state) {
   rows.push({ label: L("PDVF.Winter.GloryPassive"), value: s.passive.total + horses });
   const dGlory = domainGlory(actor);
   if (dGlory) rows.push({ label: L("PDVF.Winter.GloryDomains"), value: dGlory });
+  const newest = newestGearGlory(actor, resolveHorses(actor).map(h => h.actor).filter(a => a?.type === "cheval"));
+  if (newest.total) rows.push({ label: L("PDVF.Passive.newest"), value: newest.total });
   const eGlory = entourageGlory(domainsOf(actor).flatMap(d => d.system.professionals ?? []), PDVF.manor);
   if (eGlory) rows.push({ label: L("PDVF.Manor.EntourageGlory"), value: eGlory });
   return rows;

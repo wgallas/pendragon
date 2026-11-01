@@ -164,3 +164,26 @@ export function roundTableCandidacy(sys, rt, { glory = 0, courteous = false } = 
   const renowned = glory >= (rt.gloryHint ?? 8000);
   return { checks, renowned, courteous, noticed: renowned || courteous, passionsOk: checks.every(c => c.ok) };
 }
+
+/**
+ * Examen des Compagnons du roi Arthur (The Boy King, p. 147).
+ * @returns {{rows:{label:string, value:number, high:boolean, low:boolean}[], high:number, low:number,
+ *   verdict:"pass"|"fail"|"gm"}}
+ */
+export function companionsExam(sys, cfg, traitLabel) {
+  const rows = [];
+  for (const key of cfg.traits ?? []) {
+    const [id, side] = key.split(".");
+    const value = traitValue(sys, key);
+    rows.push({ label: typeof traitLabel === "function" ? traitLabel(id, side) : key, value });
+  }
+  for (const p of cfg.passions ?? []) {
+    const best = bestPassion(sys, p.match);
+    if (best) rows.push({ label: best.name || p.label, value: best.value });
+  }
+  for (const r of rows) { r.high = r.value >= cfg.high; r.low = r.value <= cfg.low; }
+  const high = rows.filter(r => r.high).length;
+  const low = rows.filter(r => r.low).length;
+  const verdict = high >= cfg.pass ? "pass" : low > 0 ? "fail" : "gm";
+  return { rows, high, low, verdict };
+}

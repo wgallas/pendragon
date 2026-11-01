@@ -35,6 +35,11 @@
       "battleBanner": {
         "name": "Bandeau de bataille par défaut",
         "hint": "Image affichée en bandeau des batailles qui n'ont pas la leur. Elle reste dans vos fichiers : le système n'en fournit qu'un bandeau neutre."
+      },
+      "period": {
+        "name": "Période de jeu",
+        "hint": "Automatique : d'après l'année de jeu (Enfant-roi jusqu'en 518, Conquêtes de 519 à 528, d'après The Boy King). Imposer une période si la campagne avance à son propre rythme. Elle décide de l'équipement et des chevaux disponibles, des aménagements de manoir et de la Gloire des nouveautés.",
+        "auto": "Automatique (d'après l'année)"
       }
     },
     "Tab": {
@@ -226,7 +231,8 @@
       "household": "Chevalier de maisonnée",
       "mercenary": "Chevalier mercenaire",
       "vassal": "Chevalier vassal",
-      "banneret": "Chevalier banneret"
+      "banneret": "Chevalier banneret",
+      "retainer": "Chevalier retenu"
     },
     "Living": {
       "destitute": "Démuni",
@@ -254,7 +260,8 @@
       "landed": "Reçu des terres",
       "roundTable": "Table Ronde",
       "ennobled": "Anobli",
-      "died": "Décédé"
+      "died": "Décédé",
+      "companions": "Compagnon d'Arthur"
     },
     "Heraldry": {
       "blazon": "Héraldique",
@@ -415,7 +422,9 @@
       "domains": "Domaines",
       "domainsTip": "Gloire passive des domaines tenus (Table A.2 du Livre du maître).",
       "idealsAuto": "Idéaux atteints",
-      "idealsAutoTip": "Chevalier Courtois 150, chevalier Religieux 100 (Livre du joueur, p. 127). Le Romantique et le Maléfique n'en donnent pas d'office."
+      "idealsAutoTip": "Chevalier Courtois 150, chevalier Religieux 100 (Livre du joueur, p. 127). Le Romantique et le Maléfique n'en donnent pas d'office.",
+      "newest": "Nouveautés de la période",
+      "newestTip": "Armure et cheval apparus à la période en cours : 25 points chacun par an (Livre du maître, p. 232)"
     },
     "Prestige": {
       "earned": "Obtenues (une par tranche de 1000)",
@@ -815,7 +824,11 @@
         "sumpterStrong": "Sommier fort",
         "haquenee": "Haquenée",
         "donkey": "Âne",
-        "mule": "Mule"
+        "mule": "Mule",
+        "destrierLarge": "Grand destrier",
+        "barbary": "Destrier barbe",
+        "palfrey": "Palefroi",
+        "ponyIrish": "Poney irlandais"
       },
       "Note": {
         "skirmish": "Reconnaissance et escarmouche.",
@@ -826,7 +839,9 @@
         "riding": "Monte.",
         "peasant": "Usage paysan.",
         "pack": "Bât (jusqu'à 100 kg pour un sommier).",
-        "draughtPack": "Traction et bât."
+        "draughtPack": "Traction et bât.",
+        "heavyBarding": "Plus lourd et plus robuste que le destrier : peut porter un gambison complet ou un caparaçon de mailles.",
+        "barbary": "Importé de Zazamanc : rapide, agile et sûr de pied, moins puissant que les grands destriers ; peut porter un gambison complet ou un demi-caparaçon de mailles."
       },
       "Sex": {
         "stallion": "Étalon",
@@ -894,7 +909,9 @@
         "caparisonFull": "Caparaçon complet",
         "paddedFull": "Matelassage complet",
         "gambisonHalf": "Demi-gambison",
-        "gambisonFull": "Gambison complet"
+        "gambisonFull": "Gambison complet",
+        "trapperHalf": "Demi-caparaçon de mailles",
+        "trapperFull": "Caparaçon de mailles complet"
       },
       "BardingTooHeavy": "Ce cheval n'a pas la FOR requise pour porter cette armure (Table 10.7).",
       "Identity": "Signalement",
@@ -1009,7 +1026,9 @@
         "tired": "Trop fatigué pour continuer ; récupère avec repos et nourriture",
         "exhausted": "Épuisé : ne galopera plus jamais",
         "dead": "S'effondre, mort"
-      }
+      },
+      "Imported": "importé",
+      "ImportedGlory": "{name} acquiert son premier cheval de ce type ({type}, importé) : +{glory} points de Gloire de session."
     },
     "Battle": {
       "Title": "Bataille",
@@ -1972,7 +1991,11 @@
       },
       "Remaining": "Points restants :",
       "GmOnly": "— (MJ)",
-      "GloryDomains": "Gloire passive des domaines"
+      "GloryDomains": "Gloire passive des domaines",
+      "KnightPay": {
+        "mercenary": "Solde de chevalier mercenaire (Table 1.2, selon la Gloire) : {pounds} £, proposée comme revenu.",
+        "retainer": "Pension de chevalier retenu (The Boy King, p. 148, selon la Gloire) : {pounds} £, proposée comme revenu. Sans le gîte chez son seigneur, il paie lui-même son logis (1 £)."
+      }
     },
     "Period": {
       "all": "Toutes Périodes",
@@ -2098,7 +2121,9 @@
         "plate": "contre plates, d'office",
         "unarmored": "sans armure, d'office"
       },
-      "Description": "Description"
+      "Description": "Description",
+      "Cap": "Cervelière (se porte sous un grand heaume)",
+      "OverCap": "Se porte sur une cervelière (protections additionnées)"
     },
     "Combat": {
       "Title": "Combat",
@@ -2775,6 +2800,137 @@
       "ChronicleEvent": "Siège à la Table Ronde",
       "GiftLine": "Cadeau annuel du roi Arthur (Table Ronde) : {pounds} £ au trésor.",
       "LivingLine": "La maison du roi entretient le chevalier de la Table Ronde : niveau de vie {living} au moins."
+    },
+    "Companions": {
+      "Title": "Compagnons du roi Arthur",
+      "Member": "Compagnon du roi Arthur depuis {year}",
+      "Count": "{high} sur {need} requis à {at} ou plus",
+      "Verdict": {
+        "pass": "examen réussi",
+        "fail": "examen raté",
+        "gm": "au MJ d'en décider (un discours sur les idéaux d'Arthur)"
+      },
+      "Hint": "Ordre fondé en 522 ; on prête serment à la Pentecôte devant le roi, parrainé par un chevalier de la Table Ronde (The Boy King, p. 146–147).",
+      "Admit": "Admettre parmi les Compagnons",
+      "AdmitTip": "{glory} points de Gloire, une seule fois.",
+      "AdmitConfirm": "{name} prête le serment des Compagnons du roi Arthur ({year}) : {glory} points de Gloire inscrits dans la chronique.",
+      "AdmitDone": "{name} prête le serment des Compagnons du roi Arthur : {glory} points de Gloire.",
+      "ChronicleEvent": "Serment des Compagnons du roi Arthur"
+    },
+    "Hazard": {
+      "Title": "Dangers — {name}",
+      "Choose": "Danger",
+      "ChooseHint": "Livre du joueur, chap. 11 (p. 194–197). Chaque danger publie une carte avec ses jets et un bouton « Annuler ».",
+      "Next": "Suivant",
+      "Button": "Dangers",
+      "ButtonTip": "Chute, chute d'objets, feu, asphyxie, froid, maladie, poison",
+      "Formula": "Dégâts (formule)",
+      "Rounds": "Nombre de tours",
+      "ColdNote": "Froid : {cold} PV perdus, dont la Chirurgie peut rendre une part (menu Dangers).",
+      "PoisonNote": "Poison : {con} points de CON à retrouver, {rate} par semaine de convalescence.",
+      "fall": {
+        "name": "Chute",
+        "height": "Hauteur (mètres)",
+        "fromHorse": "Chute de cheval (test d'Équitation)",
+        "hint": "1D6 à 2 m, puis le double par tranche de 2 m (16D6 au plus). Test de DEX, ou d'Équitation de cheval : −1D6 sur un succès, −2D6 sur un critique, le double sur un échec critique. L'armure ne protège pas (sauf l'armure de vertu).",
+        "source": "Chute de {meters} m"
+      },
+      "objects": {
+        "name": "Chute d'objets",
+        "size": "Objets",
+        "small": "Pierres (2D6)",
+        "large": "Rochers, pierres de taille (3D6)",
+        "huge": "Gros rochers (6D6)",
+        "enormous": "Rochers énormes (16D6)",
+        "shield": "Bouclier, si le danger est vu venir ({value})",
+        "source": "Chute d'objets"
+      },
+      "fire": {
+        "name": "Feu",
+        "dice": "Intensité",
+        "flame": "Flammes (1D6 par tour)",
+        "blaze": "Grand incendie (2D6)",
+        "inferno": "Souffle de vouivre, brasier (3D6)",
+        "ignoreArmor": "Feu qui ignore l'armure",
+        "hint": "L'armure ne protège qu'au premier tour (elle chauffe ensuite ; un tour hors du feu la refroidit). Tout le feu fait une seule blessure. La fumée peut asphyxier (danger à part).",
+        "source": "Feu",
+        "firstAid": "Un seul test de Premiers soins pour cette brûlure."
+      },
+      "asphyxia": {
+        "name": "Asphyxie, noyade",
+        "toxic": "Dégâts en plus d'une vapeur toxique",
+        "hint": "Un test de CON par tour (−1 cumulatif après le premier). Après le premier échec, 1D6 par tour suivant. Pas de blessure ; sous le seuil d'Inconscience, le personnage devient Affaibli."
+      },
+      "cold": {
+        "name": "Froid",
+        "kind": "Environnement",
+        "cold": "Froid (un test par jour)",
+        "freezing": "Glacial (un test par tour)",
+        "tests": "Nombre de tests",
+        "hint": "Test de CON : 1D6 sur un échec, sans blessure. Le MJ ajuste selon l'équipement (modificateur).",
+        "unit": {
+          "cold": "Jour",
+          "freezing": "Tour"
+        },
+        "surgery": "La Chirurgie peut rendre la moitié de ces PV (tous sur un critique)."
+      },
+      "coldCare": {
+        "name": "Soigner le froid ({cold} PV)",
+        "title": "Chirurgie après le froid",
+        "apply": "Tenter la Chirurgie"
+      },
+      "disease": {
+        "name": "Maladie",
+        "illness": "Maladie",
+        "placeholder": "Fluxion, grippe, quinte, mal bilieux…",
+        "effect": "Effet",
+        "hp": "Perte de PV (sans blessure)",
+        "wound": "Blessure (soignée par la Chirurgie)",
+        "char": "Perte de caractéristique",
+        "hint": "Le MJ fixe les dégâts et leur nature. Un malade est toujours Affaibli."
+      },
+      "poison": {
+        "name": "Poison",
+        "kind": "Poison",
+        "custom": "Autre (efficacité ci-dessous)",
+        "potency": "Efficacité",
+        "potencyHint": "vide : celle du poison",
+        "potencyLabel": "Efficacité {potency}",
+        "antidote": "Antidote (Chirurgie)",
+        "noAntidote": "Pas d'antidote",
+        "elixir": "Élixir d'un apothicaire (+1D6 à la Chirurgie)",
+        "hint": "Test de CON contre l'efficacité (opposition fixe) : succès qui la dépasse, aucun effet ; succès partiel, −moitié de l'efficacité en CON ; échec, −l'efficacité. CON à 0 : mort. La Chirurgie trouve l'antidote, à donner avant.",
+        "recovery": "La CON perdue revient au rythme du Taux de guérison par semaine de convalescence.",
+        "effect": {
+          "none": "aucun effet",
+          "partial": "succès partiel",
+          "full": "le poison agit"
+        },
+        "foxglove": "Digitale",
+        "belladonna": "Belladone",
+        "hemlock": "Ciguë",
+        "arsenic": "Arsenic",
+        "aconite": "Aconit (tue-loup)"
+      },
+      "Line": {
+        "FallDice": "Chute de {meters} m : {dice}D6.",
+        "FallTest": "Test de {skill} ({value}) : {die}, {outcome} → {dice}D6.",
+        "NoDamage": "Aucun dégât.",
+        "FireRound": "Tour {round} : {rolled} − armure {armor} = {real}.",
+        "HoldBreath": "Tour {round} : CON {con}{mod} : {die}, {outcome}.",
+        "Suffocate": "Tour {round} : asphyxie, {damage} points.",
+        "ColdHurt": "{unit} {n} : CON {con}{mod} : {die}, {outcome} — {damage} points.",
+        "ColdOk": "{unit} {n} : CON {con}{mod} : {die}, {outcome}.",
+        "Disease": "{name} : {illness}, {damage} points.",
+        "Antidote": "Antidote : Chirurgie de {healer} ({value}{mod}) : {die}, {outcome}.",
+        "Neutralized": "L'antidote neutralise le poison : {name} n'en souffre pas.",
+        "PoisonTest": "CON {con} contre l'efficacité {potency} : {die}, {outcome} — {effect}.",
+        "HpLoss": "{name} perd {loss} PV ({hp} restants).",
+        "Debilitated": "{name} est Affaibli.",
+        "CharLoss": "{name} perd {loss} en {char} ({value}).",
+        "ConZero": "La CON de {name} tombe à 0 : il meurt.",
+        "ConBack": "{name} retrouve {back} point(s) de CON ({con})."
+      }
     }
   }
 }

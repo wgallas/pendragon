@@ -1,6 +1,7 @@
 """Construit data/equipement.json : armes, armures et boucliers du Livre du joueur (chap. 8 et 9,
-appendice A, liste des prix p. 208, objets de famille de la Table 3.9) et du Livre du maître
-(belles épées du butin de camp, Tables 6.11 et 6.12).
+appendice A, liste des prix p. 208, objets de famille de la Table 3.9), du Livre du maître
+(belles épées du butin de camp, Tables 6.11 et 6.12) et de The Boy King (Période des Conquêtes,
+Tables 3.1 et 3.2, prix p. 153).
 
 Seules les valeurs de jeu sont reprises ; les descriptions sont de courts résumés reformulés,
 avec la page du livre. Les prix sont en deniers (240 d. = 1 £).
@@ -9,7 +10,7 @@ Usage : python3 tools/equipement/build.py  (depuis la racine du dépôt)
 """
 import hashlib, json, os
 
-VERSION = 3
+VERSION = 4
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 ICON = "systems/pendragon-vf/icons/gear/{}.svg"
 
@@ -19,7 +20,7 @@ def gid(name):
 FOLDERS = [
     ("melee", "Armes de mêlée", 100), ("brawl", "Armes de rixe et improvisées", 200), ("missile", "Armes de jet", 300),
     ("armor", "Armures", 400), ("helm", "Heaumes", 500), ("shield", "Boucliers", 600),
-    ("family", "Objets de famille et butin", 700), ("future", "Périodes ultérieures (appendice A)", 800),
+    ("family", "Objets de famille et butin", 700), ("conquest", "Période des Conquêtes", 750), ("future", "Périodes ultérieures (appendice A)", 800),
 ]
 FOLDER = {k: gid("folder:" + k) for k, _, _ in FOLDERS}
 FOLDER_DOCS = [{"_id": FOLDER[k], "name": n, "type": "Item", "sorting": "a", "sort": s, "color": None} for k, n, s in FOLDERS]
@@ -59,13 +60,13 @@ def throw(damage, rng, skill="thrown"):
     return {"enabled": True, "skill": skill, "damage": damage, "range": rng}
 
 def armor(name, folder, icon, kind, material, value, *, price=None, period="all", periodNote="", padding=False,
-          closed=False, moveFoot=0, layered=0, notes="", desc="", source=""):
+          closed=False, moveFoot=0, layered=0, notes="", desc="", source="", cap=False, overCap=False):
     return {
         "_id": gid(name), "name": name, "type": "armure", "img": ICON.format(icon), "folder": FOLDER[folder],
         "system": {
             "description": desc, "period": period, "periodNote": periodNote, "price": price, "quantity": 1,
             "equipped": False, "source": source, "kind": kind, "material": material, "value": value,
-            "layered": layered, "padding": padding, "closed": closed, "moveFoot": moveFoot, "notes": notes
+            "layered": layered, "padding": padding, "closed": closed, "cap": cap, "overCap": overCap, "moveFoot": moveFoot, "notes": notes
         }
     }
 
@@ -187,9 +188,10 @@ ITEMS = [
     armor("Haubert avancé", "armor", "mail_adv", "body", "mail", 7, padding=True, price=720, period="boyKing", source=SRC(T92),
           notes="Se porte sur un auqueton (le prix comprend l'auqueton).",
           desc="Haubert complété de gantelets et de chausses de mailles, de brassards et de grèves de cuir bouilli."),
-    armor("Cotte de plates", "armor", "coat_plates", "overlay", "plate", 6, layered=1, moveFoot=-5, period="boyKingLate", source=T92,
+    armor("Cotte de plates", "armor", "coat_plates", "overlay", "plate", 6, layered=1, moveFoot=-5, period="boyKingLate", price=960,
+          source=T92 + " ; The Boy King, prix p. 153",
           notes="Portée sur un haubert : +1 de protection et plus de bonus des armes contre les mailles. −5 au Mouvement à pied.",
-          desc="Plaques de métal rivetées sous un surcot de cuir ou de toile, dernière nouveauté de la fin de la période (515 et après). On ne l'achète pas : seuls les nobles fortunés l'ont, ou l'offrent à un chevalier fidèle."),
+          desc="Plaques de métal rivetées sous un surcot de cuir ou de toile, nouveauté de la fin de l'Enfant-roi (515 et après) : on ne l'achète pas encore, seuls les nobles fortunés l'ont. Elle devient courante à la Période des Conquêtes (4 £)."),
 
     # ---------------- Heaumes (Table 9.3) ----------------
     armor("Chapel de fer", "helm", "kettle", "helm", "mail", 1, price=60, source=SRC(T93),
@@ -259,6 +261,29 @@ ITEMS = [
            source="Livre du joueur, Table 3.9 (16)", notes="+2 en Valeureux quand on s'en sert.",
            desc="Objet de famille : bouclier d'if marqué des griffes d'un monstre (valeur 1 £). Le livre n'en donne pas le type : valeurs d'un bouclier normand, à ajuster."),
 
+    # ---------------- Période des Conquêtes (The Boy King, chap. 3) ----------------
+    weapon("Fauchon à deux mains", "conquest", "seax", "sword", "both", dmg("character", 2), parry=2, period="conquest", twoHanded=True, price=30, swordTie=True,
+           alts=[("contre un adversaire sans armure", 1)], source="The Boy King, Table 3.1 (p. 150) ; The Boy King, prix p. 153",
+           adv="Parade +2 ; brise les armes à manche sur une égalité.", dis="Pas de bouclier ; brisé par une autre épée sur une égalité.",
+           desc="Lourde lame courbe à un tranchant au bout d'un long manche, pour tailler plutôt que d'estoc : +2D6, ou +3D6 contre un adversaire sans armure. Le Livre du joueur (Table A.1) donnait +1D6 et +2D6."),
+    weapon("Arbalète moyenne", "conquest", "crossbow", "crossbow", "both", dmg("none", 1, 14), group="missile", rng="medium", period="conquest", price=65,
+           source="The Boy King, Table 3.1 (p. 150) ; The Boy King, prix p. 153", dis="Un carreau tous les 2 tours ; se recharge à pied.",
+           desc="Arbalète « à deux pieds » (on la tend les deux pieds dans l'étrier), à arc composite de bois et de corne."),
+    weapon("Dague de lancer", "conquest", "dagger", "brawling", "both", dmg("brawl", 2), group="brawl", period="conquest", price=75,
+           thrown=throw(dmg("brawl", 2), "short"), source="The Boy King, Table 3.1 (p. 150) ; The Boy King, prix p. 153", dis="Lancée : une dague par tour.",
+           desc="Dague équilibrée pour le lancer (Rixe +2D6 lancée, portée courte), qui sert aussi de dague ordinaire au corps à corps."),
+    armor("Haubert de mailles renforcé", "conquest", "mail_adv", "body", "mail", 8, padding=True, period="conquest", price=1680,
+          source="The Boy King, Table 3.2 (p. 151) ; The Boy King, prix p. 153", notes="Se porte sur un auqueton. Avec l'auqueton, un grand heaume et sa cervelière : 15 points.",
+          desc="Haubert renforcé de plaques aux genoux, aux épaules et aux coudes, avec des manches de mailles. Le Livre du joueur (Table A.3) donnait 13 pour le harnois complet."),
+    armor("Grand heaume", "conquest", "helm_nasal_adv", "helm", "mail", 4, closed=True, overCap=True, period="conquest", price=240,
+          source="The Boy King, Table 3.2 (p. 151) ; The Boy King, prix p. 153", notes="Se porte sur une cervelière (leurs protections s'additionnent). −5 aux tests de Vigilance. Le prix comprend la cervelière.",
+          desc="Heaume cylindrique qui couvre toute la tête, percé d'une fente pour voir et de trous pour respirer, avec un camail. On l'ôte souvent après la charge ; une chaîne le retient à la ceinture."),
+    armor("Cervelière", "conquest", "helm_open", "helm", "mail", 1, cap=True, period="conquest",
+          source="The Boy King, Table 3.2 (p. 151)", notes="Se porte sous le grand heaume ; seule, elle vaut un heaume ouvert.",
+          desc="Calotte de fer ronde portée sous le grand heaume, et seule après la charge."),
+    shield("Écu", "conquest", "shield_norman", "medium", 6, -5, period="conquest", price=120, source="Livre du joueur, Table A.4 (p. 240) ; The Boy King, Table 3.2 (p. 151) ; The Boy King, prix p. 153",
+           notes="Pas de pénalité à cheval.", desc="Bouclier en forme de fer à repasser, tenu au bras gauche ; il remplace vite le bouclier normand."),
+
     # ---------------- Périodes ultérieures (appendice A) ----------------
     weapon("Épée longue", "future", "sword", "sword", "both", dmg(), parry=3, period="tournament",
            alts=[("à deux mains, sans bouclier", 2), ("contre plates, en demi-épée", 3)], source="Livre du joueur, Table A.1 (p. 239)",
@@ -267,10 +292,6 @@ ITEMS = [
     weapon("Fauchon", "future", "seax", "sword", "both", dmg(), parry=2, period="romance", alts=[("contre un ennemi sans armure", 1)],
            source="Livre du joueur, Table A.1 (p. 239)", adv="Parade +2 ; brise les armes à manche sur une égalité.",
            desc="Épée courbe à un tranchant."),
-    weapon("Fauchon à deux mains", "future", "seax", "sword", "both", dmg("character", 1), parry=2, period="conquest", twoHanded=True,
-           alts=[("contre un adversaire sans armure", 1)], source="Livre du joueur, Table A.1 (p. 239)",
-           adv="Parade +2 ; brise les armes à manche sur une égalité.", dis="Pas de bouclier. " + BREAKS,
-           desc="Grand fauchon à deux mains : +1D6, ou +2D6 contre un adversaire sans armure."),
     weapon("Fléau", "future", "mace", "hafted", "both", dmg(), period="romance", alts=[("contre une armure de mailles", 1)],
            source="Livre du joueur, Table A.1 (p. 239)", adv="Ignore la protection de bouclier et la Parade de l'adversaire.",
            desc="Arme à chaîne. Le livre lui donne une compétence Fléau, qui n'existe pas encore sur la fiche : la compétence Haches et masses est mise en attendant."),
@@ -304,23 +325,14 @@ ITEMS = [
     weapon("Vouge", "future", "greataxe", "greatWeapon", "foot", dmg("character", 2), period="tournament", twoHanded=True,
            source="Livre du joueur, Table A.1 (p. 239)", adv="Arme longue.", dis="Pas de bouclier.",
            desc="Arme d'hast à large lame."),
-    weapon("Arbalète moyenne", "future", "crossbow", "crossbow", "both", dmg("none", 1, 14), group="missile", rng="medium", period="conquest",
-           source="Livre du joueur, Table A.2 (p. 239)", dis="Un carreau tous les 2 tours.", desc="Arbalète plus puissante que l'arbalète légère."),
     weapon("Arbalète lourde", "future", "crossbow", "crossbow", "both", dmg("none", 1, 20), group="missile", rng="long", period="romance",
            source="Livre du joueur, Table A.2 (p. 239)", dis="Un carreau tous les 4 tours.", desc="Arbalète de guerre lourde."),
-    weapon("Dague de lancer", "future", "dagger", "brawling", "both", dmg("brawl", 2), group="brawl", period="conquest",
-           thrown=throw(dmg("brawl", 2), "short"), source="Livre du joueur, Table A.2 (p. 239)",
-           desc="Dague équilibrée pour le lancer : Rixe +2D6 lancée."),
-    armor("Haubert de mailles renforcé", "future", "mail_adv", "body", "mail", 13, period="conquest", source="Livre du joueur, Table A.3 (p. 240)",
-          notes="Valeur du harnois complet, heaume compris.", desc="Futur harnois de mailles renforcé."),
     armor("Demi-plate", "future", "coat_plates", "body", "plate", 16, period="romance", source="Livre du joueur, Table A.3 (p. 240)",
           notes="Valeur du harnois complet, heaume compris.", desc="Futur harnois de plates partiel."),
     armor("Armure de plates", "future", "coat_plates", "body", "plate", 18, period="tournament", source="Livre du joueur, Table A.3 (p. 240)",
           notes="Valeur du harnois complet, heaume compris.", desc="Futur harnois de plates complet."),
     armor("Armure de plates gothique", "future", "coat_plates", "body", "plate", 22, period="twilight", source="Livre du joueur, Table A.3 (p. 240)",
           notes="Valeur du harnois complet, heaume compris.", desc="Le harnois de plates de maître de la fin du règne d'Arthur."),
-    shield("Écu", "future", "shield_norman", "medium", 6, -5, period="conquest", source="Livre du joueur, Table A.4 (p. 240)",
-           desc="Bouclier triangulaire plus petit qui remplacera le bouclier normand."),
     shield("Bouclier de joute", "future", "shield_norman", "medium", 6, 0, noMissile=True, period="romance", source="Livre du joueur, Table A.4 (p. 240)",
            dis="Ne protège pas contre les projectiles.", notes="Jamais utilisé à pied.", desc="Bouclier réservé à la joute."),
 ]

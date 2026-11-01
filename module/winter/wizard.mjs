@@ -142,6 +142,8 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           columnLabel: L(`PDVF.Winter.Column.${info.column}`),
           table: PDVF.winter.upkeepLevels.map((lv, i) => ({ label: L(`PDVF.Living.${lv}`), min: String(col[i]).replace(".", ",") })),
           suggested: (info.household || info.domains.length || info.roundTable) ? 0 : info.ordinary,
+          payLine: info.pay !== null ? F(`PDVF.Winter.KnightPay.${info.klass}`, { pounds: info.pay }) : "",
+          incomeSuggested: info.pay ?? 0,
           roundTableLine: info.roundTable ? F("PDVF.RoundTable.Yearly", { pounds: info.roundTable.gift, living: L(`PDVF.Living.${info.roundTable.living}`) }) : "",
           hasDomains: info.domains.length > 0, landsUpkeepLine: F("PDVF.Manor.Winter.UpkeepFromLands", { upkeep: String(info.lands).replace(".", ",") }),
           lands: info.domains.length ? this.#landsContext() : null, helped: st.lordHelp ? F("PDVF.Domain.Helped", { missing: String(st.lordHelp.missing).replace(".", ","), favor: st.lordHelp.favor }) : "",

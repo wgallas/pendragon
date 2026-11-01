@@ -15,11 +15,13 @@ import { attackProfiles, conflictsWith } from "../rules/equipment.mjs";
 import { giveStartingEquipment, hasGear, GEAR_TYPES } from "../documents/equipment.mjs";
 import { engage } from "../combat/exchange.mjs";
 import * as CD from "../combat/dialogs.mjs";
+import { promptHazard } from "../combat/hazards.mjs";
 import { domainsOf, domainGlory, domainIncome, newDomainData } from "../documents/domains.mjs";
 import { isDefaultActorImg } from "../documents/icons.mjs";
 import { portraitView } from "../documents/portrait.mjs";
 import { idealsView } from "./ideals-view.mjs";
-import { protectionTest, toggleRevoked, admitRoundTable } from "../documents/ideals.mjs";
+import { newestGearGlory } from "../documents/period.mjs";
+import { protectionTest, toggleRevoked, admitRoundTable, admitCompanions } from "../documents/ideals.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -32,7 +34,7 @@ const ARRAY_PATHS = ["system.passions", "system.inspirations", "system.horses", 
 const L = (k) => game.i18n.localize(k);
 
 /** Champs qui acceptent d'être vides. */
-const NULLABLE_KEYS = new Set(["born", "squired", "knighted", "landed", "roundTable", "ennobled", "died", "img"]);
+const NULLABLE_KEYS = new Set(["born", "squired", "knighted", "landed", "roundTable", "companions", "ennobled", "died", "img"]);
 
 function replaceNulls(obj) {
   if (!obj || typeof obj !== "object") return;
@@ -93,6 +95,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       startingGear: ChevalierSheet.#onStartingGear,
       engage: ChevalierSheet.#onEngage,
       combatDamage: ChevalierSheet.#onCombatDamage,
+      combatHazard: ChevalierSheet.#onCombatHazard,
       combatWeek: ChevalierSheet.#onCombatWeek,
       combatAggravate: ChevalierSheet.#onCombatAggravate,
       combatMount: ChevalierSheet.#onCombatMount,
@@ -105,7 +108,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       domainDelete: ChevalierSheet.#onDomainDelete,
       idealProtect: ChevalierSheet.#onIdealProtect,
       idealRevoke: ChevalierSheet.#onIdealRevoke,
-      roundTableAdmit: ChevalierSheet.#onRoundTableAdmit
+      roundTableAdmit: ChevalierSheet.#onRoundTableAdmit,
+      companionsAdmit: ChevalierSheet.#onCompanionsAdmit
     }
   };
 
@@ -300,7 +304,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.titleChoices = ["sire", "dame"].map(v => ({ value: v, label: L(`PDVF.Title.${v}`) }));
     context.religionChoices = Object.entries(PDVF.religions).map(([v, r]) => ({ value: v, label: L(r.label ?? `PDVF.Religion.${v}`) }));
     context.classChoices = PDVF.knightClasses.map(v => ({ value: v, label: L(`PDVF.Class.${v}`) }));
-    context.dates = ["squired", "knighted", "landed", "roundTable", "ennobled", "died"].map(id => ({
+    context.dates = ["squired", "knighted", "landed", "roundTable", "companions", "ennobled", "died"].map(id => ({
       id, label: L(`PDVF.Dates.${id}`), value: system.dates[id] || "", name: `system.dates.${id}`
     }));
     context.parents = system.family.parents.map((p, i) => ({ ...p, index: i }));
@@ -324,7 +328,10 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Gloire passive : celle des chevaux est calculée à partir de l'écurie
     const horseGlory = knightHorseGlory(actor);
     const dGlory = domainGlory(actor);
-    context.passive = { ...system.passive, horses: horseGlory.total, horsesDetail: horseGlory, domains: dGlory, total: system.passive.total + horseGlory.total + dGlory };
+    const newest = newestGearGlory(actor, resolveHorses(actor).map(h => h.actor).filter(a => a?.type === "cheval"));
+    context.passive = { ...system.passive, horses: horseGlory.total, horsesDetail: horseGlory, domains: dGlory, newest: newest.total,
+      newestTip: [newest.armorName, newest.horseName].filter(Boolean).join(", "),
+      total: system.passive.total + horseGlory.total + dGlory + newest.total };
     context.prestige = {
       earned: system.prestigeEarned,
       used: system.glory.prestigeUsed,
@@ -678,6 +685,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onCombatDamage() { return CD.promptDamage(this.document); }
+  static #onCombatHazard() { return promptHazard(this.document); }
   static #onCombatWeek() { return CD.promptWeek(this.document); }
   static #onCombatAggravate() { return CD.quickAggravation(this.document); }
   static #onCombatMount() { return CD.toggleMounted(this.document); }
@@ -791,6 +799,11 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** Le MJ retire un idéal au chevalier (ou le lui rend). */
   static async #onIdealRevoke(event, target) {
     return toggleRevoked(this.document, target.dataset.ideal);
+  }
+
+  /** Le MJ admet le chevalier parmi les Compagnons du roi Arthur. */
+  static async #onCompanionsAdmit() {
+    return admitCompanions(this.document);
   }
 
   /** Le MJ admet le chevalier à la Table Ronde. */

@@ -9,7 +9,7 @@ const { DialogV2 } = foundry.applications.api;
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
 
-async function ask(title, content, label, icon = "fa-solid fa-check") {
+export async function ask(title, content, label, icon = "fa-solid fa-check") {
   const result = await DialogV2.wait({
     window: { title }, classes: [SYSTEM_ID, "pdvf-dialog"], content, rejectClose: false,
     buttons: [
@@ -45,7 +45,7 @@ export async function promptDamage(actor) {
 }
 
 /** Soigneurs possibles : le blessé lui-même (−10), les chevaliers et écuyers du monde, ou une valeur saisie. */
-function healerChoices(patient, skill) {
+export function healerChoices(patient, skill) {
   const rows = [];
   const value = (a) => combatStats(a)[skill];
   for (const a of game.actors.filter(x => x.type === "chevalier" || (x.type === "pnj" && x.system.category === "squire"))) {
@@ -130,6 +130,9 @@ export function woundsView(actor) {
     wounds, total: wounds.reduce((s, w) => s + (Number(w.damage) || 0), 0),
     mounted: st.mounted, prone: st.prone, disarmed: st.disarmed, unconscious: st.unconscious,
     debilitated: st.debilitated, armor: st.armor, shield: st.shield,
-    horseName: st.horse?.name ?? "", horseCharge: st.horseCharge, dying: st.hp <= 0
+    horseName: st.horse?.name ?? "", horseCharge: st.horseCharge, dying: st.hp <= 0,
+    cold: Number(actor.system.health?.cold) || 0, poisonCon: Number(actor.system.health?.poisonCon) || 0,
+    coldLine: F("PDVF.Hazard.ColdNote", { cold: Number(actor.system.health?.cold) || 0 }),
+    poisonLine: F("PDVF.Hazard.PoisonNote", { con: Number(actor.system.health?.poisonCon) || 0, rate: st.healRate })
   };
 }

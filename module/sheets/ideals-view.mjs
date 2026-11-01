@@ -2,7 +2,8 @@
  * Vue des idéaux et de la Table Ronde pour la fiche du chevalier (onglet Traits & passions).
  */
 import { PDVF } from "../config.mjs";
-import { roundTableCandidacy } from "../rules/ideals.mjs";
+import { roundTableCandidacy, companionsExam } from "../rules/ideals.mjs";
+import { periodYear } from "../documents/period.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -88,8 +89,23 @@ export function idealsView(actor, { editMode = false } = {}) {
     admitTip: F("PDVF.RoundTable.AdmitTip", { honor: rt.honor, glory: rt.glory })
   };
 
+  // Compagnons du roi Arthur (à partir de 522)
+  const cc = PDVF.companions;
+  const cYear = sys.dates?.companions;
+  let companions = null;
+  if (cYear || periodYear() >= cc.from) {
+    const exam = companionsExam(sys, cc, (id, side) => L(`PDVF.Trait.${id}.${side}`));
+    companions = {
+      member: !!cYear, memberLine: cYear ? F("PDVF.Companions.Member", { year: cYear }) : "",
+      rows: exam.rows.map(r => ({ ...r, cls: r.high ? "ok" : r.low ? "missing" : "" })),
+      verdict: L(`PDVF.Companions.Verdict.${exam.verdict}`), verdictCls: exam.verdict === "pass" ? "ok" : exam.verdict === "fail" ? "missing" : "",
+      count: F("PDVF.Companions.Count", { high: exam.high, need: cc.pass, at: cc.high }),
+      canAdmit: isGM && !cYear, admitTip: F("PDVF.Companions.AdmitTip", { glory: cc.glory })
+    };
+  }
+
   return {
-    list, roundTable, isGM, editMode,
+    list, roundTable, companions, isGM, editMode,
     wicked: { enabled: !!sys.idealGM?.wicked, benefits: sys.idealGM?.wickedBenefits ?? "" },
     pursuedChoices: [{ value: "", label: L("PDVF.Ideal.NonePursued"), selected: !pursued },
       ...Object.keys(PDVF.ideals).filter(id => !PDVF.ideals[id].gmOnly || sys.idealGM?.wicked)

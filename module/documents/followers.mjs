@@ -6,6 +6,16 @@ import { CREATION } from "../creation/data.mjs";
 import { formulaValue, defaultState } from "../creation/rules.mjs";
 import { horseFromType, horsePassiveGlory } from "../rules/horses.mjs";
 import { squireAgeFromRoll, squireOriginFromRoll, squireOrigin, squireSkill, squireKnightly, normalizeLabel } from "../rules/followers.mjs";
+import { periodAvailable } from "./period.mjs";
+
+/** Libellé d'un type de cheval, avec sa période s'il n'est pas encore courant, et « importé ». */
+export function horseTypeLabel(id) {
+  const t = PDVF.horseTypes[id] ?? {};
+  let label = L(`PDVF.Horse.Type.${id}`);
+  if (t.imported) label += ` (${L("PDVF.Horse.Imported")})`;
+  if (t.period && !periodAvailable(t.period)) label += ` — ${L(PDVF.periods[t.period])}`;
+  return label;
+}
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -303,7 +313,17 @@ export async function addHorse(knight, horse, role = null) {
   const update = { "system.horses": rows };
   // Premier cheval de guerre : cheval principal
   if (!knight.system.mainHorse && horse.system.warTrained) update["system.mainHorse"] = horse.uuid;
+  // Cheval importé (The Boy King, p. 153) : 20 points de Gloire au premier acquis de chaque type.
+  const type = PDVF.horseTypes[horse.system.horseType];
+  const awarded = knight.getFlag(SYSTEM_ID, "importedHorses") ?? [];
+  let glory = 0;
+  if (type?.imported && !awarded.includes(horse.system.horseType)) {
+    glory = PDVF.importedHorseGlory;
+    update["system.glory.session"] = (Number(knight.system.glory?.session) || 0) + glory;
+    update[`flags.${SYSTEM_ID}.importedHorses`] = [...awarded, horse.system.horseType];
+  }
   await knight.update(update);
+  if (glory) ui.notifications.info(F("PDVF.Horse.ImportedGlory", { name: knight.name, glory, type: L(`PDVF.Horse.Type.${horse.system.horseType}`) }));
   return horse;
 }
 
@@ -359,7 +379,7 @@ export async function createStartingHorses(knight) {
 export async function promptNewHorse(knight) {
   const { DialogV2 } = foundry.applications.api;
   const groups = ["war", "riding", "work", "fae"].map(g => `<optgroup label="${L(`PDVF.Horse.Group.${g}`)}">` +
-    Object.entries(PDVF.horseTypes).filter(([, t]) => t.group === g).map(([id]) => `<option value="${id}" ${id === "destrier" ? "selected" : ""}>${L(`PDVF.Horse.Type.${id}`)}</option>`).join("") + "</optgroup>").join("");
+    Object.entries(PDVF.horseTypes).filter(([, t]) => t.group === g).map(([id]) => `<option value="${id}" ${id === "destrier" ? "selected" : ""}>${horseTypeLabel(id)}</option>`).join("") + "</optgroup>").join("");
   const sexes = PDVF.horseSexes.map(id => `<option value="${id}" ${id === "gelding" ? "selected" : ""}>${L(`PDVF.Horse.Sex.${id}`)}</option>`).join("");
   const colors = Object.keys(PDVF.horseColors).map(id => `<option value="${id}">${L(`PDVF.Horse.Color.${id}`)}</option>`).join("");
   const result = await DialogV2.wait({

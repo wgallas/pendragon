@@ -186,7 +186,10 @@
           {{#if combat.dying}}<span class="pdvf-state-badge dying">{{localize "PDVF.Combat.DyingBadge"}}</span>{{/if}}
           <button type="button" class="pdvf-state-btn" data-action="engage"><i class="fa-solid fa-swords" aria-hidden="true"></i> {{localize "PDVF.Combat.EngageTarget"}}</button>
           <button type="button" class="pdvf-state-btn" data-action="combatDamage"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{localize "PDVF.Combat.Receive"}}</button>
+          <button type="button" class="pdvf-state-btn" data-action="combatHazard" data-tooltip="{{localize 'PDVF.Hazard.ButtonTip'}}"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{localize "PDVF.Hazard.Button"}}</button>
         </div>
+        {{#if combat.cold}}<p class="pdvf-hint pdvf-hazard-note"><i class="fa-solid fa-snowflake" aria-hidden="true"></i> {{combat.coldLine}}</p>{{/if}}
+        {{#if combat.poisonCon}}<p class="pdvf-hint pdvf-hazard-note"><i class="fa-solid fa-skull-crossbones" aria-hidden="true"></i> {{combat.poisonLine}}</p>{{/if}}
         {{#if combat.wounds.length}}
         <ul class="pdvf-wounds">
           {{#each combat.wounds}}

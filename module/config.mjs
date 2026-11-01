@@ -262,7 +262,7 @@ PDVF.horseTypes = {
   // 20 points de Gloire une fois par type au premier acquis.
   destrierLarge:  { group: "war",    damage: "4D6", charge: "7D6", move: 17, armor: 6, siz: 43, dex: 13, str: 35, con: 15, price: 5760, period: "conquest", note: "heavyBarding" },
   barbary:        { group: "war",    damage: "3D6", charge: "6D6", move: 18, armor: 5, siz: 36, dex: 18, str: 36, con: 17, price: 9600, period: "conquest", imported: true, note: "barbary" },
-  palfrey:        { group: "riding", damage: "2D6", move: 16, armor: 3, siz: 26, dex: 13, str: 24, con: 15, price: 4800, period: "conquest", note: "ambles" },
+  palfrey:        { group: "riding", damage: "2D6", move: 16, armor: 3, siz: 26, dex: 13, str: 22, con: 15, price: 4800, period: "conquest", note: "ambles" },
   ponyIrish:      { group: "riding", damage: "2D6", move: 14, armor: 4, siz: 25, dex: 17, str: 21, con: 20, price: 960,  period: "conquest", imported: true, note: "hills" }
 };
 
@@ -319,10 +319,10 @@ PDVF.horseBarding = {
   paddedFull:     { armor: 1, str: 30 },
   gambisonHalf:   { armor: 2, str: 32 },
   gambisonFull:   { armor: 4, str: 34 },
-  // Caparaçons de mailles de la Période des Conquêtes (The Boy King, Table 3.5) : vulnérables aux
-  // armes contondantes. Valeurs mal lisibles dans le PDF : 2 + 2 et 4 + 3 (rembourrage + mailles), à vérifier.
-  trapperHalf:    { armor: 4, str: 32, period: "conquest", mail: true },
-  trapperFull:    { armor: 7, str: 34, period: "conquest", mail: true }
+  // Caparaçons de mailles de la Période des Conquêtes (The Boy King, Table 3.5) : rembourrage + mailles
+  // (demi : 2 + 2, complet : 2 + 3, valeurs confirmées par l'utilisateur) ; vulnérables aux armes contondantes.
+  trapperHalf:    { armor: 4, padding: 2, mail: 2, str: 32, period: "conquest" },
+  trapperFull:    { armor: 5, padding: 2, mail: 3, str: 34, period: "conquest" }
 };
 
 /** Chevaux de départ d'un chevalier (Livre du joueur, p. 54 et Table 3.8) : type et rôle. */

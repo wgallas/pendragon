@@ -17,7 +17,7 @@ export class PendragonItem extends Item {
   async _preCreate(data, options, user) {
     if ((await super._preCreate(data, options, user)) === false) return false;
     const updates = itemIconUpdates({ type: this.type, img: this._source.img, system: this._source.system });
-    if (["bataille", "tournoi"].includes(this.type) && data.ownership?.default === undefined) {
+    if (["bataille", "tournoi", "festin"].includes(this.type) && data.ownership?.default === undefined) {
       updates["ownership.default"] = CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
     }
     // Tournoi : joute à partir de la Période des Conquêtes, barrière à partir de celle des Tournois, année en cours.
@@ -27,6 +27,8 @@ export class PendragonItem extends Item {
       if (data.system?.joust?.barrier === undefined) updates["system.joust.barrier"] = periodAvailable(j.barrierFrom);
       if (data.system?.year === undefined) updates["system.year"] = gameYear() || null;
     }
+    // Festin : année en cours.
+    if (this.type === "festin" && data.system?.year === undefined) updates["system.year"] = gameYear() || null;
     if (Object.keys(updates).length) this.updateSource(updates);
   }
 

@@ -1552,3 +1552,14 @@
 .pendragon-vf .pdvf-tournament-side { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 4px; }
 .pendragon-vf .pdvf-tournament-tests { margin: 4px 0; padding-left: 18px; font-size: 14px; }
 .pendragon-vf .pdvf-tournament .pdvf-table .pdvf-check { font-size: 13px; margin-left: 6px; }
+
+/* -------------------------------------------- */
+/*  Festins                                      */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-feast .pdvf-num { width: 56px; text-align: center; }
+.pendragon-vf .pdvf-feast .pdvf-table select { max-width: 210px; }
+.pendragon-vf .pdvf-feast-guest.left { opacity: 0.6; }
+.pendragon-vf .pdvf-feast-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 2px 0 6px; }
+.pendragon-vf .pdvf-feast-action { margin: 2px 0 6px; color: var(--pdvf-green); }
+.pendragon-vf .pdvf-feast [data-group="adjust"] { margin-top: 6px; }
+.pendragon-vf .pdvf-feast [data-group="adjust"] input[type="text"] { flex: 1 1 200px; }

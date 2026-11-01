@@ -9,6 +9,7 @@ import { resolveTest } from "../rules/resolution.mjs";
 import { rollPlain } from "../dice/tests.mjs";
 import { receiveDamage, combatStats, mountOf } from "../combat/damage.mjs";
 import { perform as battlePerform } from "../battle/engine.mjs";
+import { createFromTournament } from "../feast/engine.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -362,6 +363,16 @@ const ACTIONS = {
     for (const k of sys.knights.filter(x => x.melee)) await battlePerform(battle, "addKnight", { uuid: k.uuid }, game.user.id);
     battle.sheet?.render(true);
     chat.push({ title: L("PDVF.Tournament.Melee"), subtitle: tournament.name, lines: [L("PDVF.Tournament.Line.MeleeCreated")] });
+  } },
+
+  /** Festin du soir : un objet « Festin » avec les chevaliers inscrits. */
+  createFeast: { who: "gm", fn: async ({ sys, tournament, chat }) => {
+    const existing = sys.feast ? await fromUuid(sys.feast) : null;
+    if (existing) { existing.sheet?.render(true); return false; }
+    const feast = await createFromTournament(tournament);
+    sys.feast = feast.uuid;
+    feast.sheet?.render(true);
+    chat.push({ title: L("PDVF.Feast.Evening"), subtitle: tournament.name, lines: [F("PDVF.Feast.Line.EveningCreated", { size: L(`PDVF.Feast.Size.${feast.system.size}`) })] });
   } },
 
   /** Défi courtois : test de la même compétence pour tous ; les meilleurs restent, jusqu'à un seul vainqueur. */

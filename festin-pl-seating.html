@@ -1,0 +1,55 @@
+<div class="pdvf-battle pdvf-tournament pdvf-feast">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="" alt="">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">Festin de la Pentecôte</h1>
+      <div class="pdvf-line1">
+        520 · Sarum · Comte Robert · Festin moyen · Tour de festin 2 / 3
+         · <button type="button" class="pdvf-link" data-action="openTournament"><i class="fa-solid fa-chess-knight"></i> Tournoi</button>
+      </div>
+    </div>
+    
+  </header>
+
+  <nav class="pdvf-battle-tabs" aria-label="Festin">
+  </nav>
+
+  <div class="pdvf-battle-body">
+
+
+    
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">Placement</h3>
+      <p class="pdvf-hint">Chaque joueur fait le test de Gloire de son chevalier (Gloire ÷ 1000). Critique : au-dessus du sel (+2 par tour, pertes des évènements doublées) ; succès : plus près (+1) ; échec : plus loin (0) ; échec critique : second test et un rang plus bas (au sol : −2 par tour) et −1 Honneur. Petit festin : un niveau de mieux ; festin royal : un de moins.</p>
+      <table class="pdvf-table">
+        <thead><tr><th>Chevalier</th><th>Gloire</th><th>Départ</th><th>Place</th><th>Honneur</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Sire Avalloc</td>
+            <td class="num">3500</td>
+            <td class="num">+1</td>
+            <td><span class="pdvf-tag">Plus loin du sel 0</span> <small class="pdvf-hint-inline">Échec</small>
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="yield" data-index="0" data-tooltip="Test de Modeste : succès, un rang plus bas et +10 Gloire (+20 sur un critique) ; échec critique, −1 Honneur."><i class="fa-solid fa-arrow-down"></i> Céder sa place</button>
+                
+              </td>
+            <td>
+              <button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="modest" data-index="0" data-tooltip="Placé sous un PJ de même rang qui a moins de Gloire : test de Modeste, ou −1 Honneur."><i class="fa-solid fa-dice-d20"></i> Modeste</button></td>
+          </tr>
+          <tr>
+            <td>Sire Bran</td>
+            <td class="num">2500</td>
+            <td class="num">+4</td>
+            <td><span class="pdvf-tag">Au-dessus du sel +2</span> <small class="pdvf-hint-inline">Critique</small>
+                
+                
+              </td>
+            <td><span class="pdvf-tag" data-tooltip="Fier Célèbre ou Exalté : −1 Honneur au placement ; ne peut pas céder sa place.">Fier célèbre</span>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+  </div>
+</div>

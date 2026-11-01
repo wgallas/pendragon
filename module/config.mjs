@@ -337,6 +337,47 @@ PDVF.tournament = {
 };
 
 /**
+ * Festins (Livre du maître, chap. 3, p. 37–44). Les cartes d'évènement de festin (Deadcrows) ne sont
+ * pas dans les livres : les joueurs tirent les leurs, la fiche note la carte jouée et son Engouement.
+ * sizes : Tables 3.2 (tours) et 3.7 (seuil d'Engouement, Gloire de l'invité le plus remarqué) ;
+ *   seat : décalage du résultat du test de Gloire (petit festin +1, royal −1) ; tournament : festin du soir.
+ */
+PDVF.feast = {
+  sizes: {
+    small:  { rounds: 2, threshold: 5, bonus: 10, seat: 1 },
+    medium: { rounds: 3, threshold: 7, bonus: 25, seat: 0 },
+    large:  { rounds: 4, threshold: 9, bonus: 50, seat: 0 },
+    royal:  { rounds: 5, threshold: 11, bonus: 100, seat: -1 }
+  },
+  /** Festin du soir d'un tournoi, selon la taille du tournoi. */
+  fromTournament: { neighborhood: "small", local: "medium", regionalSmall: "large", regionalLarge: "large", royal: "royal", royalGrand: "royal" },
+  /** Table 3.1 : Engouement de départ selon le niveau de vie (vêtements). */
+  clothing: { destitute: -5, poor: -3, ordinary: 1, rich: 2, sumptuous: 3, superlative: 4, extravagant: 5, opulent: 6 },
+  /** Compétences de cour auxquelles s'ajoute l'Engouement (p. 38). */
+  engouementSkills: ["singing", "compose", "courtesy", "dancing", "orate", "playInstrument", "intrigue", "gaming", "fashion", "flirting"],
+  /** Engouement de base en plus du chevalier Romantique (Livre du joueur, p. 128). */
+  romanticBonus: 2,
+  /** Places (Table 3.3) : Engouement par tour ; au-dessus du sel, les pertes des évènements sont doublées. */
+  seats: { above: { rank: 3, mod: 2 }, near: { rank: 2, mod: 1 }, far: { rank: 1, mod: 0 }, floor: { rank: 0, mod: -1 }, floorFumble: { rank: 0, mod: -2 } },
+  /** Table 3.4 : modificateur de notoriété selon la Gloire. */
+  notoriety: [
+    { min: 0, mod: 0 }, { min: 1000, mod: 1 }, { min: 3000, mod: 2 }, { min: 4000, mod: 3 }, { min: 6000, mod: 4 },
+    { min: 8000, mod: 5 }, { min: 12000, mod: 6 }, { min: 16000, mod: 7 }, { min: 32000, mod: 8 }
+  ],
+  /** Table 3.5 : nombre de cartes que l'on peut tirer selon l'ATT totale. */
+  cards: [{ min: -99, n: 0 }, { min: 5, n: 1 }, { min: 10, n: 2 }, { min: 15, n: 3 }, { min: 20, n: 4 }, { min: 25, n: 5 }, { min: 30, n: 6 }],
+  /** Autres activités de cour (p. 42) : compétence ou trait testé, avec l'Engouement. */
+  activities: { gossip: "skill.intrigue", flirt: "skill.flirting", gaming: "skill.gaming", food: "trait.temperate.right" },
+  /** Quitter le festin sur un échec au test de Courtoisie : Engouement perdu. */
+  leaveLoss: "1D3",
+  /** Céder sa place : Gloire sur un succès (critique). Quitter le festin : Gloire du critique. */
+  yieldGlory: { success: 10, critical: 20 },
+  leaveGlory: 10,
+  maxGlory: 100,
+  proudFamous: 16
+};
+
+/**
  * Dangers hors combat (Livre du joueur, chap. 11). Poisons : efficacité (p. 196) et prix en deniers
  * (Livre des Nobles, Table 4.2).
  */

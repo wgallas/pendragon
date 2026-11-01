@@ -1,0 +1,67 @@
+<div class="pdvf-battle pdvf-tournament pdvf-feast">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="" alt="">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">Festin de la Pentecôte</h1>
+      <div class="pdvf-line1">
+        520 · Sarum · Comte Robert · Festin moyen · Tour de festin 2 / 3
+         · <button type="button" class="pdvf-link" data-action="openTournament"><i class="fa-solid fa-chess-knight"></i> Tournoi</button>
+      </div>
+    </div>
+    <div class="pdvf-battle-tools"><button type="button" class="pdvf-btn pdvf-mini" data-action="show" data-tooltip="Ouvre le festin chez tous les joueurs."><i class="fa-solid fa-eye"></i> Montrer</button></div>
+  </header>
+
+  <nav class="pdvf-battle-tabs" aria-label="Festin">
+  </nav>
+
+  <div class="pdvf-battle-body">
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">Le festin</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>Année</span><input type="number" name="system.year" value="520" step="1"></label>
+        <label class="pdvf-field"><span>Lieu</span><input type="text" name="system.place" value="Sarum"></label>
+        <label class="pdvf-field"><span>Hôte</span><input type="text" name="system.host" value="Comte Robert"></label>
+        <label class="pdvf-field"><span>Taille</span>
+          <select name="system.size"><option value="small" >Petit festin (2)</option><option value="medium" selected>Festin moyen (3)</option><option value="large" >Grand festin (4)</option><option value="royal" >Festin royal (5)</option></select></label>
+        <label class="pdvf-field"><span>Nombre de tours</span><input type="number" name="system.rounds" value="3" min="1" max="12" step="1"></label>
+        <label class="pdvf-field"><span>Mets phare du service 1</span><input type="text" name="system.dishes.0" value="Cygne rôti"></label>
+        <label class="pdvf-field"><span>Mets phare du service 2</span><input type="text" name="system.dishes.1" value=""></label>
+        <label class="pdvf-field"><span>Mets phare du service 3</span><input type="text" name="system.dishes.2" value=""></label>
+      </div>
+      <p class="pdvf-hint">Nombre de tours minimum : petit 2, moyen 3, grand 4, royal 5 (Livre du maître, Table 3.2). Les mets phares de chaque service peuvent être tirés sur la Table 3.6. Seuil d&#x27;Engouement : 7 (invité le plus remarqué : +25 Gloire).</p>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">Invités</h3>
+      <div class="pdvf-drop-zone"><i class="fa-solid fa-hand-point-down" aria-hidden="true"></i><p class="pdvf-hint">Glissez ici les chevaliers invités.</p></div>
+      <table class="pdvf-table">
+        <thead><tr><th>Chevalier</th><th>Vêtements</th><th>Autres</th><th>Départ</th><th>Place</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="A"><img class="pdvf-mini-portrait" src="" alt="">Sire Avalloc</button></td>
+            <td><select name="system.guests.0.clothing"><option value="" selected>Niveau de vie (Ordinaire)</option><option value="destitute" >Démuni (-5)</option><option value="poor" >Pauvre (-3)</option><option value="ordinary" >Ordinaire (+1)</option><option value="rich" >Riche (+2)</option><option value="sumptuous" >Somptueux (+3)</option><option value="superlative" >Superlatif (+4)</option><option value="extravagant" >Extravagant (+5)</option><option value="opulent" >Opulent (+6)</option></select></td>
+            <td><input class="pdvf-num" type="number" name="system.guests.0.bonus" value="0" step="1" data-tooltip="Autres bonus d&#x27;Engouement de départ : tenue réussie au test de Mode, bijoux de famille, faveur…"></td>
+            <td class="num">+1</td>
+            <td><select name="system.guests.0.seat"><option value="" >—</option><option value="above" >Au-dessus du sel</option><option value="near" >Plus près du sel</option><option value="far" selected>Plus loin du sel</option><option value="floor" >Au sol</option><option value="floorFumble" >Au sol (échec critique)</option></select>
+              <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="resetSeat" data-index="0" data-tooltip="Effacer la place (nouveau test de Gloire)"><i class="fa-solid fa-rotate-left"></i></button></td>
+            <td><button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeGuest" data-index="0" aria-label="Supprimer">×</button></td>
+          </tr>
+          <tr>
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="B"><img class="pdvf-mini-portrait" src="" alt="">Sire Bran</button></td>
+            <td><select name="system.guests.1.clothing"><option value="" >Niveau de vie (Riche)</option><option value="destitute" >Démuni (-5)</option><option value="poor" >Pauvre (-3)</option><option value="ordinary" >Ordinaire (+1)</option><option value="rich" >Riche (+2)</option><option value="sumptuous" selected>Somptueux (+3)</option><option value="superlative" >Superlatif (+4)</option><option value="extravagant" >Extravagant (+5)</option><option value="opulent" >Opulent (+6)</option></select></td>
+            <td><input class="pdvf-num" type="number" name="system.guests.1.bonus" value="1" step="1" data-tooltip="Autres bonus d&#x27;Engouement de départ : tenue réussie au test de Mode, bijoux de famille, faveur…"></td>
+            <td class="num">+4</td>
+            <td><select name="system.guests.1.seat"><option value="" >—</option><option value="above" selected>Au-dessus du sel</option><option value="near" >Plus près du sel</option><option value="far" >Plus loin du sel</option><option value="floor" >Au sol</option><option value="floorFumble" >Au sol (échec critique)</option></select>
+              <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="resetSeat" data-index="1" data-tooltip="Effacer la place (nouveau test de Gloire)"><i class="fa-solid fa-rotate-left"></i></button></td>
+            <td><button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeGuest" data-index="1" aria-label="Supprimer">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <label class="pdvf-field"><span>Notes du MJ</span><textarea name="system.notes" rows="3"></textarea></label>
+    </section>
+
+
+
+  </div>
+</div>

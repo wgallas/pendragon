@@ -143,6 +143,19 @@ ICONS = {
                    + p("M32 17.6 Q26 17.8 20 20 L20 34 Q21 47 32 55 Z", LAPIS, stroke="none")
                    + p("M20 20 Q32 16 44 20 L44 34 Q43 47 32 55 Q21 47 20 34 Z", "none", stroke_width="1.4")
                    + p("M21.5 41 L32 29 L42.5 41 L42.5 46 L32 34.5 L21.5 46 Z", GOLD, stroke_width="0.9")),
+    # Festin : nappe de la table d'honneur, hanap d'or, salière et paon servi
+    "feast": (p("M6 40 L58 40 L54 50 L10 50 Z", CLOTH) + p("M10 50 L10 58 M54 50 L54 58", "none", stroke=WOOD, stroke_width="2.4")
+              + p("M14 43 L50 43", "none", stroke=VERM, stroke_width="1.2") + p("M16 46 L48 46", "none", stroke=LAPIS, stroke_width="0.8")
+              # hanap d'or à couvercle
+              + p("M12 38 L20 38 L18 35 L17.5 30 Q21 26 21 20 L11 20 Q11 26 14.5 30 L14 35 Z", GOLD) + p("M11 20 Q16 15 21 20", GOLD) + c(16, 15.6, 1.3, GOLD)
+              # salière d'argent
+              + p("M45 38 L53 38 L51.5 34 L50 28 L48 28 L46.5 34 Z", STEEL) + p("M46 28 Q49 24 52 28 Z", STEEL) + c(49, 23.6, 0.9, STEEL)
+              # plat et paon reconstitué
+              + p("M23 39 Q32 42 41 39 L40 37 L24 37 Z", STEEL)
+              + p("M25 37 Q24 28 31 27 Q34 21 33 14 Q35.5 11 37 13 L36 16 Q37.5 24 35 29 Q40 31 39 37 Z", LAPIS)
+              + p("M37 13 L39.5 12.6 L37.4 14.2 Z", GOLD) + p("M34.5 11.5 L34 8.5 M35.5 11.2 L36 8.4 M36.5 11.6 L38 9", "none", stroke=GOLD, stroke_width="0.7")
+              + p("M26 36 Q22 25 26 19 Q28 25 29.5 30 Z", GREEN, stroke_width="0.9")
+              + c(26.2, 22.5, 1.1, GOLD, stroke="none") + c(27.5, 27, 1, GOLD, stroke="none") + c(35.6, 13.4, 0.45, INK, stroke="none")),
     # Rencontre de bataille (adversaire) : épées croisées
     "encounter": sword(40) + sword(-40),
     # Rencontre de bataille (occasion de Gloire) : couronne de laurier et étoile

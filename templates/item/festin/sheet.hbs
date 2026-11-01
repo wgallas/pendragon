@@ -1,0 +1,170 @@
+<div class="pdvf-battle pdvf-tournament pdvf-feast">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="{{feast.img}}" alt="">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">{{feast.name}}</h1>
+      <div class="pdvf-line1">
+        {{#if system.year}}{{system.year}} · {{/if}}{{#if system.place}}{{system.place}} · {{/if}}{{#if system.host}}{{system.host}} · {{/if}}{{sizeLabel}} · {{roundLabel}}
+        {{#if tournament}} · <button type="button" class="pdvf-link" data-action="openTournament"><i class="fa-solid fa-chess-knight"></i> {{localize "PDVF.Feast.OpenTournament"}}</button>{{/if}}
+      </div>
+    </div>
+    {{#if isGM}}<div class="pdvf-battle-tools"><button type="button" class="pdvf-btn pdvf-mini" data-action="show" data-tooltip="{{localize 'PDVF.Feast.ShowTip'}}"><i class="fa-solid fa-eye"></i> {{localize "PDVF.Battle.Show"}}</button></div>{{/if}}
+  </header>
+
+  <nav class="pdvf-battle-tabs" aria-label="{{localize 'PDVF.Feast.Title'}}">
+    {{#each tabs}}
+    <button type="button" class="pdvf-battle-tab {{#if active}}active{{/if}}" data-action="feastTab" data-tab="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">{{label}}</button>
+    {{/each}}
+  </nav>
+
+  <div class="pdvf-battle-body">
+
+  {{!-- ============================ PRÉPARATION (MJ) ============================ --}}
+  {{#if tabIs.prep}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Feast.Section.general"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Year"}}</span><input type="number" name="system.year" value="{{system.year}}" step="1"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Place"}}</span><input type="text" name="system.place" value="{{system.place}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Feast.Host"}}</span><input type="text" name="system.host" value="{{system.host}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Feast.SizeLabel"}}</span>
+          <select name="system.size">{{#each sizeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Feast.Rounds"}}</span><input type="number" name="system.rounds" value="{{system.rounds}}" min="1" max="12" step="1"></label>
+        {{#each dishes}}
+        <label class="pdvf-field"><span>{{label}}</span><input type="text" name="system.dishes.{{index}}" value="{{value}}"></label>
+        {{/each}}
+      </div>
+      <p class="pdvf-hint">{{localize "PDVF.Feast.SizeHint"}} {{thresholdHint}}</p>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Feast.Section.guests"}}</h3>
+      <div class="pdvf-drop-zone"><i class="fa-solid fa-hand-point-down" aria-hidden="true"></i><p class="pdvf-hint">{{localize "PDVF.Feast.DropGuests"}}</p></div>
+      {{#if hasGuests}}
+      <table class="pdvf-table">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Feast.Clothing.label"}}</th><th>{{localize "PDVF.Feast.OtherBonus"}}</th><th>{{localize "PDVF.Feast.Start"}}</th><th>{{localize "PDVF.Feast.SeatLabel"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each guests}}
+          <tr>
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="{{uuid}}"><img class="pdvf-mini-portrait" src="{{img}}" alt="">{{name}}</button>{{#if st.romantic}} <i class="fa-solid fa-heart" aria-hidden="true" data-tooltip="{{localize 'PDVF.Feast.RomanticTip'}}"></i>{{/if}}</td>
+            <td><select name="system.guests.{{index}}.clothing">{{#each clothingChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+            <td><input class="pdvf-num" type="number" name="system.guests.{{index}}.bonus" value="{{bonus}}" step="1" data-tooltip="{{localize 'PDVF.Feast.OtherBonusTip'}}"></td>
+            <td class="num">{{startLabel}}</td>
+            <td><select name="system.guests.{{index}}.seat">{{#each seatChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+              <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="resetSeat" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Feast.ResetSeat'}}"><i class="fa-solid fa-rotate-left"></i></button></td>
+            <td><button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeGuest" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+      <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
+    </section>
+  {{/if}}
+
+  {{!-- ============================ PLACEMENT ============================ --}}
+  {{#if tabIs.seating}}
+    {{#unless hasGuests}}<p class="pdvf-empty">{{localize "PDVF.Feast.NoGuests"}}</p>{{/unless}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Feast.Seating"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Feast.SeatingHint"}}</p>
+      <table class="pdvf-table">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Feast.GloryCol"}}</th><th>{{localize "PDVF.Feast.Start"}}</th><th>{{localize "PDVF.Feast.SeatLabel"}}</th><th>{{localize "PDVF.Feast.Honor"}}</th></tr></thead>
+        <tbody>
+          {{#each guests}}
+          <tr>
+            <td>{{name}}</td>
+            <td class="num">{{st.gloryTotal}}</td>
+            <td class="num">{{startLabel}}</td>
+            <td>{{#if seat}}<span class="pdvf-tag">{{seatLabel}} {{seatMod}}</span> <small class="pdvf-hint-inline">{{seatTestLabel}}</small>
+                {{#if canYield}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="yield" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Feast.YieldTip'}}"><i class="fa-solid fa-arrow-down"></i> {{localize "PDVF.Feast.Yield"}}</button>{{/if}}
+                {{#if yieldedLabel}}<small class="pdvf-hint-inline">{{localize "PDVF.Feast.Yield"}} : {{yieldedLabel}}</small>{{/if}}
+              {{else}}{{#if canSeat}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="seat" data-index="{{index}}"><i class="fa-solid fa-dice-d20"></i> {{#if needSecond}}{{localize "PDVF.Feast.SecondTest"}}{{else}}{{localize "PDVF.Feast.GloryTest"}}{{/if}}</button>{{else}}—{{/if}}{{/if}}</td>
+            <td>{{#if st.proudFamous}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Feast.ProudTip'}}">{{localize "PDVF.Feast.ProudFamous"}}</span>{{/if}}
+              {{#if slighted}}{{#if modestLabel}}<small class="pdvf-hint-inline">{{localize "PDVF.Trait.modest.left"}} : {{modestLabel}}</small>
+                {{else}}{{#if canModest}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="modest" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Feast.SlightedTip'}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Trait.modest.left"}}</button>{{else}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Feast.SlightedTip'}}">{{localize "PDVF.Feast.Slighted"}}</span>{{/if}}{{/if}}{{/if}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </section>
+  {{/if}}
+
+  {{!-- ============================ TOURS ============================ --}}
+  {{#if tabIs.rounds}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{roundLabel}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Feast.RoundsHint"}}</p>
+      {{#if isGM}}{{#unless over}}<p><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="nextRound"><i class="fa-solid fa-utensils"></i> {{#if started}}{{localize "PDVF.Feast.NextRound"}}{{else}}{{localize "PDVF.Feast.FirstRound"}}{{/if}}</button></p>{{/unless}}{{/if}}
+      {{#each guests}}
+      <div class="pdvf-tournament-knight pdvf-feast-guest {{#unless present}}left{{/unless}}">
+        <h4 class="pdvf-h4">{{name}} {{#if seat}}<small class="pdvf-hint-inline">{{seatLabel}}</small>{{/if}}</h4>
+        <div class="pdvf-feast-stats">
+          <span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Feast.EngouementTip'}}">{{localize "PDVF.Feast.Engouement"}} {{engLabel}}</span>
+          <span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Feast.AttTip'}}">{{localize "PDVF.Feast.AttTotal"}} {{st.att}}</span>
+          <span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Feast.CardsTip'}}"><i class="fa-solid fa-clone"></i> {{st.cards}}</span>
+          <span class="pdvf-hint-inline">{{localize "PDVF.Feast.Gained"}} {{accLabel}}</span>
+        </div>
+        {{#if leftLabel}}<p class="pdvf-hint">{{leftLabel}}</p>{{/if}}
+        {{#if roundAction}}<p class="pdvf-feast-action"><i class="fa-solid fa-check"></i> {{roundAction}}</p>{{/if}}
+        <div class="pdvf-inline">
+          {{#if canAct}}
+            <button type="button" class="pdvf-btn pdvf-mini pdvf-btn-primary" data-action="player" data-op="card" data-index="{{index}}"><i class="fa-solid fa-clone"></i> {{localize "PDVF.Feast.PlayCard"}}</button>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="activity" data-index="{{index}}"><i class="fa-solid fa-wine-glass"></i> {{localize "PDVF.Feast.OtherActivity"}}</button>
+          {{/if}}
+          {{#if mine}}{{#if present}}{{#if @root.started}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="courtTest" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Feast.CourtTestTip'}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Feast.CourtTest"}}</button>{{/if}}{{/if}}{{/if}}
+          {{#if canLeave}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="leave" data-index="{{index}}"><i class="fa-solid fa-door-open"></i> {{localize "PDVF.Feast.Leave"}}</button>{{/if}}
+        </div>
+        {{#if @root.isGM}}
+        <div class="pdvf-inline" data-group="adjust">
+          <input class="pdvf-num" type="number" name="mod" value="0" step="1" aria-label="{{localize 'PDVF.Feast.Engouement'}}">
+          <input type="text" name="label" placeholder="{{localize 'PDVF.Feast.AdjustLabel'}}">
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="adjust" data-index="{{index}}">{{localize "PDVF.Feast.Adjust"}}</button>
+          {{#if entries.length}}<button type="button" class="pdvf-icon-btn" data-action="gm" data-op="undoEntry" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Feast.UndoEntry'}}"><i class="fa-solid fa-rotate-left"></i></button>{{/if}}
+        </div>
+        {{/if}}
+        {{#if entries.length}}
+        <details><summary>{{localize "PDVF.Feast.Entries"}}</summary>
+          <ul class="pdvf-tournament-tests">{{#each entries}}<li>{{localize "PDVF.Tournament.RoundShort"}} {{round}} — {{kindLabel}} : {{label}}{{#if outcomeLabel}} ({{outcomeLabel}}){{/if}}{{#unless reset}} <strong>{{modLabel}}</strong>{{else}} <strong>{{localize "PDVF.Feast.ResetShort"}}</strong>{{/unless}}</li>{{/each}}</ul>
+        </details>
+        {{/if}}
+      </div>
+      {{/each}}
+    </section>
+  {{/if}}
+
+  {{!-- ============================ GLOIRE ============================ --}}
+  {{#if tabIs.results}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Feast.Section.glory"}}</h3>
+      <table class="pdvf-table">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Char.app.abbr"}}</th><th>{{localize "PDVF.Feast.Gained"}}</th><th>{{localize "PDVF.Feast.Attended"}}</th><th>{{localize "PDVF.Feast.Col.base"}}</th><th>{{localize "PDVF.Feast.Col.bonus"}}</th><th>{{localize "PDVF.Feast.Col.extra"}}</th><th>{{localize "PDVF.Tournament.Col.total"}}</th><th>{{localize "PDVF.Tournament.Col.inscribed"}}</th></tr></thead>
+        <tbody>
+          {{#each guests}}
+          <tr>
+            <td>{{name}}{{#if result.best}} <i class="fa-solid fa-star" data-tooltip="{{localize 'PDVF.Feast.BestTip'}}"></i>{{/if}}</td>
+            <td class="num">{{st.app}}</td>
+            <td class="num">{{accLabel}}</td>
+            <td class="num">{{st.attended}}</td>
+            <td class="num">{{result.base}}</td>
+            <td class="num">{{result.bonus}}</td>
+            <td class="num">{{result.extra}}</td>
+            <td class="num"><strong>{{result.total}}</strong></td>
+            <td class="num">{{inscribed}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <p class="pdvf-hint">{{localize "PDVF.Feast.GloryHint"}} {{thresholdHint}}</p>
+      {{#if isGM}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="inscribe" {{#unless totals.due}}disabled{{/unless}}><i class="fa-solid fa-feather"></i> {{localize "PDVF.Feast.Inscribe"}} ({{totals.due}})</button>{{/if}}
+    </section>
+
+    {{#if log.length}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.log"}}</h3>
+      <ul class="pdvf-card-notes">{{#each log}}<li>{{this}}</li>{{/each}}</ul>
+    </section>
+    {{/if}}
+  {{/if}}
+  </div>
+</div>

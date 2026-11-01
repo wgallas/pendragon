@@ -79,6 +79,8 @@ export class TournoiData extends foundry.abstract.TypeDataModel {
         }))
       }),
       melee: new fields.SchemaField({ battle: str("") }),
+      // Festin du soir (objet « Festin » lié)
+      feast: str(""),
       knights: new fields.ArrayField(new fields.SchemaField({
         uuid: str(""),
         melee: bool(true),

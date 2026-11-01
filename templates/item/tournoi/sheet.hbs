@@ -188,6 +188,13 @@
     </section>
 
     <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Feast.Evening"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Feast.EveningHint"}}</p>
+      {{#if feast.exists}}<button type="button" class="pdvf-btn" data-action="openFeast"><i class="fa-solid fa-utensils"></i> {{localize "PDVF.Feast.OpenEvening"}}</button>
+      {{else}}{{#if isGM}}<button type="button" class="pdvf-btn" data-action="gm" data-op="createFeast" {{#unless hasKnights}}disabled{{/unless}}><i class="fa-solid fa-utensils"></i> {{localize "PDVF.Feast.CreateEvening"}}</button>{{else}}<p class="pdvf-hint">—</p>{{/if}}{{/if}}
+    </section>
+
+    <section class="pdvf-battle-section">
       <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.challenges"}}</h3>
       <p class="pdvf-hint">{{localize "PDVF.Tournament.ChallengeHint"}}</p>
       {{#if isGM}}

@@ -84,6 +84,7 @@ export function tournamentView(tournament) {
       currentMatches: matches.filter(m => m.current), pastMatches: matches.filter(m => !m.current).reverse(),
       anyOpen: matches.some(m => m.open) },
     melee: { battle: s.melee.battle, exists: !!s.melee.battle },
+    feast: { exists: !!s.feast },
     courtSkillChoices: cfg.courtSkills.map(id => ({ value: id, label: L(`PDVF.Skill.${id}`) })),
     challenges: s.challenges.map(c => ({ ...c, skillLabel: L(`PDVF.Skill.${c.skill}`) })).reverse(),
     prizes: s.prizes.map(p => ({ ...p, label: L(`PDVF.Tournament.Prize.${p.r}`) })),
@@ -118,6 +119,7 @@ export class TournoiSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       player: TournoiSheet.#onPlayer,
       openActor: TournoiSheet.#onOpenActor,
       openMelee: TournoiSheet.#onOpenMelee,
+      openFeast: TournoiSheet.#onOpenFeast,
       show: TournoiSheet.#onShow
     }
   };
@@ -160,6 +162,8 @@ export class TournoiSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   _processFormData(event, form, formData) {
     const data = super._processFormData(event, form, formData);
+    // Champs de travail des boutons (data-group) : pas des données du document.
+    for (const k of Object.keys(data)) if (!["name", "img", "system"].includes(k)) delete data[k];
     // Nombres vides : null (NDT imposé, année)
     for (const k of ["system.difficulty.override", "system.year"]) {
       if (foundry.utils.getProperty(data, k) === "") foundry.utils.setProperty(data, k, null);
@@ -205,5 +209,6 @@ export class TournoiSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   static #onOpenActor(event, target) { fromUuid(target.dataset.uuid).then(a => a?.sheet?.render(true)); }
   static #onOpenMelee() { if (this.document.system.melee.battle) fromUuid(this.document.system.melee.battle).then(b => b?.sheet?.render(true)); }
+  static #onOpenFeast() { if (this.document.system.feast) fromUuid(this.document.system.feast).then(f => f?.sheet?.render(true)); }
   static #onShow() { showToPlayers(this.document); }
 }

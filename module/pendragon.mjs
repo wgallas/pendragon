@@ -33,6 +33,9 @@ import { TournoiData } from "./data/tournoi.mjs";
 import { TournoiSheet } from "./sheets/tournoi-sheet.mjs";
 import * as tournamentEngine from "./tournament/engine.mjs";
 import * as tournamentClient from "./tournament/client.mjs";
+import { FestinData } from "./data/festin.mjs";
+import { FestinSheet } from "./sheets/festin-sheet.mjs";
+import * as feastEngine from "./feast/engine.mjs";
 import { RencontreSheet } from "./sheets/rencontre-sheet.mjs";
 import * as battleEngine from "./battle/engine.mjs";
 import * as battleClient from "./battle/client.mjs";
@@ -63,6 +66,7 @@ Hooks.once("init", () => {
   CONFIG.Item.documentClass = PendragonItem;
   CONFIG.Item.dataModels.bataille = BatailleData;
   CONFIG.Item.dataModels.tournoi = TournoiData;
+  CONFIG.Item.dataModels.festin = FestinData;
   CONFIG.Item.dataModels.rencontre = RencontreData;
   CONFIG.Item.dataModels.arme = ArmeData;
   CONFIG.Item.dataModels.armure = ArmureData;
@@ -203,6 +207,11 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "PDVF.SheetLabel.tournoi"
   });
+  DSC.registerSheet(Item, SYSTEM_ID, FestinSheet, {
+    types: ["festin"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.festin"
+  });
   DSC.registerSheet(Item, SYSTEM_ID, RencontreSheet, {
     types: ["rencontre"],
     makeDefault: true,
@@ -250,6 +259,7 @@ Hooks.on("updateActor", (actor) => {
 Hooks.once("ready", async () => {
   game.socket.on(battleEngine.SOCKET, battleEngine.onSocket);
   game.socket.on(tournamentEngine.SOCKET, tournamentEngine.onSocket);
+  game.socket.on(feastEngine.SOCKET, feastEngine.onSocket);
   game.socket.on(winterEngine.SOCKET, winterGm.onWinterSocket);
   game.socket.on(battleEngine.SOCKET, combatExchange.onCombatSocket);
   winterGm.openOwnWizards();

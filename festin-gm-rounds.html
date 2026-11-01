@@ -1,0 +1,78 @@
+<div class="pdvf-battle pdvf-tournament pdvf-feast">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="" alt="">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">Festin de la Pentecôte</h1>
+      <div class="pdvf-line1">
+        520 · Sarum · Comte Robert · Festin moyen · Tour de festin 2 / 3
+         · <button type="button" class="pdvf-link" data-action="openTournament"><i class="fa-solid fa-chess-knight"></i> Tournoi</button>
+      </div>
+    </div>
+    <div class="pdvf-battle-tools"><button type="button" class="pdvf-btn pdvf-mini" data-action="show" data-tooltip="Ouvre le festin chez tous les joueurs."><i class="fa-solid fa-eye"></i> Montrer</button></div>
+  </header>
+
+  <nav class="pdvf-battle-tabs" aria-label="Festin">
+  </nav>
+
+  <div class="pdvf-battle-body">
+
+
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">Tour de festin 2 / 3</h3>
+      <p class="pdvf-hint">À chaque tour, la place rapporte son Engouement. Chaque joueur tire ensuite ses cartes d&#x27;évènement (autant que l&#x27;indique la fiche ; la dernière tirée doit être jouée ; une carte d&#x27;hôte se joue aussitôt) et note celle qu&#x27;il joue, ou choisit une autre activité de cour. Après le premier tour, on peut demander congé (Courtoisie).</p>
+      <p><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="nextRound"><i class="fa-solid fa-utensils"></i> Tour suivant</button></p>
+      <div class="pdvf-tournament-knight pdvf-feast-guest ">
+        <h4 class="pdvf-h4">Sire Avalloc <small class="pdvf-hint-inline">Plus loin du sel</small></h4>
+        <div class="pdvf-feast-stats">
+          <span class="pdvf-tag" data-tooltip="Engouement actuel : départ, places et évènements ; jamais plus que l&#x27;ATT. S&#x27;ajoute à l&#x27;ATT et aux compétences de cour.">Engouement +4</span>
+          <span class="pdvf-tag" data-tooltip="ATT + Engouement + notoriété (Table 3.4).">ATT totale 17</span>
+          <span class="pdvf-tag" data-tooltip="Cartes d&#x27;évènement que l&#x27;on peut tirer ce tour (Table 3.5)."><i class="fa-solid fa-clone"></i> 3</span>
+          <span class="pdvf-hint-inline">Gagné +3</span>
+        </div>
+        
+        
+        <div class="pdvf-inline">
+            <button type="button" class="pdvf-btn pdvf-mini pdvf-btn-primary" data-action="player" data-op="card" data-index="0"><i class="fa-solid fa-clone"></i> Jouer une carte</button>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="activity" data-index="0"><i class="fa-solid fa-wine-glass"></i> Autre activité</button>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="courtTest" data-index="0" data-tooltip="Test d&#x27;ATT ou d&#x27;une compétence de cour avec l&#x27;Engouement (pour les tests demandés par une carte)."><i class="fa-solid fa-dice-d20"></i> Test de cour</button>
+          
+        </div>
+        <div class="pdvf-inline" data-group="adjust">
+          <input class="pdvf-num" type="number" name="mod" value="0" step="1" aria-label="Engouement">
+          <input type="text" name="label" placeholder="Raison (carte d&#x27;un autre, carte conservée…)">
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="adjust" data-index="0">Ajuster</button>
+          <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="undoEntry" data-index="0" data-tooltip="Annuler la dernière écriture"><i class="fa-solid fa-rotate-left"></i></button>
+        </div>
+        <details><summary>Engouement, tour par tour</summary>
+          <ul class="pdvf-tournament-tests"><li>Tour 1 — Place : Plus loin du sel <strong>0</strong></li><li>Tour 1 — Carte : Chanson <strong>+3</strong></li><li>Tour 2 — Place : Plus loin du sel <strong>0</strong></li></ul>
+        </details>
+      </div>
+      <div class="pdvf-tournament-knight pdvf-feast-guest left">
+        <h4 class="pdvf-h4">Sire Bran <small class="pdvf-hint-inline">Au-dessus du sel</small></h4>
+        <div class="pdvf-feast-stats">
+          <span class="pdvf-tag" data-tooltip="Engouement actuel : départ, places et évènements ; jamais plus que l&#x27;ATT. S&#x27;ajoute à l&#x27;ATT et aux compétences de cour.">Engouement +6</span>
+          <span class="pdvf-tag" data-tooltip="ATT + Engouement + notoriété (Table 3.4).">ATT totale 21</span>
+          <span class="pdvf-tag" data-tooltip="Cartes d&#x27;évènement que l&#x27;on peut tirer ce tour (Table 3.5)."><i class="fa-solid fa-clone"></i> 4</span>
+          <span class="pdvf-hint-inline">Gagné +2</span>
+        </div>
+        <p class="pdvf-hint">Parti après le tour 1.</p>
+        
+        <div class="pdvf-inline">
+          
+          
+        </div>
+        <div class="pdvf-inline" data-group="adjust">
+          <input class="pdvf-num" type="number" name="mod" value="0" step="1" aria-label="Engouement">
+          <input type="text" name="label" placeholder="Raison (carte d&#x27;un autre, carte conservée…)">
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="adjust" data-index="1">Ajuster</button>
+          <button type="button" class="pdvf-icon-btn" data-action="gm" data-op="undoEntry" data-index="1" data-tooltip="Annuler la dernière écriture"><i class="fa-solid fa-rotate-left"></i></button>
+        </div>
+        <details><summary>Engouement, tour par tour</summary>
+          <ul class="pdvf-tournament-tests"><li>Tour 1 — Place : Au-dessus du sel <strong>+2</strong></li><li>Tour 1 — Activité : Flirter (Succès) <strong>0</strong></li></ul>
+        </details>
+      </div>
+    </section>
+
+  </div>
+</div>

@@ -1530,3 +1530,25 @@
 .pendragon-vf .pdvf-companions-exam li.ok .pdvf-ideal-check-value { color: var(--pdvf-green); font-weight: 600; }
 .pendragon-vf .pdvf-hazard-note { margin: 2px 0; }
 .pendragon-vf .pdvf-hazard-note .fa-solid { color: var(--pdvf-lapis); }
+
+/* -------------------------------------------- */
+/*  Tournois                                     */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-tournament-facts { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 18px; font-size: 14px; }
+.pendragon-vf .pdvf-tournament-facts li { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--pdvf-rule); }
+.pendragon-vf .pdvf-tournament-facts span { color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-joust-match { border: 1px solid var(--pdvf-rule); border-left: 4px solid var(--pdvf-lapis); background: var(--pdvf-parchment-light); padding: 6px 10px; margin: 0 0 8px; }
+.pendragon-vf .pdvf-joust-match.done { border-left-color: var(--pdvf-gold); }
+.pendragon-vf .pdvf-joust-sides { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: center; margin-bottom: 4px; }
+.pendragon-vf .pdvf-joust-side { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pendragon-vf .pdvf-joust-side:last-child { justify-content: flex-end; }
+.pendragon-vf .pdvf-joust-vs { font-family: var(--pdvf-font-heading); color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-joust-lances { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-joust-result { margin: 2px 0; }
+.pendragon-vf .pdvf-joust-result .fa-trophy { color: var(--pdvf-gold); }
+.pendragon-vf .pdvf-joust-past ul { margin: 4px 0; padding-left: 18px; font-size: 14px; }
+.pendragon-vf .pdvf-tournament-knight { border-bottom: 1px dotted var(--pdvf-rule); padding: 4px 0 8px; }
+.pendragon-vf .pdvf-tournament-knight .pdvf-h4 { margin: 2px 0; }
+.pendragon-vf .pdvf-tournament-side { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 4px; }
+.pendragon-vf .pdvf-tournament-tests { margin: 4px 0; padding-left: 18px; font-size: 14px; }
+.pendragon-vf .pdvf-tournament .pdvf-table .pdvf-check { font-size: 13px; margin-left: 6px; }

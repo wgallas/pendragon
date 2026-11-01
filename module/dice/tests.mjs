@@ -210,7 +210,8 @@ export async function rollAttribute(actor, key, options = {}) {
     await maybeXp(a, k);
     view.notes.push(F("PDVF.Card.XpMarked", { name: a.name, label: a.getRollable(k)?.label ?? "" }));
   }
-  return postCard(actor, view, rolls, { key, kind: rollable.kind, outcome: result.outcome });
+  return postCard(actor, view, rolls, { key, kind: rollable.kind, outcome: result.outcome,
+    result: { die: result.die, adjusted: result.adjusted, outcome: result.outcome, success: result.success, total: result.total } });
 }
 
 /**

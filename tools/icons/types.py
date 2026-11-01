@@ -134,6 +134,15 @@ ICONS = {
                + line(43.4, 9.1, 35.8, 23.5, stroke=WOOD, stroke_width="2.4") + line(20.6, 9.1, 28.2, 23.5, stroke=WOOD, stroke_width="2.4")
                + c(44, 7, 1.8, GOLD) + c(20, 7, 1.8, GOLD)
                + p("M48 14.6 L51 17.6 L48 20.6 L45 17.6 Z", GOLD) + p("M16 14.6 L19 17.6 L16 20.6 L13 17.6 Z", GOLD)),
+    # Tournoi : deux lances de joute croisées à couronnel, derrière un écu parti d'azur et de gueules à chevron d'or
+    "tournament": (line(10, 58, 50, 9, stroke=WOOD, stroke_width="2.6") + line(54, 58, 14, 9, stroke=WOOD, stroke_width="2.6")
+                   + p("M48 8 L53.5 6 L52 11.5 Z", STEEL) + p("M16 8 L10.5 6 L12 11.5 Z", STEEL)
+                   + p("M11 56 L14.5 52 L17 55 Z", VERM) + p("M53 56 L49.5 52 L47 55 Z", LAPIS)
+                   + p("M20 20 Q32 16 44 20 L44 34 Q43 47 32 55 Q21 47 20 34 Z", PARCH, stroke_width="1.4")
+                   + p("M32 17.6 Q38 17.8 44 20 L44 34 Q43 47 32 55 Z", VERM, stroke="none")
+                   + p("M32 17.6 Q26 17.8 20 20 L20 34 Q21 47 32 55 Z", LAPIS, stroke="none")
+                   + p("M20 20 Q32 16 44 20 L44 34 Q43 47 32 55 Q21 47 20 34 Z", "none", stroke_width="1.4")
+                   + p("M21.5 41 L32 29 L42.5 41 L42.5 46 L32 34.5 L21.5 46 Z", GOLD, stroke_width="0.9")),
     # Rencontre de bataille (adversaire) : épées croisées
     "encounter": sword(40) + sword(-40),
     # Rencontre de bataille (occasion de Gloire) : couronne de laurier et étoile

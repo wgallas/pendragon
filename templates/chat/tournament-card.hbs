@@ -1,0 +1,18 @@
+<div class="pdvf-card pdvf-battle-card pdvf-tournament-card">
+  <header class="pdvf-card-header">
+    <h3 class="pdvf-card-title">{{title}}</h3>
+    {{#if subtitle}}<div class="pdvf-card-subtitle">{{subtitle}}</div>{{/if}}
+  </header>
+  {{#if lines.length}}
+  <ul class="pdvf-card-notes">
+    {{#each lines}}<li>{{this}}</li>{{/each}}
+  </ul>
+  {{/if}}
+  {{#if buttons.length}}
+  <div class="pdvf-card-buttons">
+    {{#each buttons}}
+    <button type="button" data-pdvf-tournament="{{action}}" data-tournament="{{../tournament}}">{{label}}</button>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

@@ -29,6 +29,10 @@ import { migrateDefaultIcons } from "./documents/icons.mjs";
 import { BatailleData } from "./data/bataille.mjs";
 import { RencontreData } from "./data/rencontre.mjs";
 import { BatailleSheet } from "./sheets/bataille-sheet.mjs";
+import { TournoiData } from "./data/tournoi.mjs";
+import { TournoiSheet } from "./sheets/tournoi-sheet.mjs";
+import * as tournamentEngine from "./tournament/engine.mjs";
+import * as tournamentClient from "./tournament/client.mjs";
 import { RencontreSheet } from "./sheets/rencontre-sheet.mjs";
 import * as battleEngine from "./battle/engine.mjs";
 import * as battleClient from "./battle/client.mjs";
@@ -58,6 +62,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.dataModels.cheval = ChevalData;
   CONFIG.Item.documentClass = PendragonItem;
   CONFIG.Item.dataModels.bataille = BatailleData;
+  CONFIG.Item.dataModels.tournoi = TournoiData;
   CONFIG.Item.dataModels.rencontre = RencontreData;
   CONFIG.Item.dataModels.arme = ArmeData;
   CONFIG.Item.dataModels.armure = ArmureData;
@@ -193,6 +198,11 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "PDVF.SheetLabel.bataille"
   });
+  DSC.registerSheet(Item, SYSTEM_ID, TournoiSheet, {
+    types: ["tournoi"],
+    makeDefault: true,
+    label: "PDVF.SheetLabel.tournoi"
+  });
   DSC.registerSheet(Item, SYSTEM_ID, RencontreSheet, {
     types: ["rencontre"],
     makeDefault: true,
@@ -239,6 +249,7 @@ Hooks.on("updateActor", (actor) => {
 // socket du système (demandes des joueurs pendant une bataille).
 Hooks.once("ready", async () => {
   game.socket.on(battleEngine.SOCKET, battleEngine.onSocket);
+  game.socket.on(tournamentEngine.SOCKET, tournamentEngine.onSocket);
   game.socket.on(winterEngine.SOCKET, winterGm.onWinterSocket);
   game.socket.on(battleEngine.SOCKET, combatExchange.onCombatSocket);
   winterGm.openOwnWizards();
@@ -253,6 +264,7 @@ Hooks.once("ready", async () => {
 Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMessage(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => combatExchange.onRenderCombatCard(message, html));
+Hooks.on("renderChatMessageHTML", (message, html) => tournamentClient.onRenderChatMessage(message, html));
 
 // Domaines : rang du chevalier et Gloire du titre quand il en reçoit un
 Hooks.on("createItem", (item, options, userId) => domains.onDomainCreated(item, options, userId));

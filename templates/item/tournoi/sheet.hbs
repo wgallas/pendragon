@@ -1,0 +1,249 @@
+<div class="pdvf-battle pdvf-tournament">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="{{tournament.img}}" alt="">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">{{tournament.name}}</h1>
+      <div class="pdvf-line1">
+        {{#if system.year}}{{system.year}} · {{/if}}{{#if system.place}}{{system.place}} · {{/if}}{{sizeLabel}}
+        · {{localize (concat "PDVF.Tournament.Stakes." system.stakes)}}
+        · {{localize "PDVF.Tournament.Ndt"}} {{ndtLabel}}
+      </div>
+    </div>
+    {{#if isGM}}<div class="pdvf-battle-tools"><button type="button" class="pdvf-btn pdvf-mini" data-action="show" data-tooltip="{{localize 'PDVF.Tournament.ShowTip'}}"><i class="fa-solid fa-eye"></i> {{localize "PDVF.Battle.Show"}}</button></div>{{/if}}
+  </header>
+
+  <nav class="pdvf-battle-tabs" aria-label="{{localize 'PDVF.Tournament.Title'}}">
+    {{#each tabs}}
+    <button type="button" class="pdvf-battle-tab {{#if active}}active{{/if}}" data-action="tournamentTab" data-tab="{{id}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">{{label}}</button>
+    {{/each}}
+  </nav>
+
+  <div class="pdvf-battle-body">
+
+  {{!-- ============================ PRÉPARATION (MJ) ============================ --}}
+  {{#if tabIs.prep}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.general"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Year"}}</span><input type="number" name="system.year" value="{{system.year}}" step="1"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Place"}}</span><input type="text" name="system.place" value="{{system.place}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Host"}}</span><input type="text" name="system.host" value="{{system.host}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Lady"}}</span><input type="text" name="system.lady" value="{{system.lady}}"></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.SizeLabel"}}</span>
+          <span class="pdvf-inline"><select name="system.size">{{#each sizeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="rollSize" data-tooltip="{{localize 'PDVF.Tournament.SizeRollTip'}}"><i class="fa-solid fa-dice-d20"></i>{{#if sizeBonusLabel}} {{sizeBonusLabel}}{{/if}}</button></span></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.StakesLabel"}}</span>
+          <select name="system.stakes">{{#each stakesChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+        <label class="pdvf-check"><input type="checkbox" name="system.royalPresence" {{checked system.royalPresence}}> {{localize "PDVF.Tournament.RoyalPresence"}}</label>
+      </div>
+      <ul class="pdvf-tournament-facts">{{#each facts}}<li><span>{{label}}</span> <strong>{{value}}</strong></li>{{/each}}</ul>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.difficulty"}}</h3>
+      <div class="pdvf-battle-grid four">
+        <div class="pdvf-field"><span>{{localize "PDVF.Tournament.NdtBase"}}</span><strong class="pdvf-big">{{#if ndtBase}}{{ndtBase}}{{else}}—{{/if}}</strong></div>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.NdtMod"}}</span>
+          <span class="pdvf-inline"><input type="number" name="system.difficulty.mod" value="{{system.difficulty.mod}}" step="5">
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="rollDifficulty" data-tooltip="{{localize 'PDVF.Tournament.DifficultyRollTip'}}"><i class="fa-solid fa-dice-d20"></i></button></span></label>
+        <label class="pdvf-field"><span>{{localize "PDVF.Tournament.NdtOverride"}}</span><input type="number" name="system.difficulty.override" value="{{system.difficulty.override}}" step="1" placeholder="{{localize 'PDVF.Tournament.Auto'}}"></label>
+        <div class="pdvf-field"><span>{{localize "PDVF.Tournament.Ndt"}}</span><strong class="pdvf-big">{{ndtLabel}}</strong></div>
+      </div>
+      {{#if causeLabel}}<p class="pdvf-hint">{{causeLabel}}</p>{{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.NdtHint"}}</p>
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.knights"}}</h3>
+      <div class="pdvf-drop-zone"><i class="fa-solid fa-hand-point-down" aria-hidden="true"></i><p class="pdvf-hint">{{localize "PDVF.Tournament.DropKnights"}}</p></div>
+      {{#if hasKnights}}
+      <table class="pdvf-table">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Skill.charge"}}</th><th>{{localize "PDVF.Tournament.Event.melee"}}</th><th>{{localize "PDVF.Tournament.Event.joust"}}</th><th>{{localize "PDVF.Tournament.Favor"}}</th><th></th></tr></thead>
+        <tbody>
+          {{#each knights}}
+          <tr>
+            <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="{{uuid}}"><img class="pdvf-mini-portrait" src="{{img}}" alt="">{{name}}</button></td>
+            <td class="num">{{charge}}</td>
+            <td><input type="checkbox" name="system.knights.{{index}}.melee" {{checked melee}}></td>
+            <td><input type="checkbox" name="system.knights.{{index}}.joust" {{checked joust}}></td>
+            <td><input type="checkbox" name="system.knights.{{index}}.favor" {{checked favor}} data-tooltip="{{localize 'PDVF.Tournament.FavorTip'}}">{{#if romantic}} <i class="fa-solid fa-heart" aria-hidden="true" data-tooltip="{{localize 'PDVF.Ideal.romantic.name'}}"></i>{{/if}}</td>
+            <td><button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeKnight" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{/if}}
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Event.joust"}}</h3>
+      <div class="pdvf-checks">
+        <label class="pdvf-check"><input type="checkbox" name="system.joust.enabled" {{checked system.joust.enabled}}> {{localize "PDVF.Tournament.JoustEnabled"}}</label>
+        <label class="pdvf-check"><input type="checkbox" name="system.joust.barrier" {{checked system.joust.barrier}}> {{localize "PDVF.Tournament.Barrier"}}</label>
+      </div>
+      {{#unless joust.periodOk}}<p class="pdvf-hint">{{localize "PDVF.Tournament.NoJoustYet"}}</p>{{/unless}}
+      <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Notes"}}</span><textarea name="system.notes" rows="3">{{system.notes}}</textarea></label>
+    </section>
+  {{/if}}
+
+  {{!-- ============================ ÉPREUVES ============================ --}}
+  {{#if tabIs.events}}
+    {{#unless hasKnights}}<p class="pdvf-empty">{{localize "PDVF.Tournament.NoKnights"}}</p>{{/unless}}
+
+    {{!-- Procédure abrégée --}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.abridged"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.AbridgedHint"}}</p>
+      <table class="pdvf-table">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Tournament.Event.melee"}}</th><th>{{localize "PDVF.Tournament.Event.joust"}}</th><th>{{localize "PDVF.Tournament.Hp"}}</th></tr></thead>
+        <tbody>
+          {{#each knights}}
+          <tr>
+            <td>{{name}}</td>
+            <td>{{#if abMelee.done}}<span class="pdvf-tag">{{abMelee.row}}</span> {{abMelee.skill}} · {{abMelee.glory}} G{{#if abMelee.damage}} · −{{abMelee.damage}} PV{{/if}}
+              {{else}}{{#if melee}}{{#if mine}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="abridged" data-event="melee" data-index="{{index}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Tournament.RollAbridged"}}</button>{{else}}—{{/if}}{{else}}—{{/if}}{{/if}}</td>
+            <td>{{#if abJoust.done}}<span class="pdvf-tag">{{abJoust.row}}</span> {{abJoust.glory}} G{{#if abJoust.damage}} · −{{abJoust.damage}} PV{{/if}}
+              {{else}}{{#if joust}}{{#if mine}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="abridged" data-event="joust" data-index="{{index}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Tournament.RollAbridged"}}</button>{{else}}—{{/if}}{{else}}—{{/if}}{{/if}}</td>
+            <td class="num">{{hp}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </section>
+
+    {{!-- Joute passe par passe --}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.joust"}} {{#if joust.round}}<small>{{localize "PDVF.Tournament.RoundOf"}} {{joust.round}} / {{joust.rounds}}</small>{{/if}}</h3>
+      {{#if system.joust.enabled}}
+        <p class="pdvf-hint">{{localize "PDVF.Tournament.JoustHint"}}</p>
+        {{#if isGM}}{{#unless joust.anyOpen}}{{#unless joust.over}}<p><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="joustRound"><i class="fa-solid fa-flag"></i> {{#if joust.round}}{{localize "PDVF.Tournament.NextRound"}}{{else}}{{localize "PDVF.Tournament.FirstRound"}}{{/if}}</button></p>{{/unless}}{{/unless}}{{/if}}
+        {{#each joust.currentMatches}}
+        <div class="pdvf-joust-match {{#if open}}open{{else}}done{{/if}}">
+          <div class="pdvf-joust-sides">
+            <div class="pdvf-joust-side"><strong>{{a.name}}</strong> <span class="pdvf-tag">{{localize "PDVF.Skill.charge"}} {{a.charge}}</span> <span class="pdvf-joust-lances" data-tooltip="{{localize 'PDVF.Tournament.LancesTip'}}">{{a.lances}} <i class="fa-solid fa-grip-lines-vertical"></i></span>
+              {{#if a.rolled}}<span class="pdvf-hint-inline">{{a.rollLabel}}</span>{{/if}}
+              {{#if a.canRoll}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="charge" data-index="{{a.index}}"><i class="fa-solid fa-horse-head"></i> {{localize "PDVF.Tournament.RollCharge"}}</button>{{/if}}</div>
+            <div class="pdvf-joust-vs">{{localize "PDVF.Tournament.Versus"}}</div>
+            <div class="pdvf-joust-side"><strong>{{b.name}}</strong> <span class="pdvf-tag">{{localize "PDVF.Skill.charge"}} {{b.charge}}</span> <span class="pdvf-joust-lances">{{b.lances}} <i class="fa-solid fa-grip-lines-vertical"></i></span>
+              {{#if b.rolled}}<span class="pdvf-hint-inline">{{b.rollLabel}}</span>{{/if}}
+              {{#if b.canRoll}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="charge" data-index="{{b.index}}"><i class="fa-solid fa-horse-head"></i> {{localize "PDVF.Tournament.RollCharge"}}</button>{{/if}}</div>
+          </div>
+          {{#if open}}
+            {{#if @root.isGM}}
+            <div class="pdvf-inline" data-group="decide">
+              <button type="button" class="pdvf-btn pdvf-mini {{#if ready}}pdvf-btn-primary{{/if}}" data-action="gm" data-op="resolvePass" data-match="{{id}}">{{localize "PDVF.Tournament.ResolvePass"}}</button>
+              <select name="winner"><option value="a">{{a.name}}</option><option value="b">{{b.name}}</option><option value="none">{{localize "PDVF.Tournament.NoWinner"}}</option></select>
+              <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="decideMatch" data-match="{{id}}" data-tooltip="{{localize 'PDVF.Tournament.DecideTip'}}">{{localize "PDVF.Tournament.Decide"}}</button>
+            </div>
+            {{/if}}
+          {{else}}
+          <p class="pdvf-joust-result"><i class="fa-solid fa-trophy"></i> {{winnerName}} ({{a.lances}} – {{b.lances}})</p>
+          {{/if}}
+          {{#if lines.length}}<details><summary>{{localize "PDVF.Tournament.Passes"}}</summary><ul class="pdvf-card-notes">{{#each lines}}<li>{{this}}</li>{{/each}}</ul></details>{{/if}}
+        </div>
+        {{/each}}
+        {{#if joust.pastMatches.length}}
+        <details class="pdvf-joust-past"><summary>{{localize "PDVF.Tournament.PastRounds"}}</summary>
+          <ul>{{#each joust.pastMatches}}<li>{{localize "PDVF.Tournament.RoundShort"}} {{round}} — {{a.name}} / {{b.name}} : <strong>{{winnerName}}</strong> ({{a.lances}} – {{b.lances}})</li>{{/each}}</ul>
+        </details>
+        {{/if}}
+      {{else}}
+        <p class="pdvf-hint">{{#if joust.periodOk}}{{localize "PDVF.Tournament.JoustOff"}}{{else}}{{localize "PDVF.Tournament.NoJoustYet"}}{{/if}}</p>
+      {{/if}}
+    </section>
+
+    {{!-- Mêlée --}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.melee"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.MeleeHint"}}</p>
+      {{#if melee.exists}}<button type="button" class="pdvf-btn" data-action="openMelee"><i class="fa-solid fa-flag"></i> {{localize "PDVF.Tournament.OpenMelee"}}</button>
+      {{else}}{{#if isGM}}<button type="button" class="pdvf-btn" data-action="gm" data-op="createMelee"><i class="fa-solid fa-flag"></i> {{localize "PDVF.Tournament.CreateMelee"}}</button>{{/if}}{{/if}}
+    </section>
+  {{/if}}
+
+  {{!-- ============================ À-CÔTÉS ============================ --}}
+  {{#if tabIs.court}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.court"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.CourtHint"}}{{#if system.royal}} {{localize "PDVF.Tournament.RoyalHint"}}{{/if}}</p>
+      {{#each knights}}
+      <div class="pdvf-tournament-knight">
+        <h4 class="pdvf-h4">{{name}}</h4>
+        <div class="pdvf-inline">
+          {{#if courtRolled}}<span class="pdvf-tag">{{localize "PDVF.Tournament.CourtLeft"}} {{courtLeft}}</span>{{/if}}
+          {{#if mine}}{{#if courtRolled}}{{#if courtLeft}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="court" data-index="{{index}}"><i class="fa-solid fa-music"></i> {{localize "PDVF.Tournament.CourtTest"}}</button>{{/if}}
+          {{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="court" data-index="{{index}}"><i class="fa-solid fa-dice"></i> {{localize "PDVF.Tournament.CourtCount"}}</button>{{/if}}{{/if}}
+          {{#if court.penalty}}<span class="pdvf-tag" data-tooltip="{{localize 'PDVF.Tournament.DroppedLanceNote'}}">{{court.penalty}}</span>{{/if}}
+        </div>
+        {{#if courtTests.length}}<ul class="pdvf-tournament-tests">{{#each courtTests}}<li>{{skill}} — {{outcome}}{{#if glory}} · {{glory}} G{{/if}}</li>{{/each}}</ul>{{/if}}
+        <div class="pdvf-tournament-side">
+          {{#each side}}
+          <span class="pdvf-inline"><span class="pdvf-hint-inline">{{label}}</span>
+            {{#if done}}<span class="pdvf-tag">{{doneLabel}}</span>
+            {{else}}{{#if ../mine}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="side" data-event="{{id}}" data-choice="yes" data-index="{{../index}}">{{yes}}</button><button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="side" data-event="{{id}}" data-choice="no" data-index="{{../index}}">{{no}}</button>{{else}}—{{/if}}{{/if}}</span>
+          {{/each}}
+        </div>
+      </div>
+      {{/each}}
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.challenges"}}</h3>
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.ChallengeHint"}}</p>
+      {{#if isGM}}
+      <div class="pdvf-inline" data-group="challenge">
+        <select name="skill">{{#each courtSkillChoices}}<option value="{{value}}">{{label}}</option>{{/each}}</select>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="challenge"><i class="fa-solid fa-crown"></i> {{localize "PDVF.Tournament.RunChallenge"}}</button>
+      </div>
+      {{/if}}
+      {{#each challenges}}<details><summary>{{skillLabel}} — <strong>{{#if winner}}{{winner}}{{else}}—{{/if}}</strong></summary><ul class="pdvf-card-notes">{{#each lines}}<li>{{this}}</li>{{/each}}</ul></details>{{/each}}
+    </section>
+  {{/if}}
+
+  {{!-- ============================ BILAN ============================ --}}
+  {{#if tabIs.results}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.glory"}}</h3>
+      <table class="pdvf-table">
+        <thead><tr><th>{{localize "PDVF.Battle.Knight"}}</th><th>{{localize "PDVF.Tournament.Col.base"}}</th><th>{{localize "PDVF.Tournament.Col.joust"}}</th><th>{{localize "PDVF.Tournament.Col.champion"}}</th><th>{{localize "PDVF.Tournament.Col.court"}}</th><th>{{localize "PDVF.Tournament.Col.total"}}</th><th>{{localize "PDVF.Tournament.Col.inscribed"}}</th></tr></thead>
+        <tbody>
+          {{#each knights}}
+          <tr>
+            <td>{{name}} <small class="pdvf-hint-inline">{{joustStatus}}</small></td>
+            <td class="num">{{glory.base}}</td>
+            <td class="num">{{glory.joust}}</td>
+            <td class="num">{{glory.champion}}
+              {{#if @root.isGM}}<label class="pdvf-check" data-tooltip="{{localize 'PDVF.Tournament.ChampionMeleeTip'}}"><input type="checkbox" name="system.knights.{{index}}.champion.melee" {{checked champion.melee}}> {{localize "PDVF.Tournament.Event.melee"}}</label>
+              <label class="pdvf-check"><input type="checkbox" name="system.knights.{{index}}.champion.joust" {{checked champion.joust}}> {{localize "PDVF.Tournament.Event.joust"}}</label>{{/if}}</td>
+            <td class="num">{{glory.court}}</td>
+            <td class="num"><strong>{{glory.total}}</strong>{{#if glory.doubled}} <i class="fa-solid fa-heart" data-tooltip="{{localize 'PDVF.Tournament.DoubledTip'}}"></i>{{/if}}</td>
+            <td class="num">{{inscribed}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.GloryHint"}}</p>
+      {{#if isGM}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="inscribe" {{#unless totals.due}}disabled{{/unless}}><i class="fa-solid fa-feather"></i> {{localize "PDVF.Tournament.Inscribe"}} ({{totals.due}})</button>{{/if}}
+    </section>
+
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.prizes"}}</h3>
+      {{#if isGM}}
+      <div class="pdvf-inline" data-group="prize">
+        <select name="to"><option value="">—</option>{{#each prizeTargets}}<option value="{{value}}">{{label}}</option>{{/each}}</select>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="prize"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Tournament.PrizeRoll"}}</button>
+      </div>
+      {{/if}}
+      {{#if prizes.length}}<ul class="pdvf-tournament-tests">{{#each prizes}}<li>{{#if to}}<strong>{{to}}</strong> : {{/if}}{{label}} ({{pounds}} £)</li>{{/each}}</ul>{{else}}<p class="pdvf-hint">{{localize "PDVF.Tournament.NoPrize"}}</p>{{/if}}
+      <p class="pdvf-hint">{{localize "PDVF.Tournament.BarberHint"}} {{size.barber}}.</p>
+    </section>
+
+    {{#if log.length}}
+    <section class="pdvf-battle-section">
+      <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.log"}}</h3>
+      <ul class="pdvf-card-notes">{{#each log}}<li>{{this}}</li>{{/each}}</ul>
+    </section>
+    {{/if}}
+  {{/if}}
+  </div>
+</div>

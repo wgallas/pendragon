@@ -267,6 +267,76 @@ PDVF.horseTypes = {
 };
 
 /**
+ * Gloire en combat (Livre du maître, Table A.1) : selon la plus haute valeur modifiée de l'adversaire.
+ * Un combat « pour l'amour » (armes émoussées…) n'en rapporte que 10 %.
+ */
+PDVF.combatGlory = [
+  { max: 5, glory: 1 }, { max: 10, glory: 10 }, { max: 15, glory: 25 }, { max: 20, glory: 50 },
+  { max: 25, glory: 100 }, { max: 30, glory: 200 }, { max: 40, glory: 400 }
+];
+
+/**
+ * Tournois (Livre du maître, chap. 3, p. 51–59 ; The Boy King : pas de joute avant la Période des Conquêtes).
+ * sizes : Table 3.13 (roll : tirage au D20, chevaliers présents, Gloire des participants et du champion,
+ *   valeur du trophée en £, durée en jours, tours de joute, tests de cour, coût d'organisation en £,
+ *   compétence du barbier ; battle : taille de la mêlée jouée comme une bataille ; prize : modificateur de la Table 3.18).
+ */
+PDVF.tournament = {
+  sizes: {
+    neighborhood:   { roll: [1, 15], knights: "25–50", glory: 15, champion: 20, trophy: "1–2", days: "2", joustRounds: 6, courtTests: "1D3", cost: "6", barber: 14, battle: "skirmish", prize: 0 },
+    local:          { roll: [16, 18], knights: "100–150", glory: 25, champion: 35, trophy: "4–6", days: "2–3", joustRounds: 7, courtTests: "1D6", cost: "24–40", barber: 14, battle: "clash", prize: 1 },
+    regionalSmall:  { roll: [19, 20], knights: "200–300", glory: 50, champion: 75, trophy: "8–12", days: "4–5", joustRounds: 8, courtTests: "1D6", cost: "60–90", barber: 17, battle: "small", prize: 2 },
+    regionalLarge:  { roll: [21, 22], knights: "400–600", glory: 75, champion: 150, trophy: "16–24", days: "6–7", joustRounds: 9, courtTests: "1D6+1", cost: "140–220", barber: 18, battle: "medium", prize: 3 },
+    royal:          { roll: [23, 99], knights: "800–1600", glory: 100, champion: 350, trophy: "32–64", days: "8–12", joustRounds: 10, courtTests: "1D6+3", cost: "330–800", barber: 19, battle: "large", prize: 4, royal: true },
+    royalGrand:     { roll: null, knights: "2400", glory: 150, champion: 500, trophy: "96", days: "14", joustRounds: 11, courtTests: "2D6+4", cost: "1300", barber: 20, battle: "huge", prize: 5, royal: true }
+  },
+  /** Tirage de la taille : +5 aux Périodes des Tournois et du Graal, +10 au Crépuscule. */
+  sizeRollBonus: { tournament: 5, grail: 5, twilight: 10 },
+  /** Table 3.15 : modificateurs du niveau de difficulté (NDT). */
+  difficulty: [
+    { min: 1, max: 3, mod: -10, id: "cursed" }, { min: 4, max: 8, mod: -5, id: "weather" }, { min: 9, max: 13, mod: 0, id: "normal" },
+    { min: 14, max: 15, mod: 5, id: "famous" }, { min: 16, max: 18, mod: 10, id: "exceptional" }, { min: 19, max: 99, mod: 15, id: "roundTable" }
+  ],
+  /** Table 3.16 : procédure abrégée (multiplicateur de la Gloire des participants ; « champion » : Gloire du champion). */
+  abridged: {
+    critical: { glory: "champion", damage: "" },
+    winner: { mult: 2, damage: "1D6" },
+    tie: { mult: 1.5, damage: "1D6" },
+    partial: { mult: 1, damage: "3D6" },
+    loser: { mult: 1, damage: "4D6" },
+    fumble: { mult: 0.5, damage: "5D6" }
+  },
+  /** Table 3.14 : adversaires de joute (1D20 + tour de joute) ; armure : armure + bouclier. */
+  opponents: [
+    { min: 1, max: 5, charge: 13, weapon: 13, damage: "4D6", armor: 10, shield: 6, horseDamage: "5D6", horseArmor: 1 },
+    { min: 6, max: 13, charge: 15, weapon: 15, damage: "5D6", armor: 10, shield: 6, horseDamage: "6D6", horseArmor: 2 },
+    { min: 14, max: 19, charge: 17, weapon: 16, damage: "5D6", armor: 11, shield: 6, horseDamage: "6D6", horseArmor: 4 },
+    { min: 20, max: 99, charge: 19, weapon: 18, damage: "5D6", armor: 12, shield: 6, horseDamage: "6D6", horseArmor: 4 }
+  ],
+  opponentDex: 12,
+  /** Joute : trois lances brisées l'emportent ; trois passes par rencontre (on rejoue en cas d'égalité). */
+  joust: { lances: 3, passes: 3, from: "conquest", barrierFrom: "tournament" },
+  /** Table 3.18 : trophées (1D20 + modificateur de taille), valeur en £. */
+  prizes: [
+    { r: 1, pounds: 1 }, { r: 2, pounds: 1 }, { r: 3, pounds: 2 }, { r: 4, pounds: 2 }, { r: 5, pounds: 3 }, { r: 6, pounds: 3 },
+    { r: 7, pounds: 3 }, { r: 8, pounds: 3 }, { r: 9, pounds: 5 }, { r: 10, pounds: 5 }, { r: 11, pounds: 5 }, { r: 12, pounds: 6 },
+    { r: 13, pounds: 7 }, { r: 14, pounds: 7 }, { r: 15, pounds: 7 }, { r: 16, pounds: 8 }, { r: 17, pounds: 9 }, { r: 18, pounds: 10 },
+    { r: 19, pounds: 11 }, { r: 20, pounds: 11 }, { r: 21, pounds: 12 }, { r: 22, pounds: 12 }, { r: 23, pounds: 21 }, { r: 24, pounds: 23 },
+    { r: 25, pounds: 27 }
+  ],
+  /** Compétences de cour (Livre du joueur, p. 97) proposées aux tests du tournoi. */
+  courtSkills: ["courtesy", "singing", "compose", "dancing", "orate", "playInstrument", "intrigue", "gaming", "fashion", "flirting", "recognize", "falconry"],
+  /** Pénalité aux compétences de cour d'un chevalier qui a lâché sa lance (Table 3.17). */
+  droppedLance: -5,
+  /** À-côtés (p. 59) : festin, messe, tentation ; trait coché selon le choix du joueur. */
+  sideEvents: {
+    feast: { yes: "temperate.right", no: "temperate.left" },
+    mass: { yes: "spiritual.left", no: "spiritual.right" },
+    temptation: { yes: "chaste.right", no: "chaste.left" }
+  }
+};
+
+/**
  * Dangers hors combat (Livre du joueur, chap. 11). Poisons : efficacité (p. 196) et prix en deniers
  * (Livre des Nobles, Table 4.2).
  */

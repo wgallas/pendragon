@@ -187,6 +187,7 @@
         <p class="pdvf-wiz-note pdvf-span2">{{localize "PDVF.Winter.HouseholdText"}} ({{base}} £)</p>
         {{/if}}
         {{#if hasDomains}}{{#unless household}}<p class="pdvf-wiz-note pdvf-span2">{{landsUpkeepLine}}</p>{{/unless}}{{/if}}
+        {{#if roundTable}}<p class="pdvf-wiz-note pdvf-span2">{{roundTableLine}}</p>{{/if}}
         <label class="pdvf-field"><span>{{#if hasDomains}}{{localize "PDVF.Domain.OtherIncome"}}{{else}}{{localize "PDVF.Winter.Income"}}{{/if}}</span><input type="number" name="income" value="0" min="0" step="0.5"></label>
         <label class="pdvf-field"><span>{{#if base}}{{localize "PDVF.Winter.ExtraSpend"}}{{else}}{{localize "PDVF.Winter.Spend"}}{{/if}}</span><input type="number" name="spend" value="{{suggested}}" min="0" step="0.5"></label>
         {{#unless hasDomains}}<p class="pdvf-hint pdvf-span2">{{localize "PDVF.Winter.UpkeepHint"}}</p>{{/unless}}

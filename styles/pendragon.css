@@ -473,6 +473,41 @@
 .pendragon-vf .pdvf-under-traits { margin-top: 16px; }
 
 /* --------------------------------------------------------------------------
+   Idéaux et Table Ronde (onglet Traits & passions)
+   -------------------------------------------------------------------------- */
+.pendragon-vf section.pdvf-ideals { margin-top: 22px; }
+.pendragon-vf .pdvf-field.pdvf-ideal-pursued { flex-direction: row; align-items: center; gap: 8px; }
+.pendragon-vf .pdvf-field.pdvf-ideal-pursued select { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-ideal { margin: 0 0 8px; border: 1px solid var(--pdvf-rule); border-left: 4px solid var(--pdvf-rule-strong); background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-ideal.state-met { border-left-color: var(--pdvf-gold); }
+.pendragon-vf .pdvf-ideal.state-revoked { border-left-color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-ideal.disabled { opacity: 0.6; }
+.pendragon-vf .pdvf-ideal > summary {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  padding: 4px 8px; cursor: pointer; list-style: none;
+}
+.pendragon-vf .pdvf-ideal > summary::-webkit-details-marker { display: none; }
+.pendragon-vf .pdvf-ideal-name { font-family: var(--pdvf-font-heading); font-size: 17px; color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-ideal-name .fa-star { color: var(--pdvf-gold); font-size: 13px; }
+.pendragon-vf .pdvf-ideal-state { font-size: 14px; font-style: italic; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-ideal.state-met .pdvf-ideal-state { color: var(--pdvf-ink); font-style: normal; font-weight: 600; }
+.pendragon-vf .pdvf-ideal.state-revoked .pdvf-ideal-state { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-ideal-checks { list-style: none; margin: 0; padding: 0 8px 4px; }
+.pendragon-vf .pdvf-ideal-checks li { display: flex; align-items: baseline; gap: 6px; font-size: 15px; border-bottom: 1px dotted var(--pdvf-rule); padding: 1px 0; }
+.pendragon-vf .pdvf-ideal-checks li .fa-check { color: var(--pdvf-green); }
+.pendragon-vf .pdvf-ideal-checks li .fa-xmark { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-ideal-check-label { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-ideal-check-value { font-variant-numeric: tabular-nums; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-ideal-checks li.missing .pdvf-ideal-check-value { color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-ideal-benefits { margin: 4px 8px 4px 26px; padding: 0; font-size: 14px; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-ideal-actions { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 8px 6px; }
+.pendragon-vf .pdvf-ideal-actions:empty { display: none; }
+.pendragon-vf .pdvf-ideal-gm { margin: 6px 0 4px; }
+.pendragon-vf .pdvf-ideals > .pdvf-ideal-checks { padding: 0 0 4px; }
+.pendragon-vf .pdvf-round-table.member { font-family: var(--pdvf-font-heading); font-size: 17px; color: var(--pdvf-lapis); margin: 0 0 2px; }
+.pendragon-vf .pdvf-round-table .fa-circle-dot, .pendragon-vf .pdvf-virtue-armor .fa-sun { color: var(--pdvf-gold); }
+
+/* --------------------------------------------------------------------------
    Passions
    -------------------------------------------------------------------------- */
 .pendragon-vf .pdvf-honor-row {

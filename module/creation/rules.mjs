@@ -622,6 +622,12 @@ export function eligibleIdeals(state, C = CREATION) {
   });
 }
 
+/** Identifiant de l'idéal choisi (les anciens brouillons gardaient le libellé). */
+export function idealId(value, C = CREATION) {
+  if (!value) return "";
+  return C.ideals.find(i => i.id === value || i.label === value)?.id ?? "";
+}
+
 export function inheritedGlory(state) {
   const f = state.family;
   if (f.mode === "history" && f.chosen !== null) return f.proposals?.[f.chosen]?.pc?.inheritedGlory ?? 0;
@@ -723,12 +729,13 @@ export function buildCharacter(state, year, C = CREATION, { skillLabel = (id) =>
       },
       heraldry: { blazon: state.details.blazon ?? "", motto: state.details.motto ?? "" },
       characteristics: Object.fromEntries(Object.entries(ch).map(([k, v]) => [k, { value: v }])),
-      health: { hp: { value: ch.con + ch.siz } },
+      // Le chevalier Religieux chrétien a +4 PV dès l'adoubement (Livre du joueur, p. 127).
+      health: { hp: { value: ch.con + ch.siz + (eligibleIdeals(state, C).some(i => i.id === "religious") ? (o.religion?.religiousBonus?.hp ?? 0) : 0) } },
       skills: Object.fromEntries(skills.map(s => [s.id, { value: s.final, xp: false }])),
       traits: Object.fromEntries(PDVF.traits.map(t => [t, { value: traits[t], xpLeft: false, xpRight: false }])),
       honor: { value: passions.find(p => p.honor).final, xp: false },
       passions: passions.filter(p => !p.honor).map(p => ({ court: p.court, name: p.name.trim(), value: p.final, xp: false })),
-      ideal: state.details.ideal ?? "",
+      ideal: idealId(state.details.ideal, C),
       dates: { squired: born + 14, knighted: knighted ? year : null },
       family: { characteristic: family ? `${family.label}${family.skills.length ? ` (+${C.familyTraitBonus} en ${family.skills.map(skillLabel).join(" et ")})` : ""}` : "" },
       chronicle,

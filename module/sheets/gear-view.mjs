@@ -38,11 +38,14 @@ export function gearView(actor, stats) {
     tip: [i.system.notes, i.system.disadvantage].filter(Boolean).join(" — "),
     price: formatPrice(i.system.price)
   }));
+  // Armure de vertu du chevalier Courtois : comptée avec l'armure portée.
+  const virtue = actor.type === "chevalier" ? Number(actor.system?.derived?.virtueArmor) || 0 : 0;
+  const armor = prot.armor + virtue;
   return {
-    weapons, pieces, hasGear: weapons.length + pieces.length > 0,
-    armor: prot.armor, shield: prot.shield, shieldName: prot.shieldItem?.name ?? "",
+    weapons, pieces, hasGear: weapons.length + pieces.length > 0 || virtue > 0,
+    armor, virtue, shield: prot.shield, shieldName: prot.shieldItem?.name ?? "",
     notes: prot.notes, warnings: prot.warnings,
-    summary: F("PDVF.Gear.ProtectionLine", { armor: prot.armor, shield: prot.shield })
+    summary: F("PDVF.Gear.ProtectionLine", { armor, shield: prot.shield })
   };
 }
 

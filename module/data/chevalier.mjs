@@ -3,6 +3,10 @@ import { woundsField } from "./wounds.mjs";
 import {
   roundPendragon, traitPair, attributeLevel, passiveGloryFromValues, passiveGloryFromAppearance
 } from "../rules/resolution.mjs";
+import { idealsStatus, idealsEffects } from "../rules/ideals.mjs";
+
+/** Anciens libellés d'idéal (assistant de création) → identifiants. */
+const IDEAL_LABELS = { "chevalier courtois": "courteous", "chevalier religieux": "religious", "chevalier romantique": "romantic" };
 
 const fields = foundry.data.fields;
 
@@ -20,6 +24,11 @@ function scored(initial) {
   });
 }
 
+/** Libellé traduit d'un trait (pour reconnaître les traits dirigés), s'il est disponible. */
+function idealTraitLabel(id, side) {
+  try { return game.i18n.localize(`PDVF.Trait.${id}.${side}`); } catch (err) { return ""; }
+}
+
 /**
  * Modèle de données du chevalier (personnage joueur).
  */
@@ -34,6 +43,11 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         : [];
     }
     delete source.inspiration;
+    // L'idéal poursuivi était un libellé libre ; c'est désormais l'identifiant d'un idéal.
+    if (typeof source.ideal === "string" && source.ideal) {
+      const id = IDEAL_LABELS[source.ideal.trim().toLowerCase()];
+      if (id) source.ideal = id;
+    }
     return super.migrateData(source);
   }
 
@@ -102,7 +116,16 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         name: new fields.StringField({ initial: "" }),
         value: int(0)
       })),
+      // Idéal poursuivi (identifiant de PDVF.ideals) : mis en avant sur la fiche. Les bénéfices,
+      // eux, viennent de tout idéal dont les conditions sont remplies.
       ideal: new fields.StringField({ initial: "" }),
+      // Réglages du MJ : idéal Maléfique autorisé (et ses bénéfices, en texte), idéaux retirés
+      // (« enfreindre volontairement le Code de la Chevalerie »).
+      idealGM: new fields.SchemaField({
+        wicked: new fields.BooleanField({ initial: false }),
+        wickedBenefits: new fields.StringField({ initial: "" }),
+        revoked: new fields.ArrayField(new fields.StringField())
+      }),
 
       honor: scored(15),
       passions: new fields.ArrayField(new fields.SchemaField({
@@ -207,18 +230,25 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
   prepareDerivedData() {
     const c = Object.fromEntries(PDVF.characteristics.map(k => [k, Number(this.characteristics[k].value) || 0]));
 
-    const hpMax = c.con + c.siz;
+    // Idéaux atteints (Livre du joueur, chap. 6) : leurs bonus s'appliquent aussitôt.
+    this.idealsStatus = idealsStatus(this, { ideals: PDVF.ideals, religions: PDVF.religions, traitLabel: idealTraitLabel });
+    const ideal = idealsEffects(this.idealsStatus);
+    this.idealEffects = ideal;
+
+    const hpMax = c.con + c.siz + ideal.hp;
     const damage = roundPendragon((c.str + c.siz) / 6);
+    const damageDice = damage + ideal.damageDice;
     this.derived = {
       knockdown: c.siz,
       majorWound: c.con,
-      damageDice: damage,
-      damage: `${damage}D6`,
+      damageDice,
+      damage: `${damageDice}D6`,
       brawlDamage: damage,
-      move: roundPendragon((c.str + c.dex) / 2) + 5,
+      move: roundPendragon((c.str + c.dex) / 2) + 5 + ideal.move,
       hpMax,
       unconscious: roundPendragon(hpMax / 4),
-      healRate: roundPendragon(c.con / 5)
+      healRate: roundPendragon(c.con / 5) + ideal.healRate,
+      virtueArmor: ideal.armor
     };
 
     // Maximum de PV pour la barre du jeton (system.health.hp).
@@ -250,10 +280,12 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
     this.passive = {
       traits: passiveGloryFromValues(traitValues),
       passions: passiveGloryFromValues(passionValues),
-      appearance: passiveGloryFromAppearance(c.app)
+      appearance: passiveGloryFromAppearance(c.app),
+      ideals: ideal.glory
     };
     // (La Gloire des chevaux et des domaines, tirée des acteurs et objets liés, s'ajoute sur la fiche et en hiver.)
-    this.passive.total = this.passive.traits + this.passive.passions + this.passive.appearance
+    // glory.passiveIdeals : Gloire d'idéaux saisie à la main (Maléfique, décision du MJ), en plus de la Gloire calculée.
+    this.passive.total = this.passive.traits + this.passive.passions + this.passive.appearance + this.passive.ideals
       + this.glory.passiveLiving + this.glory.passiveIdeals + this.glory.passiveHoldings + this.glory.passiveOther;
 
     // Totaux des cours de passions (l'Honneur reste à part).

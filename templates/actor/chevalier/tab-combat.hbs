@@ -66,6 +66,17 @@
         <span><span class="pdvf-derived-label">{{localize "PDVF.Gear.ArmorPoints"}}</span> <strong>{{gear.armor}}</strong></span>
         <span><span class="pdvf-derived-label">{{localize "PDVF.Gear.ShieldPoints"}}</span> <strong>{{gear.shield}}</strong></span>
       </div>
+      {{#if gear.virtue}}
+      <ul class="pdvf-armor-list">
+        <li class="pdvf-virtue-armor" data-tooltip="{{localize 'PDVF.Ideal.VirtueArmorTip'}}">
+          <span class="pdvf-icon-btn pdvf-equip on" aria-hidden="true"><i class="fa-solid fa-sun"></i></span>
+          <span class="pdvf-gear-icon" aria-hidden="true"></span>
+          <span class="pdvf-link">{{localize "PDVF.Ideal.VirtueArmor"}}</span>
+          <span class="pdvf-gear-tag">{{localize "PDVF.Ideal.courteous.name"}}</span>
+          <span class="pdvf-armor-value">{{gear.virtue}}</span>
+        </li>
+      </ul>
+      {{/if}}
       {{#if gear.pieces.length}}
       <ul class="pdvf-armor-list">
         {{#each gear.pieces}}

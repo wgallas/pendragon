@@ -101,8 +101,8 @@ export async function promptTestOptions(actor, rollable, defaultModifier = 0, de
     modifier: defaultModifier,
     canInvoke,
     invokeChoices: canInvoke ? actor.listInvokable().map(p => ({
-      key: p.key, label: `${p.label} ${formatValue(p.value)}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}`,
-      disabled: p.invoked, selected: p.key === defaultInvoke && !p.invoked
+      key: p.key, label: `${p.label} ${formatValue(p.value)}${p.note ? ` — ${p.note}` : ""}`,
+      disabled: p.disabled, selected: p.key === defaultInvoke && !p.disabled
     })) : [],
     currentInspiration: current ? F("PDVF.Invoke.Already", { source: current.source, bonus: signed(current.bonus) }) : "",
     hasTarget: !!target && targetRollables.length > 0,
@@ -392,6 +392,14 @@ export async function invokePassion(actor, key, { modifier = 0, target = "" } = 
   const effect = passionEffect(result.outcome, passionBonuses(rollable.label, PDVF.passionBonuses));
   const notes = [];
   const buttons = [];
+  // Chevalerie et Dévotion n'inspirent que le chevalier qui a l'idéal (Courtois, Religieux) :
+  // le test reste possible, mais sans inspiration ni usage du jour.
+  const locked = typeof actor.passionLock === "function" ? actor.passionLock(rollable.label) : null;
+  if (locked && effect.bonus) {
+    effect.bonus = 0;
+    effect.state = "lockedSuccess";
+    notes.push(F("PDVF.Ideal.NoInspiration", { ideal: L(`PDVF.Ideal.${locked}.name`) }));
+  }
 
   if (effect.xp && rollable.canXp) {
     await maybeXp(actor, key);
@@ -399,7 +407,7 @@ export async function invokePassion(actor, key, { modifier = 0, target = "" } = 
   }
   // Inspirations et usage quotidien : suivis pour les chevaliers seulement.
   const tracked = actor.type === "chevalier";
-  if (actor.isOwner && tracked) {
+  if (actor.isOwner && tracked && !locked) {
     if (effect.bonus) await actor.addInspiration({ source: rollable.label, state: effect.state, bonus: effect.bonus, target });
     else await actor.markInvoked(rollable.label);
   }

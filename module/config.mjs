@@ -64,29 +64,91 @@ PDVF.passionCourtMax = 40;
 
 /**
  * Religions : vertus exprimées en « trait.côté ».
+ * `religiousBonus` : bénéfice de l'idéal du chevalier Religieux de cette religion (Livre du maître,
+ * chap. 4 : chrétien p. 68, païen p. 84, barbare p. 97, odiniste p. 100) ; clés des effets d'idéaux
+ * (voir PDVF.ideals).
  * D'autres religions pourront être ajoutées ici (ou par un module) sans autre changement.
  */
 PDVF.religions = {
   christian: {
     label: "PDVF.Religion.christian",
     deity: "Dévotion (Dieu)",
-    virtues: ["chaste.left", "spiritual.left", "forgiving.left", "merciful.left", "modest.left", "temperate.left"]
+    virtues: ["chaste.left", "spiritual.left", "forgiving.left", "merciful.left", "modest.left", "temperate.left"],
+    religiousBonus: { hp: 4 }
   },
   pagan: {
     label: "PDVF.Religion.pagan",
     deity: "Dévotion (Dieux)",
-    virtues: ["spiritual.left", "energetic.left", "modest.right", "generous.left", "honest.left", "chaste.right"]
+    virtues: ["spiritual.left", "energetic.left", "modest.right", "generous.left", "honest.left", "chaste.right"],
+    // Le Livre du joueur (p. 127) ajoute « Dégâts +2 » ; on suit le Livre du maître (choix de l'utilisateur).
+    religiousBonus: { healRate: 2 }
   },
   odinist: {
     label: "PDVF.Religion.odinist",
     deity: "Dévotion (Dieux)",
-    virtues: ["temperate.right", "modest.right", "generous.left", "spiritual.right", "prudent.right", "valorous.left"]
+    virtues: ["temperate.right", "modest.right", "generous.left", "spiritual.right", "prudent.right", "valorous.left"],
+    religiousBonus: { damageDice: 1 }
   },
   barbarian: {
     label: "PDVF.Religion.barbarian",
     deity: "Dévotion (Dieux)",
-    virtues: ["just.right", "spiritual.left", "modest.right", "honest.left", "trusting.right", "forgiving.right"]
+    virtues: ["just.right", "spiritual.left", "modest.right", "honest.left", "trusting.right", "forgiving.right"],
+    religiousBonus: { move: 10, healRate: 1 }
   }
+};
+
+/**
+ * Idéaux (Livre du joueur, chap. 6, p. 126–128 ; chevalier Maléfique : Livre du maître, p. 83).
+ * Les bénéfices sont acquis dès que les conditions sont remplies, et perdus dès qu'elles ne le sont plus.
+ * Conditions :
+ * - traits + total : somme minimale des traits listés (« trait.côté ») ; `directed` : traits auxquels
+ *   s'ajoute le meilleur trait dirigé du même nom (le Croyant du Romantique, dirigé vers l'être aimé) ;
+ * - virtues : valeur minimale de chacune des vertus de la religion du chevalier ;
+ * - passions : motif en tête du nom (sans accents ni casse), meilleure valeur s'il y en a plusieurs ;
+ * - skills : compétences de la fiche.
+ * Effets (cumulables entre idéaux) : hp, healRate, move, damageDice, armor (armure de vertu) ;
+ * `religion: true` ajoute le `religiousBonus` de la religion du chevalier.
+ * glory : Gloire passive annuelle. invoke : passion invocable seulement avec l'idéal.
+ * protection : passion testée contre la magie et les miracles. gmOnly : activé par le MJ sur la fiche.
+ */
+PDVF.ideals = {
+  courteous: {
+    traits: ["energetic.left", "generous.left", "just.left", "merciful.left", "modest.left", "valorous.left"], total: 96,
+    passions: [{ match: "chevalerie", label: "Chevalerie", min: 15 }, { match: "hospitalite", label: "Hospitalité", min: 10 }, { match: "rang", label: "Rang", min: 10 }],
+    effects: { armor: 4 }, glory: 150, invoke: "chevalerie", protection: "chevalerie"
+  },
+  religious: {
+    virtues: 16,
+    passions: [{ match: "devotion", label: "Dévotion", min: 16 }],
+    skills: [{ id: "religion", min: 10 }],
+    religion: true, glory: 100, invoke: "devotion", protection: "devotion"
+  },
+  romantic: {
+    traits: ["chaste.left", "spiritual.left", "generous.left", "honest.left", "modest.left", "temperate.left"], total: 90,
+    directed: ["spiritual.left"],
+    passions: [{ match: "adoration", label: "Adoration", min: 10 }],
+    glory: 0, protection: "adoration"
+  },
+  wicked: {
+    traits: ["merciful.right", "generous.right", "modest.right", "trusting.right", "forgiving.right", "honest.right"], total: 96,
+    glory: 0, gmOnly: true
+  }
+};
+
+/**
+ * Table Ronde (Livre du joueur, p. 128–129) : bénéfices à l'admission et chaque année,
+ * passions conseillées (motifs comme pour les idéaux) et seuil de Gloire des candidats.
+ */
+PDVF.roundTable = {
+  honor: 5, glory: 1000, giftPounds: 10, living: "rich", gloryHint: 8000,
+  passions: [
+    { match: "honor", label: "Honneur", min: 15 },
+    { match: "hommage (roi arthur)", label: "Hommage (roi Arthur)", min: 16 },
+    { match: "devotion", label: "Dévotion", min: 10 },
+    { match: "rang", label: "Rang", min: 10 },
+    { match: "hospitalite", label: "Hospitalité", min: 10 },
+    { match: "chevalerie", label: "Chevalerie", min: 15 }
+  ]
 };
 
 /** Classes de chevaliers proposées dans la liste (champ libre accepté aussi). */

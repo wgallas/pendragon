@@ -28,10 +28,6 @@
     </div>
 
     <div class="pdvf-under-traits">
-      <label class="pdvf-field">
-        <span>{{localize "PDVF.Sheet.Ideal"}}</span>
-        <input type="text" name="system.ideal" value="{{system.ideal}}" {{#unless editMode}}readonly{{/unless}}>
-      </label>
       <h3 class="pdvf-h3">{{localize "PDVF.Section.DirectedTraits"}}</h3>
       {{#each directedTraits}}
       <div class="pdvf-row">
@@ -51,6 +47,75 @@
       <button type="button" class="pdvf-btn pdvf-add" data-action="addRow" data-path="system.directedTraits">{{localize "PDVF.Sheet.AddDirected"}}</button>
       {{/if}}
     </div>
+
+    {{!-- Idéaux (Livre du joueur, chap. 6) et Table Ronde --}}
+    <section class="pdvf-ideals">
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Section.Ideals"}}</h2>
+      <label class="pdvf-field pdvf-ideal-pursued">
+        <span>{{localize "PDVF.Ideal.Pursued"}}</span>
+        <select name="system.ideal">{{#each ideals.pursuedChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      {{#each ideals.list}}
+      <details class="pdvf-ideal state-{{state}} {{#if pursued}}pursued{{/if}} {{#unless enabled}}disabled{{/unless}}" {{#if open}}open{{/if}}>
+        <summary>
+          <span class="pdvf-ideal-name">{{#if pursued}}<i class="fa-solid fa-star" aria-hidden="true" data-tooltip="{{localize 'PDVF.Ideal.Pursued'}}"></i> {{/if}}{{name}}</span>
+          <span class="pdvf-ideal-state">{{stateLabel}}</span>
+        </summary>
+        <ul class="pdvf-ideal-checks">
+          {{#each checks}}
+          <li class="{{#if ok}}ok{{else}}missing{{/if}}" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>
+            <i class="fa-solid {{#if ok}}fa-check{{else}}fa-xmark{{/if}}" aria-hidden="true"></i>
+            <span class="pdvf-ideal-check-label">{{label}}</span>
+            <span class="pdvf-ideal-check-value">{{value}}</span>
+          </li>
+          {{/each}}
+        </ul>
+        {{#if benefits.length}}
+        <ul class="pdvf-ideal-benefits">
+          {{#each benefits}}<li>{{this}}</li>{{/each}}
+        </ul>
+        {{/if}}
+        <div class="pdvf-ideal-actions">
+          {{#if canProtect}}<button type="button" class="pdvf-btn" data-action="idealProtect" data-ideal="{{id}}"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i> {{localize "PDVF.Ideal.Protect"}}</button>{{/if}}
+          {{#if canRevoke}}<button type="button" class="pdvf-btn" data-action="idealRevoke" data-ideal="{{id}}" data-tooltip="{{localize 'PDVF.Ideal.RevokeTip'}}">{{#if revoked}}{{localize "PDVF.Ideal.Restore"}}{{else}}{{localize "PDVF.Ideal.Revoke"}}{{/if}}</button>{{/if}}
+        </div>
+      </details>
+      {{/each}}
+      {{#if ideals.isGM}}{{#if ideals.editMode}}
+      <div class="pdvf-ideal-gm">
+        <label class="pdvf-check"><input type="checkbox" name="system.idealGM.wicked" {{checked ideals.wicked.enabled}}> {{localize "PDVF.Ideal.WickedAllow"}}</label>
+        {{#if ideals.wicked.enabled}}
+        <label class="pdvf-field"><span>{{localize "PDVF.Ideal.WickedBenefits"}}</span>
+          <input type="text" name="system.idealGM.wickedBenefits" value="{{ideals.wicked.benefits}}" placeholder="{{localize 'PDVF.Ideal.WickedPlaceholder'}}"></label>
+        {{/if}}
+      </div>
+      {{/if}}{{/if}}
+
+      <h3 class="pdvf-h3">{{localize "PDVF.RoundTable.Title"}}</h3>
+      {{#with ideals.roundTable}}
+      {{#if member}}
+      <p class="pdvf-round-table member"><i class="fa-solid fa-circle-dot" aria-hidden="true"></i> {{memberLine}}</p>
+      <p class="pdvf-hint">{{benefits}}</p>
+      {{else}}
+      <ul class="pdvf-ideal-checks">
+        <li class="{{#if noticed}}ok{{else}}missing{{/if}}" data-tooltip="{{localize 'PDVF.RoundTable.NoticedTip'}}">
+          <i class="fa-solid {{#if noticed}}fa-check{{else}}fa-xmark{{/if}}" aria-hidden="true"></i>
+          <span class="pdvf-ideal-check-label">{{#if courteous}}{{localize "PDVF.Ideal.courteous.name"}}{{else}}{{localize "PDVF.RoundTable.Glory"}}{{/if}}</span>
+          <span class="pdvf-ideal-check-value">{{#if courteous}}✓{{else}}{{glory}} / {{gloryHint}}{{/if}}</span>
+        </li>
+        {{#each checks}}
+        <li class="{{#if ok}}ok{{else}}missing{{/if}}">
+          <i class="fa-solid {{#if ok}}fa-check{{else}}fa-xmark{{/if}}" aria-hidden="true"></i>
+          <span class="pdvf-ideal-check-label">{{label}}</span>
+          <span class="pdvf-ideal-check-value">{{value}}</span>
+        </li>
+        {{/each}}
+      </ul>
+      <p class="pdvf-hint">{{localize "PDVF.RoundTable.Hint"}}</p>
+      {{#if canAdmit}}<button type="button" class="pdvf-btn" data-action="roundTableAdmit" data-tooltip="{{admitTip}}"><i class="fa-solid fa-circle-dot" aria-hidden="true"></i> {{localize "PDVF.RoundTable.Admit"}}</button>{{/if}}
+      {{/if}}
+      {{/with}}
+    </section>
   </div>
 
   <div class="pdvf-passions-col">

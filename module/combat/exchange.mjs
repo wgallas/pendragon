@@ -213,7 +213,7 @@ function passionFields(actor, invoke = "") {
   if (actor.type !== "chevalier" || typeof actor.listInvokable !== "function") return "";
   const invokable = actor.listInvokable();
   const opts = [`<option value="">${L("PDVF.Combat.NoPassion")}</option>`,
-    ...invokable.map(p => `<option value="${p.key}" ${p.invoked ? "disabled" : ""} ${p.key === invoke && !p.invoked ? "selected" : ""}>${esc(p.label)} ${p.value}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}</option>`)];
+    ...invokable.map(p => `<option value="${p.key}" ${p.disabled ? "disabled" : ""} ${p.key === invoke && !p.disabled ? "selected" : ""}>${esc(p.label)} ${p.value}${p.note ? ` — ${esc(p.note)}` : ""}</option>`)];
   const active = actor.activeInspirations();
   const label = (k) => actor.getRollable(k)?.label ?? k;
   const current = active.filter(i => i.target).map(i => `${esc(i.source)} ${signed(i.bonus)} → ${esc(label(i.target))}`);

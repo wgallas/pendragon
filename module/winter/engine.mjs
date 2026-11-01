@@ -11,6 +11,7 @@ import { normalizeLabel } from "../rules/followers.mjs";
 import { resolveFollowers, resolveHorses, knightHorseGlory } from "../documents/followers.mjs";
 import { domainsOf, domainGlory, domainIncome, addFavor } from "../documents/domains.mjs";
 import { lordHelp, landsUpkeep, entourageGlory } from "../rules/domains.mjs";
+import { idealsChange } from "../rules/ideals.mjs";
 import { winterEvent, PASSION_MATCH, WINTER_EVENTS } from "./events.mjs";
 
 const L = (k) => game.i18n.localize(k);
@@ -347,6 +348,7 @@ export async function rollExperience(actor, state) {
   let honor = { ...src.honor };
   const rows = [];
   const rolls = [];
+  const idealsBefore = [...(actor.system.idealEffects?.met ?? [])];
   for (const r of list) {
     const roll = await new Roll("1d20").evaluate();
     rolls.push(roll);
@@ -361,6 +363,10 @@ export async function rollExperience(actor, state) {
   }
   await actor.update({ ...skills, "system.traits": traits, "system.passions": passions, "system.extraSkills": extra, "system.honor": honor });
   const lines = rows.map(r => F(r.gain ? "PDVF.Winter.XpLineGain" : "PDVF.Winter.XpLine", { label: r.label, value: r.before, die: r.die }));
+  // Idéaux gagnés ou perdus par ces tests (Livre du joueur, p. 233 : bonus aussitôt, Gloire l'hiver suivant).
+  const change = idealsChange(idealsBefore, actor.system.idealEffects?.met ?? []);
+  for (const id of change.gained) lines.push(F("PDVF.Ideal.WinterGained", { ideal: L(`PDVF.Ideal.${id}.name`) }));
+  for (const id of change.lost) lines.push(F("PDVF.Ideal.WinterLost", { ideal: L(`PDVF.Ideal.${id}.name`) }));
   const content = await foundry.applications.handlebars.renderTemplate(CARD, { title: L("PDVF.Winter.Step.xp"), lines: lines.length ? lines : [L("PDVF.Winter.NoXp")], buttons: [] });
   await ChatMessage.implementation.create({ speaker: ChatMessage.getSpeaker({ actor }), content, rolls, flags: { [SYSTEM_ID]: { kind: "winter" } } });
   state.xp = { done: true, rows };
@@ -382,8 +388,13 @@ export function economyInfo(actor) {
   // Chevalier de maisonnée : le seigneur l'entretient. Chevalier fieffé : la rente de ses terres
   // paie l'entretien de sa maisonnée au niveau de vie de son rang (Table A.2 ; Livre des Nobles p. 68).
   const lands = landsUpkeep(domains, PDVF.domainRanks, (r) => W.upkeepFor(r.living, column, C()));
-  const base = household ? (married ? C().householdUpkeep.married : C().householdUpkeep.single) : lands;
-  return { household, squire, family, married, column, base, lands, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
+  let base = household ? (married ? C().householdUpkeep.married : C().householdUpkeep.single) : lands;
+  // Chevalier de la Table Ronde (Livre du joueur, p. 128) : la maison du roi l'entretient au moins
+  // au niveau de vie Riche, et le roi lui fait un cadeau annuel de 10 £.
+  const rt = s.dates?.roundTable ? PDVF.roundTable : null;
+  const roundTable = rt ? { gift: rt.giftPounds, living: rt.living, base: W.upkeepFor(rt.living, column, C()) } : null;
+  if (roundTable) base = Math.max(base, roundTable.base);
+  return { household, squire, family, married, column, base, lands, roundTable, ordinary: W.upkeepFor("ordinary", column, C()), domains, domainIncome: domainIncome(actor) };
 }
 
 /**
@@ -413,8 +424,9 @@ export async function payUpkeep(actor, state, { spend = 0, income = 0 }) {
   const level = W.livingFromUpkeep(total, info.column, C());
   const s = actor.system;
   const destitute = level === "destitute" ? (Number(s.economy.destituteYears) || 0) + 1 : 0;
+  const gift = info.roundTable?.gift ?? 0;
   await actor.update({
-    "system.economy.treasury": (Number(s.economy.treasury) || 0) + Math.round(((Number(income) || 0) - own) * D),
+    "system.economy.treasury": (Number(s.economy.treasury) || 0) + Math.round(((Number(income) || 0) + gift - own) * D),
     "system.economy.living": level,
     "system.economy.destituteYears": destitute,
     "system.glory.passiveLiving": C().livingPassive[level] ?? 0
@@ -423,6 +435,7 @@ export async function payUpkeep(actor, state, { spend = 0, income = 0 }) {
   if (sumptuary) state.glory.push({ label: L("PDVF.Winter.Sumptuary"), value: sumptuary });
   state.economy = { done: true, spend: own, income: Number(income) || 0, total, level, column: info.column, sumptuary, effects: {} };
   await postLines(actor, L("PDVF.Winter.Step.economy"), [
+    ...(info.roundTable ? [F("PDVF.RoundTable.LivingLine", { living: L(`PDVF.Living.${info.roundTable.living}`) }), F("PDVF.RoundTable.GiftLine", { pounds: gift })] : []),
     F("PDVF.Winter.UpkeepLine", { total: String(total).replace(".", ","), level: L(`PDVF.Living.${level}`) }),
     ...(sumptuary ? [F("PDVF.Winter.SumptuaryLine", { value: sumptuary })] : [])
   ]);

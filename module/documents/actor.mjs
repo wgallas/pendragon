@@ -1,6 +1,8 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { traitPair, gloryTestValue, samePassion } from "../rules/resolution.mjs";
 import { normalizeLabel } from "../rules/followers.mjs";
+import { invokeRequirement } from "../rules/ideals.mjs";
+import { idealsSnapshot, afterIdealsUpdate } from "./ideals.mjs";
 import { actorIcon, actorIconUpdates } from "./icons.mjs";
 
 /**
@@ -57,6 +59,8 @@ export class PendragonActor extends Actor {
   /** Un PNJ qui change de catégorie change aussi d'icône, s'il avait encore l'icône par défaut. */
   async _preUpdate(changed, options, user) {
     if ((await super._preUpdate(changed, options, user)) === false) return false;
+    // Idéaux atteints avant la mise à jour, pour signaler ceux qui sont gagnés ou perdus.
+    if (this.type === "chevalier") this._pdvfIdealsBefore = idealsSnapshot(this);
     const category = foundry.utils.getProperty(changed, "system.category");
     if (this.type !== "pnj" || category === undefined || category === this._source.system.category) return;
     const icons = actorIconUpdates({
@@ -65,6 +69,15 @@ export class PendragonActor extends Actor {
       tokenSrc: foundry.utils.getProperty(changed, "prototypeToken.texture.src") ?? this._source.prototypeToken?.texture?.src
     });
     for (const [k, v] of Object.entries(icons)) foundry.utils.setProperty(changed, k, v);
+  }
+
+  /** Après une mise à jour faite ici : idéaux gagnés ou perdus, PV du chevalier Religieux chrétien. */
+  _onUpdate(changed, options, userId) {
+    super._onUpdate(changed, options, userId);
+    if (this.type !== "chevalier" || userId !== game.user.id) return;
+    const before = this._pdvfIdealsBefore;
+    this._pdvfIdealsBefore = null;
+    afterIdealsUpdate(this, before, changed).catch(err => console.error(`${SYSTEM_ID} | Idéaux`, err));
   }
 
   /**
@@ -249,13 +262,33 @@ export class PendragonActor extends Actor {
     return this.activeInspirations().find(i => i.target === key) ?? null;
   }
 
-  /** Passions pouvant être invoquées : Honneur et passions de la fiche, avec l'usage du jour. */
+  /**
+   * Idéal qu'il faudrait atteindre pour invoquer cette passion, ou null si elle est invocable :
+   * Chevalerie pour le chevalier Courtois, Dévotion pour le chevalier Religieux (Livre du joueur, p. 89–90).
+   */
+  passionLock(name) {
+    if (this.type !== "chevalier") return null;
+    const id = invokeRequirement(name, PDVF.ideals);
+    if (!id) return null;
+    return (this.system.idealEffects?.met ?? []).includes(id) ? null : id;
+  }
+
+  /**
+   * Passions pouvant être invoquées : Honneur et passions de la fiche, avec l'usage du jour.
+   * `disabled` : déjà invoquée aujourd'hui ou réservée à un idéal ; `note` : la raison, à afficher.
+   */
   listInvokable() {
     if (this.type !== "chevalier") return [];
     const used = this.invokedToday();
     const keys = ["honor", ...this.system.passions.map((_, i) => `passion.${i}`)];
     return keys.map(k => this.getRollable(k)).filter(Boolean)
-      .map(r => ({ ...r, invoked: used.some(n => samePassion(n, r.label)) }));
+      .map(r => {
+        const invoked = used.some(n => samePassion(n, r.label));
+        const locked = this.passionLock(r.label);
+        const note = invoked ? game.i18n.localize("PDVF.Invoke.UsedToday")
+          : locked ? game.i18n.format("PDVF.Ideal.Requires", { ideal: game.i18n.localize(`PDVF.Ideal.${locked}.name`) }) : "";
+        return { ...r, invoked, locked, disabled: invoked || !!locked, note };
+      });
   }
 
   /** Note qu'une passion a servi aujourd'hui et ajoute le bonus obtenu. */

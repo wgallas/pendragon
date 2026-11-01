@@ -124,7 +124,7 @@ export async function invoke(battle, index) {
   const passions = actor.listInvokable();
   const targets = BATTLE_TARGETS.map(key => actor.getRollable(key)).filter(Boolean);
   const content = `<div class="form-group"><label>${L("PDVF.Invoke.Passion")}</label><select name="key">${passions.map(p =>
-    `<option value="${p.key}" ${p.invoked ? "disabled" : ""}>${foundry.utils.escapeHTML(p.label)} ${formatValue(p.value)}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}</option>`).join("")}</select></div>
+    `<option value="${p.key}" ${p.disabled ? "disabled" : ""}>${foundry.utils.escapeHTML(p.label)} ${formatValue(p.value)}${p.note ? ` — ${foundry.utils.escapeHTML(p.note)}` : ""}</option>`).join("")}</select></div>
     <div class="form-group"><label>${L("PDVF.Battle.InspiredFor")}</label><select name="target">${targets.map(t =>
     `<option value="${t.key}">${foundry.utils.escapeHTML(t.label)} ${formatValue(t.value)}</option>`).join("")}</select></div>
     <p class="hint">${L("PDVF.Battle.InvokeHint")}</p>`;

@@ -313,7 +313,8 @@
       "Chronicle": "Historique et évènements",
       "PassiveGlory": "Gloire passive",
       "Prestige": "Récompenses de prestige",
-      "FamilyHistory": "Histoire de la famille"
+      "FamilyHistory": "Histoire de la famille",
+      "Ideals": "Idéaux"
     },
     "ModifierHint": {
       "-10": "Difficulté élevée, en défaveur : situation dramatique",
@@ -404,7 +405,7 @@
       "passions": "Passions célèbres et exaltées",
       "appearance": "Attrait",
       "living": "Niveau de vie",
-      "ideals": "Idéaux",
+      "ideals": "Autres idéaux (à la main)",
       "holdings": "Propriétés",
       "other": "Autre",
       "total": "Total annuel",
@@ -412,7 +413,9 @@
       "horses": "Chevaux",
       "horsesTip": "Robes (une fois chacune : blanc 50, gris 25, alezan 15, palomino 5) et cheval de guerre principal : 15 s'il s'agit d'un étalon entraîné au combat, monté avec Équitation 15.",
       "domains": "Domaines",
-      "domainsTip": "Gloire passive des domaines tenus (Table A.2 du Livre du maître)."
+      "domainsTip": "Gloire passive des domaines tenus (Table A.2 du Livre du maître).",
+      "idealsAuto": "Idéaux atteints",
+      "idealsAutoTip": "Chevalier Courtois 150, chevalier Religieux 100 (Livre du joueur, p. 127). Le Romantique et le Maléfique n'en donnent pas d'office."
     },
     "Prestige": {
       "earned": "Obtenues (une par tranche de 1000)",
@@ -467,7 +470,8 @@
       "inspiredShort": "Inspiré",
       "inspired": "Inspiré : +5 à une compétence ou un trait",
       "crisis": "Crise de passion !",
-      "loss": "Échec critique : la passion perd 1 point"
+      "loss": "Échec critique : la passion perd 1 point",
+      "lockedSuccess": "Réussi, mais sans inspiration"
     },
     "Crisis": {
       "madness": "Folie : le personnage devient Fou et passe hors-jeu",
@@ -2258,7 +2262,8 @@
         "Recovered": "{name} n'est plus Affaibli.",
         "FullHealth": "{name} est entièrement guéri.",
         "HpChange": "Points de vie : {from} → {to} / {max}.",
-        "Dead": "{name} tombe à 0 point de vie ou moins : il est mort."
+        "Dead": "{name} tombe à 0 point de vie ou moins : il est mort.",
+        "VirtueArmor": "L'armure de vertu de {name} arrête {armor} des {rolled} points de la chute : {real}."
       },
       "InvokePassion": "Invoquer une passion pour cet échange",
       "NoPassion": "Aucune",
@@ -2686,6 +2691,85 @@
       "Label": "Portrait",
       "Edit": "Choisir le portrait du chevalier",
       "Choose": "Cliquer pour choisir le portrait"
+    },
+    "Ideal": {
+      "Requires": "réservée au {ideal}",
+      "NoInspiration": "Cette passion n'inspire que le {ideal} (Livre du joueur, p. 89–90) : le test ne donne pas d'inspiration.",
+      "Pursued": "Idéal poursuivi",
+      "NonePursued": "Aucun en particulier",
+      "State": {
+        "met": "Atteint",
+        "revoked": "Retiré par le MJ",
+        "pending": "{count} condition(s) à remplir"
+      },
+      "Check": {
+        "traits": "Somme des traits",
+        "religion": "Religion sans vertus connues",
+        "missing": "absente (min. {min})"
+      },
+      "Benefit": {
+        "armor": "Armure de vertu : +{value} points d'armure, même contre les chutes et le feu",
+        "hp": "+{value} points de vie",
+        "healRate": "+{value} au Taux de guérison",
+        "move": "+{value} au Mouvement",
+        "damageDice": "+{value}D6 aux dégâts",
+        "glory": "{value} points de Gloire passive par an"
+      },
+      "courteous": {
+        "name": "Chevalier Courtois",
+        "invoke": "Peut invoquer Chevalerie, s'il est offensé par un acte contraire au Code",
+        "protection": "Protection : test de Chevalerie contre la magie qui le pousserait à trahir le Code",
+        "protectionNote": "Sur un succès ou un critique, immunité aux effets magiques et miraculeux qui le pousseraient à violer le Code de la Chevalerie (le Livre du maître, p. 114, demande un test à chaque enchantement)."
+      },
+      "religious": {
+        "name": "Chevalier Religieux",
+        "invoke": "Peut invoquer Dévotion pour défendre sa foi ou son dieu",
+        "protection": "Protection : test de Dévotion contre la magie (chrétien) ou les miracles (autres religions)",
+        "protectionNote": "Sur un succès ou un critique, immunité totale : à la magie pour un chrétien, aux miracles pour un païen, un odiniste ou un barbare. Elle vaut même inconscient. Accepter volontairement l'effet d'une autre religion oblige à cocher toutes ses vertus (Livre du maître, p. 114)."
+      },
+      "romantic": {
+        "name": "Chevalier Romantique",
+        "protection": "Protection : test d'Adoration contre la magie qui le pousserait à blesser ou trahir l'être aimé",
+        "protectionNote": "Sur un succès ou un critique, immunité aux effets qui le pousseraient à blesser ou trahir l'être aimé ; un critique permet aussi de dissiper un charme ou un châtiment qui frappe l'être aimé (Livre du maître, p. 114).",
+        "extra": "+2 à l'Engouement de base ; Gloire des tournois doublée s'il porte la faveur de l'être aimé ; bien reçu à la cour de la reine. Croyant compte avec le trait dirigé envers l'être aimé (« Croyant (dame…) »)."
+      },
+      "wicked": {
+        "name": "Chevalier Maléfique",
+        "extra": "Idéal réservé au MJ (Livre du maître, p. 83) : bénéfices fixés par lui."
+      },
+      "Protect": "Protection contre la magie",
+      "ProtectionTitle": "Protection contre la magie et les miracles",
+      "Immune": "Immunisé",
+      "NotImmune": "Aucune protection",
+      "NoPassion": "Il manque la passion de l'idéal {ideal}.",
+      "Revoke": "Retirer l'idéal",
+      "Restore": "Rendre l'idéal",
+      "RevokeTip": "Le MJ peut retirer un idéal à qui enfreint volontairement ses préceptes (Livre du joueur, p. 127) ; les bénéfices cessent jusqu'à ce qu'il le rende.",
+      "WickedAllow": "Autoriser l'idéal Maléfique (MJ)",
+      "WickedBenefits": "Bénéfices accordés par le MJ",
+      "WickedPlaceholder": "Ex. : +4 PV, monture monstrueuse",
+      "GMOnly": "Réservé au MJ.",
+      "Gained": "{name} atteint l'idéal : {ideal}.",
+      "Lost": "{name} perd les bénéfices de l'idéal : {ideal}.",
+      "VirtueArmor": "Armure de vertu",
+      "VirtueArmorTip": "Chevalier Courtois (Livre du joueur, p. 127) : s'ajoute à l'armure portée et arrête aussi les dégâts qui l'ignorent (chutes, feu).",
+      "WinterGained": "Idéal atteint : {ideal}.",
+      "WinterLost": "Idéal perdu : {ideal}."
+    },
+    "RoundTable": {
+      "Title": "Table Ronde",
+      "Member": "Siège à la Table Ronde depuis {year}",
+      "Yearly": "Chaque hiver : cadeau de {pounds} £ du roi, et niveau de vie {living} au moins aux frais de la maison d'Arthur.",
+      "Glory": "Gloire (Renommé)",
+      "NoticedTip": "Arthur remarque surtout les chevaliers de 8 000 points de Gloire ou plus, ceux qui ont atteint l'idéal Courtois, ou ceux qui ont accompli un acte extraordinaire.",
+      "Hint": "Passions conseillées pour un siège ; c'est le roi qui invite, quand un siège est libre (Livre du joueur, p. 128–129).",
+      "Admit": "Admettre à la Table Ronde",
+      "AdmitTip": "+{honor} Honneur, {glory} points de Gloire, cadeau annuel et niveau de vie Riche en hiver.",
+      "AdmitConfirm": "Le roi Arthur offre un siège à {name} ({year}) : +{honor} Honneur et {glory} points de Gloire inscrits dans la chronique.",
+      "AdmitDone": "{name} prête le serment de la Table Ronde : +{honor} Honneur, {glory} points de Gloire.",
+      "ChronicleEvent": "Siège à la Table Ronde",
+      "GiftLine": "Cadeau annuel du roi Arthur (Table Ronde) : {pounds} £ au trésor.",
+      "LivingLine": "La maison du roi entretient le chevalier de la Table Ronde : niveau de vie {living} au moins."
     }
   }
 }

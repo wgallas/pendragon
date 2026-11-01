@@ -18,6 +18,8 @@ import * as CD from "../combat/dialogs.mjs";
 import { domainsOf, domainGlory, domainIncome, newDomainData } from "../documents/domains.mjs";
 import { isDefaultActorImg } from "../documents/icons.mjs";
 import { portraitView } from "../documents/portrait.mjs";
+import { idealsView } from "./ideals-view.mjs";
+import { protectionTest, toggleRevoked, admitRoundTable } from "../documents/ideals.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -100,7 +102,10 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       woundDelete: ChevalierSheet.#onWoundDelete,
       domainNew: ChevalierSheet.#onDomainNew,
       domainOpen: ChevalierSheet.#onDomainOpen,
-      domainDelete: ChevalierSheet.#onDomainDelete
+      domainDelete: ChevalierSheet.#onDomainDelete,
+      idealProtect: ChevalierSheet.#onIdealProtect,
+      idealRevoke: ChevalierSheet.#onIdealRevoke,
+      roundTableAdmit: ChevalierSheet.#onRoundTableAdmit
     }
   };
 
@@ -185,19 +190,19 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       ["knockdown", d.knockdown], ["majorWound", d.majorWound], ["damage", d.damage],
       ["brawlDamage", d.brawlDamage], ["move", d.move], ["hpMax", d.hpMax],
       ["unconscious", d.unconscious], ["healRate", d.healRate]
-    ].map(([id, value]) => ({ label: L(`PDVF.Derived.${id}.label`), formula: L(`PDVF.Derived.${id}.formula`), value }));
+    ].map(([id, value]) => ({ label: L(`PDVF.Derived.${id}.label`), formula: L(`PDVF.Derived.${id}.formula`) + this.#idealBonusText(id), value }));
 
     context.quickModifiers = PDVF.quickModifiers.map(v => ({ value: v, label: signed(v), selected: v === this._modifier }));
     context.modifierHint = L(`PDVF.ModifierHint.${this._modifier}`);
 
     // Passion à invoquer pour le prochain test, et inspirations en cours
     const invokable = actor.listInvokable();
-    if (this._invoke && !invokable.some(p => p.key === this._invoke && !p.invoked)) this._invoke = "";
+    if (this._invoke && !invokable.some(p => p.key === this._invoke && !p.disabled)) this._invoke = "";
     context.invoke = {
       value: this._invoke,
       choices: invokable.map(p => ({
-        key: p.key, label: `${p.label} ${formatValue(p.value)}${p.invoked ? ` — ${L("PDVF.Invoke.UsedToday")}` : ""}`,
-        disabled: p.invoked, selected: p.key === this._invoke
+        key: p.key, label: `${p.label} ${formatValue(p.value)}${p.note ? ` — ${p.note}` : ""}`,
+        disabled: p.disabled, selected: p.key === this._invoke
       }))
     };
     const targets = actor.listRollables().filter(r => PDVF.inspirableKinds.includes(r.kind));
@@ -235,6 +240,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       };
     });
     context.directedTraits = system.directedTraits.map((t, i) => ({ ...t, index: i }));
+    context.ideals = idealsView(actor, { editMode });
     const invokedNames = actor.invokedToday();
     context.honor = {
       invoked: invokedNames.some(n => samePassion(n, L("PDVF.Honor"))),
@@ -342,6 +348,15 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.gear = gearView(actor, this.#gearStats());
     context.combat = CD.woundsView(actor);
     return context;
+  }
+
+  /** Part des idéaux dans une valeur dérivée (« + 4 (Chevalier Religieux) »), pour la formule affichée. */
+  #idealBonusText(id) {
+    const key = { hpMax: "hp", healRate: "healRate", move: "move", damage: "damageDice" }[id];
+    if (!key) return "";
+    const parts = (this.document.system.idealsStatus ?? []).filter(s => s.met && s.effects?.[key])
+      .map(s => `${s.effects[key]}${key === "damageDice" ? "D6" : ""} (${L(`PDVF.Ideal.${s.id}.name`)})`);
+    return parts.length ? ` + ${parts.join(" + ")}` : "";
   }
 
   /** Valeurs du chevalier utiles au calcul des attaques. */
@@ -766,6 +781,21 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onEndInspiration(event, target) {
     await this.document.endInspiration(Number(target.dataset.index));
+  }
+
+  /** Test de protection contre la magie et les miracles d'un idéal atteint. */
+  static async #onIdealProtect(event, target) {
+    return protectionTest(this.document, target.dataset.ideal);
+  }
+
+  /** Le MJ retire un idéal au chevalier (ou le lui rend). */
+  static async #onIdealRevoke(event, target) {
+    return toggleRevoked(this.document, target.dataset.ideal);
+  }
+
+  /** Le MJ admet le chevalier à la Table Ronde. */
+  static async #onRoundTableAdmit() {
+    return admitRoundTable(this.document);
   }
 
   static async #onNewDay() {

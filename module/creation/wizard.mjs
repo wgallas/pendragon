@@ -322,7 +322,7 @@ export class CreationWizard extends HandlebarsApplicationMixin(ApplicationV2) {
       knighted: s.details.knighted && k.eligible,
       kg,
       ideals: [{ value: "", label: L("PDVF.Wizard.Details.noIdeal"), selected: !s.details.ideal },
-        ...ideals.map(i => ({ value: i.label, label: i.label, selected: s.details.ideal === i.label }))],
+        ...ideals.map(i => ({ value: i.id, label: i.label, selected: R.idealId(s.details.ideal, C) === i.id }))],
       jump: jump ? { ...jump, outcomeLabel: L(`PDVF.Outcome.${jump.outcome}`) } : null,
       luck,
       summary: {

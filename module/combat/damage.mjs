@@ -39,13 +39,18 @@ export function combatStats(actor) {
   const knight = actor.type === "chevalier";
   const d = s.derived ?? {};
   const dex = Number(s.characteristics?.dex?.value) || 0;
-  let armor = 0, shield = 0, shieldItem = null, mail = false, plate = false, shieldInfo = null;
+  let armor = 0, shield = 0, shieldItem = null, mail = false, plate = false, shieldInfo = null, worn = 0;
+  // Armure de vertu du chevalier Courtois (Livre du joueur, p. 127) : s'ajoute à l'armure portée et
+  // arrête aussi les dégâts qui ignorent l'armure (chutes…).
+  const virtueArmor = knight ? Number(d.virtueArmor) || 0 : 0;
   if (knight) {
     const p = protection(actor.items.contents);
-    armor = p.armor; shield = p.shield; shieldItem = p.shieldItem; mail = p.mail; plate = p.plate;
+    worn = p.armor;
+    armor = p.armor + virtueArmor; shield = p.shield; shieldItem = p.shieldItem; mail = p.mail; plate = p.plate;
     shieldInfo = shieldItem ? { mountedPenalty: shieldItem.system.mountedPenalty, chargeExempt: shieldItem.system.chargeExempt, noMissile: shieldItem.system.noMissile, rangedPenalty: shieldItem.system.rangedPenalty } : null;
   } else {
     armor = Number(s.armor?.value) || 0;
+    worn = armor;
     shield = Number(s.armor?.shield) || 0;
     const desc = s.armor?.description ?? "";
     mail = /maill|haubert|haubergeon|broigne/i.test(desc);
@@ -68,7 +73,7 @@ export function combatStats(actor) {
     chirurgery: knight ? Number(s.skills?.chirurgery?.value) || 0 : npcSkill(actor, "chirurgery"),
     brawl: knight ? Number(d.brawlDamage) || 0 : (Number(String(d.damage ?? "").match(/^(\d+)/)?.[1]) || 0),
     damageDice: knight ? Number(d.damageDice) || 0 : (Number(String(d.damage ?? "").match(/^(\d+)/)?.[1]) || 0),
-    armor, shield, shieldItem, shieldInfo, mail, plate, unarmored: armor === 0,
+    armor, virtueArmor, shield, shieldItem, shieldInfo, mail, plate, unarmored: worn === 0,
     mounted: hasStatus(actor, STATUS.mounted),
     prone: hasStatus(actor, STATUS.prone),
     disarmed: hasStatus(actor, STATUS.disarmed),
@@ -107,6 +112,15 @@ function snapshot(actor) {
     npcShield: actor.type === "pnj" ? actor._source.system.armor?.shield ?? 0 : null,
     items: []
   };
+}
+
+/** Dégâts d'une chute, diminués de l'armure de vertu (qui arrête même ce que l'armure n'arrête pas). */
+function fallDamage(rolled, st, lines, actor) {
+  const v = Number(st.virtueArmor) || 0;
+  if (!v) return rolled;
+  const real = Math.max(0, rolled - v);
+  lines.push(F("PDVF.Combat.Line.VirtueArmor", { name: actor.name, rolled, armor: v, real }));
+  return real;
 }
 
 function newWound(damage, type, source) {
@@ -187,9 +201,10 @@ export async function receiveDamage(actor, hit, undo = null) {
         mounted = false; statusOff.add(STATUS.mounted); statusOn.add(STATUS.disarmed);
         const f = await roll("1d6");
         rolls.push(f);
-        health.wounds.push(newWound(f.total, "fall", L("PDVF.Combat.Unhorsed")));
-        health.hp.value -= f.total;
-        lines.push(F("PDVF.Combat.Line.Unhorsed", { name: actor.name, damage: f.total }));
+        const fall = fallDamage(f.total, st, lines, actor);
+        if (fall > 0) health.wounds.push(newWound(fall, "fall", L("PDVF.Combat.Unhorsed")));
+        health.hp.value -= fall;
+        lines.push(F("PDVF.Combat.Line.Unhorsed", { name: actor.name, damage: fall }));
       } else lines.push(F("PDVF.Combat.Line.Down", { name: actor.name }));
     }
   }
@@ -209,7 +224,7 @@ export async function receiveDamage(actor, hit, undo = null) {
   }
 
   // 3. Dégâts réels, blessure
-  const armor = hit.ignoreArmor ? 0 : st.armor;
+  const armor = hit.ignoreArmor ? st.virtueArmor : st.armor;
   const real = W.realDamage(base, { armor, shield, half: !!hit.half });
   const type = W.woundType(real, { majorWound: st.majorWound, hpTotal: st.hpTotal });
   lines.push(F("PDVF.Combat.Line.Damage", {
@@ -251,9 +266,10 @@ export async function receiveDamage(actor, hit, undo = null) {
       else {
         const f = await roll("1d6");
         rolls.push(f);
-        health.wounds.push(newWound(f.total, "fall", L("PDVF.Combat.Fall")));
-        health.hp.value -= f.total;
-        lines.push(F("PDVF.Combat.Line.HardLanding", { name: actor.name, damage: f.total }));
+        const fall = fallDamage(f.total, st, lines, actor);
+        if (fall > 0) health.wounds.push(newWound(fall, "fall", L("PDVF.Combat.Fall")));
+        health.hp.value -= fall;
+        lines.push(F("PDVF.Combat.Line.HardLanding", { name: actor.name, damage: fall }));
       }
     }
   }

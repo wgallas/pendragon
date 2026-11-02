@@ -112,6 +112,8 @@ Hooks.once("init", () => {
   });
 
   // Hiver en cours (année ; 0 : aucun) : l'assistant d'hiver des joueurs est ouvert
+  // Seuils secrets de Faveurs des séductions (vie de cour), fixés par le MJ.
+  game.settings.register(SYSTEM_ID, "seductionThresholds", { scope: "world", config: false, type: Object, default: {} });
   game.settings.register(SYSTEM_ID, "winterYear", {
     scope: "world",
     config: false,

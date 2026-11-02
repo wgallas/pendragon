@@ -121,6 +121,7 @@ export function exchangeModifiers(self, other) {
   }
 
   add("Inspiration", Number(self.inspiration) || 0);
+  add("Ivresse", Number(self.condition) || 0);
   add("Modificateur", Number(self.manual) || 0);
   if (self.action === "setSpear" && other.action !== "charge") warnings.push("Planter sa lance n'agit que contre une charge : c'est ici une attaque ordinaire.");
   return { total: parts.reduce((s, p) => s + p.value, 0), parts, warnings };

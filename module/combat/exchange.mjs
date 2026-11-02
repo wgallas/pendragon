@@ -403,14 +403,16 @@ function sideFor(actor, decl) {
     actor, st, decl, opt, key,
     base: C.baseValue({ action: decl.action, weaponSkill: opt?.skillValue ?? 0, charge: chargeValue, horsemanship: st.horsemanship, move, brawling, mounted: st.mounted, lance: !!opt?.lance }),
     // Bonus d'inspiration : celui que voit le MJ, ou celui que le joueur vient d'obtenir (la mise à jour peut arriver après)
-    inspiration: Math.max(knight && key && typeof actor.inspirationBonus === "function" ? actor.inspirationBonus(key) : 0, Number(decl.inspiration) || 0)
+    inspiration: Math.max(knight && key && typeof actor.inspirationBonus === "function" ? actor.inspirationBonus(key) : 0, Number(decl.inspiration) || 0),
+    // Ivresse, gueule de bois (vie de cour)
+    condition: knight && key ? (actor.conditionModifier?.(key)?.value ?? 0) : 0
   };
 }
 
 function modifiersFor(self, other) {
   return C.exchangeModifiers(
     { action: self.decl.action, mounted: self.st.mounted, prone: self.st.prone, weapon: self.opt, opponents: self.decl.opponents, longRange: self.decl.longRange,
-      shield: self.st.shieldInfo, manual: self.decl.modifier, inspiration: self.inspiration },
+      shield: self.st.shieldInfo, manual: self.decl.modifier, inspiration: self.inspiration, condition: self.condition },
     { action: other.decl.action, mounted: other.st.mounted, prone: other.st.prone, weapon: other.opt }
   );
 }

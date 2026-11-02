@@ -1584,3 +1584,18 @@
 .pendragon-vf .pdvf-ransom-row input[name="share"] { width: 120px; }
 .pendragon-vf .pdvf-ransom-row select { max-width: 260px; }
 .pendragon-vf .pdvf-ransom-own { margin-top: 8px; }
+
+/* -------------------------------------------- */
+/*  Vie de cour (fiche du chevalier)             */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-court-life { margin-top: 14px; }
+.pendragon-vf .pdvf-court-eng { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.pendragon-vf .pdvf-court-eng-value { display: flex; flex-direction: column; align-items: center; border: 1px solid var(--pdvf-rule-strong); padding: 2px 10px; background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-court-eng-value span { font-size: 12px; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-court-eng-value strong { font-size: 20px; color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-court-eng-parts { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+.pendragon-vf .pdvf-court-list { margin: 4px 0; padding-left: 18px; font-size: 13px; }
+.pendragon-vf .pdvf-court-seduction { border-bottom: 1px dotted var(--pdvf-rule); padding: 2px 0 6px; }
+.pendragon-vf .pdvf-court-seduction p { margin: 2px 0; }
+.pendragon-vf .pdvf-court-seduction.status-seduced { border-left: 3px solid var(--pdvf-vermilion); padding-left: 6px; }
+.pendragon-vf .pdvf-court-life .pdvf-num { width: 52px; }

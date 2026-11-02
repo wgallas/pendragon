@@ -161,7 +161,8 @@ export async function rollAttribute(actor, key, options = {}) {
 
   const insp = actor.inspirationBonus(key);
   const reflected = Number(options.reflected || 0);
-  const modifier = Number(options.modifier || 0) + insp + reflected;
+  const cond = actor.conditionModifier?.(key) ?? { value: 0, note: "" };
+  const modifier = Number(options.modifier || 0) + insp + reflected + cond.value;
   const roll = await d20();
   const result = resolveTest(rollable.value, modifier, roll.total);
   const view = {
@@ -174,9 +175,10 @@ export async function rollAttribute(actor, key, options = {}) {
     buttons: pre.buttons
   };
   if (insp) view.notes.push(inspirationNote(actor, key));
+  if (cond.note) view.notes.push(cond.note);
   const rolls = [...pre.rolls, roll];
   const xpKeys = [];
-  if (result.outcome === OUTCOME.CRITICAL && rollable.canXp) xpKeys.push([actor, key]);
+  if (result.outcome === OUTCOME.CRITICAL && rollable.canXp && !(rollable.kind === "skill" && actor.noSkillXp)) xpKeys.push([actor, key]);
 
   if (options.opposition === "fixed") {
     const verdict = resolveFixed(result, options.fixedValue);
@@ -332,7 +334,9 @@ export async function rollTrait(actor, key, options = {}) {
   if (!pre) return;
   notes.unshift(...pre.notes);
 
-  const modifier = Number(options.modifier || 0);
+  const cond = actor.conditionModifier?.(first.key) ?? { value: 0, note: "" };
+  const modifier = Number(options.modifier || 0) + cond.value;
+  if (cond.note) notes.push(cond.note);
   const mod1 = modifier + actor.inspirationBonus(first.key);
   const roll1 = await d20();
   const res1 = resolveTest(first.value, mod1, roll1.total);

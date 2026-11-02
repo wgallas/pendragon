@@ -337,6 +337,38 @@ PDVF.tournament = {
 };
 
 /**
+ * Vie de cour (Livre du maître, chap. 3 ; Livre du joueur, chap. 5 et 6).
+ * fashion : Table 5.3, dépense (£) d'une tenue réussie au test de Mode → bonus d'Engouement, gardé un an,
+ *   puis un niveau de moins chaque année ; s'habiller au-delà de son rang coche Fier.
+ * rankSpend : dépense attendue selon le rang (chevalier, riche chevalier, banneret…).
+ * adoration : passion d'Adoration de l'amour courtois (1D6+6) ; don de 10 Gloire : case cochée ;
+ *   de 100 : +1 (une fois par an). L'union consommée remplace l'Adoration par l'Amour à la moitié.
+ * drink : ivresse (Tables 3.11 et 3.12) — modificateurs du test de Bon-vivant, d'Énergique, du lendemain.
+ */
+PDVF.court = {
+  fashion: [{ pounds: 1, bonus: 1 }, { pounds: 2, bonus: 2 }, { pounds: 4, bonus: 3 }, { pounds: 8, bonus: 4 },
+    { pounds: 16, bonus: 5 }, { pounds: 32, bonus: 6 }, { pounds: 64, bonus: 7 }, { pounds: 128, bonus: 8 }],
+  fashionMarket: 16,
+  rankSpend: { knight: 1, richKnight: 2, banneret: 4, baron: 8, richBaron: 16, earl: 32, king: 64 },
+  adoration: { start: "1D6+6", giftCheck: 10, giftRaise: 100 },
+  seduction: { romanceBase: 0, targetChaste: 10 },
+  drink: {
+    drinks: { beer: 0, mead: 2, wine: 5 },
+    enemies: -5, royal: -2,
+    energetic: { deadDrunk: -10, drunk: -5, debilitated: -5 },
+    hangover: { con: -5, comatose: -10, penalty: -5 },
+    /** Table 3.11 : modificateurs selon l'état. */
+    levels: {
+      deadDrunk: { traits: { "chaste.right": 10, "prudent.right": 10, "temperate.right": 10, "valorous.left": 10 }, skills: -10, boosted: {} },
+      drunk: { traits: { "chaste.right": 5, "prudent.right": 5, "temperate.right": 5, "valorous.left": 5 }, skills: -5, boosted: { flirting: 5, orate: 5 } }
+    },
+    /** Table 3.12 : niveau d'activité (le pire résultat compte). */
+    activity: { groggy: -5, unconscious: -10 },
+    activityOrder: ["", "groggy", "unconscious", "comatose"]
+  }
+};
+
+/**
  * Festins (Livre du maître, chap. 3, p. 37–44). Les cartes d'évènement de festin (Deadcrows) ne sont
  * pas dans les livres : les joueurs tirent les leurs, la fiche note la carte jouée et son Engouement.
  * sizes : Tables 3.2 (tours) et 3.7 (seuil d'Engouement, Gloire de l'invité le plus remarqué) ;

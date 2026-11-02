@@ -4,6 +4,7 @@ import { normalizeLabel } from "../rules/followers.mjs";
 import { invokeRequirement } from "../rules/ideals.mjs";
 import { idealsSnapshot, afterIdealsUpdate } from "./ideals.mjs";
 import { actorIcon, actorIconUpdates } from "./icons.mjs";
+import { drinkState, conditionModifier, noSkillXp } from "../rules/court.mjs";
 
 /**
  * Document Acteur du système.
@@ -233,6 +234,26 @@ export class PendragonActor extends Actor {
   /** Jour en cours du monde. */
   static get currentDay() {
     try { return Number(game.settings.get(SYSTEM_ID, "currentDay")) || 1; } catch (err) { return 1; }
+  }
+
+  /** Ivresse et gueule de bois du jour (Livre du maître, Tables 3.11 et 3.12). */
+  drinkState() {
+    if (this.type !== "chevalier") return drinkState(null, 0);
+    return drinkState(this.system.court?.drunk, PendragonActor.currentDay);
+  }
+
+  /** Modificateur d'état d'un Attribut (ivresse, activité, gueule de bois), avec sa note. */
+  conditionModifier(key) {
+    if (this.type !== "chevalier" || !key) return { value: 0, parts: [], note: "" };
+    const c = conditionModifier(this.drinkState(), key, PDVF.court.drink);
+    const L = (k) => game.i18n.localize(k);
+    const note = c.value ? game.i18n.format("PDVF.Court.Drink.Note", { parts: c.parts.map(p => `${L(`PDVF.Court.Drink.State.${p.label}`)} ${p.value > 0 ? "+" : "−"}${Math.abs(p.value)}`).join(", ") }) : "";
+    return { ...c, note };
+  }
+
+  /** En état d'ivresse, les compétences ne gagnent pas de croix d'expérience. */
+  get noSkillXp() {
+    return this.type === "chevalier" && noSkillXp(this.drinkState());
   }
 
   /** Les invocations notées sur la fiche se rapportent-elles au jour en cours ? */

@@ -227,6 +227,37 @@ export class ChevalierData extends foundry.abstract.TypeDataModel {
         glory: int(0)
       })),
 
+      // Vie de cour (Livre du maître, chap. 3) : Engouement hors festin, tenue de Mode, amour courtois,
+      // séductions en cours, ivresse du jour.
+      court: new fields.SchemaField({
+        adjust: int(0),
+        other: int(0),
+        fashion: new fields.SchemaField({
+          pounds: new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 }),
+          bonus: int(0),
+          year: int(null, { nullable: true }),
+          outcome: new fields.StringField({ initial: "" })
+        }),
+        beloved: new fields.StringField({ initial: "" }),
+        consummated: new fields.BooleanField({ initial: false }),
+        adorationYear: int(null, { nullable: true }),
+        gifts: new fields.ArrayField(new fields.SchemaField({ year: int(0), glory: int(0), note: new fields.StringField({ initial: "" }) })),
+        seductions: new fields.ArrayField(new fields.SchemaField({
+          id: new fields.StringField({ initial: "" }),
+          name: new fields.StringField({ initial: "" }),
+          noble: new fields.BooleanField({ initial: true }),
+          married: new fields.BooleanField({ initial: false }),
+          favors: new fields.ArrayField(new fields.SchemaField({ label: new fields.StringField({ initial: "" }), value: int(1) })),
+          status: new fields.StringField({ initial: "" }),
+          note: new fields.StringField({ initial: "" })
+        })),
+        drunk: new fields.SchemaField({
+          day: int(0), level: new fields.StringField({ initial: "sober" }), immune: new fields.BooleanField({ initial: false }),
+          activity: new fields.StringField({ initial: "" }), passedOut: new fields.BooleanField({ initial: false }),
+          hangoverChecked: new fields.BooleanField({ initial: false }), hangoverDay: int(0), hangover: new fields.BooleanField({ initial: false })
+        })
+      }),
+
       notes: new fields.StringField({ initial: "" })
     };
   }

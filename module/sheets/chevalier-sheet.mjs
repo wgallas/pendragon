@@ -22,6 +22,7 @@ import { portraitView } from "../documents/portrait.mjs";
 import { idealsView } from "./ideals-view.mjs";
 import { newestGearGlory } from "../documents/period.mjs";
 import { protectionTest, toggleRevoked, admitRoundTable, admitCompanions } from "../documents/ideals.mjs";
+import * as Court from "../court/court.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -109,7 +110,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       idealProtect: ChevalierSheet.#onIdealProtect,
       idealRevoke: ChevalierSheet.#onIdealRevoke,
       roundTableAdmit: ChevalierSheet.#onRoundTableAdmit,
-      companionsAdmit: ChevalierSheet.#onCompanionsAdmit
+      companionsAdmit: ChevalierSheet.#onCompanionsAdmit,
+      court: ChevalierSheet.#onCourt
     }
   };
 
@@ -245,6 +247,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
     context.directedTraits = system.directedTraits.map((t, i) => ({ ...t, index: i }));
     context.ideals = idealsView(actor, { editMode });
+    context.court = Court.courtView(actor);
     const invokedNames = actor.invokedToday();
     context.honor = {
       invoked: invokedNames.some(n => samePassion(n, L("PDVF.Honor"))),
@@ -804,6 +807,36 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** Le MJ admet le chevalier parmi les Compagnons du roi Arthur. */
   static async #onCompanionsAdmit() {
     return admitCompanions(this.document);
+  }
+
+  /** Bloc « Cour » : Engouement, Mode, amour courtois, séduction, ivresse. */
+  static async #onCourt(event, target) {
+    const a = this.document;
+    const { op, id, value } = target.dataset;
+    switch (op) {
+      case "test": return Court.courtTest(a);
+      case "adjust": return Court.adjustEngouement(a, value);
+      case "fashion": return Court.fashionOutfit(a);
+      case "love": return Court.startCourtlyLove(a);
+      case "gift": return Court.giveGlory(a);
+      case "consummate": return Court.consummate(a);
+      case "seductionAdd": return Court.addSeduction(a);
+      case "seduce": return Court.seduceCommoner(a, id);
+      case "favor": return Court.addFavor(a, id);
+      case "status": return Court.setSeductionStatus(a, id, value);
+      case "drink": return Court.drink(a);
+      case "awake": return Court.stayAwake(a);
+      case "hangover": return Court.hangover(a);
+      case "sober": return Court.soberUp(a);
+    }
+  }
+
+  /** Seuil secret de Faveurs d'une séduction (MJ). */
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    for (const el of this.element.querySelectorAll("input[data-court-threshold]")) {
+      el.addEventListener("change", (ev) => { ev.stopPropagation(); Court.setThreshold(this.document, el.dataset.courtThreshold, el.value); });
+    }
   }
 
   /** Le MJ admet le chevalier à la Table Ronde. */

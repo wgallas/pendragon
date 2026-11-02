@@ -185,5 +185,72 @@
       </section>
       {{/each}}
     </div>
+
+    {{!-- Vie de cour (Livre du maître, chap. 3) --}}
+    {{#with court}}
+    <section class="pdvf-court-life">
+      <h2 class="pdvf-h2"><i class="pdvf-lozenge" aria-hidden="true"></i>{{localize "PDVF.Court.Title"}}</h2>
+
+      <div class="pdvf-court-eng">
+        <div class="pdvf-court-eng-value" data-tooltip="{{localize 'PDVF.Court.EngouementTip'}}"><span>{{localize "PDVF.Feast.Engouement"}}</span><strong>{{engouement}}</strong></div>
+        <div class="pdvf-court-eng-parts">
+          <span>{{localize "PDVF.Feast.Start"}} {{start}}{{#if romantic}} <i class="fa-solid fa-heart" data-tooltip="{{localize 'PDVF.Feast.RomanticTip'}}"></i>{{/if}}</span>
+          <span>{{localize "PDVF.Court.AtCourt"}} {{adjustLabel}}
+            <button type="button" class="pdvf-icon-btn" data-action="court" data-op="adjust" data-value="-1" aria-label="−1">−</button><button type="button" class="pdvf-icon-btn" data-action="court" data-op="adjust" data-value="1" aria-label="+1">+</button><button type="button" class="pdvf-icon-btn" data-action="court" data-op="adjust" data-value="reset" data-tooltip="{{localize 'PDVF.Court.NewCourt'}}"><i class="fa-solid fa-rotate-left"></i></button></span>
+          {{#if @root.editMode}}<label class="pdvf-inline">{{localize "PDVF.Court.Other"}} <input class="pdvf-num" type="number" name="system.court.other" value="{{other}}" step="1"></label>{{/if}}
+        </div>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="test"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Court.Test"}}</button>
+      </div>
+      <p class="pdvf-hint">{{#if fashionLine}}{{fashionLine}}{{else}}{{localize "PDVF.Court.Fashion.None"}}{{/if}}
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="fashion"><i class="fa-solid fa-shirt"></i> {{localize "PDVF.Court.Fashion.Title"}}</button></p>
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Court.Love.Title"}}</h3>
+      {{#with love}}
+      {{#if adoration}}
+      <p>{{adoration.name}} <strong>{{adoration.value}}</strong>{{#if consummated}} · <span class="pdvf-tag">{{localize "PDVF.Court.Love.ConsummatedTag"}}</span>{{/if}}{{#if raisedThisYear}} · <span class="pdvf-hint-inline">{{localize "PDVF.Court.Love.RaisedThisYear"}}</span>{{/if}}</p>
+      <div class="pdvf-inline">
+        {{#unless consummated}}<button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="gift" data-tooltip="{{localize 'PDVF.Court.Love.GiftHint'}}"><i class="fa-solid fa-gift"></i> {{localize "PDVF.Court.Love.Gift"}}</button>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="consummate">{{localize "PDVF.Court.Love.Consummate"}}</button>{{/unless}}
+      </div>
+      {{#if gifts.length}}<ul class="pdvf-court-list">{{#each gifts}}<li>{{this}}</li>{{/each}}</ul>{{/if}}
+      {{else}}
+      <p class="pdvf-hint">{{#if consummated}}{{beloved}} · {{localize "PDVF.Court.Love.ConsummatedTag"}}{{else}}{{localize "PDVF.Court.Love.None"}}{{/if}}</p>
+      {{/if}}
+      {{/with}}
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="love"><i class="fa-solid fa-heart"></i> {{localize "PDVF.Court.Love.Start"}}</button>
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Court.Seduce.Title"}}</h3>
+      {{#each seductions}}
+      <div class="pdvf-court-seduction status-{{status}}">
+        <p><strong>{{name}}</strong> <span class="pdvf-hint-inline">{{kindLabel}}{{#if married}} · {{localize "PDVF.Court.Seduce.MarriedShort"}}{{/if}}</span>{{#if statusLabel}} · <span class="pdvf-tag">{{statusLabel}}</span>{{/if}}</p>
+        {{#if noble}}<p class="pdvf-hint-inline">{{localize "PDVF.Court.Seduce.Favors"}} : F{{total}}{{#if favorsText}} — {{favorsText}}{{/if}}</p>{{/if}}
+        <div class="pdvf-inline">
+          {{#unless status}}
+            {{#if noble}}<button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="favor" data-id="{{id}}">{{localize "PDVF.Court.Seduce.AddFavor"}}</button>
+            {{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="seduce" data-id="{{id}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Court.Seduce.Try"}}</button>{{/if}}
+          {{/unless}}
+          {{#if @root.court.isGM}}
+            {{#if noble}}<label class="pdvf-inline pdvf-gm-only" data-tooltip="{{localize 'PDVF.Court.Seduce.ThresholdTip'}}"><i class="fa-solid fa-eye-slash"></i> {{localize "PDVF.Court.Seduce.Threshold"}} <input class="pdvf-num" type="number" data-court-threshold="{{id}}" value="{{threshold}}" min="0" step="1"></label>{{#if reached}}<span class="pdvf-tag pdvf-tag-warn">{{localize "PDVF.Court.Seduce.ReachedTag"}}</span>{{/if}}{{/if}}
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="status" data-id="{{id}}" data-value="seduced">{{localize "PDVF.Court.Seduce.Status.seduced"}}</button>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="status" data-id="{{id}}" data-value="discovered">{{localize "PDVF.Court.Seduce.Status.discovered"}}</button>
+          {{/if}}
+          <button type="button" class="pdvf-icon-btn" data-action="court" data-op="status" data-id="{{id}}" data-value="remove" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>
+        </div>
+      </div>
+      {{/each}}
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="seductionAdd">{{localize "PDVF.Court.Seduce.Add"}}</button>
+
+      <h3 class="pdvf-h3">{{localize "PDVF.Court.Drink.Title"}}</h3>
+      {{#with drink}}
+      <p>{{localize "PDVF.Court.Drink.Now"}} : <strong>{{label}}</strong>{{#if skillsNote}} · <span class="pdvf-hint-inline">{{localize "PDVF.Court.Drink.SkillsNote"}} {{skillsNote}}</span>{{/if}}{{#if immune}} · <span class="pdvf-hint-inline">{{localize "PDVF.Court.Drink.ImmuneTip"}}</span>{{/if}}{{#if hangover}} · <span class="pdvf-tag pdvf-tag-warn">{{localize "PDVF.Court.Drink.State.hangover"}}</span>{{/if}}</p>
+      <div class="pdvf-inline">
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="drink"><i class="fa-solid fa-wine-glass"></i> {{localize "PDVF.Court.Drink.Drink"}}</button>
+        {{#unless sober}}<button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="awake" data-tooltip="{{localize 'PDVF.Court.Drink.AwakeTip'}}">{{localize "PDVF.Court.Drink.Awake"}}</button>
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="court" data-op="sober">{{localize "PDVF.Court.Drink.Sober"}}</button>{{/unless}}
+        {{#if hangoverPending}}<button type="button" class="pdvf-btn pdvf-mini pdvf-btn-primary" data-action="court" data-op="hangover">{{localize "PDVF.Court.Drink.Hangover"}}</button>{{/if}}
+      </div>
+      {{/with}}
+    </section>
+    {{/with}}
   </div>
 </section>

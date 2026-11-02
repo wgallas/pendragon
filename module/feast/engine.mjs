@@ -7,6 +7,8 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import * as R from "../rules/feast.mjs";
 import { traitPair } from "../rules/resolution.mjs";
+import { fashionCurrent } from "../rules/court.mjs";
+import { gameYear } from "../documents/period.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -102,7 +104,9 @@ export function guestState(sys, g, actor = guestActor(g)) {
   const app = Number(s?.characteristics?.app?.value) || 0;
   const living = g.clothing || s?.economy?.living || "ordinary";
   const romantic = (s?.idealEffects?.met ?? []).includes("romantic");
-  const start = R.startingEngouement({ living, romantic, other: g.bonus, app }, cfg);
+  // Tenue de Mode encore valable et autres bonus notés sur la fiche (vie de cour), plus ceux du festin.
+  const fashion = fashionCurrent(s?.court?.fashion, sys.year ?? gameYear());
+  const start = R.startingEngouement({ living, romantic, other: (Number(g.bonus) || 0) + fashion + (Number(s?.court?.other) || 0), app }, cfg);
   const eng = R.engouementState({ start, entries: g.entries, app });
   const gloryTotal = Number(s?.gloryTotal) || 0;
   const notoriety = R.notorietyMod(gloryTotal, cfg);
@@ -111,7 +115,7 @@ export function guestState(sys, g, actor = guestActor(g)) {
   const modestValue = s?.traits?.modest ? traitPair(s.traits.modest.value).left : 0;
   const round = Number(sys.round) || 0;
   return {
-    app, living, romantic, start, acc: eng.acc, engouement: eng.total, gloryTotal, notoriety, att,
+    app, living, romantic, start, fashion, acc: eng.acc, engouement: eng.total, gloryTotal, notoriety, att,
     cards: R.cardsAllowed(att, cfg), proud, proudFamous: proud >= cfg.proudFamous, modestValue,
     rank: s?.biography?.knightClass ?? "", seatRank: g.seat ? R.seatRank(g.seat, cfg) : null,
     present: g.left === null || g.left === undefined,

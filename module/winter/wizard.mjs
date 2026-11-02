@@ -6,6 +6,8 @@ import { formatValue, traitPair } from "../rules/resolution.mjs";
 import { formatDenarii } from "../rules/horses.mjs";
 import { removeFollower, removeHorse, convertNpcToKnight, resolveFollowers, resolveHorses } from "../documents/followers.mjs";
 import * as W from "../rules/winter.mjs";
+import * as Solo from "./solo.mjs";
+import * as Money from "./money.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 const L = (k) => game.i18n.localize(k);
@@ -107,6 +109,7 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
     const st = this.wstate;
     const sys = actor.system;
     switch (id) {
+      case "solo": return Solo.soloView(actor, st);
       case "event": {
         const e = st.event;
         const ev = e ? winterEvent(e.roll) : null;
@@ -134,7 +137,9 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           enhRows: (st.enhChecks?.rows ?? []).map(r => ({ ...r, outcomeLabel: r.outcome ? L(`PDVF.Outcome.${r.outcome}`) : "—" })) };
       }
       case "economy": {
+        if (actor.isOwner) await Money.importCaptives(actor, st.year);
         const info = E.economyInfo(actor);
+        const pay = Money.payInfo(actor, st);
         const e = st.economy;
         const col = PDVF.winter.upkeep[info.column];
         return {
@@ -142,8 +147,13 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
           columnLabel: L(`PDVF.Winter.Column.${info.column}`),
           table: PDVF.winter.upkeepLevels.map((lv, i) => ({ label: L(`PDVF.Living.${lv}`), min: String(col[i]).replace(".", ",") })),
           suggested: (info.household || info.domains.length || info.roundTable) ? 0 : info.ordinary,
-          payLine: info.pay !== null ? F(`PDVF.Winter.KnightPay.${info.klass}`, { pounds: info.pay }) : "",
-          incomeSuggested: info.pay ?? 0,
+          payLine: info.pay !== null && !pay ? F(`PDVF.Winter.KnightPay.${info.klass}`, { pounds: info.pay }) : "",
+          incomeSuggested: pay ? 0 : (info.pay ?? 0),
+          pay, payLabel: pay ? formatDenarii(pay.denarii) : "", payMaxLabel: pay ? F("PDVF.Winter.PayBonusMax", { pounds: pay.max }) : "",
+          paidLabel: e?.pay ? formatDenarii(e.pay) : "",
+          industry: Money.industryInfo(actor, st),
+          ransom: Money.ransomInfo(actor, st),
+          ownRansomLabel: st.ownRansom ? F("PDVF.Ransom.OwnDone", { amount: String(st.ownRansom.pounds).replace(".", ","), payer: L(`PDVF.Ransom.Payer.${st.ownRansom.payer}`) }) : "",
           roundTableLine: info.roundTable ? F("PDVF.RoundTable.Yearly", { pounds: info.roundTable.gift, living: L(`PDVF.Living.${info.roundTable.living}`) }) : "",
           hasDomains: info.domains.length > 0, landsUpkeepLine: F("PDVF.Manor.Winter.UpkeepFromLands", { upkeep: String(info.lands).replace(".", ",") }),
           lands: info.domains.length ? this.#landsContext() : null, helped: st.lordHelp ? F("PDVF.Domain.Helped", { missing: String(st.lordHelp.missing).replace(".", ","), favor: st.lordHelp.favor }) : "",
@@ -285,6 +295,17 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender?.(context, options);
     this.#refreshTraining();
+    // Solde du mercenaire : montant recalculé à la saisie.
+    const box = this.element.querySelector("[data-pay-preview]");
+    if (box) {
+      const group = box.closest("[data-group]");
+      const update = () => {
+        const v = (n) => group.querySelector(`[name="${n}"]`)?.value ?? "";
+        const den = W.mercenaryPay({ unit: v("payUnit"), count: Number(v("payCount")) || 0, bonus: Number(String(v("payBonus")).replace(",", ".")) || 0 }, PDVF.winter);
+        box.textContent = formatDenarii(den);
+      };
+      for (const el of group.querySelectorAll('[name="payUnit"], [name="payCount"], [name="payBonus"]')) el.addEventListener("input", update);
+    }
   }
 
   static #onSetTraining(event, target) {
@@ -309,9 +330,43 @@ export class WinterWizard extends HandlebarsApplicationMixin(ApplicationV2) {
         case "effect": await E.applyEventEffect(actor, st, Number(target.dataset.index)); break;
         case "xp": await E.rollExperience(actor, st); break;
         case "upkeep": {
-          await E.payUpkeep(actor, st, { spend: Number(String(val("spend")).replace(",", ".")), income: Number(String(val("income")).replace(",", ".")) || 0 });
+          let pay = 0;
+          let payCalc = null;
+          const unit = val("payUnit");
+          if (unit) {
+            payCalc = { unit, count: Number(val("payCount")) || 0, bonus: Number(String(val("payBonus")).replace(",", ".")) || 0 };
+            pay = W.mercenaryPay(payCalc, PDVF.winter);
+          }
+          await E.payUpkeep(actor, st, { spend: Number(String(val("spend")).replace(",", ".")), income: Number(String(val("income")).replace(",", ".")) || 0, pay, payCalc });
           break;
         }
+        case "soloStart": await Solo.startSolo(actor, st, val("soloKind") || target.dataset.kind); break;
+        case "soloRemove": await Solo.removeRun(actor, st, target.dataset.run); break;
+        case "soloTest": {
+          const picks = {};
+          for (const el of group.querySelectorAll("select[data-slot]")) (picks[el.dataset.slot] ??= []).push(el.value);
+          const err = await Solo.testActivity(actor, st, target.dataset.run, target.dataset.act, picks);
+          if (err) ui.notifications.warn(err);
+          break;
+        }
+        case "soloPrize": await Solo.tournamentPrize(actor, st, target.dataset.run, target.dataset.act); break;
+        case "soloSpoils": await Solo.revoltSpoils(actor, st, target.dataset.run, target.dataset.act, Number(val("spoils")) || 0); break;
+        case "lostSeason": await Solo.lostSeason(actor, st, target.dataset.run); break;
+        case "pilgrimage": await Solo.pilgrimage(actor, st, target.dataset.run, { site: val("site"), mode: val("mode"), pounds: val("pounds") }); break;
+        case "miracle": await Solo.miracle(actor, st, target.dataset.run, val("miracle"), { char: val("char") }); break;
+        case "industry": {
+          const works = [...group.querySelectorAll("input[data-work]:checked")].map(el => el.dataset.work);
+          await Money.rollIndustry(actor, st, { worker: val("worker"), value: Number(val("industryValue")) || 0, works, sell: group.querySelector('[name="sell"]')?.checked ?? true });
+          break;
+        }
+        case "ransomAdd": await Money.addCaptive(actor, st, { name: val("captiveName"), rank: val("captiveRank") }); break;
+        case "ransomRank": await Money.proposeRansom(actor, st, target.dataset.id, { rank: val("rank") }); break;
+        case "ransomRoll": await Money.proposeRansom(actor, st, target.dataset.id, { roll: true }); break;
+        case "ransomCollect":
+          if (val("amount") === "") { ui.notifications.warn(L("PDVF.Ransom.NoAmount")); break; }
+          await Money.collectRansom(actor, st, target.dataset.id, { amount: val("amount"), captors: Number(val("captors")) || 1, share: val("share"), payer: val("payer") }); break;
+        case "ransomRelease": await Money.releaseCaptive(actor, st, target.dataset.id); break;
+        case "ownRansom": await Money.payOwnRansom(actor, st, { amount: val("ownAmount"), payer: val("ownPayer") }); break;
         case "lordHelp": {
           await E.askLordHelp(actor, st, Number(String(val("income")).replace(",", ".")) || 0);
           break;

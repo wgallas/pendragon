@@ -204,3 +204,24 @@ export function knightPay(klass, glory, cfg) {
   for (const l of p.levels ?? []) if ((Number(glory) || 0) >= l.glory) pounds = l.pounds;
   return pounds;
 }
+
+/**
+ * Solde d'un chevalier mercenaire (Table 1.2), en deniers : taux de l'unité × nombre, plus le bonus
+ * de Gloire (en £ par an) au prorata de la durée servie.
+ * @param {{unit:string, count:number, bonus:number}} p
+ * @param {object} cfg  PDVF.winter
+ */
+export function mercenaryPay({ unit = "month", count = 0, bonus = 0 }, cfg) {
+  const rate = cfg.mercenaryRates[unit] ?? cfg.mercenaryRates.month;
+  const perYear = cfg.mercenaryYear[unit] ?? 12;
+  const n = Math.max(0, Number(count) || 0);
+  const years = Math.min(1, n / perYear);
+  return Math.round(rate * n + (Number(bonus) || 0) * 240 * years);
+}
+
+/** Bonus annuel de Gloire du mercenaire (£), au plus : solde de l'année selon la Gloire − solde de base. */
+export function mercenaryBonusMax(glory, cfg) {
+  const p = cfg.pay?.mercenary;
+  if (!p) return 0;
+  return (knightPay("mercenary", glory, cfg) ?? p.base) - p.base;
+}

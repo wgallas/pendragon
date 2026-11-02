@@ -574,6 +574,28 @@ PDVF.winter = {
     mercenary: { base: 4, levels: [{ glory: 6000, pounds: 5 }, { glory: 8000, pounds: 6 }, { glory: 12000, pounds: 8 }] },
     retainer: { base: 3, levels: [{ glory: 6000, pounds: 4 }, { glory: 8000, pounds: 5 }, { glory: 12000, pounds: 6 }], from: "conquest" }
   },
+  /**
+   * Table 1.2 : solde du chevalier mercenaire, en deniers, par jour, mois, saison ou année (4 £) ; le bonus de
+   * Gloire (« jusqu'à » 1, 2 ou 4 £ par an, voir pay.mercenary) se compte au prorata de la durée.
+   * La solde correspond aux mois de service actif ; la saison de campagne dure trois mois.
+   */
+  mercenaryRates: { day: 4, month: 80, season: 240, year: 960 },
+  mercenaryYear: { day: 240, month: 12, season: 4, year: 1 },
+  mercenaryDefault: { unit: "month", count: 3 },
+  /**
+   * Table 5.2 (Livre du joueur, p. 105) : Industrie de la dame pendant l'hiver, un test par ouvrage.
+   * pounds : valeur des atours (£) ou somme gagnée si les textiles sont vendus ; app : +1 ATT pour un an ;
+   * check : case cochée (pour la dame) ; loss : matériaux perdus (£). Un chevalier qui s'y livre perd 3 Honneur.
+   */
+  industry: {
+    works: ["husband", "family", "liturgical", "servants", "household"],
+    critical: { husband: { attire: 5, app: true }, family: { attire: 5, app: true }, liturgical: { check: "devotion" }, servants: { check: "stationOrChivalry" }, household: { sell: 2 } },
+    success: { husband: { attire: 1 }, family: { attire: 1 }, liturgical: { check: "generous" }, servants: { check: "generous" }, household: { sell: 1 } },
+    failure: {},
+    fumble: { loss: 1 },
+    knightHonor: -3,
+    defaultValue: 10
+  },
   /** Table 14.2 : entretien annuel (£) à partir duquel on atteint Pauvre, Ordinaire, Riche, Somptueux. */
   upkeep: {
     alone: [1.5, 3, 4.5, 6],
@@ -634,6 +656,32 @@ PDVF.winter = {
   ],
   /** Adversaire d'un duel des événements personnels : compétence 8+2D6. */
   duelSkill: "8+2D6"
+};
+
+/* -------------------------------------------- */
+/*  Rançons (Livre du joueur, Tables 12.1 à 12.5) */
+/* -------------------------------------------- */
+
+/**
+ * Rançons proposées, en deniers (240 d = 1 £), par groupe et par rang. « vassalMany » : 20 £ au moins
+ * (en pratique, la rente de ses terres). Les captifs nobles reviennent au roi, qui en paie environ la moitié ;
+ * un « arrangeur de rançons » en paie la moitié tout de suite et prend la créance.
+ */
+PDVF.ransoms = {
+  knights: { squire: 240, esquire: 480, mercenary: 720, household: 960, vassalModest: 1920, vassal: 2400, vassalMany: 4800, banneret: 24000 },
+  nobles: { baron: 72000, richBaron: 144000, earl: 240000, king: 720000 },
+  soldiers: { footman: 60, guard: 120, leader10: 120, leader100: 240, cavalry: 480, leader1000: 960 },
+  clergy: { member: 120, priest: 240, bishop: 72000, archbishop: 480000 },
+  saxons: { ceorl: 0, heorthgeneat: 480, thegn: 960, aetheling: 9600, king: 96000 },
+  irish: { kern: 0, bonnacht: 480, chief: 4800 },
+  picts: { warrior: 0, chief: 2400 },
+  /** Part payée par le roi (captifs nobles) ou par un arrangeur de rançons. */
+  royalShare: 0.5,
+  brokerShare: 0.5,
+  /** Rançon d'un chevalier de la fiche, selon sa classe (rente de ses terres pour un chevalier fieffé). */
+  byClass: { squire: "squire", household: "household", mercenary: "mercenary", retainer: "household", vassal: "vassal", banneret: "banneret" },
+  /** Délai pour payer : un an et un jour. */
+  delayYears: 1
 };
 
 /* -------------------------------------------- */

@@ -5,6 +5,7 @@
 import { SYSTEM_ID } from "../config.mjs";
 import * as E from "./engine.mjs";
 import { openWinterWizard, WinterWizard } from "./wizard.mjs";
+import { expireAppBonus } from "./money.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const L = (k) => game.i18n.localize(k);
@@ -104,6 +105,8 @@ export async function closeWinter() {
     content: `<p>${F("PDVF.Winter.CloseConfirm", { year, next: year + 1 })}</p>${unfinished.length ? `<p class="pdvf-warn">${F("PDVF.Winter.CloseUnfinished", { names: unfinished.join(", ") })}</p>` : ""}`
   });
   if (!ok) return;
+  // Bonus d'ATT d'un an (Industrie) arrivés à échéance.
+  for (const a of game.actors.filter(x => x.type === "chevalier")) await expireAppBonus(a, year);
   await game.settings.set(SYSTEM_ID, "currentYear", year + 1);
   await game.settings.set(SYSTEM_ID, "winterYear", 0);
   await game.settings.set(SYSTEM_ID, "currentDay", (Number(game.settings.get(SYSTEM_ID, "currentDay")) || 1) + 1);

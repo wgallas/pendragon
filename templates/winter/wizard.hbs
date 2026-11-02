@@ -14,8 +14,97 @@
 
     {{!-- 1. Scénario en solo --}}
     {{#if step.solo}}
-    <p>{{localize "PDVF.Winter.SoloText"}}</p>
     <p class="pdvf-wiz-note">{{localize "PDVF.Winter.Treasury"}} : <strong>{{treasury}}</strong>{{#if ageNext}} · {{localize "PDVF.Winter.AgeNext"}} <strong>{{ageNext}}</strong>{{/if}}</p>
+    {{#with solo}}
+      {{#each runs}}
+      <section class="pdvf-solo-run {{#if done}}done{{/if}}">
+        <h3 class="pdvf-h3">{{title}}
+          {{#if removable}}<button type="button" class="pdvf-icon-btn" data-action="run" data-op="soloRemove" data-run="{{id}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button>{{/if}}</h3>
+        {{#if isMadness}}<p class="pdvf-winter-text">{{madnessText}}</p>{{/if}}
+
+        {{#each activities}}
+        <div class="pdvf-winter-land pdvf-solo-act" data-group="solo-{{id}}">
+          <h4 class="pdvf-h4">{{title}}</h4>
+          {{#if isFalse}}<p class="pdvf-hint">{{localize "PDVF.Solo.FalseAlarm"}}</p>
+          {{else if isIllness}}
+            {{#if tested}}<ul class="pdvf-winter-list">{{#each resultRows}}<li>{{label}} : {{die}} — <strong>{{outcomeLabel}}</strong></li>{{/each}}</ul>
+            {{else}}<p class="pdvf-hint">{{localize "PDVF.Solo.IllnessHint"}}</p>
+            <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="soloTest" data-run="{{../id}}" data-act="{{id}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Solo.TestCon"}}</button>{{/if}}
+          {{else}}
+            {{#if tested}}
+            <table class="pdvf-wiz-table compact">
+              <thead><tr><th>{{localize "PDVF.Winter.Attribute"}}</th><th>1D20</th><th>{{localize "PDVF.Winter.Result"}}</th><th></th></tr></thead>
+              <tbody>{{#each resultRows}}<tr><td>{{label}}{{#if value}} <span class="pdvf-hint-inline">{{value}}</span>{{/if}}</td><td>{{die}}</td><td>{{outcomeLabel}}</td><td>{{note}}</td></tr>{{/each}}</tbody>
+            </table>
+            {{#if isTournament}}<p>{{localize "PDVF.Solo.Activity.localTournament"}} : <strong>+{{extra.glory}}</strong> {{localize "PDVF.Glory"}}
+              {{#if extra.won}}{{#if extra.prize}} · {{localize "PDVF.Solo.PrizeWon"}} {{extra.prize}} £{{else}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="soloPrize" data-run="{{../id}}" data-act="{{id}}" data-tooltip="{{localize 'PDVF.Solo.PrizeTip'}}">{{localize "PDVF.Solo.Prize"}}</button>{{/if}}{{/if}}</p>{{/if}}
+            {{#if isRevolt}}
+              {{#if (eq extra.spoils undefined)}}
+              <div class="pdvf-wiz-inline wrap">
+                <label class="pdvf-field"><span>{{localize "PDVF.Solo.Spoils"}} ({{payEach}} d.)</span><select name="spoils">{{#each revoltChoices}}<option value="{{n}}">{{label}}</option>{{/each}}</select></label>
+                <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="soloSpoils" data-run="{{../id}}" data-act="{{id}}">{{localize "PDVF.Solo.TakeSpoils"}}</button>
+              </div>
+              {{else}}<p>{{localize "PDVF.Solo.Spoils"}} : {{extra.spoils}} d.</p>{{/if}}
+            {{/if}}
+            {{else}}
+            <p class="pdvf-solo-fixed">{{#each fixed}}<span class="pdvf-tag {{#if missing}}pdvf-tag-off{{/if}} {{#if already}}pdvf-tag-done{{/if}}">{{label}}</span> {{/each}}</p>
+            {{#each slotViews}}
+            <div class="pdvf-wiz-inline wrap"><span class="pdvf-hint-inline">{{label}} ({{n}})</span>
+              {{#each range}}<select data-slot="{{../i}}" aria-label="{{../label}}">{{#each ../options}}<option value="{{key}}" {{#if (eq @index ../this)}}selected{{/if}}>{{text}}</option>{{/each}}</select>{{/each}}
+            </div>
+            {{/each}}
+            <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="soloTest" data-run="{{../id}}" data-act="{{id}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Solo.TestAll"}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+        {{/each}}
+
+        {{#if isLost}}
+        <div class="pdvf-winter-land">
+          {{#if seasons.length}}<ul class="pdvf-winter-list">{{#each seasons}}<li>{{localize "PDVF.Solo.Season"}} {{season}} : {{die}} {{#if mod}}({{mod}}){{/if}} = {{total}} — {{text}}</li>{{/each}}</ul>{{/if}}
+          {{#if done}}<p><strong>{{lostStatus}}</strong></p>
+          {{else}}<p class="pdvf-hint">{{localize "PDVF.Solo.LostHint"}}{{#if lostCarry}} ({{lostCarry}}){{/if}}</p>
+          <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="lostSeason" data-run="{{id}}"><i class="fa-solid fa-tree"></i> {{localize "PDVF.Solo.NextSeason"}}</button>{{/if}}
+        </div>
+        {{/if}}
+
+        {{#if isPilgrimage}}
+        <div class="pdvf-winter-land" data-group="pilgrim-{{id}}">
+          {{#if devotionLabel}}
+          <p>{{siteName}} · {{localize "PDVF.Solo.Devotion"}} : <strong>{{devotionLabel}}</strong>{{#if extra.banned}} · {{localize "PDVF.Solo.Banned"}} {{extra.banned}}{{/if}}</p>
+          {{#if chosenMiracles.length}}<ul class="pdvf-winter-list">{{#each chosenMiracles}}<li><i class="fa-solid fa-star"></i> {{this}}</li>{{/each}}</ul>{{/if}}
+          {{#if miraclesLeft}}
+          <div class="pdvf-wiz-inline wrap">
+            <span class="pdvf-hint-inline">{{localize "PDVF.Solo.MiraclesLeft"}} {{miraclesLeft}}</span>
+            <select name="miracle">{{#each miracleOptions}}<option value="{{id}}">{{label}}</option>{{/each}}</select>
+            <select name="char" aria-label="{{localize 'PDVF.Solo.CharFor'}}" data-tooltip="{{localize 'PDVF.Solo.CharFor'}}">{{#each charOptions}}<option value="{{id}}">{{label}}</option>{{/each}}</select>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="miracle" data-run="{{id}}">{{localize "PDVF.Solo.TakeMiracle"}}</button>
+          </div>
+          {{/if}}
+          {{else}}
+          <div class="pdvf-wiz-grid2">
+            <label class="pdvf-field pdvf-span2"><span>{{localize "PDVF.Solo.Site"}}</span><select name="site">{{#each sites}}<option value="{{id}}">{{label}}</option>{{/each}}</select></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Solo.Mode"}}</span><select name="mode"><option value="paid">{{localize "PDVF.Solo.Paid"}}</option><option value="ascetic">{{localize "PDVF.Solo.Ascetic"}}</option></select></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Solo.Cost"}}</span><input type="number" name="pounds" value="1" min="0" step="0.5"></label>
+          </div>
+          <p class="pdvf-hint">{{localize "PDVF.Solo.PilgrimageHint"}}</p>
+          <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="pilgrimage" data-run="{{id}}"><i class="fa-solid fa-person-walking"></i> {{localize "PDVF.Solo.Go"}}</button>
+          {{/if}}
+        </div>
+        {{/if}}
+      </section>
+      {{/each}}
+
+      <div class="pdvf-winter-land" data-group="solo-new">
+        <p>{{#if runs.length}}{{localize "PDVF.Solo.Another"}}{{else}}{{localize "PDVF.Winter.SoloText"}}{{/if}}</p>
+        <div class="pdvf-wiz-inline wrap">
+          <select name="soloKind">{{#each kinds}}<option value="{{id}}" title="{{hint}}">{{label}}</option>{{/each}}</select>
+          <button type="button" class="pdvf-btn" data-action="run" data-op="soloStart"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Solo.Start"}}</button>
+        </div>
+        <ul class="pdvf-hint pdvf-solo-kinds">{{#each kinds}}<li><strong>{{label}}</strong> — {{hint}}</li>{{/each}}</ul>
+      </div>
+      {{#if extraTraining}}<p class="pdvf-wiz-note">{{localize "PDVF.Solo.Line.DoubleTraining"}}</p>{{/if}}
+    {{/with}}
     {{/if}}
 
     {{!-- 2. Événement personnel --}}
@@ -170,6 +259,7 @@
         <tbody><tr>{{#each table}}<td>{{min}} £</td>{{/each}}</tr></tbody>
       </table>
       {{#if done}}
+      {{#if paidLabel}}<p>{{localize "PDVF.Winter.PayTitle"}} : <strong>{{paidLabel}}</strong></p>{{/if}}
       <p>{{localize "PDVF.Winter.LivingIs"}} <strong>{{levelLabel}}</strong>{{#if e.sumptuary}} · {{localize "PDVF.Winter.Sumptuary"}} +{{e.sumptuary}}{{/if}}</p>
       {{#if poor}}
       <div class="pdvf-wiz-warning">
@@ -189,6 +279,18 @@
         {{#if hasDomains}}{{#unless household}}<p class="pdvf-wiz-note pdvf-span2">{{landsUpkeepLine}}</p>{{/unless}}{{/if}}
         {{#if roundTable}}<p class="pdvf-wiz-note pdvf-span2">{{roundTableLine}}</p>{{/if}}
         {{#if payLine}}<p class="pdvf-wiz-note pdvf-span2">{{payLine}}</p>{{/if}}
+        {{#if pay}}
+        <fieldset class="pdvf-span2 pdvf-winter-pay">
+          <legend>{{localize "PDVF.Winter.PayTitle"}}</legend>
+          <div class="pdvf-wiz-inline wrap">
+            <label class="pdvf-field"><span>{{localize "PDVF.Winter.PayCount"}}</span><input type="number" name="payCount" value="{{pay.count}}" min="0" step="1"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Winter.PayUnitLabel"}}</span><select name="payUnit">{{#each pay.units}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}} ({{rate}} d.)</option>{{/each}}</select></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Winter.PayBonus"}}</span><input type="number" name="payBonus" value="{{pay.bonus}}" min="0" step="0.5" data-tooltip="{{payMaxLabel}}"></label>
+            <span class="pdvf-hint-inline">= <strong data-pay-preview>{{payLabel}}</strong></span>
+          </div>
+          <p class="pdvf-hint">{{localize "PDVF.Winter.PayHint"}} {{payMaxLabel}}</p>
+        </fieldset>
+        {{/if}}
         <label class="pdvf-field"><span>{{#if hasDomains}}{{localize "PDVF.Domain.OtherIncome"}}{{else}}{{localize "PDVF.Winter.Income"}}{{/if}}</span><input type="number" name="income" value="{{incomeSuggested}}" min="0" step="0.5"></label>
         <label class="pdvf-field"><span>{{#if base}}{{localize "PDVF.Winter.ExtraSpend"}}{{else}}{{localize "PDVF.Winter.Spend"}}{{/if}}</span><input type="number" name="spend" value="{{suggested}}" min="0" step="0.5"></label>
         {{#unless hasDomains}}<p class="pdvf-hint pdvf-span2">{{localize "PDVF.Winter.UpkeepHint"}}</p>{{/unless}}
@@ -196,6 +298,74 @@
         <div class="pdvf-span2"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="run" data-op="upkeep">{{localize "PDVF.Winter.Pay"}}</button></div>
       </div>
       {{/if}}
+
+      {{!-- Industrie de la dame (Table 5.2) --}}
+      <section class="pdvf-winter-land" data-group="industry">
+        <h4 class="pdvf-h4">{{localize "PDVF.Winter.Industry.Title"}}</h4>
+        {{#if industry.done}}
+        <ul class="pdvf-winter-list">{{#each industry.lines}}<li>{{this}}</li>{{/each}}</ul>
+        {{else}}
+        <p class="pdvf-hint">{{localize "PDVF.Winter.Industry.Hint"}}</p>
+        <div class="pdvf-wiz-inline wrap">
+          <label class="pdvf-field"><span>{{localize "PDVF.Winter.Industry.Worker"}}</span><select name="worker">{{#each industry.workers}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+          <label class="pdvf-field"><span>{{localize "PDVF.Skill.industry"}}</span><input type="number" name="industryValue" value="{{industry.value}}" min="0" step="1"></label>
+        </div>
+        <div class="pdvf-wiz-inline wrap">
+          {{#each industry.works}}<label class="pdvf-check"><input type="checkbox" data-work="{{id}}" {{#unless husbandOnly}}checked{{else}}{{#if ../industry.married}}checked{{/if}}{{/unless}}> {{label}}</label>{{/each}}
+          <label class="pdvf-check"><input type="checkbox" name="sell" checked> {{localize "PDVF.Winter.Industry.Sell"}}</label>
+        </div>
+        <button type="button" class="pdvf-btn" data-action="run" data-op="industry"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Winter.Industry.Roll"}}</button>
+        {{/if}}
+      </section>
+
+      {{!-- Rançons --}}
+      <section class="pdvf-winter-land pdvf-winter-ransoms">
+        <h4 class="pdvf-h4">{{localize "PDVF.Ransom.Title"}}</h4>
+        <p class="pdvf-hint">{{localize "PDVF.Ransom.Hint"}}</p>
+        {{#each ransom.rows}}
+        <div class="pdvf-ransom-row {{#unless pending}}done{{/unless}}" data-group="ransom-{{id}}">
+          <p><strong>{{name}}</strong>{{#if source}} <span class="pdvf-hint-inline">{{source}}</span>{{/if}}{{#if text}} <span class="pdvf-hint-inline">· {{text}}</span>{{/if}}
+            {{#if late}}<span class="pdvf-tag pdvf-tag-warn">{{localize "PDVF.Ransom.Late"}}</span>{{/if}}
+            {{#unless pending}} · <span class="pdvf-tag">{{statusLabel}}</span>{{#if receivedLabel}} {{receivedLabel}}{{/if}}{{/unless}}</p>
+          {{#if pending}}
+          <div class="pdvf-wiz-inline wrap">
+            {{#if canRoll}}<button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="ransomRoll" data-id="{{id}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Ransom.Roll"}}</button>{{/if}}
+            <select name="rank" aria-label="{{localize 'PDVF.Ransom.Rank.label'}}"><option value="">{{localize "PDVF.Ransom.Rank.label"}}</option>{{#each @root.economy.ransom.ranks}}<optgroup label="{{group}}">{{#each options}}<option value="{{value}}" {{#if (eq value ../../rank)}}selected{{/if}}>{{label}}</option>{{/each}}</optgroup>{{/each}}</select>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="ransomRank" data-id="{{id}}">{{localize "PDVF.Ransom.Propose"}}</button>
+            <span class="pdvf-hint-inline">{{localize "PDVF.Ransom.Proposal"}} : <strong>{{proposalLabel}}</strong>{{#if rollLabel}} ({{rollLabel}}){{/if}}</span>
+          </div>
+          <div class="pdvf-wiz-inline wrap">
+            <label class="pdvf-field"><span>{{localize "PDVF.Ransom.Amount"}}</span><input type="number" name="amount" value="{{amountPounds}}" min="0" step="0.5"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Ransom.Captors"}}</span><input type="number" name="captors" value="1" min="1" step="1"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Ransom.Share"}}</span><input type="number" name="share" value="" min="0" step="0.5" placeholder="{{localize 'PDVF.Ransom.ShareAuto'}}"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Ransom.PayerLabel"}}</span><select name="payer"><option value="captive">{{localize "PDVF.Ransom.Payer.captive"}}</option><option value="king">{{localize "PDVF.Ransom.Payer.king"}}</option><option value="broker">{{localize "PDVF.Ransom.Payer.broker"}}</option></select></label>
+          </div>
+          <div class="pdvf-wiz-inline wrap">
+            <button type="button" class="pdvf-btn pdvf-mini pdvf-btn-primary" data-action="run" data-op="ransomCollect" data-id="{{id}}">{{localize "PDVF.Ransom.Collect"}}</button>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="ransomRelease" data-id="{{id}}" data-tooltip="{{localize 'PDVF.Ransom.ReleaseTip'}}">{{localize "PDVF.Ransom.Release"}}</button>
+            <span class="pdvf-hint-inline">{{localize "PDVF.Ransom.Wait"}}</span>
+          </div>
+          {{/if}}
+        </div>
+        {{/each}}
+        <div class="pdvf-wiz-inline wrap" data-group="ransom-new">
+          <input type="text" name="captiveName" placeholder="{{localize 'PDVF.Ransom.Captive'}}">
+          <select name="captiveRank">{{#each ransom.ranks}}<optgroup label="{{group}}">{{#each options}}<option value="{{value}}">{{label}}</option>{{/each}}</optgroup>{{/each}}</select>
+          <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="ransomAdd">{{localize "PDVF.Ransom.Add"}}</button>
+        </div>
+        <div class="pdvf-ransom-own" data-group="ransom-own">
+          <h4 class="pdvf-h4">{{localize "PDVF.Ransom.OwnTitle"}}</h4>
+          {{#if ownRansomLabel}}<p>{{ownRansomLabel}}</p>
+          {{else}}
+          <p class="pdvf-hint">{{localize "PDVF.Ransom.OwnHint"}} {{ransom.ownProposalLabel}}.</p>
+          <div class="pdvf-wiz-inline wrap">
+            <label class="pdvf-field"><span>{{localize "PDVF.Ransom.Amount"}}</span><input type="number" name="ownAmount" value="{{ransom.ownProposal}}" min="0" step="0.5"></label>
+            <label class="pdvf-field"><span>{{localize "PDVF.Ransom.PaidBy"}}</span><select name="ownPayer">{{#each ransom.payers}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+            <button type="button" class="pdvf-btn pdvf-mini" data-action="run" data-op="ownRansom">{{localize "PDVF.Ransom.PayOwn"}}</button>
+          </div>
+          {{/if}}
+        </div>
+      </section>
     {{/with}}
     {{/if}}
 
@@ -284,6 +454,7 @@
       {{#if skip}}<p class="pdvf-wiz-warning">{{localize "PDVF.Winter.TrainingSkipped"}}</p>
       {{else if done}}<p>{{localize (concat "PDVF.Winter.Training." tr.choice)}} : <strong>{{tr.summary}}</strong></p>
       {{else}}
+      {{#if tr.extra}}<p class="pdvf-wiz-note">{{localize "PDVF.Solo.Line.DoubleTraining"}}{{#if tr.history.length}} — {{#each tr.history}}{{this}} {{/each}}{{/if}}</p>{{/if}}
       <div class="pdvf-winter-choices">
         {{#each choices}}<button type="button" class="pdvf-wiz-method {{#if selected}}selected{{/if}}" data-action="setTraining" data-value="{{id}}" {{#if disabled}}disabled{{/if}} aria-pressed="{{#if selected}}true{{else}}false{{/if}}"><strong>{{label}}</strong></button>{{/each}}
       </div>

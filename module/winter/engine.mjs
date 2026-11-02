@@ -14,6 +14,7 @@ import { lordHelp, landsUpkeep, entourageGlory } from "../rules/domains.mjs";
 import { idealsChange } from "../rules/ideals.mjs";
 import { newestGearGlory } from "../documents/period.mjs";
 import { winterEvent, PASSION_MATCH, WINTER_EVENTS } from "./events.mjs";
+import { formatDenarii } from "../rules/horses.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -54,7 +55,7 @@ export async function saveState(actor, state) {
 /*  Outils                                       */
 /* -------------------------------------------- */
 
-async function dice(formula, flavor, actor) {
+export async function dice(formula, flavor, actor) {
   const roll = await new Roll(String(formula).replace(/D/g, "d")).evaluate();
   if (flavor) await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor });
   return roll.total;
@@ -89,7 +90,7 @@ export function resolveKey(actor, key) {
   return `passion.${best}`;
 }
 
-function opposite(key) {
+export function opposite(key) {
   const [kind, id, side] = key.split(".");
   return kind === "trait" ? `trait.${id}.${side === "left" ? "right" : "left"}` : null;
 }
@@ -117,12 +118,12 @@ function bumpUpdate(actor, key, delta) {
   return {};
 }
 
-async function bump(actor, key, delta) {
+export async function bump(actor, key, delta) {
   const u = bumpUpdate(actor, key, delta);
   if (Object.keys(u).length) await actor.update(u);
 }
 
-async function addPounds(actor, pounds) {
+export async function addPounds(actor, pounds) {
   const t = Number(actor.system.economy?.treasury) || 0;
   return actor.update({ "system.economy.treasury": t + Math.round(pounds * D) });
 }
@@ -419,7 +420,7 @@ export async function askLordHelp(actor, state, income) {
 }
 
 /** Entretien de l'année : revenus encaissés, dépense, niveau de vie, Gloire passive et somptuaire. */
-export async function payUpkeep(actor, state, { spend = 0, income = 0 }) {
+export async function payUpkeep(actor, state, { spend = 0, income = 0, pay = 0, payCalc = null }) {
   if (state.economy?.done) return state;
   const info = economyInfo(actor);
   const own = Math.max(0, Number(spend) || 0);
@@ -429,15 +430,17 @@ export async function payUpkeep(actor, state, { spend = 0, income = 0 }) {
   const destitute = level === "destitute" ? (Number(s.economy.destituteYears) || 0) + 1 : 0;
   const gift = info.roundTable?.gift ?? 0;
   await actor.update({
-    "system.economy.treasury": (Number(s.economy.treasury) || 0) + Math.round(((Number(income) || 0) + gift - own) * D),
+    "system.economy.treasury": (Number(s.economy.treasury) || 0) + Math.round(((Number(income) || 0) + gift - own) * D) + Math.max(0, Math.round(Number(pay) || 0)),
     "system.economy.living": level,
     "system.economy.destituteYears": destitute,
     "system.glory.passiveLiving": C().livingPassive[level] ?? 0
   });
   const sumptuary = W.sumptuaryGlory(total, C());
   if (sumptuary) state.glory.push({ label: L("PDVF.Winter.Sumptuary"), value: sumptuary });
-  state.economy = { done: true, spend: own, income: Number(income) || 0, total, level, column: info.column, sumptuary, effects: {} };
+  state.economy = { done: true, spend: own, income: Number(income) || 0, pay: Math.round(Number(pay) || 0), total, level, column: info.column, sumptuary, effects: {} };
+  if (payCalc) state.payCalc = payCalc;
   await postLines(actor, L("PDVF.Winter.Step.economy"), [
+    ...(pay ? [F("PDVF.Winter.PayLine", { pay: formatDenarii(Math.round(pay)) })] : []),
     ...(info.roundTable ? [F("PDVF.RoundTable.LivingLine", { living: L(`PDVF.Living.${info.roundTable.living}`) }), F("PDVF.RoundTable.GiftLine", { pounds: gift })] : []),
     F("PDVF.Winter.UpkeepLine", { total: String(total).replace(".", ","), level: L(`PDVF.Living.${level}`) }),
     ...(sumptuary ? [F("PDVF.Winter.SumptuaryLine", { value: sumptuary })] : [])
@@ -682,9 +685,17 @@ export async function applyTraining(actor, state, choice, data) {
     summary += ` · ${L("PDVF.Winter.Bonus")} ${Object.entries(bonus).filter(([, v]) => Number(v)).map(([id, v]) => `${L(`PDVF.Skill.${id}`)} +${v}`).join(", ")}`;
   }
   await actor.update(update);
+  // Maladie d'un scénario en solo (Table 14.4, résultat 6) : une formation de plus.
+  if ((Number(tr.extra) || 0) > 0) {
+    tr.extra -= 1;
+    tr.bonus = 0;
+    tr.history = [...(tr.history ?? []), `${L(`PDVF.Winter.Training.${choice}`)} : ${summary}`];
+    await postLines(actor, L("PDVF.Winter.Step.training"), [`${L(`PDVF.Winter.Training.${choice}`)} : ${summary}`]);
+    return null;
+  }
   tr.done = true;
   tr.choice = choice;
-  tr.summary = summary;
+  tr.summary = [...(tr.history ?? []), summary].join(" · ");
   await postLines(actor, L("PDVF.Winter.Step.training"), [`${L(`PDVF.Winter.Training.${choice}`)} : ${summary}`]);
   return null;
 }

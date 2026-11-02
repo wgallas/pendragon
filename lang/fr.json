@@ -1709,7 +1709,7 @@
         "end": "Fin de l'hiver"
       },
       "Intro": {
-        "solo": "Si le MJ vous fait jouer un scénario en solo, faites-le maintenant : ses croix d'expérience comptent pour l'étape 3.",
+        "solo": "Un scénario en solo par année manquée (ou si le MJ le permet) : ses cases cochées comptent pour l'étape 3. Il ne rapporte pas de Gloire, sauf les critiques de l'activité standard (+10) et le tournoi local.",
         "event": "L'année a mis un trait ou une passion à l'épreuve (Table 14.1). Le test suit les règles d'expérience : un critique donne un test d'expérience immédiat, un succès coche la case, un échec fait tester le trait opposé.",
         "xp": "Un jet de 1D20 par case cochée : au-dessus de la valeur, elle gagne 1 point (à 20, il faut un 20). Les cases se décochent ensuite.",
         "economy": "Votre niveau de vie pour l'année dépend de ce que vous dépensez (Table 14.2), selon que vous entretenez un écuyer et une famille.",
@@ -1722,7 +1722,7 @@
         "family": "Naissances et santé des enfants de l'année.",
         "end": "Votre hiver est terminé quand vous le dites ; le MJ clôt ensuite l'année pour tous."
       },
-      "SoloText": "Aucun scénario en solo ? Passez à l'étape suivante.",
+      "SoloText": "Aucun scénario en solo ? Passez à l'étape suivante. Sinon, choisissez-en un :",
       "Treasury": "Trésor",
       "AgeNext": "Âge au printemps :",
       "RollEvent": "Tirer l'événement (1D20)",
@@ -1999,6 +1999,49 @@
       "KnightPay": {
         "mercenary": "Solde de chevalier mercenaire (Table 1.2, selon la Gloire) : {pounds} £, proposée comme revenu.",
         "retainer": "Pension de chevalier retenu (The Boy King, p. 148, selon la Gloire) : {pounds} £, proposée comme revenu. Sans le gîte chez son seigneur, il paie lui-même son logis (1 £)."
+      },
+      "PayTitle": "Solde du mercenaire (Table 1.2)",
+      "PayCount": "Durée servie",
+      "PayUnitLabel": "Unité",
+      "PayUnit": {
+        "day": "jours",
+        "month": "mois",
+        "season": "saisons",
+        "year": "années"
+      },
+      "PayBonus": "Bonus de Gloire (£ par an)",
+      "PayBonusMax": "Au plus {pounds} £ par an selon la Gloire.",
+      "PayHint": "La solde correspond aux mois de service actif (une saison de campagne : trois mois d'été). Le bonus annuel se compte au prorata.",
+      "PayLine": "Solde de l'année : {pay}.",
+      "Industry": {
+        "Title": "Industrie (Table 5.2)",
+        "Hint": "Pendant l'hiver, la dame et ses ouvrières font un ouvrage par catégorie : un test d'Industrie chacun. Un chevalier qui s'y livre perd 3 points d'Honneur.",
+        "Worker": "Ouvrière",
+        "Spouse": "{name} (épouse)",
+        "Other": "Une autre dame (mère, sœur, fille)",
+        "Self": "{name} lui-même (−3 Honneur)",
+        "Work": {
+          "husband": "Vêtements de l'époux",
+          "family": "Vêtements de la dame et des enfants",
+          "liturgical": "Vêtements liturgiques",
+          "servants": "Livrées des serviteurs",
+          "household": "Textiles de la maison"
+        },
+        "Sell": "Vendre les textiles",
+        "Roll": "Tests d'Industrie",
+        "Attire": "atours d'une valeur de {pounds} £",
+        "AppKnight": "+1 ATT au chevalier pour un an",
+        "AppLady": "+1 ATT à la dame pour un an",
+        "Check": {
+          "devotion": "la dame coche Dévotion",
+          "generous": "la dame coche Généreux",
+          "stationOrChivalry": "la dame coche Rang ou Chevalerie"
+        },
+        "Sold": "vendus {pounds} £",
+        "Kept": "gardés (valeur {pounds} £)",
+        "Poor": "ouvrage peu seyant, bon pour une saison",
+        "Loss": "tout est gâché : −{pounds} £ de matériaux",
+        "Shame": "Le chevalier s'est abaissé à l'Industrie : Honneur {n}."
       }
     },
     "Period": {
@@ -3380,6 +3423,276 @@
         "EveningCreated": "Le festin du soir est préparé ({size}).",
         "ActivityGlory": "{name} : +{glory} Gloire (critique)."
       }
+    },
+    "Solo": {
+      "Kind": {
+        "standard": "Activité standard de l'année",
+        "royalCity": "Visiter une ville royale",
+        "lordVisit": "Visiter le suzerain d'un seigneur",
+        "lost": "Perdu dans les bois",
+        "madness": "Folie",
+        "pilgrimage": "Pèlerinage"
+      },
+      "KindHint": {
+        "standard": "une année manquée : mission de chevalier de maisonnée (Table 13.1), événements inhabituels, présence à la cour.",
+        "royalCity": "escorter son seigneur chez un roi (Table 13.5).",
+        "lordVisit": "accompagner son seigneur chez son propre suzerain (Table 13.6).",
+        "lost": "chevalier hors-jeu : un jet par saison jusqu'au retour (Table 13.3).",
+        "madness": "chevalier fou, joué par le MJ : un jet par an au plus (Table 13.4).",
+        "pilgrimage": "vers un lieu saint de sa foi : cases du lieu, test de Dévotion et miracles."
+      },
+      "Activity": {
+        "escort": "Escorte",
+        "garrison": "Garnison et patrouille",
+        "illness": "Maladie",
+        "tourney": "Tournoi",
+        "court": "Présence à la cour",
+        "falseAlarm": "Fausse alerte",
+        "royalCity": "Visite d'une ville royale",
+        "lordVisit": "Visite chez un grand seigneur",
+        "escortNear": "Escorte vers un lieu proche",
+        "escortFar": "Escorte vers un lieu éloigné",
+        "localTournament": "Tournoi local",
+        "revolt": "Révolte paysanne"
+      },
+      "Slot": {
+        "court": "Compétences de cour au choix",
+        "weapon": "Compétence d'arme au choix",
+        "trait": "Traits au choix",
+        "virtue": "Traits religieux au choix",
+        "list": "Compétences au choix",
+        "oneOf": "Au choix"
+      },
+      "Passion": {
+        "homage": "Hommage ou Allégeance",
+        "love": "Amour (personne)",
+        "loveFamily": "Amour (famille)",
+        "loveSpouse": "Amour (conjoint)",
+        "adoration": "Adoration",
+        "devotion": "Dévotion",
+        "hospitality": "Hospitalité",
+        "station": "Rang",
+        "chivalry": "Chevalerie",
+        "hate": "Haine",
+        "loyaltyCompanions": "Loyauté (compagnons)"
+      },
+      "Start": "Commencer",
+      "Another": "Un autre scénario en solo (une année manquée de plus, ou si le MJ le permet) :",
+      "TestAll": "Tester",
+      "TestCon": "Test de CON",
+      "ChooseMore": "Faites tous les choix ({n} par ligne).",
+      "Checked": "cochée",
+      "AlreadyShort": "déjà cochée",
+      "OppositeChecked": "{label} cochée",
+      "GloryLabel": "Scénario en solo ({activity}) : critiques",
+      "FalseAlarm": "Rien n'arrive : nouveau jet sur la Table 13.1.",
+      "IllnessHint": "Immobilisé par la maladie : test de CON ; sur un échec critique, Table 14.4 (sur un 6, deux formations à l'étape 8).",
+      "Prize": "Remporter le prix",
+      "PrizeTip": "Deux critiques (Bataille et Charge) : le chevalier gagne si aucun autre PJ n'y parvient (sinon test de Bataille opposé). Prix 1D6+1 £.",
+      "PrizeWon": "prix :",
+      "Spoils": "Butin de la révolte",
+      "TakeSpoils": "Prendre",
+      "NoSpoils": "Aucun trait coché",
+      "Season": "Saison",
+      "SeasonTitle": "Perdu dans les bois — saison {season}",
+      "NextSeason": "Saison suivante",
+      "LostHint": "Chaque saison : tests de Chasse et de Vigilance (critique +10, succès +5, échec −5, échec critique −10), puis 1D20 sur la Table 13.3. Modificateur reporté",
+      "Site": "Lieu saint",
+      "Mode": "Voyage",
+      "Paid": "En noble (payé)",
+      "Ascetic": "En ascète (aumônes)",
+      "Cost": "Coût (£)",
+      "Go": "Partir en pèlerinage",
+      "PilgrimageHint": "En noble : 1 £ par 80 km aller-retour. En ascète : Modeste et Dévotion cochés, jet de vieillissement (Table 14.3). Puis test de Dévotion : critique 3 miracles, succès 1, échec critique aucun pèlerinage pendant 1D6 ans.",
+      "Devotion": "Dévotion",
+      "Banned": "pas de pèlerinage pendant (ans) :",
+      "MiraclesLeft": "Miracles à choisir :",
+      "CharFor": "Caractéristique (restauration)",
+      "TakeMiracle": "Recevoir",
+      "MiracleTitle": "Miracle",
+      "Miracle": {
+        "survival": "+1 au jet de survie d'un enfant ou d'un cheval",
+        "healRate": "Taux de guérison +1D3 pendant un an",
+        "cure": "Guérison d'une maladie ou d'un poison (plus Affaibli)",
+        "sanity": "Guérison de la mélancolie ou de la folie",
+        "hp": "Points de vie +1D3+3",
+        "char": "Restauration d'une caractéristique +1D2",
+        "story": "Miracle lié à l'histoire (au MJ)"
+      },
+      "Lost": {
+        "starve": "Gibier rare : CON −1 définitivement.",
+        "wander": "Errance sans rencontre.",
+        "villager": "Un villageois montre le chemin : retour.",
+        "beast": "Une bête terrifiante : −5 la saison prochaine.",
+        "bandits": "Des bandits bien plus nombreux : −5 la saison prochaine.",
+        "trail": "Une piste qui ne mène nulle part.",
+        "stream": "Un torrent glacé : test de CON.",
+        "faeEye": "Une fée malveillante : Peur (Fées), un œil perdu.",
+        "faeDecline": "Une fée malveillante : Peur (Fées), Table 14.4.",
+        "hunter": "Un chasseur mène à une abbaye : retour.",
+        "rough": "Terrain accidenté : test d'Équitation.",
+        "woodsman": "Un homme des bois mène à un ermite : plus perdu, mais loin de chez soi.",
+        "hermit": "Un ermite indique la sortie : retour.",
+        "arrive": "Arrivée à destination par hasard : retour."
+      },
+      "Madness": {
+        "1": "Des bergers vous recueillent.",
+        "2": "Une fée maléfique vous retient : Peur (Fées), Table 14.4.",
+        "3": "Un chevalier de passage vous rend la mémoire.",
+        "4": "Un chevalier vous soigne en ville : visite d'une ville royale.",
+        "5": "Vous errez dans la forêt comme une bête.",
+        "6": "Un homme sauvage vous mène à un ermite : guéri.",
+        "7": "Le souffle d'une licorne vous rend la raison.",
+        "8": "Vous jetez votre équipement et errez.",
+        "9": "Un ermite vous guérit.",
+        "10": "Un druide vous guérit.",
+        "11": "Un village vous accueille : vie de roturier (−1 Honneur).",
+        "12": "Aux mains de bandits (−3 Honneur).",
+        "13": "Un chevalier pauvre prend soin de vous.",
+        "14": "Vous fuyez des chevaliers.",
+        "15": "Vous fuyez des chevaliers.",
+        "16": "Un chevalier-ermite vous lègue ses biens.",
+        "17": "Vous retrouvez le château de votre seigneur : guéri.",
+        "18": "Mendiant dans une grande ville : la pauvreté vous rend la raison.",
+        "19": "Une fée maléfique vous retient : Peur (Fées), un œil perdu.",
+        "20": "Vous prophétisez dans la forêt ; des frères vous ramènent à la raison."
+      },
+      "Line": {
+        "Standard": "Table 13.1 : {dice}.",
+        "Checked": "{label} cochée.",
+        "Missing": "{label} : pas sur la fiche.",
+        "Already": "{label} : déjà cochée cet hiver.",
+        "Test": "{label} {value} : {die} — {outcome}",
+        "Nothing": "Rien à tester.",
+        "Decline": "Table 14.4 : {die} — {char} −1.",
+        "DeclineNone": "Table 14.4 : {die} — aucune perte.",
+        "DoubleTraining": "Vous pourrez choisir deux fois la formation à l'étape 8.",
+        "FearFae": "Obsession Peur (Fées) : à noter sur la fiche.",
+        "Eye": "Un œil perdu : Vigilance −5.",
+        "EyeAgain": "Déjà borgne : pas d'autre œil perdu.",
+        "TournamentGlory": "Gloire du tournoi local : +{glory}.",
+        "TournamentWon": "Deux critiques (Bataille et Charge) : le tournoi est gagné si aucun autre PJ n'y parvient.",
+        "Prize": "Prix du tournoi : {pounds} £.",
+        "Spoils": "Butin : {d} d.",
+        "LostTests": "Chasse : {hunt} · Vigilance : {aware} · report : {carry}",
+        "LostRoll": "1D20 {die} {mod} = {total} — {text}",
+        "ConLost": "CON −1 définitivement.",
+        "HorseLost": "Le cheval est blessé et doit être abattu.",
+        "Home": "Retour à la maison.",
+        "StillLost": "Quatre saisons sans retrouver le chemin : toujours perdu l'an prochain.",
+        "Honor": "Honneur {n}.",
+        "Gear": "Haubert, heaume ouvert, écu, épée, dague, grand destrier et roncin : à ajouter à la fiche.",
+        "Cured": "La folie cesse.",
+        "Ascetic": "Ascèse : vieillissement 2D6 = {r} ({lost}).",
+        "PilgrimPaid": "Voyage payé : {pounds} £.",
+        "NoDevotion": "Pas de passion de Dévotion : pas de miracle.",
+        "Banned": "Pas de pèlerinage pendant {years} ans.",
+        "Miracles": "Miracles accordés : {n}."
+      }
+    },
+    "Ransom": {
+      "Title": "Rançons",
+      "Hint": "Captifs faits dans les batailles de l'année (ou ajoutés à la main). La rançon proposée vient de la table de l'adversaire ou du rang du captif (Tables 12.1 à 12.5) ; ajustez la somme, la part, puis encaissez. Une rançon non payée attend l'hiver suivant (un an et un jour).",
+      "Captive": "Nom du captif",
+      "Add": "Ajouter",
+      "Roll": "Tirer la rançon",
+      "Propose": "Proposer",
+      "Proposal": "Proposition",
+      "Amount": "Rançon (£)",
+      "Captors": "Preneurs",
+      "Share": "Ma part (£)",
+      "ShareAuto": "à parts égales",
+      "PayerLabel": "Payée par",
+      "Collect": "Encaisser",
+      "Release": "Relâcher",
+      "ReleaseTip": "Relâché sans rançon (parole, échange, service, mort…).",
+      "Wait": "Sinon, il reste captif jusqu'à l'hiver suivant.",
+      "Late": "Plus d'un an et un jour",
+      "Payer": {
+        "captive": "le captif (ses proches)",
+        "king": "le roi (captif noble : la moitié)",
+        "broker": "un arrangeur (la moitié tout de suite)",
+        "lord": "le seigneur",
+        "treasury": "son trésor",
+        "family": "sa famille",
+        "vassals": "ses vassaux et paysans"
+      },
+      "Status": {
+        "pending": "captif",
+        "paid": "payée",
+        "released": "relâché"
+      },
+      "RollFlavor": "Rançon de {name}",
+      "Line": {
+        "captive": "{name} : rançon de {amount}, part reçue {take}.",
+        "king": "{name} remis au roi : rançon de {amount}, le roi verse {take}.",
+        "broker": "{name} : créance de {amount} cédée à un arrangeur, qui verse {take}."
+      },
+      "OwnTitle": "Rançon du chevalier",
+      "OwnHint": "Si le chevalier a été capturé cette année : rançon proposée selon son rang ou ses revenus,",
+      "PaidBy": "Payée par",
+      "PayOwn": "Payer la rançon",
+      "OwnLine": "{name} paie sa rançon : {amount} ({payer}).",
+      "OwnDone": "Rançon payée : {amount} £ ({payer}).",
+      "Group": {
+        "knights": "Chevaliers (Table 12.1)",
+        "nobles": "Nobles (Table 12.2)",
+        "soldiers": "Soldats (Table 12.3)",
+        "clergy": "Ecclésiastiques (Table 12.4)",
+        "saxons": "Saxons (Table 12.5)",
+        "irish": "Irlandais (Table 12.5)",
+        "picts": "Pictes (Table 12.5)"
+      },
+      "Rank": {
+        "label": "Rang du captif",
+        "knights": {
+          "squire": "Écuyer",
+          "esquire": "Esquire mercenaire",
+          "mercenary": "Chevalier mercenaire",
+          "household": "Chevalier de maisonnée",
+          "vassalModest": "Chevalier vassal, manoir modeste",
+          "vassal": "Chevalier vassal",
+          "vassalMany": "Chevalier vassal, plusieurs manoirs",
+          "banneret": "Banneret"
+        },
+        "nobles": {
+          "baron": "Baron",
+          "richBaron": "Baron riche",
+          "earl": "Comte, duc ou roitelet",
+          "king": "Roi"
+        },
+        "soldiers": {
+          "footman": "Lancier, épéiste, archer",
+          "guard": "Garde",
+          "leader10": "Chef de 10",
+          "leader100": "Chef de 100",
+          "cavalry": "Cavalier",
+          "leader1000": "Chef de 1000"
+        },
+        "clergy": {
+          "member": "Clerc",
+          "priest": "Prêtre, moine, chanoine",
+          "bishop": "Évêque ou abbé",
+          "archbishop": "Archevêque"
+        },
+        "saxons": {
+          "ceorl": "Ceorl",
+          "heorthgeneat": "Heorthgeneat",
+          "thegn": "Thegn",
+          "aetheling": "Ætheling",
+          "king": "Roi saxon"
+        },
+        "irish": {
+          "kern": "Kern",
+          "bonnacht": "Bonnacht",
+          "chief": "Chef irlandais"
+        },
+        "picts": {
+          "warrior": "Guerrier picte",
+          "chief": "Chef picte"
+        }
+      },
+      "NoAmount": "Indiquez d'abord la rançon (tirez-la, choisissez le rang du captif ou saisissez-la)."
     }
   }
 }

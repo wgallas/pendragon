@@ -1563,3 +1563,24 @@
 .pendragon-vf .pdvf-feast-action { margin: 2px 0 6px; color: var(--pdvf-green); }
 .pendragon-vf .pdvf-feast [data-group="adjust"] { margin-top: 6px; }
 .pendragon-vf .pdvf-feast [data-group="adjust"] input[type="text"] { flex: 1 1 200px; }
+
+/* -------------------------------------------- */
+/*  Hiver : scénarios en solo, industrie, rançons */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-solo-run { border: 1px solid var(--pdvf-rule); border-left: 4px solid var(--pdvf-lapis); padding: 4px 10px 8px; margin: 0 0 10px; background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-solo-run.done { border-left-color: var(--pdvf-gold); }
+.pendragon-vf .pdvf-solo-run .pdvf-h3 { display: flex; justify-content: space-between; align-items: center; }
+.pendragon-vf .pdvf-solo-fixed { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+.pendragon-vf .pdvf-tag.pdvf-tag-off { opacity: 0.5; text-decoration: line-through; }
+.pendragon-vf .pdvf-tag.pdvf-tag-done { border-color: var(--pdvf-green); color: var(--pdvf-green); }
+.pendragon-vf .pdvf-solo-act select { max-width: 220px; }
+.pendragon-vf .pdvf-solo-kinds { margin: 6px 0 0; padding-left: 18px; }
+.pendragon-vf .pdvf-winter-pay { border: 1px dotted var(--pdvf-rule-strong); padding: 4px 10px; }
+.pendragon-vf .pdvf-winter-pay legend { font-family: var(--pdvf-font-heading); color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-winter-pay input[type="number"] { width: 80px; }
+.pendragon-vf .pdvf-ransom-row { border-bottom: 1px dotted var(--pdvf-rule); padding: 4px 0 8px; }
+.pendragon-vf .pdvf-ransom-row.done { opacity: 0.7; }
+.pendragon-vf .pdvf-ransom-row input[type="number"] { width: 80px; }
+.pendragon-vf .pdvf-ransom-row input[name="share"] { width: 120px; }
+.pendragon-vf .pdvf-ransom-row select { max-width: 260px; }
+.pendragon-vf .pdvf-ransom-own { margin-top: 8px; }

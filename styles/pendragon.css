@@ -1599,3 +1599,20 @@
 .pendragon-vf .pdvf-court-seduction p { margin: 2px 0; }
 .pendragon-vf .pdvf-court-seduction.status-seduced { border-left: 3px solid var(--pdvf-vermilion); padding-left: 6px; }
 .pendragon-vf .pdvf-court-life .pdvf-num { width: 52px; }
+
+/* -------------------------------------------- */
+/*  Chasse, course et poursuite                  */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-hunt details.pdvf-battle-section > summary { cursor: pointer; }
+.pendragon-vf .pdvf-hunt-prey-drop { display: flex; align-items: center; gap: 8px; }
+.pendragon-vf .pdvf-hunt-track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.pendragon-vf .pdvf-hunt-track.chase { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+.pendragon-vf .pdvf-hunt-pos { border: 1px solid var(--pdvf-rule); background: var(--pdvf-parchment-light); min-height: 84px; }
+.pendragon-vf .pdvf-hunt-pos.prey { border-color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-hunt-pos-label { font-family: var(--pdvf-font-heading); text-align: center; border-bottom: 1px dotted var(--pdvf-rule); color: var(--pdvf-lapis); }
+.pendragon-vf .pdvf-hunt-pos-who { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; }
+.pendragon-vf .pdvf-hunt-token { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; border: 1px solid var(--pdvf-rule-strong); border-radius: 12px; padding: 1px 6px 1px 1px; background: var(--pdvf-parchment); }
+.pendragon-vf .pdvf-hunt-token img { width: 22px; height: 22px; border-radius: 50%; border: none; object-fit: cover; }
+.pendragon-vf .pdvf-hunt-token.prey { border-color: var(--pdvf-vermilion); padding-right: 1px; }
+.pendragon-vf .pdvf-hunt-token.quarry { border-color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-hunt-token.winner { border-color: var(--pdvf-gold); box-shadow: 0 0 0 1px var(--pdvf-gold); }

@@ -1,0 +1,149 @@
+<div class="pdvf-battle pdvf-tournament pdvf-hunt">
+  <header class="pdvf-battle-header">
+    <img class="pdvf-battle-icon" src="{{hunt.img}}" alt="">
+    <div class="pdvf-battle-identity">
+      <h1 class="pdvf-name">{{hunt.name}}</h1>
+      <div class="pdvf-line1">
+        {{#if system.year}}{{system.year}} · {{/if}}{{#if system.place}}{{system.place}} · {{/if}}{{#if system.host}}{{system.host}} · {{/if}}{{localize (concat "PDVF.Hunt.Mode." system.mode)}} · {{roundLabel}} · <strong>{{phaseLabel}}</strong>
+      </div>
+    </div>
+    {{#if isGM}}<div class="pdvf-battle-tools"><button type="button" class="pdvf-btn pdvf-mini" data-action="show" data-tooltip="{{localize 'PDVF.Hunt.ShowTip'}}"><i class="fa-solid fa-eye"></i> {{localize "PDVF.Battle.Show"}}</button></div>{{/if}}
+  </header>
+
+  <div class="pdvf-battle-body">
+
+  {{!-- ============================ PRÉPARATION (MJ) ============================ --}}
+  {{#if isGM}}
+  <details class="pdvf-battle-section" {{#if is.setup}}open{{/if}}>
+    <summary class="pdvf-h3">{{localize "PDVF.Hunt.Setup"}}</summary>
+    <div class="pdvf-battle-grid four">
+      <label class="pdvf-field"><span>{{localize "PDVF.Hunt.ModeLabel"}}</span><select name="system.mode">{{#each modeChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Year"}}</span><input type="number" name="system.year" value="{{system.year}}" step="1"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Tournament.Place"}}</span><input type="text" name="system.place" value="{{system.place}}"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Feast.Host"}}</span><input type="text" name="system.host" value="{{system.host}}"></label>
+      {{#if hunting}}
+      <label class="pdvf-field"><span>{{localize "PDVF.Hunt.SeasonLabel"}}</span><select name="system.season">{{#each seasonChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-check" data-tooltip="{{localize 'PDVF.Hunt.HeavyArmorTip'}}"><input type="checkbox" name="system.heavyArmor" {{checked system.heavyArmor}}> {{localize "PDVF.Hunt.HeavyArmor"}}</label>
+      {{else}}
+      <label class="pdvf-field"><span>{{localize "PDVF.Hunt.Lines"}}</span><input type="number" name="system.lines" value="{{system.lines}}" min="4" max="20" step="1"></label>
+      {{/if}}
+    </div>
+
+    {{#if hunting}}
+    <div class="pdvf-drop-zone pdvf-hunt-prey-drop" data-drop="prey">
+      {{#if prey.has}}<img class="pdvf-mini-portrait" src="{{prey.img}}" alt=""> <strong>{{prey.name}}</strong> — {{localize "PDVF.Hunt.Avoidance"}} {{prey.avoidance}} · {{localize "PDVF.Hunt.PV"}} {{prey.hpLabel}} · {{localize "PDVF.Hunt.Armor"}} {{prey.armor}} · {{localize "PDVF.Glory"}} {{prey.glory}}
+      {{else}}<i class="fa-solid fa-paw" aria-hidden="true"></i><p class="pdvf-hint">{{localize "PDVF.Hunt.DropPrey"}}</p>{{/if}}
+    </div>
+    {{/if}}
+    <div class="pdvf-drop-zone" data-drop="participants"><i class="fa-solid fa-hand-point-down" aria-hidden="true"></i><p class="pdvf-hint">{{#if hunting}}{{localize "PDVF.Hunt.DropHunters"}}{{else}}{{localize "PDVF.Hunt.DropRunners"}}{{/if}}</p></div>
+    {{#if hasParts}}
+    <table class="pdvf-table">
+      <thead><tr><th>{{localize "PDVF.Hunt.Who"}}</th>{{#if hunting}}<th>{{localize "PDVF.Hunt.Group"}}</th><th>{{localize "PDVF.Skill.hunting"}}</th>{{else}}<th>{{localize "PDVF.Hunt.SideLabel"}}</th><th>{{localize "PDVF.Hunt.StartLine"}}</th>{{/if}}<th>{{localize "PDVF.Hunt.Move"}}</th><th>{{localize "PDVF.Hunt.Mounted"}}</th>{{#if hunting}}<th>{{localize "PDVF.Hunt.Honored"}}</th>{{/if}}<th></th></tr></thead>
+      <tbody>
+        {{#each parts}}
+        <tr>
+          <td><button type="button" class="pdvf-link" data-action="openActor" data-uuid="{{uuid}}"><img class="pdvf-mini-portrait" src="{{img}}" alt="">{{name}}</button></td>
+          {{#if @root.hunting}}
+          <td><input class="pdvf-num" type="number" name="system.participants.{{index}}.group" value="{{group}}" min="1" step="1"></td>
+          <td class="num">{{hunting}}</td>
+          {{else}}
+          <td><select name="system.participants.{{index}}.side">{{#each sideChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></td>
+          <td><input class="pdvf-num" type="number" name="system.participants.{{index}}.pos" value="{{pos}}" min="0" step="1"></td>
+          {{/if}}
+          <td class="num">{{move}}</td>
+          <td><input type="checkbox" name="system.participants.{{index}}.mounted" {{checked mounted}}></td>
+          {{#if @root.hunting}}<td><input type="checkbox" name="system.participants.{{index}}.honored" {{checked honored}} data-tooltip="{{localize 'PDVF.Hunt.HonoredTip'}}"></td>{{/if}}
+          <td><button type="button" class="pdvf-icon-btn" data-action="gm" data-op="removeParticipant" data-index="{{index}}" aria-label="{{localize 'PDVF.Sheet.Delete'}}">×</button></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{/if}}
+    <p class="pdvf-hint">{{#if hunting}}{{localize "PDVF.Hunt.SetupHint"}}{{else}}{{localize "PDVF.Hunt.ChaseHint"}}{{/if}}</p>
+  </details>
+  {{/if}}
+
+  {{!-- ============================ PISTE ============================ --}}
+  <section class="pdvf-battle-section">
+    <h3 class="pdvf-h3">{{#if hunting}}{{localize "PDVF.Hunt.Track"}}{{else}}{{localize "PDVF.Hunt.Lanes"}}{{/if}}
+      {{#if hunting}}{{#if prey.has}}<small>{{prey.name}} · {{localize "PDVF.Hunt.PV"}} {{prey.hpLabel}}{{#if prey.grievous}} · {{localize "PDVF.Hunt.Grievous"}}{{/if}}{{#if prey.dead}} · {{localize "PDVF.Hunt.Dead"}}{{/if}}</small>{{/if}}{{/if}}</h3>
+    <div class="pdvf-hunt-track {{#unless hunting}}chase{{/unless}}">
+      {{#each track}}
+      <div class="pdvf-hunt-pos {{#if prey}}prey{{/if}}">
+        <div class="pdvf-hunt-pos-label">{{label}}</div>
+        <div class="pdvf-hunt-pos-who">
+          {{#if prey}}<span class="pdvf-hunt-token prey" data-tooltip="{{@root.prey.name}}"><img src="{{@root.prey.img}}" alt=""></span>{{/if}}
+          {{#each who}}<span class="pdvf-hunt-token {{side}} {{#if winner}}winner{{/if}}" data-tooltip="{{name}}"><img src="{{img}}" alt=""><span>{{name}}</span></span>{{/each}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{#if out.length}}<p class="pdvf-hint">{{#each out}}<span class="pdvf-tag">{{name}} — {{outLabel}}</span> {{/each}}</p>{{/if}}
+    {{#if winners}}<p><i class="fa-solid fa-trophy"></i> <strong>{{winners}}</strong></p>{{/if}}
+  </section>
+
+  {{!-- ============================ DÉROULEMENT ============================ --}}
+  <section class="pdvf-battle-section">
+    <h3 class="pdvf-h3">{{phaseLabel}}</h3>
+    <p class="pdvf-hint">{{localize (concat "PDVF.Hunt.PhaseHint." system.phase)}}</p>
+    {{#if isGM}}
+    <div class="pdvf-inline wrap">
+      {{#if hunting}}
+        {{#if is.setup}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="levee"><i class="fa-solid fa-bullhorn"></i> {{localize "PDVF.Hunt.Levee"}}</button>{{/if}}
+        {{#if is.pursuit}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="huntRound"><i class="fa-solid fa-horse"></i> {{localize "PDVF.Hunt.NextRound"}}</button>{{/if}}
+      {{else}}
+        {{#unless is.over}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="chaseRound"><i class="fa-solid fa-person-running"></i> {{localize "PDVF.Hunt.ChaseRound"}}</button>{{/unless}}
+      {{/if}}
+      <button type="button" class="pdvf-btn" data-action="gm" data-op="reset"><i class="fa-solid fa-rotate-left"></i> {{localize "PDVF.Hunt.Reset"}}</button>
+    </div>
+    {{/if}}
+
+    {{#if is.bay}}
+    <div class="pdvf-inline wrap" data-group="first">
+      {{#if isGM}}<label class="pdvf-field"><span>{{localize "PDVF.Hunt.FirstStriker"}}</span><select name="index">{{#each bayCandidates}}<option value="{{index}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="setFirst">{{localize "PDVF.Hunt.Choose"}}</button>{{/if}}
+    </div>
+    {{/if}}
+
+    {{#if is.rush}}
+    {{#if isGM}}
+    <div class="pdvf-inline wrap" data-group="rush">
+      <span class="pdvf-hint-inline">{{localize "PDVF.Hunt.RushWho"}}</span>
+      {{#each rushCandidates}}<label class="pdvf-check"><input type="checkbox" name="indexes" value="{{index}}" {{#if checked}}checked{{/if}}> {{name}}</label>{{/each}}
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="setRush">{{localize "PDVF.Hunt.Choose"}}</button>
+    </div>
+    {{/if}}
+    {{/if}}
+
+    <div class="pdvf-inline wrap">
+      {{#each parts}}{{#if canStrike}}<button type="button" class="pdvf-btn pdvf-btn-primary" data-action="strike" data-index="{{index}}"><i class="fa-solid fa-crosshairs"></i> {{name}} — {{#if isFirst}}{{localize "PDVF.Hunt.FirstStrike"}}{{else}}{{localize "PDVF.Hunt.Rush"}}{{/if}}</button>{{/if}}{{/each}}
+    </div>
+
+    {{#if is.combat}}{{#if isGM}}
+    <div class="pdvf-inline wrap" data-group="endCombat">
+      <select name="killer">{{#each killerChoices}}<option value="{{index}}">{{name}}</option>{{/each}}</select>
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="endCombat" data-result="killed">{{localize "PDVF.Hunt.Killed"}}</button>
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="endCombat" data-result="escaped">{{localize "PDVF.Hunt.Escaped"}}</button>
+    </div>
+    {{/if}}{{/if}}
+
+    {{#each caught}}
+    <div class="pdvf-inline wrap" data-group="caught-{{i}}">
+      <strong>{{pursuer}} → {{quarry}}</strong>
+      {{#if @root.isGM}}
+      <label class="pdvf-field"><span>{{quarry}}</span><select name="qKey">{{#each @root.opposedKeys}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+      <label class="pdvf-field"><span>{{pursuer}}</span><select name="pKey">{{#each @root.opposedKeys}}<option value="{{value}}">{{label}}</option>{{/each}}</select></label>
+      <button type="button" class="pdvf-btn pdvf-mini" data-action="gm" data-op="opposed" data-pair="{{i}}">{{localize "PDVF.Hunt.Resolve"}}</button>
+      {{/if}}
+    </div>
+    {{/each}}
+  </section>
+
+  {{#if log.length}}
+  <section class="pdvf-battle-section">
+    <h3 class="pdvf-h3">{{localize "PDVF.Tournament.Section.log"}}</h3>
+    <ul class="pdvf-card-notes">{{#each log}}<li>{{this}}</li>{{/each}}</ul>
+  </section>
+  {{/if}}
+  </div>
+</div>

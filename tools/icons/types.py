@@ -156,6 +156,14 @@ ICONS = {
               + p("M37 13 L39.5 12.6 L37.4 14.2 Z", GOLD) + p("M34.5 11.5 L34 8.5 M35.5 11.2 L36 8.4 M36.5 11.6 L38 9", "none", stroke=GOLD, stroke_width="0.7")
               + p("M26 36 Q22 25 26 19 Q28 25 29.5 30 Z", GREEN, stroke_width="0.9")
               + c(26.2, 22.5, 1.1, GOLD, stroke="none") + c(27.5, 27, 1, GOLD, stroke="none") + c(35.6, 13.4, 0.45, INK, stroke="none")),
+    # Chasse : cor de chasse d'ivoire cerclé d'or à baudrier vermeil, sous une ramure de cerf
+    "hunt": (p("M18 30 Q15 20 10 16 M14 22 L8 21 M16 26 L10 27 M13 18 L12 11", "none", stroke=WOOD, stroke_width="2.2")
+             + p("M46 30 Q49 20 54 16 M50 22 L56 21 M48 26 L54 27 M51 18 L52 11", "none", stroke=WOOD, stroke_width="2.2")
+             + p("M22 34 Q32 22 42 34", "none", stroke=VERM, stroke_width="2.4")
+             + p("M12 46 Q20 34 34 36 Q46 38 52 30 L56 33 Q50 46 34 47 Q22 48 16 52 Z", CLOTH, stroke_width="1.4")
+             + p("M52 30 L56 33 L58 27 L54 25 Z", GOLD)
+             + p("M24 39 Q25 44 24 49 M36 37 Q37 42 36 47", "none", stroke=GOLD, stroke_width="2")
+             + c(14, 49, 3.2, GOLD) + c(14, 49, 1.4, INK, stroke="none")),
     # Rencontre de bataille (adversaire) : épées croisées
     "encounter": sword(40) + sword(-40),
     # Rencontre de bataille (occasion de Gloire) : couronne de laurier et étoile

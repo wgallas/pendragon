@@ -337,6 +337,54 @@ PDVF.tournament = {
 };
 
 /**
+ * Chasse, course et poursuite (Livre du maître, chap. 3, p. 45–49).
+ * seasonRounds : tours de chasse d'une journée (une heure chacun) ; positions 1 (la proie) à 4 ;
+ * levee : position d'après le test de Chasse du meneur ; move : décalage d'après le test de Mouvement ;
+ * pursuit : Table 3.8 (décalage, obstacle) ; obstacles : Table 3.9 (2D6) ; strike : Table 3.10.
+ */
+PDVF.hunt = {
+  seasonRounds: { winter: 6, spring: 8, summer: 10, autumn: 8 },
+  positions: 4,
+  levee: { critical: 1, success: 2, failure: 3, fumble: 4 },
+  move: { critical: -1, success: 0, failure: 1, fumble: 2 },
+  pursuit: {
+    critical: { shift: -2, obstacle: true }, winner: { shift: -1, obstacle: true }, partial: { shift: 0, obstacle: true },
+    tie: { shift: 0, obstacle: true }, loser: { shift: 1, obstacle: false }, fumble: { shift: 2, obstacle: false }
+  },
+  heavyArmor: -5,
+  partialBonus: 5,
+  rushMax: 3,
+  multiPenalty: -5,
+  /**
+   * Table 3.9. test : Attribut testé (horse.dex, horse.con, skill.x) ; fail : conséquences de l'échec
+   * (back : une position de moins ; fall : dégâts au cavalier et au cheval, ou au seul cavalier ; horse : au cheval) ;
+   * fumble : conséquence d'un échec critique ; success : avance jusqu'à la proie ; bay : aboi d'office ; again : deux tirages.
+   */
+  obstacles: [
+    { min: 2, max: 2, id: "ditch", test: "horse.dex", fail: { back: 1, rider: "2D6", horse: "2D6" } },
+    { min: 3, max: 3, id: "branches", test: "horse.dex", fail: { back: 1, rider: "1D6" } },
+    { min: 4, max: 5, id: "stream", test: "skill.horsemanship", fail: { back: 1 }, fumble: { back: 1, rider: "1D6", horse: "1D6" } },
+    { min: 6, max: 6, id: "bird", test: "skill.horsemanship", fail: { back: 1, rider: "1D6" } },
+    { min: 7, max: 7, id: "falseTrail", test: "skill.hunting", fail: { back: 1 } },
+    { min: 8, max: 8, id: "tree", test: "skill.hunting", fail: { back: 1 } },
+    { min: 9, max: 9, id: "brambles", test: "horse.con", fail: { horse: "1D6" } },
+    { min: 10, max: 10, id: "horns", test: "skill.awareness", success: { toPrey: true }, fail: {} },
+    { min: 11, max: 11, id: "deadEnd", test: "skill.awareness", fail: { again: 2 } },
+    { min: 12, max: 12, id: "charge", bay: true }
+  ],
+  /** Table 3.10 : coup contre l'Évitement de la proie. */
+  strike: {
+    critical: { hit: true, extraDice: 4, fights: true },
+    success: { hit: true, fights: true },
+    partial: { escape: true, bonus: true },
+    failure: { escape: true },
+    fumble: { escape: true, fall: "1D6" }
+  },
+  /** Course et poursuite : au moins 4 lignes ; succès +1, critique +2 ; échec critique : DEX (ou Équitation). */
+  chase: { minLines: 4, lines: 6, success: 1, critical: 2 }
+};
+
+/**
  * Vie de cour (Livre du maître, chap. 3 ; Livre du joueur, chap. 5 et 6).
  * fashion : Table 5.3, dépense (£) d'une tenue réussie au test de Mode → bonus d'Engouement, gardé un an,
  *   puis un niveau de moins chaque année ; s'habiller au-delà de son rang coche Fier.

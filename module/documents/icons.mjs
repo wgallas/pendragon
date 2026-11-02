@@ -18,6 +18,7 @@ export const ITEM_ICONS = {
   bataille: `${T}/battle.svg`,
   tournoi: `${T}/tournament.svg`,
   festin: `${T}/feast.svg`,
+  chasse: `${T}/hunt.svg`,
   rencontre: { opponent: `${T}/encounter.svg`, opportunity: `${T}/opportunity.svg` },
   arme: `${G}/sword.svg`,
   armure: `${G}/mail.svg`,

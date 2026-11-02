@@ -13,7 +13,8 @@
       "bouclier": "Bouclier",
       "domaine": "Domaine",
       "tournoi": "Tournoi",
-      "festin": "Festin"
+      "festin": "Festin",
+      "chasse": "Chasse"
     }
   },
   "PDVF": {
@@ -29,7 +30,8 @@
       "equipement": "Fiche d'équipement (Pendragon VF)",
       "domaine": "Fiche de domaine (Pendragon VF)",
       "tournoi": "Fiche de tournoi",
-      "festin": "Fiche de festin"
+      "festin": "Fiche de festin",
+      "chasse": "Fiche de chasse"
     },
     "Settings": {
       "currentYear": {
@@ -3822,6 +3824,189 @@
         }
       },
       "NoAmount": "Indiquez d'abord la rançon (tirez-la, choisissez le rang du captif ou saisissez-la)."
+    },
+    "Hunt": {
+      "Title": "Chasse",
+      "Setup": "Préparation",
+      "ModeLabel": "Genre",
+      "Mode": {
+        "hunt": "Partie de chasse",
+        "race": "Course",
+        "pursuit": "Poursuite"
+      },
+      "SeasonLabel": "Saison (tours de chasse)",
+      "Season": {
+        "winter": "Hiver",
+        "spring": "Printemps",
+        "summer": "Été",
+        "autumn": "Automne"
+      },
+      "HeavyArmor": "Mailles ou plates dans la troupe (−5 en Chasse)",
+      "HeavyArmorTip": "On chasse en gambison ou en auqueton ; un chevalier en mailles ou en plates impose −5 en Chasse à toute la troupe.",
+      "Lines": "Nombre de lignes",
+      "DropPrey": "Glissez ici la proie (un animal du compendium des adversaires, avec son Évitement).",
+      "DropHunters": "Glissez ici les chevaliers (et PNJ) qui chassent.",
+      "DropRunners": "Glissez ici les concurrents, poursuivants et poursuivis.",
+      "Avoidance": "Évitement",
+      "PV": "PV",
+      "Armor": "Armure",
+      "Who": "Participant",
+      "Group": "Groupe",
+      "SideLabel": "Rôle",
+      "StartLine": "Ligne de départ",
+      "Move": "Mouvement",
+      "Mounted": "À cheval",
+      "Honored": "Hôte ou invité d'honneur",
+      "HonoredTip": "La tradition lui réserve le premier coup ; qui frappe avant lui sans y être invité fait un test de Modeste (s'il réussit et frappe quand même : −1 Honneur).",
+      "Side": {
+        "hunter": "Chasseur",
+        "runner": "Concurrent",
+        "pursuer": "Poursuivant",
+        "quarry": "Poursuivi"
+      },
+      "SetupHint": "Un groupe par troupe de chasse (le meneur est la meilleure Chasse du groupe). Mouvement : celui du cheval principal pour qui chasse à cheval. Une journée compte 6 tours en hiver, 8 au printemps et à l'automne, 10 en été.",
+      "ChaseHint": "Chacun teste son Mouvement (ou celui de sa monture) : succès +1 ligne, critique +2 ; échec critique : DEX (Équitation à cheval), raté = hors course, réussi = retardé un tour. Une poursuite : les poursuivis peuvent partir une ou deux lignes en avance.",
+      "Track": "Piste",
+      "Lanes": "Lignes",
+      "PreyLine": "1 · la proie",
+      "Start": "Départ",
+      "Finish": "Arrivée",
+      "Grievous": "grièvement blessée",
+      "Dead": "abattue",
+      "Phase": {
+        "setup": "Rassemblement",
+        "pursuit": "Poursuite",
+        "bay": "L'aboi",
+        "rush": "La ruée",
+        "combat": "Combat",
+        "running": "En course",
+        "over": "Terminé"
+      },
+      "PhaseHint": {
+        "setup": "Le MJ choisit la proie et les chasseurs, puis donne la levée : test de Chasse de chaque meneur (positions 1 à 4), puis test de Mouvement de chacun.",
+        "pursuit": "Chaque tour : Chasse du meneur contre l'Évitement de la proie (Table 3.8), obstacle pour tout le groupe (Table 3.9, test de chacun). Au-delà de la 4e position, on est distancé ; qui rejoint la proie (1re position) la met aux abois.",
+        "bay": "La proie est aux abois : le premier arrivé (ou l'hôte, ou le plus glorieux) porte le premier coup, compétence d'arme contre Évitement (Table 3.10).",
+        "rush": "Grièvement blessée, la proie tente de fuir : trois chasseurs au plus la frappent, contre son Évitement (−5 par attaquant au-delà du premier).",
+        "combat": "La proie fait face : combat ordinaire. Indiquez ensuite au MJ qui l'a abattue, ou si elle s'est échappée.",
+        "running": "Tour après tour, chacun teste son Mouvement.",
+        "over": "C'est fini."
+      },
+      "Levee": "La levée",
+      "NextRound": "Tour de chasse",
+      "ChaseRound": "Tour de course",
+      "Reset": "Recommencer",
+      "RoundTitle": "Tour de chasse {round} / {rounds}",
+      "ChaseTitle": "Tour {round}",
+      "FirstStriker": "Premier coup",
+      "Choose": "Choisir",
+      "RushWho": "Attaquants de la ruée (3 au plus) :",
+      "FirstStrike": "Premier coup",
+      "Rush": "Ruée",
+      "Weapon": "Arme",
+      "StrikeHint": "Compétence d'arme contre l'Évitement de {prey} ({avoid}). Critique : dégâts +4D6 ; succès : dégâts normaux ; sinon la proie s'échappe.",
+      "Impatient": "Ne pas attendre l'hôte (Modeste)",
+      "Killed": "Proie abattue par",
+      "Escaped": "La proie s'échappe",
+      "Resolve": "Test opposé",
+      "Caught": "Rattrapé !",
+      "Fall": "Chute",
+      "Key": {
+        "move": "Mouvement (fuir)",
+        "skill": {
+          "hunting": "Chasse (semer)",
+          "sword": "Épée",
+          "spear": "Lance"
+        },
+        "char": {
+          "dex": "DEX"
+        }
+      },
+      "Horse": {
+        "dex": "DEX du cheval",
+        "con": "CON du cheval"
+      },
+      "Row": {
+        "critical": "critique : obstacle et deux positions de mieux",
+        "winner": "gagnant : obstacle et une position de mieux",
+        "partial": "succès partiel : obstacle",
+        "tie": "égalité : obstacle",
+        "loser": "perdant : une position de moins",
+        "fumble": "échec critique : deux positions de moins"
+      },
+      "Obstacle": {
+        "ditch": "Fossé caché ou précipice (DEX du cheval ; chute 2D6 au cavalier et au cheval)",
+        "branches": "Branches basses ou rochers (DEX du cheval ; chute 1D6)",
+        "stream": "Ruisseau ou fossé à sauter (Équitation ; le cheval refuse ; échec critique 1D6 au cavalier et au cheval)",
+        "bird": "Un oiseau s'envole sous le cheval (Équitation ; désarçonné 1D6)",
+        "falseTrail": "Fausse piste (Chasse)",
+        "tree": "Arbre abattu (Chasse)",
+        "brambles": "Ronciers (CON du cheval ; 1D6 au cheval)",
+        "horns": "Cors et chiens au loin (Vigilance : on rejoint la proie)",
+        "deadEnd": "Impasse (Vigilance ; sinon deux obstacles de plus)",
+        "charge": "La proie charge : l'aboi !"
+      },
+      "Strike": {
+        "go": "Frapper",
+        "critical": "critique : dégâts +4D6, la proie se retourne, furieuse",
+        "success": "touchée : dégâts normaux",
+        "partial": "succès partiel ou égalité : la proie s'échappe (+5 au prochain test de Chasse)",
+        "failure": "la proie s'échappe",
+        "fumble": "échec critique : la proie s'échappe, le chasseur chute (1D6)"
+      },
+      "Out": {
+        "behind": "distancé",
+        "hurt": "blessé ou hors d'haleine",
+        "cornered": "acculé",
+        "escaped": "s'est échappé"
+      },
+      "ShowTip": "Ouvre la chasse chez tous les joueurs.",
+      "Notify": {
+        "NoGM": "Aucun MJ connecté : la chasse ne peut pas avancer.",
+        "NoPrey": "Glissez d'abord une proie.",
+        "DayOver": "La journée de chasse est finie.",
+        "Caught": "Réglez d'abord les poursuivis rattrapés.",
+        "NotYourStrike": "Ce n'est pas à ce chasseur de frapper.",
+        "NoWeapon": "Aucune arme sur la fiche.",
+        "Impatient": "{name} frappe sans attendre l'hôte : −1 Honneur."
+      },
+      "Line": {
+        "Leader": "Groupe {group} — meneur {name} : Chasse {value}, {die} ({outcome}).",
+        "Move": "{name} : Mouvement {value}, {die} ({outcome}) → position {pos}.",
+        "Behind": "{name} est distancé.",
+        "Bonus": "Chasse +{bonus} (la proie vient d'échapper).",
+        "Pursuit": "Groupe {group} — {name} : Chasse {value}, {die} ({outcome}) ; {prey} : Évitement {avoid}, {pdie} ({poutcome}) — {result}.",
+        "Obstacle": "Obstacle ({die}) : {text}.",
+        "Test": "{name} : {label} {value}, {die} ({outcome}).",
+        "ToPrey": "{name} rejoint la proie.",
+        "DeadEnd": "{name} tourne en rond : deux obstacles de plus.",
+        "HorseHurt": "{horse} perd {damage} PV.",
+        "Bay": "{prey} est aux abois ! Premier coup : {name}.",
+        "DayOver": "Le soleil se couche : la chasse est finie pour aujourd'hui.",
+        "AllBehind": "Tous les chasseurs sont distancés.",
+        "Strike": "{name} ({weapon}) : {die} ({outcome}) ; {prey} : Évitement {avoid}, {pdie} ({poutcome}) — {result}.",
+        "Damage": "Dégâts {formula} : {rolled} − armure {armor} = {damage} ; PV {hp} / {max}.",
+        "Grievous": "{prey} est grièvement blessée.",
+        "RushFlee": "La proie cherche à fuir : la ruée (trois chasseurs au plus) se joue contre son Évitement.",
+        "RushFight": "{prey} se retourne et fait face : combat ordinaire.",
+        "Combat": "{prey} survit à la ruée : combat ordinaire.",
+        "Escape": "{prey} s'échappe : la chasse reprend, les chasseurs de l'aboi en 4e position.",
+        "EscapeBonus": "{prey} s'échappe de justesse : la chasse reprend (+{bonus} au prochain test de Chasse).",
+        "Killed": "{prey} est abattue par {name} !",
+        "Glory": "{name} : +{glory} Gloire (Gloire de session).",
+        "Skip": "{name} est retardé ce tour.",
+        "ChaseMove": "{name} : Mouvement {value}, {die} ({outcome}) → ligne {pos} / {lines}.",
+        "Slowed": "Un obstacle le retarde (DEX {die}).",
+        "Winded": "Blessé ou hors d'haleine, il abandonne (DEX {die}).",
+        "Tie": "Plusieurs franchissent l'arrivée : DEX (ou Équitation) opposée.",
+        "TieRoll": "{name} : {die} ({outcome}).",
+        "Winner": "Vainqueur : {names}.",
+        "Caught": "{pursuer} rattrape {quarry} !",
+        "Escaped": "{name} s'échappe.",
+        "Opposed": "{quarry} ({ql}) : {qd} ({qo}) ; {pursuer} ({pl}) : {pd} ({po}).",
+        "Shaken": "{name} sème son poursuivant et gagne une ligne.",
+        "Cornered": "{name} est acculé : se battre ou se rendre.",
+        "NoWinner": "Personne ne l'emporte."
+      }
     }
   }
 }

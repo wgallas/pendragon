@@ -1616,3 +1616,16 @@
 .pendragon-vf .pdvf-hunt-token.prey { border-color: var(--pdvf-vermilion); padding-right: 1px; }
 .pendragon-vf .pdvf-hunt-token.quarry { border-color: var(--pdvf-vermilion); }
 .pendragon-vf .pdvf-hunt-token.winner { border-color: var(--pdvf-gold); box-shadow: 0 0 0 1px var(--pdvf-gold); }
+
+/* -------------------------------------------- */
+/*  Cartes de festin                             */
+/* -------------------------------------------- */
+.pendragon-vf .pdvf-feast-card { max-width: 360px; border: 2px solid var(--pdvf-vermilion); border-radius: 6px; background: #f6efe1; margin: 6px 0; font-size: 14px; overflow: hidden; }
+.pendragon-vf .pdvf-feast-card header { background: var(--pdvf-vermilion); color: #fff; text-align: center; padding: 3px 6px; font-family: var(--pdvf-font-heading); font-size: 16px; }
+.pendragon-vf .pdvf-feast-card.host header::after { content: ""; }
+.pendragon-vf .pdvf-feast-card-test { text-align: center; color: var(--pdvf-lapis); font-family: var(--pdvf-font-heading); font-size: 13px; padding: 2px 6px; border-bottom: 1px solid var(--pdvf-rule); }
+.pendragon-vf .pdvf-feast-card p { margin: 4px 8px; }
+.pendragon-vf .pdvf-feast-card p:first-of-type { font-style: italic; color: var(--pdvf-ink-soft); text-align: center; }
+.pendragon-vf .pdvf-feast-card footer { text-align: center; padding: 4px; border-top: 1px solid var(--pdvf-rule); }
+.pendragon-vf .pdvf-feast-card-base { display: inline-block; min-width: 34px; border-radius: 50%; background: var(--pdvf-vermilion); color: #fff; font-weight: 700; padding: 4px 6px; }
+.pendragon-vf .pdvf-feast-kept { margin: 4px 0; padding-left: 4px; list-style: none; font-size: 13px; }

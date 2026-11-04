@@ -55,8 +55,21 @@ export class FestinData extends foundry.abstract.TypeDataModel {
         // Tour après lequel il est parti (null : présent)
         left: intOrNull({ min: 0 }),
         leftHow: str(""),
+        // Cartes de festin : carte tirée en cours, cartes tirées et non jouées ce tour, nombre tiré,
+        // cartes conservées, tour sauté, plus de cartes d'hôte
+        current: str(""),
+        passed: new fields.ArrayField(new fields.StringField()),
+        drawn: int(0, { min: 0 }),
+        kept: new fields.ArrayField(new fields.SchemaField({ id: str(""), title: str(""), perRound: int(0), blocksDraw: bool(), note: str("") })),
+        skip: intOrNull(),
+        noHost: bool(),
         inscribed: int(0, { min: 0 })
       })),
+      // Paquet de cartes de festin de ce festin (identifiants) : pioche et défausse
+      deck: new fields.SchemaField({
+        order: new fields.ArrayField(new fields.StringField()),
+        discard: new fields.ArrayField(new fields.StringField())
+      }),
       log: new fields.ArrayField(new fields.StringField())
     };
   }

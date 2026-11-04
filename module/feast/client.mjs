@@ -6,6 +6,7 @@ import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { rollAttribute, rollPlain } from "../dice/tests.mjs";
 import { formatValue } from "../rules/resolution.mjs";
 import { request, guestActor, guestState } from "./engine.mjs";
+import { cardById, resolveCard, importLibrary, library } from "./cards.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -178,4 +179,55 @@ export async function leave(feast, index) {
   }
   if (result.outcome === "fumble") await loseHonor(x.actor, L("PDVF.Feast.LeaveReason"));
   return request(feast, "leave", { index, outcome: result.outcome, loss });
+}
+
+/* -------------------------------------------- */
+/*  Cartes de festin (paquet importé)            */
+/* -------------------------------------------- */
+
+/** Tirer une carte (le MJ la prend dans le paquet du festin). */
+export async function drawCard(feast, index) {
+  const x = guestOf(feast, index);
+  if (!x) return;
+  if (feast.system.round < 1) return ui.notifications.info(L("PDVF.Feast.Notify.NotStarted"));
+  return request(feast, "draw", { index });
+}
+
+/** Jouer la carte tirée : résolue chez le joueur, puis notée au festin par le MJ. */
+export async function playCurrent(feast, index) {
+  const x = guestOf(feast, index);
+  if (!x || !x.g.current) return;
+  const card = cardById(x.g.current);
+  if (!card) return ui.notifications.warn(L("PDVF.FeastCard.Notify.Unknown"));
+  if (card.roll?.kind === "all") return request(feast, "playAll", { index });
+  const r = await resolveCard(x.actor, card, { engouement: x.st.engouement, prompt: true });
+  const content = await foundry.applications.handlebars.renderTemplate(`systems/${SYSTEM_ID}/templates/chat/tournament-card.hbs`,
+    { title: card.title, subtitle: `${x.actor.name} — ${card.testLabel}`, lines: r.lines.length ? r.lines : [L("PDVF.FeastCard.Line.Nothing")], buttons: [], tournament: "" });
+  await ChatMessage.implementation.create({ speaker: ChatMessage.getSpeaker({ actor: x.actor }), content, rolls: r.rolls, flags: { [SYSTEM_ID]: { kind: "feastCard" } } });
+  return request(feast, "playDrawn", { index, cardId: card.id, eng: r.eng, glory: r.glory, leave: r.leave, skip: r.skip, keep: r.keep, noHost: r.noHost });
+}
+
+export async function discardKept(feast, index, id) {
+  return request(feast, "discardKept", { index, id });
+}
+
+/** Le MJ importe son fichier de cartes (il reste dans le monde, jamais dans le système). */
+export async function importCards() {
+  if (!game.user.isGM) return;
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json,application/json";
+  input.addEventListener("change", async () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    try {
+      const cards = await importLibrary(await file.text());
+      ui.notifications.info(F("PDVF.FeastCard.Import.Done", { n: cards.length, copies: cards.reduce((t, c) => t + c.count, 0) }));
+    } catch (err) { ui.notifications.error(err.message); }
+  });
+  input.click();
+}
+
+export function hasLibrary() {
+  return library().length > 0;
 }

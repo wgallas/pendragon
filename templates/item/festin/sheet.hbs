@@ -35,6 +35,8 @@
         {{/each}}
       </div>
       <p class="pdvf-hint">{{localize "PDVF.Feast.SizeHint"}} {{thresholdHint}}</p>
+      <p class="pdvf-hint"><i class="fa-solid fa-clone"></i> {{#if cards.has}}{{localize "PDVF.FeastCard.Loaded"}} {{cards.count}}.{{else}}{{localize "PDVF.FeastCard.NotLoaded"}}{{/if}}
+        <button type="button" class="pdvf-btn pdvf-mini" data-action="importCards" data-tooltip="{{localize 'PDVF.FeastCard.ImportTip'}}"><i class="fa-solid fa-file-import"></i> {{localize "PDVF.FeastCard.Import.Button"}}</button></p>
     </section>
 
     <section class="pdvf-battle-section">
@@ -93,8 +95,8 @@
   {{!-- ============================ TOURS ============================ --}}
   {{#if tabIs.rounds}}
     <section class="pdvf-battle-section">
-      <h3 class="pdvf-h3">{{roundLabel}}</h3>
-      <p class="pdvf-hint">{{localize "PDVF.Feast.RoundsHint"}}</p>
+      <h3 class="pdvf-h3">{{roundLabel}}{{#if cards.has}} <small>{{localize "PDVF.FeastCard.DeckLeft"}} {{cards.deckLeft}}</small>{{/if}}</h3>
+      <p class="pdvf-hint">{{#if cards.has}}{{localize "PDVF.FeastCard.RoundsHint"}}{{else}}{{localize "PDVF.Feast.RoundsHint"}}{{/if}}</p>
       {{#if isGM}}{{#unless over}}<p><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="gm" data-op="nextRound"><i class="fa-solid fa-utensils"></i> {{#if started}}{{localize "PDVF.Feast.NextRound"}}{{else}}{{localize "PDVF.Feast.FirstRound"}}{{/if}}</button></p>{{/unless}}{{/if}}
       {{#each guests}}
       <div class="pdvf-tournament-knight pdvf-feast-guest {{#unless present}}left{{/unless}}">
@@ -107,14 +109,36 @@
         </div>
         {{#if leftLabel}}<p class="pdvf-hint">{{leftLabel}}</p>{{/if}}
         {{#if roundAction}}<p class="pdvf-feast-action"><i class="fa-solid fa-check"></i> {{roundAction}}</p>{{/if}}
+        {{#if skipNext}}<p class="pdvf-hint">{{skipNext}}</p>{{/if}}
+        {{#if noHost}}<p class="pdvf-hint">{{localize "PDVF.FeastCard.Note.noHost"}}</p>{{/if}}
+        {{#if currentCard}}
+        {{#with currentCard}}
+        <div class="pdvf-feast-card {{#if host}}host{{/if}}">
+          <header><strong>{{title}}</strong>{{#if host}} <i class="fa-solid fa-wine-glass" data-tooltip="{{localize 'PDVF.FeastCard.HostTip'}}"></i>{{/if}}</header>
+          <div class="pdvf-feast-card-test">{{testLabel}}</div>
+          {{#each paragraphs}}<p>{{this}}</p>{{/each}}
+          <footer><span class="pdvf-feast-card-base" data-tooltip="{{localize 'PDVF.FeastCard.BaseTip'}}">{{baseLabel}}</span>{{#if allPCs}} <span class="pdvf-tag">{{localize "PDVF.FeastCard.AllPCs"}}</span>{{/if}}</footer>
+        </div>
+        {{/with}}
+        {{/if}}
         <div class="pdvf-inline">
+          {{#if deckMode}}
+            {{#if canDraw}}<button type="button" class="pdvf-btn pdvf-mini {{#unless hasCurrent}}pdvf-btn-primary{{/unless}}" data-action="player" data-op="draw" data-index="{{index}}"><i class="fa-solid fa-clone"></i> {{#if hasCurrent}}{{localize "PDVF.FeastCard.DrawAnother"}}{{else}}{{localize "PDVF.FeastCard.Draw"}}{{/if}} ({{drawnLabel}})</button>{{/if}}
+            {{#if canPlayCurrent}}<button type="button" class="pdvf-btn pdvf-mini pdvf-btn-primary" data-action="player" data-op="playCurrent" data-index="{{index}}"><i class="fa-solid fa-play"></i> {{localize "PDVF.FeastCard.Play"}}{{#if mustPlay}} ({{localize "PDVF.FeastCard.MustPlay"}}){{/if}}</button>{{/if}}
+            {{#if canAct}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="activity" data-index="{{index}}"><i class="fa-solid fa-wine-glass"></i> {{localize "PDVF.Feast.OtherActivity"}}</button>{{/if}}
+          {{else}}
           {{#if canAct}}
             <button type="button" class="pdvf-btn pdvf-mini pdvf-btn-primary" data-action="player" data-op="card" data-index="{{index}}"><i class="fa-solid fa-clone"></i> {{localize "PDVF.Feast.PlayCard"}}</button>
             <button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="activity" data-index="{{index}}"><i class="fa-solid fa-wine-glass"></i> {{localize "PDVF.Feast.OtherActivity"}}</button>
           {{/if}}
+          {{/if}}
           {{#if mine}}{{#if present}}{{#if @root.started}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="courtTest" data-index="{{index}}" data-tooltip="{{localize 'PDVF.Feast.CourtTestTip'}}"><i class="fa-solid fa-dice-d20"></i> {{localize "PDVF.Feast.CourtTest"}}</button>{{/if}}{{/if}}{{/if}}
           {{#if canLeave}}<button type="button" class="pdvf-btn pdvf-mini" data-action="player" data-op="leave" data-index="{{index}}"><i class="fa-solid fa-door-open"></i> {{localize "PDVF.Feast.Leave"}}</button>{{/if}}
         </div>
+        {{#if keptCards.length}}
+        <ul class="pdvf-feast-kept">{{#each keptCards}}<li><i class="fa-solid fa-bookmark"></i> <strong>{{title}}</strong>{{#if perRoundLabel}} <span class="pdvf-tag">{{perRoundLabel}} / {{localize "PDVF.FeastCard.PerRound"}}</span>{{/if}}{{#if blocksDraw}} <span class="pdvf-hint-inline">{{localize "PDVF.FeastCard.BlocksDraw"}}</span>{{/if}}{{#if noteLabel}} <span class="pdvf-hint-inline">{{noteLabel}}</span>{{/if}}
+          {{#if ../mine}}<button type="button" class="pdvf-icon-btn" data-action="player" data-op="discardKept" data-index="{{../index}}" data-id="{{id}}" data-tooltip="{{localize 'PDVF.FeastCard.Discard'}}">×</button>{{/if}}</li>{{/each}}</ul>
+        {{/if}}
         {{#if @root.isGM}}
         <div class="pdvf-inline" data-group="adjust">
           <input class="pdvf-num" type="number" name="mod" value="0" step="1" aria-label="{{localize 'PDVF.Feast.Engouement'}}">

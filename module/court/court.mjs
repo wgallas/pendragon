@@ -311,16 +311,34 @@ export async function drink(actor) {
   if (!data) return;
   const mod = C.drinkModifier({ drink: data.drink, enemies: !!data.enemies, royal: !!data.royal, extra: data.extra }, cfg);
   const res = await traitTest(actor, "trait.temperate.right", { modifier: mod, title: L("PDVF.Court.Drink.Drink") });
-  const level = C.drunkLevel(res.outcome);
+  const state = await applyDrinkOutcome(actor, res.outcome);
+  return card(actor, L("PDVF.Court.Drink.Title"), [F("PDVF.Court.Drink.Result", { name: actor.name, state: L(`PDVF.Court.Drink.State.${state}`) })]);
+}
+
+const DRUNK_ORDER = ["sober", "drunk", "deadDrunk"];
+
+/** Résultat d'un test de Bon-vivant : état d'ivresse du jour (on ne dessoûle pas en buvant). Renvoie l'état affiché. */
+export async function applyDrinkOutcome(actor, outcome) {
+  const level = C.drunkLevel(outcome);
   const d = drunk(actor);
   const today = day();
   const fresh = d.day !== today;
-  const order = ["sober", "drunk", "deadDrunk"];
   const prev = fresh ? "sober" : d.level;
-  const next = level === "immune" ? prev : (order.indexOf(level) > order.indexOf(prev) ? level : prev);
+  if (!fresh && d.immune) return prev;
+  const next = level === "immune" ? prev : (DRUNK_ORDER.indexOf(level) > DRUNK_ORDER.indexOf(prev) ? level : prev);
   await actor.update({ "system.court.drunk": { ...d, day: today, level: next, immune: level === "immune" || (!fresh && d.immune),
     activity: fresh ? "" : d.activity, passedOut: fresh ? false : d.passedOut, hangoverChecked: fresh ? false : d.hangoverChecked } });
-  return card(actor, L("PDVF.Court.Drink.Title"), [F("PDVF.Court.Drink.Result", { name: actor.name, state: L(`PDVF.Court.Drink.State.${level === "immune" ? "immune" : next}`) })]);
+  return level === "immune" ? "immune" : next;
+}
+
+/** Un niveau d'ivresse de plus (carte « Hydromel »…). */
+export async function raiseDrunk(actor) {
+  const d = drunk(actor);
+  const today = day();
+  const prev = d.day !== today ? "sober" : d.level;
+  const next = DRUNK_ORDER[Math.min(DRUNK_ORDER.length - 1, DRUNK_ORDER.indexOf(prev) + 1)];
+  await actor.update({ "system.court.drunk": { ...d, day: today, level: next, ...(d.day !== today ? { activity: "", passedOut: false, hangoverChecked: false, immune: false } : {}) } });
+  return next;
 }
 
 /** Toutes les deux heures : test d'Énergique → niveau d'activité (le pire compte). */

@@ -1,6 +1,7 @@
 import { PDVF, SYSTEM_ID } from "../config.mjs";
 import { request, guestActor, guestState, slightedGuests, feastGloryAll, showToPlayers } from "../feast/engine.mjs";
 import * as client from "../feast/client.mjs";
+import { cardById, cardView, library } from "../feast/cards.mjs";
 import { mergeIndexed } from "./bataille-sheet.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -28,6 +29,7 @@ export function feastView(feast) {
   const slighted = slightedGuests(s, states);
   const glory = feastGloryAll(s);
   const owns = (a) => !!a && (isGM || a.isOwner);
+  const hasCards = library().length > 0;
   const outcome = (o) => (o ? L(`PDVF.Outcome.${o}`) : "");
 
   const guests = s.guests.map((g, index) => {
@@ -50,7 +52,16 @@ export function feastView(feast) {
       yieldedLabel: outcome(g.yielded), canYield: mine && !!g.seat && !g.yielded && !st.proudFamous && !["floor", "floorFumble"].includes(g.seat),
       present: st.present,
       leftLabel: st.present ? "" : F(g.leftHow === "forced" ? "PDVF.Feast.LeftForced" : "PDVF.Feast.LeftAfter", { round: g.left }),
-      canAct: mine && st.present && s.round > 0 && !st.acted && !!g.seat,
+      canAct: mine && st.present && s.round > 0 && !st.acted && !!g.seat && !g.current,
+      // Cartes du paquet importé
+      deckMode: hasCards, currentCard: (mine || isGM) && g.current ? cardView(cardById(g.current)) : null, hasCurrent: !!g.current,
+      drawnLabel: F("PDVF.FeastCard.Drawn", { n: g.drawn ?? 0, max: st.cards }),
+      canDraw: hasCards && mine && st.present && s.round > 0 && !st.acted && !!g.seat && (g.drawn ?? 0) < st.cards
+        && !(g.current && cardById(g.current)?.host) && !(g.kept ?? []).some(k => k.blocksDraw),
+      canPlayCurrent: mine && !!g.current && st.present,
+      mustPlay: !!g.current && ((g.drawn ?? 0) >= st.cards || !!cardById(g.current)?.host),
+      keptCards: (g.kept ?? []).map(k => ({ ...k, perRoundLabel: k.perRound ? signed(k.perRound) : "", noteLabel: k.note ? L(`PDVF.FeastCard.Keep.${k.note}`) : "" })),
+      skipNext: g.skip ? F("PDVF.FeastCard.SkipNext", { round: g.skip }) : "", noHost: !!g.noHost,
       canLeave: mine && st.present && s.round > 0 && st.acted && s.round < s.rounds,
       roundAction: roundEntries.map(e => e.kind === "activity" ? `${e.label} — ${outcome(e.outcome)}` : `${e.label} (${signed(e.mod)})${e.host ? ` ${L("PDVF.Feast.HostShort")}` : ""}`).join(" · "),
       entries: g.entries.map(e => ({ ...e, modLabel: signed(e.mod), kindLabel: L(`PDVF.Feast.Entry.${e.kind}`), outcomeLabel: outcome(e.outcome) })),
@@ -70,7 +81,8 @@ export function feastView(feast) {
     tournament: s.tournament,
     thresholdHint: F("PDVF.Feast.ThresholdHint", { threshold: s.sizeData.threshold, bonus: s.sizeData.bonus }),
     totals: { due: guests.reduce((t, g) => t + g.result.due, 0) },
-    log: [...s.log].reverse()
+    log: [...s.log].reverse(),
+    cards: { has: hasCards, count: library().reduce((t, c) => t + c.count, 0), deckLeft: s.deck?.order?.length ?? 0 }
   };
 }
 
@@ -90,6 +102,7 @@ export class FestinSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       feastTab: FestinSheet.#onTab,
       gm: FestinSheet.#onGm,
       player: FestinSheet.#onPlayer,
+      importCards: FestinSheet.#onImportCards,
       openActor: FestinSheet.#onOpenActor,
       openTournament: FestinSheet.#onOpenTournament,
       show: FestinSheet.#onShow
@@ -171,9 +184,13 @@ export class FestinSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       case "activity": return client.activity(f, index);
       case "courtTest": return client.courtTest(f, index);
       case "leave": return client.leave(f, index);
+      case "draw": return client.drawCard(f, index);
+      case "playCurrent": return client.playCurrent(f, index);
+      case "discardKept": return client.discardKept(f, index, target.dataset.id);
     }
   }
 
+  static #onImportCards() { client.importCards(); }
   static #onOpenActor(event, target) { fromUuid(target.dataset.uuid).then(a => a?.sheet?.render(true)); }
   static #onOpenTournament() { if (this.document.system.tournament) fromUuid(this.document.system.tournament).then(t => t?.sheet?.render(true)); }
   static #onShow() { showToPlayers(this.document); }

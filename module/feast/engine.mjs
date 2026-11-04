@@ -9,6 +9,7 @@ import * as R from "../rules/feast.mjs";
 import { traitPair } from "../rules/resolution.mjs";
 import { fashionCurrent } from "../rules/court.mjs";
 import { gameYear } from "../documents/period.mjs";
+import { cardById, freshDeck, shuffle, resolveAll } from "./cards.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -65,10 +66,17 @@ async function run(feast, action, payload, userId) {
     return;
   }
   const sys = foundry.utils.deepClone(feast._source.system);
+  cardFields(sys);
   const ctx = { feast, sys, user, chat: [], log: (text) => sys.log.push(text) };
   const keep = await def.fn(ctx, payload);
   if (keep !== false) await feast.update({ system: sys });
   for (const card of ctx.chat) await announce(feast, card);
+}
+
+/** Champs des cartes absents d'un festin créé avant elles. */
+function cardFields(sys) {
+  sys.deck ??= { order: [], discard: [] };
+  for (const g of sys.guests) { g.passed ??= []; g.kept ??= []; g.current ??= ""; g.drawn ??= 0; g.skip ??= null; g.noHost ??= false; }
 }
 
 /** Le MJ fait tout ; un joueur seulement pour son chevalier. */
@@ -80,9 +88,9 @@ function allowed(feast, who, payload, user) {
 }
 
 /** Carte de chat du festin (même gabarit que le tournoi, sans boutons). */
-export async function announce(feast, { title, subtitle = "", lines = [] }) {
+export async function announce(feast, { title, subtitle = "", lines = [], rolls = [] }) {
   const content = await foundry.applications.handlebars.renderTemplate(CARD, { title, subtitle, lines, buttons: [], tournament: "" });
-  return ChatMessage.implementation.create({ speaker: { alias: feast.name }, content, flags: { [SYSTEM_ID]: { kind: "feast", feast: feast.uuid } } });
+  return ChatMessage.implementation.create({ speaker: { alias: feast.name }, content, rolls, flags: { [SYSTEM_ID]: { kind: "feast", feast: feast.uuid } } });
 }
 
 /* -------------------------------------------- */
@@ -120,7 +128,7 @@ export function guestState(sys, g, actor = guestActor(g)) {
     rank: s?.biography?.knightClass ?? "", seatRank: g.seat ? R.seatRank(g.seat, cfg) : null,
     present: g.left === null || g.left === undefined,
     attended: g.entries.filter(e => e.kind === "seat").length,
-    acted: round > 0 && g.entries.some(e => e.round === round && (e.kind === "card" || e.kind === "activity")),
+    acted: round > 0 && g.entries.some(e => e.round === round && (e.kind === "card" || e.kind === "activity" || e.kind === "skip")),
     gloryEarned: g.glory.reduce((t, x) => t + (Number(x.glory) || 0), 0)
   };
 }
@@ -168,7 +176,7 @@ const ACTIONS = {
     const actor = await fromUuid(uuid);
     if (actor?.type !== "chevalier") return false;
     sys.guests.push({ uuid, clothing: "", bonus: 0, seat: "", seatTest: { outcome: "", second: "" }, modest: "", yielded: "",
-      entries: [], glory: [], left: null, leftHow: "", inscribed: 0 });
+      entries: [], glory: [], left: null, leftHow: "", current: "", passed: [], drawn: 0, kept: [], skip: null, noHost: false, inscribed: 0 });
   } },
 
   removeGuest: { who: "gm", fn: async ({ sys }, { index }) => {
@@ -229,6 +237,19 @@ const ACTIONS = {
       if (g.left !== null) continue;
       const mod = C().seats[g.seat]?.mod ?? 0;
       g.entries.push({ round: sys.round, kind: "seat", label: seatLabel(g.seat), mod, host: false, outcome: "", floorZero: false, reset: false });
+      // Cartes conservées (Engouement par tour) et tour sauté
+      for (const k of g.kept ?? []) {
+        if (!k.perRound) continue;
+        const m = R.eventEngouement(k.perRound, g.seat);
+        g.entries.push({ round: sys.round, kind: "kept", label: k.title, mod: m, host: false, outcome: "", floorZero: false, reset: false });
+        lines.push(F("PDVF.FeastCard.Line.KeptRound", { name: guestActor(g)?.name ?? "?", card: k.title, mod: signed(m) }));
+      }
+      if (g.skip === sys.round) {
+        g.entries.push({ round: sys.round, kind: "skip", label: L("PDVF.FeastCard.Skipped"), mod: 0, host: false, outcome: "", floorZero: false, reset: false });
+        g.skip = null;
+        lines.push(F("PDVF.FeastCard.Line.SkipRound", { name: guestActor(g)?.name ?? "?" }));
+      }
+      returnHand(sys, g);
       const st = guestState(sys, g);
       lines.push(F("PDVF.Feast.Line.RoundGuest", { name: guestActor(g)?.name ?? "?", seat: seatLabel(g.seat), mod: signed(mod), att: st.att, cards: st.cards }));
     }
@@ -261,6 +282,78 @@ const ACTIONS = {
     lines.push(F("PDVF.Feast.Line.Engouement", { value: signed(after.engouement), att: after.att }));
     log(lines[0]);
     chat.push({ title: F("PDVF.Feast.RoundTitle", { round: sys.round, rounds: sys.rounds }), subtitle: feast.name, lines });
+  } },
+
+  /** Tire une carte du paquet du festin (une à la fois ; la dernière permise ou une carte d'hôte doit être jouée). */
+  draw: { who: "guest", fn: async ({ sys, log }, { index }) => {
+    const g = sys.guests[Number(index)];
+    if (!g || sys.round < 1 || g.left !== null) return false;
+    const st = guestState(sys, g);
+    if (st.acted) return ui.notifications.info(L("PDVF.Feast.Notify.AlreadyActed")) && false;
+    if ((g.kept ?? []).some(k => k.blocksDraw)) return ui.notifications.info(L("PDVF.FeastCard.Notify.Blocked")) && false;
+    const cur = g.current ? cardById(g.current) : null;
+    if (cur?.host) return ui.notifications.info(L("PDVF.FeastCard.Notify.HostMustPlay")) && false;
+    if (g.drawn >= st.cards) return ui.notifications.info(L(st.cards ? "PDVF.FeastCard.Notify.LastMustPlay" : "PDVF.FeastCard.Notify.NoCards")) && false;
+    if (g.current) g.passed.push(g.current);
+    let id = null;
+    for (let guard = 0; guard < 10 && !id; guard++) {
+      if (!sys.deck.order.length) {
+        const held = sys.guests.flatMap(x => [x.current, ...(x.passed ?? []), ...(x.kept ?? []).map(k => k.id)]).filter(Boolean);
+        sys.deck.order = freshDeck(held);
+        sys.deck.discard = [];
+        log(L("PDVF.FeastCard.Line.Reshuffled"));
+        if (!sys.deck.order.length) return ui.notifications.warn(L("PDVF.FeastCard.Notify.NoLibrary")) && false;
+      }
+      const next = sys.deck.order.shift();
+      if (g.noHost && cardById(next)?.host) { sys.deck.discard.push(next); continue; }
+      id = next;
+    }
+    g.current = id;
+    g.drawn += 1;
+  } },
+
+  /** Carte jouée et résolue chez le joueur : on note son Engouement (et celui des résultats), la Gloire, les suites. */
+  playDrawn: { who: "guest", fn: async ({ sys, feast, chat, log }, { index, cardId, eng = 0, glory = 0, leave = false, skip = false, keep = null, noHost = false }) => {
+    const g = sys.guests[Number(index)];
+    const card = cardById(cardId);
+    if (!g || !card || g.current !== cardId || g.left !== null) return false;
+    const who = guestActor(g)?.name ?? "?";
+    const lines = recordCard(sys, g, card, { eng, glory, leave, skip, keep, noHost }, who);
+    log(lines[0]);
+    chat.push({ title: F("PDVF.Feast.RoundTitle", { round: sys.round, rounds: sys.rounds }), subtitle: feast.name, lines });
+  } },
+
+  /** Carte « tous les PJ » : le MJ la résout pour chaque invité présent. */
+  playAll: { who: "guest", fn: async ({ sys, feast, chat, log }, { index }) => {
+    const g = sys.guests[Number(index)];
+    const card = g?.current ? cardById(g.current) : null;
+    if (!g || !card || card.roll?.kind !== "all" || g.left !== null) return false;
+    const people = sys.guests.map((x, i) => ({ x, i, actor: guestActor(x) })).filter(p => p.actor && p.x.left === null && p.x.seat);
+    const results = await resolveAll(card, people.map(p => ({ actor: p.actor, engouement: guestState(sys, p.x, p.actor).engouement })));
+    const who = guestActor(g)?.name ?? "?";
+    const lines = recordCard(sys, g, card, {}, who);
+    const rolls = [];
+    results.forEach((r, k) => {
+      const p = people[k];
+      const m = R.eventEngouement(r.eng, p.x.seat);
+      if (m) p.x.entries.push({ round: sys.round, kind: "event", label: card.title, mod: m, host: false, outcome: r.outcome ?? "", floorZero: false, reset: false });
+      if (r.glory) p.x.glory.push({ label: card.title, glory: r.glory });
+      if (r.skip) p.x.skip = sys.round + 1;
+      if (r.leave) { p.x.left = sys.round; p.x.leftHow = "forced"; }
+      rolls.push(...r.rolls);
+      lines.push(`${p.actor.name}${r.outcome ? ` (${L(`PDVF.FeastCard.Outcome.${r.outcome}`)})` : ""} : ${r.lines.join(" ; ")}${m ? ` — ${signed(m)}` : ""}`);
+    });
+    log(lines[0]);
+    chat.push({ title: card.title, subtitle: feast.name, lines, rolls });
+  } },
+
+  /** Défausser une carte conservée. */
+  discardKept: { who: "guest", fn: async ({ sys }, { index, id }) => {
+    const g = sys.guests[Number(index)];
+    const i = (g?.kept ?? []).findIndex(k => k.id === id);
+    if (i < 0) return false;
+    g.kept.splice(i, 1);
+    sys.deck.discard.push(id);
   } },
 
   /** Autre activité de cour (test lancé chez le joueur) : expérience cochée chez lui, Gloire sur un critique. */
@@ -341,6 +434,35 @@ const ACTIONS = {
     chat.push({ title: L("PDVF.Feast.Inscribe"), subtitle: feast.name, lines });
   } }
 };
+
+/** Les cartes tirées et non jouées retournent dans le paquet, mélangées. */
+function returnHand(sys, g) {
+  const back = [...(g.passed ?? []), ...(g.current ? [g.current] : [])];
+  if (back.length) sys.deck.order = shuffle([...sys.deck.order, ...back]);
+  g.passed = [];
+  g.current = "";
+  g.drawn = 0;
+}
+
+/** Note une carte jouée : Engouement de la carte et des résultats (pertes doublées au-dessus du sel), suites. */
+function recordCard(sys, g, card, { eng = 0, glory = 0, leave = false, skip = false, keep = null, noHost = false }, who) {
+  const applied = R.eventEngouement(Number(card.base) || 0, g.seat) + R.eventEngouement(Number(eng) || 0, g.seat);
+  g.entries.push({ round: sys.round, kind: "card", label: card.title.slice(0, 80), mod: applied, host: !!card.host, outcome: "", floorZero: false, reset: false });
+  const lines = [F("PDVF.Feast.Line.Card", { name: who, card: card.title, mod: signed(applied) })];
+  if (card.host) lines.push(L("PDVF.Feast.Line.HostCard"));
+  if (Number(glory) > 0) { g.glory.push({ label: card.title, glory: Number(glory) }); lines.push(F("PDVF.Feast.Line.ActivityGlory", { name: who, glory })); }
+  if (skip) { g.skip = sys.round + 1; lines.push(F("PDVF.FeastCard.Line.WillSkip", { name: who })); }
+  if (noHost) g.noHost = true;
+  // La carte jouée part à la défausse, sauf si on la garde ; les autres retournent au paquet.
+  g.current = "";
+  if (keep) { g.kept.push({ id: card.id, title: card.title, perRound: Number(keep.perRound) || 0, blocksDraw: !!keep.blocksDraw, note: String(keep.note ?? "") }); lines.push(F("PDVF.FeastCard.Line.Kept", { name: who, card: card.title })); }
+  else sys.deck.discard.push(card.id);
+  returnHand(sys, g);
+  if (leave) { g.left = sys.round; g.leftHow = "forced"; lines.push(F("PDVF.Feast.Line.Forced", { name: who })); }
+  const after = guestState(sys, g);
+  lines.push(F("PDVF.Feast.Line.Engouement", { value: signed(after.engouement), att: after.att }));
+  return lines;
+}
 
 /**
  * Crée le festin du soir d'un tournoi, avec ses chevaliers inscrits.

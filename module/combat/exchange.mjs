@@ -380,6 +380,11 @@ async function performUndo(message, user) {
     const battle = await fromUuid(flags.battleKill.battle);
     if (battle) await game.pendragon.battle.engine.perform(battle, "removeKill", { index: flags.battleKill.index }, game.user.id);
   }
+  // Passe d'armes (bataille simplifiée) : victimes, Moral et état du chevalier rendus.
+  if (flags.battlePass) {
+    const battle = await fromUuid(flags.battlePass.battle);
+    if (battle) await game.pendragon.battle.engine.perform(battle, "undoPass", flags.battlePass, game.user.id);
+  }
   await message.update({
     content: message.content.replace(/<div class="pdvf-card-buttons pdvf-undo">[\s\S]*?<\/div>/, `<p class="pdvf-hint">${F("PDVF.Combat.Undone", { name: user.name })}</p>`),
     [`flags.${SYSTEM_ID}.undone`]: true
@@ -604,7 +609,7 @@ async function battleLink(defRef, winner, loser) {
   const battle = await fromUuid(battleUuid);
   if (!battle) return null;
   const index = battle.system.knights.findIndex(k => k.uuid === winner.uuid);
-  if (index < 0 || battle.system.state.step !== "resolve") return null;
+  if (index < 0 || !["resolve", "pass"].includes(battle.system.state.step)) return null;
   await game.pendragon.battle.engine.perform(battle, "addKill", { index }, game.user.id);
   await token.setFlag(SYSTEM_ID, "killCounted", true);
   return { battle: battle.uuid, index, line: F("PDVF.Combat.Line.BattleKill", { name: winner.name, enemy: loser.name, battle: battle.name }) };

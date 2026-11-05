@@ -1213,6 +1213,26 @@
 .pendragon-vf .pdvf-battle-log li { margin: 2px 0; }
 .pendragon-vf .pdvf-encounter textarea, .pendragon-vf .pdvf-battle textarea { width: 100%; font-family: var(--pdvf-font-body); font-size: 15px; }
 .pdvf-battle-card .pdvf-battle-text { margin: 6px 8px; }
+
+/* Bataille simplifiée (passe d'armes) */
+.pendragon-vf .pdvf-simple-intent { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 16px; }
+.pendragon-vf .pdvf-simple-intent select { width: auto; min-width: 140px; }
+.pendragon-vf .pdvf-simple-label { font-family: var(--pdvf-font-heading); }
+.pendragon-vf .pdvf-order-buttons .pdvf-btn { min-width: 110px; font-family: var(--pdvf-font-heading); font-size: 16px; }
+.pendragon-vf .pdvf-simple-orderline { margin: 0 0 8px; font-size: 16px; }
+.pendragon-vf .pdvf-simple-cards { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+.pendragon-vf .pdvf-simple-card { display: flex; gap: 8px; align-items: flex-start; padding: 6px; border: 1px solid var(--pdvf-rule-strong); background: var(--pdvf-parchment-light); }
+.pendragon-vf .pdvf-simple-card.opportunity { border-color: var(--pdvf-gold); box-shadow: inset 0 0 0 1px var(--pdvf-gold); }
+.pendragon-vf .pdvf-simple-card.imposed { outline: 2px solid var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-simple-card.unaffordable { opacity: 0.6; }
+.pendragon-vf .pdvf-simple-card-main { flex: 1; min-width: 0; }
+.pendragon-vf .pdvf-simple-card .pdvf-deck-name { font-weight: 600; }
+.pendragon-vf .pdvf-simple-card .pdvf-btn { margin: 0; align-self: center; }
+.pendragon-vf .pdvf-simple-teaser { font-style: italic; color: var(--pdvf-ink-soft); }
+.pendragon-vf .pdvf-simple-choices select, .pendragon-vf .pdvf-simple-passes select { width: auto; min-width: 150px; }
+.pendragon-vf .pdvf-tag.pass-exploit, .pendragon-vf .pdvf-tag.pass-victory { color: var(--pdvf-green); border-color: var(--pdvf-green); }
+.pendragon-vf .pdvf-tag.pass-repulsed, .pendragon-vf .pdvf-tag.pass-disaster { color: var(--pdvf-vermilion); border-color: var(--pdvf-vermilion); }
+.pendragon-vf .pdvf-card-pass { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0; }
 .pdvf-battle-card .pdvf-card-buttons { flex-wrap: wrap; }
 .pendragon-vf .pdvf-warn { color: var(--pdvf-vermilion-dark); font-weight: 600; }
 

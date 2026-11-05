@@ -104,7 +104,7 @@ export async function testValue(value, modifier = 0) {
 const outcomeLabel = (o) => L(`PDVF.Outcome.${o}`);
 
 /** Instantané de ce qu'un dégât peut changer, pour l'annulation. */
-function snapshot(actor) {
+export function snapshot(actor) {
   return {
     actor: actor.uuid,
     health: foundry.utils.deepClone(actor._source.system.health),

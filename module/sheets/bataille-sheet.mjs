@@ -8,6 +8,8 @@ import { bannerFor, pickImage } from "../battle/banner.mjs";
 import { battleScene, defaultBattlefield } from "../battle/scene.mjs";
 import { createNextDay, previousBattle } from "../battle/series.mjs";
 import { rollEventTable } from "../battle/tables.mjs";
+import { simpleView, SIMPLE_STEPS } from "./bataille-simple-view.mjs";
+import { profileOfSync } from "../battle/simple.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -158,6 +160,17 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     // Fiche en lecture seule pour les joueurs : leurs boutons d'action restent utilisables.
     if (!this.isEditable) {
       for (const el of this.element.querySelectorAll("button[data-action]")) el.disabled = false;
+    }
+    // Passe d'armes : carte et compétence choisies dans des listes (hors du formulaire).
+    for (const sel of this.element.querySelectorAll("select[data-pass-op]")) {
+      sel.addEventListener("change", (event) => {
+        event.stopPropagation();
+        const op = sel.dataset.passOp;
+        const payload = { index: Number(sel.dataset.index) };
+        if (op === "chooseCard") payload.id = sel.value;
+        else payload.key = sel.value;
+        if (sel.value) request(this.document, op, payload);
+      });
     }
     // Hauteur de cadrage : l'aperçu suit le curseur sans attendre l'enregistrement.
     for (const range of this.element.querySelectorAll("input[type=range][data-focus-preview]")) {
@@ -326,6 +339,9 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       case "squireTest": return client.squireTest(battle, index);
       case "extraRound": return client.extraRound(battle, index);
       case "chargeTest": case "rangedTest": case "lossesTest": return client.commanderTest(battle, op);
+      case "orderTest": return client.orderTest(battle);
+      case "pass": return client.pass(battle, index);
+      case "reinforce": return request(battle, "reinforce", { index });
     }
   }
 
@@ -339,7 +355,7 @@ export class BatailleSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     doc?.sheet?.render(true);
   }
 
-  static #onPlace() { return placeEnemies(this.document); }
+  static #onPlace(event, target) { return placeEnemies(this.document, target?.dataset?.id || null); }
   static #onUnplace() { return removeEnemies(this.document); }
   static #onShow() {
     showToPlayers(this.document);
@@ -419,7 +435,9 @@ export function battleView(battle, user) {
     };
   });
 
-  const stepIndex = STEPS.indexOf(st.step);
+  const simpleMode = st.mode === "simple" && st.phase !== "prep";
+  const steps = simpleMode ? SIMPLE_STEPS : STEPS;
+  const stepIndex = steps.indexOf(st.step);
   const cand = st.step === "select" ? candidates(s).map(id => findEncounter(s, id)).filter(Boolean).map(e => ({
     ...encounterRow(e), selected: e.id === st.selectedId,
     proposers: s.knights.filter(k => k.proposal === e.id).map(k => knightActor(k)?.name).filter(Boolean).join(", "),
@@ -433,7 +451,7 @@ export function battleView(battle, user) {
   return {
     battle, system: s, isGM, isCommander, editable: isGM,
     phase: st.phase, step: st.step, round: st.round, maxRounds: s.maxRounds,
-    at: Object.fromEntries([...STEPS, "end", "over", "aftermath"].map(id => [id, st.step === id])),
+    at: Object.fromEntries([...STEPS, ...SIMPLE_STEPS, "end", "over", "aftermath"].map(id => [id, st.step === id])),
     isPrep: st.phase === "prep", isActive: st.phase === "active", isDone: st.phase === "done",
     onFieldNow: st.position === "field",
     sizeChoices: opt(Object.keys(cfg.sizes), s.size, "PDVF.Battle.Size"),
@@ -463,9 +481,12 @@ export function battleView(battle, user) {
     morale: { value: s.conroi.morale, start: s.conroi.moraleStart, pct: moralePct, minPct, low: moralePct < 34 },
     positionLabel: L(`PDVF.Battle.Position.${st.position}`),
     inRear: st.position === "rear",
-    steps: STEPS.map((id, i) => ({ id, label: L(`PDVF.Battle.Step.${id}`), current: id === st.step, done: stepIndex > i,
-      skipped: (id === "charge" && st.charge === "first") || (id === "battle" && st.step !== "battle" && stepIndex > i && !s.knights.some(k => k.battleRoll)) })),
-    stepHelp: st.step ? L(`PDVF.Battle.Help.${st.step}${isGM ? "" : "Player"}`) : "",
+    steps: steps.map((id, i) => ({ id, label: L(simpleMode && id !== "squire" ? `PDVF.Battle.Simple.Step.${id}` : `PDVF.Battle.Step.${id}`), current: id === st.step, done: stepIndex > i,
+      skipped: !simpleMode && ((id === "charge" && st.charge === "first") || (id === "battle" && st.step !== "battle" && stepIndex > i && !s.knights.some(k => k.battleRoll))) })),
+    stepHelp: st.step ? L(simpleMode && SIMPLE_STEPS.includes(st.step) && st.step !== "squire" ? `PDVF.Battle.Simple.Help.${st.step}${isGM ? "" : "Player"}` : `PDVF.Battle.Help.${st.step}${isGM ? "" : "Player"}`) : "",
+    simpleSetting: game.settings.get(SYSTEM_ID, "battleMode") === "simple",
+    modeLabel: L(`PDVF.Settings.battleMode.${simpleMode ? "simple" : st.phase === "prep" ? game.settings.get(SYSTEM_ID, "battleMode") : "traditional"}`),
+    ...(simpleMode ? simpleView(battle, user) : { simple: false }),
     defaultChoices: s.encounters.filter(e => e.kind === "opponent" || !e.used).map(e => ({ value: e.id, label: `${e.name}${e.kind === "opportunity" ? ` (${L("PDVF.Battle.Kind.opportunity")})` : ""}`, selected: e.id === st.defaultId })),
     defaultName: def?.name ?? "",
     chargeLabel: st.charge ? L(`PDVF.Battle.Charge.${st.charge}`) : "",
@@ -473,7 +494,7 @@ export function battleView(battle, user) {
     candidates: cand,
     imposable: isGM && st.enemyImposes && !st.enemyImposeUsed && st.step === "select",
     imposeChoices: s.encounters.filter(e => e.kind === "opponent" || !e.used).map(e => ({ value: e.id, label: e.name })),
-    immunity: st.moraleImmunity && !st.moraleImmunityUsed && st.step === "select",
+    immunity: st.moraleImmunity && !st.moraleImmunityUsed && ["select", "choose"].includes(st.step),
     encounter: enc ? {
       ...encounterRow(enc),
       count: R.enemyCount(enc, field.length, st.doubled),
@@ -625,7 +646,9 @@ export function prepView(battle, section, view) {
         img: e.img || (e.kind === "opportunity" ? "systems/pendragon-vf/icons/types/opportunity.svg" : "systems/pendragon-vf/icons/types/encounter.svg"),
         range: rangeLabel(e), limited: !!(e.from || e.to),
         npcName: npc?.name ?? (e.npc ? L("PDVF.Battle.MissingActor") : ""), npcUuid: e.npc,
-        kvLabel: kvLabel(e.kv), countLabel: e.fixedCount ? String(e.fixedCount) : `×${String(e.perKnight).replace(".", ",")}`
+        kvLabel: kvLabel(e.kv), countLabel: e.fixedCount ? String(e.fixedCount) : `×${String(e.perKnight).replace(".", ",")}`,
+        showPass: view.simpleSetting && e.kind === "opponent",
+        passCharge: profileOfSync(e, "charge"), passMelee: profileOfSync(e, "hold")
       };
     };
     const rows = s.encounters.map(card);

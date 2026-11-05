@@ -638,7 +638,51 @@ PDVF.battle = {
   /** Hauteur de cadrage par défaut d'une image de bandeau (en %). */
   bannerFocus: 45,
   /** Bandeau neutre du système quand aucune image n'est réglée. */
-  defaultBanner: "systems/pendragon-vf/icons/battle/bandeau.svg"
+  defaultBanner: "systems/pendragon-vf/icons/battle/bandeau.svg",
+
+  /**
+   * Bataille simplifiée (« passe d'armes », réglage du monde « Gestion des batailles ») :
+   * une rencontre = un test opposé par chevalier. Variante du système, pas une règle du livre.
+   */
+  simple: {
+    /** Cartes ouvertes à chaque tour. */
+    openCards: 3,
+    /** Ordre gagnant (+) ou perdant (−) contre l'intention de l'ennemi. */
+    orderBonus: 5,
+    /** Critique du commandant : bonus en plus pour tout le conroi (et une opportunité s'ouvre). */
+    criticalBonus: 5,
+    /** Valeur et Danger d'une carte sans adversaire lié ni réglage. */
+    defaultValue: 12,
+    defaultDanger: "4D6",
+    /** Postures : victimes ×, modificateur du jet, D6 de Danger en plus ou en moins. */
+    postures: {
+      reckless: { victims: 2, skill: 5, dice: 2 },
+      valorous: { victims: 1, skill: 0, dice: 0 },
+      prudent:  { victims: 0.5, skill: -5, dice: -2 }
+    },
+    /** Issues de la passe : part des victimes, dégâts subis, Moral, revers, capture possible. */
+    outcomes: {
+      exploit:  { victims: 2,   damage: "none",   morale: 0, capture: true },
+      victory:  { victims: 1,   damage: "none",   morale: 0 },
+      rough:    { victims: 0.5, damage: "shield", morale: 0 },
+      confused: { victims: 0,   damage: "none",   morale: -1 },
+      repulsed: { victims: 0,   damage: "full",   morale: 0 },
+      disaster: { victims: 0,   damage: "full",   morale: 0, setback: true }
+    },
+    /** Revers d'un échec critique (1D6). */
+    setbacks: [
+      { id: "unhorsed", min: 1, max: 2 },
+      { id: "weapon", min: 3, max: 4 },
+      { id: "horse", min: 5, max: 5 },
+      { id: "isolated", min: 6, max: 6 }
+    ],
+    /** Dépenses de Moral du conroi : renfort (+5 à une passe), échange d'une carte ouverte. */
+    reinforceCost: 2,
+    reinforceBonus: 5,
+    swapCost: 1,
+    /** Chevalier isolé (revers) : malus à ses passes tant qu'il n'a pas rejoint le conroi. */
+    isolatedPenalty: -5
+  }
 };
 
 /* -------------------------------------------- */

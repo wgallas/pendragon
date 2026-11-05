@@ -161,6 +161,11 @@ export class BatailleData extends foundry.abstract.TypeDataModel {
         squire: str(""),
         squireLost: bool(),
         participated: bool(),
+        // Bataille simplifiée : carte choisie, compétence de la passe, renfort, issue
+        card: str(""),
+        weapon: str(""),
+        reinforced: bool(),
+        pass: str(""),
         kills: new fields.ArrayField(new fields.SchemaField({
           name: str(""), kv: new fields.NumberField({ required: true, initial: 0 }), glory: int(0),
           captured: bool(), round: int(0), ransom: str("")
@@ -211,7 +216,18 @@ export class BatailleData extends foundry.abstract.TypeDataModel {
         immune: bool(),
         imposed: bool(),
         moraleMinMod: int(0),
-        moraleLossMod: int(0)
+        moraleLossMod: int(0),
+        // Procédure de la bataille, fixée au départ : traditional (livre) ou simple (passe d'armes)
+        mode: str("traditional"),
+        // Bataille simplifiée : intention cachée de l'ennemi, ordre du commandant, cartes ouvertes
+        intention: str(""),
+        intentionSeen: bool(),
+        orderOutcome: str(""),
+        order: str(""),
+        orderBonus: int(0),
+        open: strings(),
+        lastOrder: str(""),
+        lastIntention: str("")
       }),
       log: new fields.ArrayField(new fields.SchemaField({ round: int(0), text: str("") })),
 

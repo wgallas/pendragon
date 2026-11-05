@@ -21,6 +21,14 @@
         <label class="pdvf-inline" data-tooltip="{{localize 'PDVF.Battle.SkillBonusTip'}}">{{localize "PDVF.Battle.SkillBonus"}} <input type="number" class="pdvf-num" name="{{path}}.skillBonus" value="{{skillBonus}}" step="1"></label>
       </span>
     </div>
+    {{#if showPass}}
+    <div class="pdvf-card-pass">
+      <span class="pdvf-hint-inline" data-tooltip="{{localize 'PDVF.Battle.Simple.PassProfileHint'}}"><i class="fa-solid fa-khanda"></i> {{localize "PDVF.Battle.Simple.PassProfile"}} :
+        {{localize "PDVF.Battle.Simple.Order.charge"}} {{passCharge.value}} / {{passCharge.danger}} · {{localize "PDVF.Battle.Simple.Melee"}} {{passMelee.value}} / {{passMelee.danger}}</span>
+      <label class="pdvf-inline">{{localize "PDVF.Battle.Simple.Value"}} <input type="number" class="pdvf-num" name="{{path}}.passValue" value="{{passValue}}" min="0" step="1" placeholder="—"></label>
+      <label class="pdvf-inline">{{localize "PDVF.Battle.Simple.Danger"}} <input type="text" class="pdvf-num wide" name="{{path}}.passDanger" value="{{passDanger}}" placeholder="—"></label>
+    </div>
+    {{/if}}
     <textarea class="pdvf-card-teaser" name="{{path}}.teaser" rows="2" placeholder="{{localize 'PDVF.Battle.TeaserPlaceholder'}}">{{teaser}}</textarea>
     <details class="pdvf-card-rules">
       <summary>{{localize "PDVF.Battle.CardRules"}}</summary>

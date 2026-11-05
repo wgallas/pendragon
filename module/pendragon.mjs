@@ -147,6 +147,22 @@ Hooks.once("init", () => {
     }
   });
 
+  // Gestion des batailles : procédure du Livre du maître ou passe d'armes (une rencontre = un test).
+  // Chaque bataille garde la procédure avec laquelle elle a commencé.
+  game.settings.register(SYSTEM_ID, "battleMode", {
+    name: "PDVF.Settings.battleMode.name",
+    hint: "PDVF.Settings.battleMode.hint",
+    scope: "world",
+    config: true,
+    type: new foundry.data.fields.StringField({ required: true, initial: "traditional",
+      choices: { traditional: "PDVF.Settings.battleMode.traditional", simple: "PDVF.Settings.battleMode.simple" } }),
+    onChange: () => {
+      for (const app of foundry.applications.instances?.values?.() ?? []) {
+        if (app instanceof BatailleSheet && app.rendered) app.render();
+      }
+    }
+  });
+
   // Version du compendium des équipements déjà importée dans ce monde
   game.settings.register(SYSTEM_ID, "equipmentVersion", {
     scope: "world",
@@ -252,6 +268,7 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/item/bataille/prep.hbs`,
     `systems/${SYSTEM_ID}/templates/item/bataille/effects.hbs`,
     `systems/${SYSTEM_ID}/templates/item/bataille/card-edit.hbs`,
+    `systems/${SYSTEM_ID}/templates/item/bataille/simple.hbs`,
     `systems/${SYSTEM_ID}/templates/item/bataille/event-edit.hbs`
   ]);
 });

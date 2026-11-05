@@ -46,6 +46,12 @@
         "name": "Période de jeu",
         "hint": "Automatique : d'après l'année de jeu (Enfant-roi jusqu'en 518, Conquêtes de 519 à 528, d'après The Boy King). Imposer une période si la campagne avance à son propre rythme. Elle décide de l'équipement et des chevaux disponibles, des aménagements de manoir et de la Gloire des nouveautés.",
         "auto": "Automatique (d'après l'année)"
+      },
+      "battleMode": {
+        "name": "Gestion des batailles",
+        "hint": "Traditionnelle : la procédure du Livre du maître (test de charge, Intensité, rounds de combat selon la posture). Simplifiée : la passe d'armes, où chaque chevalier joue sa rencontre en un seul test opposé après l'ordre du commandant ; les opportunités se jouent en duel. Une bataille déjà commencée garde sa procédure.",
+        "traditional": "Traditionnelle (Livre du maître)",
+        "simple": "Simplifiée (passe d'armes)"
       }
     },
     "Tab": {
@@ -1811,7 +1817,161 @@
         "rounds": "Un événement facultatif par tour, avec son déclencheur, sa durée et ses effets ; tables d'événements aléatoires.",
         "outcome": "Ce que le scénario fixe d'avance ; ce qui reste vide se calcule avec le chapitre 6."
       },
-      "TriggerHint": "« Si l'Intensité réussit » : le conroi doit être sur le champ et le test d'Intensité du tour réussi (règle des batailles scénarisées)."
+      "TriggerHint": "« Si l'Intensité réussit » : le conroi doit être sur le champ et le test d'Intensité du tour réussi (règle des batailles scénarisées).",
+      "Simple": {
+        "Short": "Passe d'armes",
+        "Step": {
+          "order": "Ordre",
+          "choose": "Cartes et postures",
+          "pass": "Passes d'armes"
+        },
+        "Help": {
+          "order": "Tirez ou choisissez l'intention de l'ennemi (cachée aux joueurs). Le commandant teste sa Bataille pour la découvrir, puis donne son ordre.",
+          "orderPlayer": "Le commandant teste sa Bataille pour découvrir l'intention de l'ennemi, puis donne son ordre. Charger bat Tirer, Tenir bat Charger, Tirer bat Tenir ; Manœuvrer ne gagne rien mais dévoile l'intention au tour suivant.",
+          "choose": "Chaque chevalier prend une carte ouverte, une posture et la compétence de sa passe ; un renfort coûte du Moral au conroi. Le commandant engage quand tout le monde est prêt (sinon : première carte possible, posture Valeureux).",
+          "choosePlayer": "Prenez une carte ouverte, une posture et la compétence de votre passe. Un renfort donne un bonus à votre passe mais coûte du Moral au conroi.",
+          "pass": "Chaque chevalier lance sa passe d'armes : un test opposé contre la Valeur de sa carte, victimes et Danger appliqués d'office. Les opportunités se jouent en duel avec l'échange complet ; notez leurs adversaires vaincus. Puis « Fin des passes ».",
+          "passPlayer": "Lancez votre passe d'armes : un seul test opposé contre la Valeur de votre carte. Une opportunité se joue en duel avec le MJ."
+        },
+        "Order": {
+          "charge": "Charger",
+          "hold": "Tenir",
+          "shoot": "Tirer",
+          "maneuver": "Manœuvrer"
+        },
+        "OrderTip": {
+          "charge": "Bat Tirer, battu par Tenir. Les chevaliers passent avec leur Charge (plafonnée par l'Équitation).",
+          "hold": "Bat Charger, battu par Tirer.",
+          "shoot": "Bat Tenir, battu par Charger.",
+          "maneuver": "Ni bonus ni malus ; au tour suivant, l'intention de l'ennemi est connue sans test."
+        },
+        "TriangleHint": "Ordre gagnant : +5 à toutes les passes du tour ; ordre battu : −5.",
+        "Intention": "Intention de l'ennemi :",
+        "Hidden": "cachée",
+        "SetIntention": "Changer",
+        "IntentionGmHint": "Tirée au hasard ; vous pouvez la changer avant le test du commandant.",
+        "OrderTest": "Test de Bataille (ordre)",
+        "OrderResult": {
+          "critical": "Critique : l'intention de l'ennemi est percée à jour, le conroi gagne +5 et une opportunité s'ouvre.",
+          "success": "Réussite : l'intention de l'ennemi est connue.",
+          "failure": "Échec : l'ordre se donne à l'aveugle.",
+          "fumble": "Échec critique : l'ordre se donne à l'aveugle et l'ennemi impose la rencontre du conroi."
+        },
+        "OrderGiven": "Ordre du commandant",
+        "OrderLabel": "Ordre :",
+        "OpenCards": "Cartes ouvertes",
+        "OpenOpportunity": "Ouvrir une opportunité",
+        "ImposedTag": "imposée",
+        "TakenBy": "Prise par",
+        "Swap": "Échanger",
+        "SwapTip": "Le commandant écarte cette carte et en tire une autre du paquet, au prix d'un point de Moral.",
+        "Value": "Valeur",
+        "Danger": "Danger",
+        "Count": "Effectif",
+        "Melee": "Mêlée",
+        "DuelShort": "Se joue en duel (échange complet)",
+        "ChooseCard": "— carte —",
+        "Skill": "Compétence",
+        "Reinforce": "Renfort",
+        "ReinforceTip": "Un compagnon vient à la rescousse : +5 à votre passe, 2 points de Moral payés par le conroi à l'engagement.",
+        "PostureTip": {
+          "reckless": "+5 à la passe, victimes ×2, Danger +2D6 ; Moral +1D3 à la fin de la rencontre.",
+          "valorous": "Sans modificateur.",
+          "prudent": "−5 à la passe, victimes ÷2, Danger −2D6 ; Moral −1D3 à la fin de la rencontre.",
+          "cowardly": "Pas de passe : repli, −1 Honneur, perte de Moral si plus de la moitié des PV."
+        },
+        "ChooseHint": "Sans choix au moment de l'engagement : première carte possible, posture Valeureux, meilleure arme portée (la Charge si l'ordre est de charger).",
+        "Engaged": "Le conroi engage",
+        "Pass": "Passe d'armes",
+        "PassOf": "Passe d'armes de {name}",
+        "Passes": "passes d'armes",
+        "Duel": "Duel",
+        "Duels": "Duels des opportunités",
+        "DuelHint": "Posez l'adversaire et jouez le duel avec l'échange complet (onglet Combat) : un adversaire mis hors de combat est inscrit d'office. Sinon, notez les vaincus à la main.",
+        "ResetPass": "Rejouer la passe",
+        "ResetPassTip": "Retire les victimes de ce tour et permet de relancer la passe. Les dégâts se défont avec « Annuler » sur la carte de la passe.",
+        "MissingPasses": "Passes à jouer :",
+        "EndPasses": "Fin des passes",
+        "EndOfRound": "Fin du tour {round}",
+        "PassProfile": "Passe d'armes",
+        "PassProfileHint": "Bataille simplifiée : Valeur opposée au chevalier et Danger qu'il subit. Vides : d'après l'attaque de l'adversaire lié (sa Charge si le conroi charge, sinon sa meilleure attaque), plus le bonus de compétence de la carte.",
+        "Mod": {
+          "order": "Ordre",
+          "reinforced": "Renfort",
+          "inspiration": "Inspiration",
+          "condition": "Ivresse"
+        },
+        "Section": {
+          "Pass": "Passe",
+          "Result": "Issue",
+          "Danger": "Danger {formula} : {total}",
+          "Setback": "Revers"
+        },
+        "Outcome": {
+          "exploit": "Exploit ! Les adversaires plient devant le chevalier, sans qu'il soit touché.",
+          "victory": "Victoire : le chevalier taille sa part dans les rangs ennemis sans être touché.",
+          "rough": "Mêlée rude : quelques adversaires tombent, mais les coups pleuvent (le bouclier protège).",
+          "confused": "Mêlée confuse : personne ne prend l'avantage ; le conroi perd 1 point de Moral.",
+          "repulsed": "Repoussé : le chevalier encaisse sans abattre personne.",
+          "disaster": "Désastre : le chevalier encaisse et subit un revers."
+        },
+        "OutcomeShort": {
+          "exploit": "Exploit",
+          "victory": "Victoire",
+          "rough": "Mêlée rude",
+          "confused": "Mêlée confuse",
+          "repulsed": "Repoussé",
+          "disaster": "Désastre"
+        },
+        "Setback": {
+          "unhorsed": "{die} : {name} est désarçonné ou jeté à terre.",
+          "weapon": "{die} : {name} perd son arme.",
+          "horse": "{die} : la monture de {name} est blessée (au MJ de régler ses dégâts).",
+          "isolated": "{die} : {name} est coupé du conroi (−5 à ses passes jusqu'à ce que le MJ le remette avec les autres)."
+        },
+        "Line": {
+          "Knight": "{name} : {label} {value}{mods} — d20 {die}, {outcome}",
+          "Enemy": "{name} : Valeur {value}{attack} — d20 {die}, {outcome}",
+          "Victims": "Adversaires vaincus : {n} ({glory} Gloire){captured}",
+          "Captive": " — un prisonnier à rançon",
+          "Morale": "Moral du conroi {delta} → {morale}"
+        },
+        "Card": {
+          "Open": "Cartes ouvertes : {names}.",
+          "OrderTest": "Le commandant teste sa Bataille, puis donne son ordre.",
+          "FirstCharge": "Première charge : l'ordre est de charger, avec +5 d'office.",
+          "FirstChargeOrder": "Première charge ! Le conroi s'élance, lances couchées.",
+          "Maneuvered": "Grâce à la manœuvre du tour précédent, l'intention de l'ennemi est connue sans test.",
+          "Intention": "L'ennemi s'apprête à : {order}.",
+          "Opportunity": "Une opportunité s'ouvre : {name}.",
+          "Order": "Ordre : {order}. L'ennemi : {intention}.",
+          "Bonus": "Modificateur des passes du tour : {bonus}.",
+          "Choose": "Chacun choisit sa carte, sa posture et sa compétence sur la fiche de la bataille.",
+          "Imposed": "L'ennemi impose la rencontre : le MJ choisit la carte de tout le conroi.",
+          "Faces": "{name} — {card}, {posture}{reinforced}",
+          "FacesDuel": "{name} — {card} (duel), {posture}{reinforced}",
+          "Reinforced": ", avec renfort",
+          "MoraleSpent": "Moral : −{loss} à l'engagement, −{cost} de renforts → {morale}.",
+          "NoFighter": "Aucun chevalier ne peut engager : le conroi se replie."
+        },
+        "Log": {
+          "Mode": "Bataille simplifiée (passe d'armes).",
+          "Round": "Cartes ouvertes : {cards}.",
+          "OrderTest": "Test de Bataille du commandant : {outcome}.",
+          "Order": "Ordre : {order} contre {intention} ({bonus}).",
+          "Swap": "Carte échangée : {from} → {to} (−{cost} Moral).",
+          "Engage": "Engagement : −{loss} Moral, −{cost} de renforts, Moral {morale}.",
+          "NoFighter": "Aucune carte à la portée du Moral du conroi.",
+          "Pass": "{name} contre {card} : {outcome}, {n} vaincu(s).",
+          "Undone": "Passe de {name} annulée."
+        },
+        "Notify": {
+          "NoMorale": "Le conroi n'a pas assez de Moral.",
+          "NoSwap": "Plus aucune autre carte en vigueur dans le paquet.",
+          "ImposeFirst": "Choisissez d'abord la carte imposée par l'ennemi.",
+          "Duel": "Cette opportunité se joue en duel avec le MJ."
+        }
+      }
     },
     "Economy": {
       "Title": "Trésor et niveau de vie",

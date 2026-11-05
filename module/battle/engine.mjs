@@ -7,6 +7,7 @@ import { PDVF, SYSTEM_ID } from "../config.mjs";
 import * as R from "../rules/battle.mjs";
 import { rollPlain } from "../dice/tests.mjs";
 import { samePassion } from "../rules/resolution.mjs";
+import { SIMPLE_ACTIONS, beginRound, simplePostureChoices } from "./simple.mjs";
 
 const L = (k) => game.i18n.localize(k);
 const F = (k, d) => game.i18n.format(k, d);
@@ -53,7 +54,7 @@ export function perform(battle, action, payload, userId) {
 }
 
 async function run(battle, action, payload, userId) {
-  const def = ACTIONS[action];
+  const def = ACTIONS[action] ?? SIMPLE_ACTIONS[action];
   if (!def) return;
   const user = userId ? game.users.get(userId) : game.user;
   if (!user) return;
@@ -91,9 +92,10 @@ export function isCommanderUser(s, user) {
 }
 
 /** Carte de chat de la bataille (annonce, boutons pour les joueurs). */
-export async function announce(battle, { title, subtitle = "", text = "", lines = [], buttons = [], whisper = null }) {
+export async function announce(battle, { title, subtitle = "", text = "", lines = [], buttons = [], whisper = null, rolls = [] }) {
   const content = await foundry.applications.handlebars.renderTemplate(CARD, { title, subtitle, text, lines, buttons, battle: battle.uuid });
   const data = { speaker: { alias: battle.name }, content, flags: { [SYSTEM_ID]: { kind: "battle", battle: battle.uuid } } };
+  if (rolls.length) { data.rolls = rolls; data.sound = CONFIG.sounds.dice; }
   if (whisper) data.whisper = whisper;
   return ChatMessage.implementation.create(data);
 }
@@ -102,7 +104,7 @@ export async function announce(battle, { title, subtitle = "", text = "", lines 
 /*  Outils                                       */
 /* -------------------------------------------- */
 
-async function rollFormula(formula, flavor, battle) {
+export async function rollFormula(formula, flavor, battle) {
   const roll = new Roll(String(formula).replace(/D/g, "d"));
   await roll.evaluate();
   if (flavor) await roll.toMessage({ speaker: { alias: battle.name }, flavor });
@@ -148,11 +150,13 @@ export function candidates(sys) {
   return [...ids];
 }
 
-function resetRound(sys) {
-  for (const k of sys.knights) Object.assign(k, { posture: "", pendingMorale: "", battleRoll: "", proposal: "", squire: "" });
+export function resetRound(sys) {
+  for (const k of sys.knights) Object.assign(k, { posture: "", pendingMorale: "", battleRoll: "", proposal: "", squire: "",
+    card: "", weapon: "", reinforced: false, pass: "" });
   Object.assign(sys.state, {
     defaultId: "", selectedId: "", charge: "", chargeOutcome: "", intensityOutcome: "", doubled: false,
-    moraleLoss: null, rangedRounds: null, counterCharge: "", immune: false, imposed: false
+    moraleLoss: null, rangedRounds: null, counterCharge: "", immune: false, imposed: false,
+    intention: "", intentionSeen: false, orderOutcome: "", order: "", orderBonus: 0, open: []
   });
 }
 
@@ -229,7 +233,8 @@ const ACTIONS = {
     if (cfg.sizes[sys.size]?.armyTests && !sys.allied.outcome) await armyTests(ctx);
     if (!cfg.sizes[sys.size]?.armyTests) Object.assign(sys.state, R.armyTestEffects(null, null, sys.firstCharge));
     resetRound(sys);
-    Object.assign(sys.state, { phase: "active", round: 1, step: "define", position: "field", engagedLast: false });
+    const mode = game.settings.get(SYSTEM_ID, "battleMode") === "simple" ? "simple" : "traditional";
+    Object.assign(sys.state, { phase: "active", round: 1, step: "define", position: "field", engagedLast: false, mode, lastOrder: "", lastIntention: "" });
     for (const k of sys.knights) {
       Object.assign(k, { participated: false, kills: [], invoked: "", invokedTarget: "", invokedRound: 0, squireLost: false });
       // Arrivée différée : le chevalier rejoint le champ au tour indiqué.
@@ -239,6 +244,7 @@ const ACTIONS = {
     const intensity = R.effectiveIntensity(sys.intensity, sys.tournament, cfg);
     const rounds = R.maxRounds(sys.size, sys.rounds, cfg);
     ctx.log(F("PDVF.Battle.Log.Start", { intensity, rounds, morale: sys.conroi.morale }));
+    if (mode === "simple") ctx.log(L("PDVF.Battle.Simple.Log.Mode"));
     ctx.chat.push({
       title: battle.name, subtitle: L("PDVF.Battle.Begins"), text: sys.intro,
       lines: [
@@ -248,6 +254,7 @@ const ACTIONS = {
       ],
       buttons: [{ action: "open", label: L("PDVF.Battle.OpenSheet") }]
     });
+    if (mode === "simple") await beginRound(ctx);
     showToPlayers(battle);
   } },
 
@@ -278,12 +285,13 @@ const ACTIONS = {
     sys.conroi.morale = R.clampMorale(sys.conroi.morale + gain, sys.conroi.moraleStart);
     sys.state.engagedLast = false;
     ctx.log(F("PDVF.Battle.Log.StayRear", { gain, morale: sys.conroi.morale }));
-    advance(ctx);
+    await advance(ctx);
   } },
   returnField: { who: "commander", fn: async (ctx) => {
     ctx.sys.state.position = "field";
     for (const k of ctx.sys.knights) if (k.status === "rear") k.status = "field";
     ctx.log(L("PDVF.Battle.Log.Return"));
+    if (ctx.sys.state.mode === "simple" && ctx.sys.state.step === "order") await beginRound(ctx);
   } },
   chargeTest: { who: "commander", fn: async (ctx, { outcome }) => {
     const { sys } = ctx;
@@ -399,8 +407,13 @@ const ACTIONS = {
     const st = sys.state;
     const k = sys.knights[Number(index)];
     const enc = findEncounter(sys, st.selectedId);
-    if (!k || st.step !== "posture" || k.status !== "field" || k.posture === "cowardly") return false;
-    if (!R.postureChoices({ firstCharge: st.charge === "first", forbidPrudent: enc?.forbidPrudent }).includes(posture)) return false;
+    if (!k || k.status !== "field" || k.posture === "cowardly") return false;
+    if (st.mode === "simple") {
+      if (st.step !== "choose" || !simplePostureChoices(sys, k).includes(posture)) return false;
+    } else {
+      if (st.step !== "posture") return false;
+      if (!R.postureChoices({ firstCharge: st.charge === "first", forbidPrudent: enc?.forbidPrudent }).includes(posture)) return false;
+    }
     const cfg = C().postures[posture];
     const actor = knightActor(k);
     k.posture = posture;
@@ -448,8 +461,9 @@ const ACTIONS = {
   } },
   addKill: { who: "gm", fn: async ({ sys }, { index, captured = false }) => {
     const k = sys.knights[Number(index)];
-    const enc = findEncounter(sys, sys.state.selectedId);
-    if (!k || !enc || sys.state.step !== "resolve") return false;
+    const simple = sys.state.mode === "simple";
+    const enc = findEncounter(sys, simple ? k?.card : sys.state.selectedId);
+    if (!k || !enc || sys.state.step !== (simple ? "pass" : "resolve")) return false;
     k.kills.push({ name: enc.name, kv: enc.kv, glory: R.opponentGlory(enc.glory, sys.tournament, C()), captured: !!captured,
       round: sys.state.round, ransom: captured ? enc.ransom : "" });
   } },
@@ -518,7 +532,7 @@ const ACTIONS = {
   } },
   reopen: { who: "gm", fn: async ({ sys }) => {
     if (sys.result.applied) return false;
-    Object.assign(sys.state, { phase: "active", step: sys.state.round > R.maxRounds(sys.size, sys.rounds, C()) ? "over" : "define" });
+    Object.assign(sys.state, { phase: "active", step: sys.state.round > R.maxRounds(sys.size, sys.rounds, C()) ? "over" : (sys.state.mode === "simple" ? "order" : "define") });
   } },
   lossesTest: { who: "commander", fn: async ({ sys }, { outcome }) => {
     const l = R.conroiLosses(outcome, sys.conroi.npcKnights, C());
@@ -610,7 +624,7 @@ async function armyTests(ctx) {
 }
 
 /** Repli vers les lignes arrière : +1D6 de Moral, le tour se termine sans test d'Écuyer. */
-async function retreatNow(ctx, text) {
+export async function retreatNow(ctx, text) {
   const { sys, battle } = ctx;
   const gain = await rollFormula(C().rearMorale, L("PDVF.Battle.RearMorale"), battle);
   sys.conroi.morale = R.clampMorale(sys.conroi.morale + gain, sys.conroi.moraleStart);
@@ -621,7 +635,7 @@ async function retreatNow(ctx, text) {
 }
 
 /** Fin du tour de bataille : fin des passions invoquées pour ce tour, puis tour suivant ou fin. */
-async function advance(ctx) {
+export async function advance(ctx) {
   const { sys } = ctx;
   const st = sys.state;
   for (const k of sys.knights) {
@@ -631,6 +645,8 @@ async function advance(ctx) {
     if (i) await actor.endInspiration(i.index);
   }
   if (st.step !== "squire") st.engagedLast = false;
+  st.lastOrder = st.order;
+  st.lastIntention = st.intention;
   resetRound(sys);
   // Le prisonnier escorté, ou le chevalier qui s'est dérobé seul, rejoint le conroi au tour suivant.
   for (const k of sys.knights) {
@@ -647,7 +663,8 @@ async function advance(ctx) {
     st.round -= 1;
     st.step = "over";
     ctx.chat.push({ title: ctx.battle.name, text: L("PDVF.Battle.Card.Over") });
-  } else st.step = "define";
+  } else if (st.mode === "simple") await beginRound(ctx);
+  else st.step = "define";
 }
 
 async function applyResults(ctx) {

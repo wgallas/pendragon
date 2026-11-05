@@ -13,10 +13,10 @@ const F = (k, d) => game.i18n.format(k, d);
 const { DialogV2 } = foundry.applications.api;
 
 /** Le chevalier de la bataille que cet utilisateur joue (choix s'il en a plusieurs). */
-export async function pickKnight(battle, { field = true } = {}) {
+export async function pickKnight(battle, { field = true, filter = null } = {}) {
   const s = battle.system;
   const mine = s.knights.map((k, index) => ({ ...k, index, actor: knightActor(k) }))
-    .filter(k => k.actor && (game.user.isGM || k.actor.isOwner) && (!field || k.status === "field"));
+    .filter(k => k.actor && (game.user.isGM || k.actor.isOwner) && (filter ? filter(k) : (!field || k.status === "field")));
   if (!mine.length) { ui.notifications.warn(L("PDVF.Battle.Notify.NoKnightHere")); return null; }
   if (mine.length === 1) return mine[0].index;
   const content = `<div class="form-group"><label>${L("PDVF.Battle.Knight")}</label><select name="index">${mine.map(k => `<option value="${k.index}">${foundry.utils.escapeHTML(k.actor.name)}</option>`).join("")}</select></div>`;
@@ -100,10 +100,44 @@ export async function commanderTest(battle, purpose) {
   if (outcome) return request(battle, purpose, { outcome });
 }
 
+/**
+ * Bataille simplifiée : test de Bataille du commandant avant l'ordre (voir l'intention de l'ennemi).
+ * Malus du premier tour (échec critique du commandant allié) et du chevalier seul, comme au livre.
+ */
+export async function orderTest(battle) {
+  const s = battle.system;
+  if (s.state.mode !== "simple" || s.state.step !== "order" || s.state.orderOutcome || s.state.order) return ui.notifications.warn(L("PDVF.Battle.Notify.NotNow"));
+  const verdict = (o) => ({ text: L(`PDVF.Battle.Simple.OrderResult.${o}`), cls: R.isSuccess(o) ? "victory" : "defeat" });
+  const title = L("PDVF.Battle.Simple.OrderTest");
+  const cmd = s.knights.find(k => k.uuid === s.conroi.commander);
+  const actor = s.conroi.commander ? fromUuidSync(s.conroi.commander) : null;
+  const modifier = battleModifier(s, cmd);
+  let outcome;
+  if (actor) {
+    if (!game.user.isGM && !actor.isOwner) return ui.notifications.warn(L("PDVF.Battle.Notify.CommanderOnly"));
+    outcome = outcomeOf(await rollAttribute(actor, "skill.battle", { modifier, title, subtitle: battle.name, verdict }));
+  } else {
+    if (!game.user.isGM && s.conroi.commanderPlayer !== game.user.id) return ui.notifications.warn(L("PDVF.Battle.Notify.CommanderOnly"));
+    if (s.conroi.commanderBattle === null) return ui.notifications.warn(L("PDVF.Battle.Notify.CommanderSkill"));
+    outcome = (await rollPlain({ name: s.conroi.commanderName || L("PDVF.Battle.Commander"), label: L("PDVF.Skill.battle"),
+      value: s.conroi.commanderBattle, modifier, title, subtitle: battle.name, alias: battle.name, verdict })).outcome;
+  }
+  if (outcome) return request(battle, "orderTest", { outcome });
+}
+
+/** Bataille simplifiée : la passe d'armes d'un chevalier (les dés sont lancés par le MJ, une seule carte). */
+export async function pass(battle, index) {
+  const s = battle.system;
+  const k = s.knights[index];
+  if (s.state.mode !== "simple" || s.state.step !== "pass") return ui.notifications.warn(L("PDVF.Battle.Notify.NotNow"));
+  if (!k?.participated || k.pass) return ui.notifications.info(L(k?.pass === "duel" ? "PDVF.Battle.Simple.Notify.Duel" : "PDVF.Battle.Notify.AlreadyRolled"));
+  return request(battle, "pass", { index });
+}
+
 /** Posture d'un chevalier. */
 export async function setPosture(battle, index, posture) {
   const s = battle.system;
-  if (s.state.step !== "posture") return ui.notifications.warn(L("PDVF.Battle.Notify.NotNow"));
+  if (s.state.step !== (s.state.mode === "simple" ? "choose" : "posture")) return ui.notifications.warn(L("PDVF.Battle.Notify.NotNow"));
   if (posture === "cowardly") {
     const ok = await DialogV2.confirm({ window: { title: L("PDVF.Battle.Posture.cowardly") }, content: `<p>${L("PDVF.Battle.CowardConfirm")}</p>`, classes: [SYSTEM_ID, "pdvf-dialog"] });
     if (!ok) return;
@@ -191,11 +225,14 @@ export function onRenderChatMessage(message, html) {
       const action = button.dataset.pdvfBattle;
       if (action === "open") return battle.sheet.render(true);
       if (action === "chargeTest") return commanderTest(battle, "chargeTest");
-      const index = await pickKnight(battle, { field: action !== "squireTest" });
+      if (action === "orderTest") return orderTest(battle);
+      const passing = (k) => k.participated && !k.pass && ["field", "alone"].includes(k.status);
+      const index = await pickKnight(battle, action === "pass" ? { filter: passing } : { field: action !== "squireTest" });
       if (index === null) return;
       if (action === "battleTest") return battleTest(battle, index);
       if (action === "posture") return setPosture(battle, index, button.dataset.value);
       if (action === "squireTest") return squireTest(battle, index);
+      if (action === "pass") return pass(battle, index);
     });
   }
 }

@@ -11,6 +11,7 @@
           {{#if system.year}}{{system.year}} · {{/if}}{{#if system.place}}{{system.place}} · {{/if}}{{sizeLabel}}{{#if system.tournament}} · {{localize "PDVF.Battle.Tournament"}}{{/if}}
           · {{localize "PDVF.Battle.Intensity"}} {{intensityLabel}}
           {{#unless isPrep}} · {{localize "PDVF.Battle.Round"}} {{round}} / {{maxRounds}} · {{positionLabel}}{{/unless}}
+          {{#if simple}} · {{localize "PDVF.Battle.Simple.Short"}}{{/if}}
         </div>
       </div>
       <div class="pdvf-banner-morale" aria-label="{{localize 'PDVF.Battle.Morale'}}">
@@ -51,6 +52,9 @@
     <div class="pdvf-battle-event">{{#each roundEvents}}<p><i class="fa-solid fa-scroll"></i> {{#if title}}<strong>{{title}}</strong> — {{/if}}{{text}}</p>{{#if @root.isGM}}{{#if gmNote}}<p class="pdvf-hint">{{gmNote}}</p>{{/if}}{{/if}}{{/each}}</div>
     {{/if}}
 
+    {{#if simple}}
+    {{> "systems/pendragon-vf/templates/item/bataille/simple.hbs"}}
+    {{else}}
     <section class="pdvf-step-panel">
       {{#if stepHelp}}<p class="pdvf-step-help">{{stepHelp}}</p>{{/if}}
 
@@ -227,6 +231,7 @@
       </div>
       {{/if}}{{/if}}
     </section>
+    {{/if}}
 
     {{#if isActive}}{{#if isCommander}}
     <div class="pdvf-battle-orders">

@@ -26,6 +26,9 @@ export function encounterFields() {
     noCharge: bool(),
     forbidPrudent: bool(),
     ransom: new fields.StringField({ initial: "" }),
+    // Bataille simplifiée : Valeur et Danger de la passe (vides : d'après l'adversaire lié)
+    passValue: new fields.NumberField({ required: true, nullable: true, integer: true, initial: null, min: 0 }),
+    passDanger: new fields.StringField({ initial: "" }),
     armies: new fields.ArrayField(new fields.StringField())
   };
 }

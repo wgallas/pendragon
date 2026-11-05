@@ -61,6 +61,7 @@ export class RencontreSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     delete data.armies;
     if (armies) foundry.utils.setProperty(data, "system.armies", Object.entries(armies).filter(([, v]) => v).map(([id]) => id));
     if (foundry.utils.getProperty(data, "system.fixedCount") === 0) foundry.utils.setProperty(data, "system.fixedCount", null);
+    if (foundry.utils.getProperty(data, "system.passValue") === "") foundry.utils.setProperty(data, "system.passValue", null);
     return data;
   }
 

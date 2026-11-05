@@ -35,10 +35,10 @@ async function worldActorFor(uuid) {
 }
 
 /** Pose les ennemis de la rencontre retenue, en rangées au centre de la vue. */
-export async function placeEnemies(battle) {
+export async function placeEnemies(battle, id = null) {
   if (!game.user.isGM) return;
   const s = battle.system;
-  const enc = findEncounter(s, s.state.selectedId);
+  const enc = findEncounter(s, id || s.state.selectedId);
   if (!enc) return ui.notifications.warn(L("PDVF.Battle.Notify.NoEncounter"));
   if (!enc.npc) return ui.notifications.warn(F("PDVF.Battle.Notify.NoNpc", { name: enc.name }));
   // Les ennemis sont posés sur la scène de la bataille (affichée chez le MJ au besoin).
@@ -47,7 +47,9 @@ export async function placeEnemies(battle) {
   const actor = await worldActorFor(enc.npc);
   if (!actor) return ui.notifications.warn(F("PDVF.Battle.Notify.NoNpc", { name: enc.name }));
 
-  const count = enemyCount(enc, onField(s).length, s.state.doubled);
+  // Passe d'armes : les adversaires de cette carte, pour les chevaliers qui l'ont prise.
+  const facing = s.state.mode === "simple" ? s.knights.filter(k => k.card === enc.id && k.participated).length : onField(s).length;
+  const count = enemyCount(enc, facing, s.state.mode !== "simple" && s.state.doubled);
   const proto = await actor.getTokenDocument();
   const w = Math.max(1, proto.width ?? 1);
   const h = Math.max(1, proto.height ?? 1);

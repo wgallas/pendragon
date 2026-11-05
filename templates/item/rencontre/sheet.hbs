@@ -22,6 +22,13 @@
       <label class="pdvf-field wide"><span>{{localize "PDVF.Battle.Ransom"}}</span><input type="text" name="system.ransom" value="{{system.ransom}}"></label>
     </div>
 
+    <h3 class="pdvf-h3">{{localize "PDVF.Battle.Simple.PassProfile"}}</h3>
+    <p class="pdvf-hint">{{localize "PDVF.Battle.Simple.PassProfileHint"}}</p>
+    <div class="pdvf-battle-grid four">
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.Simple.Value"}}</span><input type="number" name="system.passValue" value="{{system.passValue}}" step="1" min="0" placeholder="—"></label>
+      <label class="pdvf-field"><span>{{localize "PDVF.Battle.Simple.Danger"}}</span><input type="text" name="system.passDanger" value="{{system.passDanger}}" placeholder="—"></label>
+    </div>
+
     <h3 class="pdvf-h3">{{localize "PDVF.Battle.Adversary"}}</h3>
     <div class="pdvf-drop-zone">
       {{#if system.npc}}

@@ -1,0 +1,146 @@
+<div class="pdvf-duel phase-{{phase}}">
+  <header class="pdvf-duel-head">
+    <div class="pdvf-duel-title">{{a.name}} <span class="pdvf-duel-vs">{{localize "PDVF.Duel.Versus"}}</span> {{b.name}}</div>
+    <div class="pdvf-duel-line">{{stakesLabel}}{{#if passe}} · {{localize "PDVF.Duel.Passe"}} {{passe}}{{/if}} · {{phaseLabel}}</div>
+  </header>
+
+  <div class="pdvf-duel-body">
+  {{#if is.challenge}}
+    {{#if canAccept}}
+    <section class="pdvf-duel-section" data-group="accept">
+      <p>{{localize "PDVF.Duel.Challenged"}}</p>
+      <label class="pdvf-inline">{{localize "PDVF.Duel.Weapon"}}
+        <select name="weapon">{{#each acceptWeapons}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+      <div class="pdvf-step-actions">
+        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="accept"><i class="fa-solid fa-check"></i> {{localize "PDVF.Duel.Accept"}}</button>
+        <button type="button" class="pdvf-btn" data-action="duelOp" data-op="decline">{{localize "PDVF.Duel.Decline"}}</button>
+      </div>
+    </section>
+    {{else}}<p class="pdvf-empty">{{localize "PDVF.Duel.WaitingAnswer"}}</p>{{/if}}
+  {{/if}}
+
+  {{#if is.mounted}}
+    <section class="pdvf-duel-section">
+      <p>{{localize "PDVF.Duel.Line.Mounted"}}</p>
+      <div class="pdvf-step-actions"><button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="dismount"><i class="fa-solid fa-person-arrow-down-to-line"></i> {{localize "PDVF.Duel.Dismount"}}</button></div>
+    </section>
+  {{/if}}
+
+  {{#if firstLabel}}<p class="pdvf-duel-order"><i class="fa-solid fa-eye"></i> {{firstLabel}}</p>{{/if}}
+
+  {{#if winner}}
+    <section class="pdvf-duel-section pdvf-duel-winner">
+      <p><strong>{{winner.name}}</strong> — {{localize "PDVF.Duel.WinsWith"}} {{winner.intent}}.</p>
+      {{#if winner.mine}}
+      <div class="pdvf-step-actions">
+        {{#if winner.isClose}}
+        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="strike">{{localize "PDVF.Duel.Close.strike"}}</button>
+        <button type="button" class="pdvf-btn" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="disarm">{{localize "PDVF.Duel.Close.disarm"}}</button>
+        <button type="button" class="pdvf-btn" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="knockdown">{{localize "PDVF.Duel.Close.knockdown"}}</button>
+        {{else}}
+        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="effect" data-side="{{winner.side}}">{{winner.effectLabel}}</button>
+        {{/if}}
+      </div>
+      <div class="pdvf-step-actions" data-group="gesture">
+        <span>{{localize "PDVF.Duel.OrGesture"}}</span>
+        <select name="trait" aria-label="{{localize 'PDVF.Duel.ProvokeTrait'}}">{{#each winner.traits}}<option value="{{value}}">{{label}}</option>{{/each}}</select>
+        <button type="button" class="pdvf-btn" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-gesture="provoke" data-tooltip="{{localize 'PDVF.Duel.ProvokeTip'}}"><i class="fa-solid fa-comment-dots"></i> {{localize "PDVF.Duel.Provoke"}}</button>
+      </div>
+      {{else}}<p class="pdvf-hint">{{localize "PDVF.Duel.WinnerDecides"}}</p>{{/if}}
+    </section>
+  {{/if}}
+
+  {{#if surrender}}
+    <section class="pdvf-duel-section">
+      <p>{{#if surrender.honorable}}{{localize "PDVF.Duel.SurrenderHonorable"}}{{else}}{{localize "PDVF.Duel.SurrenderEarly"}}{{/if}} — <strong>{{surrender.name}}</strong></p>
+      {{#if surrender.mine}}
+      <div class="pdvf-step-actions">
+        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="answer" data-side="{{surrender.side}}" data-accept="true">{{localize "PDVF.Duel.AcceptSurrender"}}</button>
+        <button type="button" class="pdvf-btn" data-action="duelOp" data-op="answer" data-side="{{surrender.side}}" data-accept="false">{{localize "PDVF.Duel.RefuseSurrender"}}</button>
+      </div>
+      {{/if}}
+    </section>
+  {{/if}}
+
+  {{#if aftermath}}
+    <section class="pdvf-duel-section">
+      <p>{{localize "PDVF.Duel.Line.Aftermath"}}</p>
+      {{#if aftermath.mine}}
+      <div class="pdvf-step-actions">
+        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="fate" data-side="{{aftermath.side}}" data-spare="true"><i class="fa-solid fa-dove"></i> {{localize "PDVF.Duel.Spare"}}</button>
+        <button type="button" class="pdvf-btn" data-action="duelOp" data-op="fate" data-side="{{aftermath.side}}" data-spare="false"><i class="fa-solid fa-skull"></i> {{localize "PDVF.Duel.Finish"}}</button>
+      </div>
+      {{/if}}
+    </section>
+  {{/if}}
+
+  {{#if result}}<section class="pdvf-duel-section pdvf-duel-result"><p><strong>{{result.text}}</strong>{{#if result.glory}} · {{localize "PDVF.Glory"}} +{{result.glory}}{{/if}}</p></section>{{/if}}
+
+  {{#unless is.challenge}}
+  <div class="pdvf-duel-sides">
+    {{> duelSide a}}
+    {{> duelSide b}}
+  </div>
+  {{/unless}}
+
+  {{#if log.length}}
+  <section class="pdvf-duel-section">
+    <h4 class="pdvf-h4">{{localize "PDVF.Duel.LogTitle"}}</h4>
+    <ul class="pdvf-battle-log">{{#each log}}<li>{{#if passe}}{{localize "PDVF.Duel.Passe"}} {{passe}} — {{/if}}{{text}}</li>{{/each}}</ul>
+  </section>
+  {{/if}}
+
+  {{#if isGM}}{{#unless is.over}}
+  <div class="pdvf-step-actions pdvf-next"><button type="button" class="pdvf-btn" data-action="duelOp" data-op="stop" data-reason="abandoned">{{localize "PDVF.Duel.Stop"}}</button></div>
+  {{/unless}}{{/if}}
+  </div>
+</div>
+
+{{#*inline "duelSide"}}
+<section class="pdvf-duel-side {{#if mine}}mine{{/if}}">
+  <header class="pdvf-duel-side-head">
+    <img src="{{img}}" alt="" class="pdvf-mini-portrait">
+    <div>
+      <div class="pdvf-duel-name">{{name}}</div>
+      <div class="pdvf-hint-inline">{{localize "PDVF.Health.hp"}} {{hp}}{{#if half}} · {{localize "PDVF.Duel.Half"}}{{/if}}</div>
+    </div>
+  </header>
+  {{#if states.length}}<div class="pdvf-duel-states">{{#each states}}<span class="pdvf-tag">{{this}}</span>{{/each}}</div>{{/if}}
+  <div class="pdvf-duel-weapon">{{localize "PDVF.Duel.Weapon"}} :
+    {{#if canWeapon}}<select data-duel-weapon data-side="{{key}}">{{#each weaponChoices}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+    {{else}}{{weaponName}}{{/if}}</div>
+
+  {{#if mine}}
+  <h4 class="pdvf-h4">{{localize "PDVF.Duel.MyCards"}}</h4>
+  <div class="pdvf-duel-cards">
+    {{#each cards}}
+    <button type="button" class="pdvf-duel-card-btn intent-{{id}} {{#if chosen}}chosen{{/if}} {{#if forbidden}}forbidden{{/if}} {{#if exposed}}exposed{{/if}}"
+      data-action="duelOp" data-op="choose" data-side="{{../key}}" data-intent="{{id}}" {{#unless canPick}}disabled{{/unless}} data-tooltip="{{tip}}">
+      <span class="pdvf-duel-card-name">{{label}}</span>
+      {{#if exposed}}<span class="pdvf-duel-card-flag" data-tooltip="{{localize 'PDVF.Duel.ExposedTip'}}"><i class="fa-solid fa-eye"></i></span>{{/if}}
+      {{#if forced}}<span class="pdvf-duel-card-flag"><i class="fa-solid fa-lock"></i></span>{{/if}}
+    </button>
+    {{/each}}
+  </div>
+  {{#if choiceLabel}}<p>{{localize "PDVF.Duel.YouChose"}} <strong>{{choiceLabel}}</strong></p>{{/if}}
+  {{#if waitingFirst}}<p class="pdvf-hint">{{localize "PDVF.Duel.WaitFirst"}}</p>{{/if}}
+  <div class="pdvf-step-actions">
+    {{#if canRest}}<button type="button" class="pdvf-btn pdvf-mini" data-action="duelOp" data-op="choose" data-side="{{key}}" data-mode="rest" data-tooltip="{{localize 'PDVF.Duel.RestTip'}}"><i class="fa-solid fa-wind"></i> {{localize "PDVF.Duel.Rest"}}</button>{{/if}}
+    {{#if canRearm}}<button type="button" class="pdvf-btn pdvf-mini" data-action="duelOp" data-op="choose" data-side="{{key}}" data-mode="rearm" data-tooltip="{{localize 'PDVF.Duel.RearmTip'}}"><i class="fa-solid fa-hand"></i> {{localize "PDVF.Duel.Rearm"}}</button>{{/if}}
+    {{#if canInvoke}}<button type="button" class="pdvf-btn pdvf-mini" data-action="duelInvoke" data-side="{{key}}"><i class="fa-solid fa-fire"></i> {{localize "PDVF.Battle.Invoke"}}</button>{{/if}}
+    {{#if canFalseMercy}}<button type="button" class="pdvf-btn pdvf-mini" data-action="duelOp" data-op="falseMercy" data-side="{{key}}" data-tooltip="{{localize 'PDVF.Duel.FalseMercyTip'}}"><i class="fa-solid fa-mask"></i> {{localize "PDVF.Duel.FalseMercy"}}</button>{{/if}}
+    {{#if canSurrender}}<button type="button" class="pdvf-btn pdvf-mini" data-action="duelOp" data-op="surrender" data-side="{{key}}"><i class="fa-solid fa-flag"></i> {{localize "PDVF.Duel.Surrender"}}</button>{{/if}}
+  </div>
+  {{else}}
+  {{#if choiceLabel}}<p class="pdvf-hint">{{choiceLabel}}</p>{{/if}}
+  {{/if}}
+
+  {{#if mine}}
+  <h4 class="pdvf-h4">{{localize "PDVF.Duel.TheirCards"}} ({{seeCount}})</h4>
+  <div class="pdvf-duel-cards seen">
+    {{#each seen}}<span class="pdvf-duel-card-seen {{#if up}}up{{/if}}" data-tooltip="{{#if up}}{{localize 'PDVF.Duel.SeenTip'}}{{else}}{{localize 'PDVF.Duel.HiddenTip'}}{{/if}}">{{#if up}}<i class="fa-solid fa-eye"></i>{{else}}<i class="fa-solid fa-eye-slash"></i>{{/if}} {{label}}</span>{{/each}}
+  </div>
+  {{#if opponentPlay}}<p class="pdvf-duel-opponent"><i class="fa-solid fa-chess-knight"></i> {{opponentPlay}}</p>{{/if}}
+  {{/if}}
+</section>
+{{/inline}}

@@ -276,6 +276,8 @@ export async function engage(actor, { weapon = null, token = null, modifier = 0,
   if (target.actor === actor || target.actor.uuid === actor.uuid) return ui.notifications.warn(L("PDVF.Combat.Notify.SelfTarget"));
   const decl = await declare(actor, { preset: weapon, opponentName: target.name, opponent: target.actor, modifier, invoke });
   if (!decl) return null;
+  // Un tiers qui engage un duelliste rompt le défi.
+  game.pendragon?.duel?.engine?.requestBreak?.(actor.uuid, target.actor.uuid);
   decl.inspiration = await preparePassions(actor, decl);
   const a = actorTokenRef(actor, token);
   const b = { actor: target.actor.uuid, token: target.document.uuid, name: target.name, img: target.actor.img };

@@ -686,6 +686,33 @@ PDVF.battle = {
 };
 
 /* -------------------------------------------- */
+/*  Duel stratégique (variante du système)       */
+/* -------------------------------------------- */
+
+PDVF.duel = {
+  /** Modificateur de l'intention prise par celle de l'adversaire. */
+  cyclePenalty: -5,
+  /** Cartes de l'adversaire retournées par la lecture (critique, réussite gagnante, réussite qui perd). */
+  readingCards: { critical: 3, win: 2, partial: 1 },
+  /** Lier gagné : cartes vues à la passe suivante (lecture remportée d'office). */
+  bindCards: 2,
+  /** Souffle : tests d'Énergique à partir de cette passe ; malus par échec (cumulatif). */
+  breathFrom: 4,
+  breathPenalty: -5,
+  /** Rancune : bonus contre celui qui a blessé le chevalier. */
+  grudgeBonus: 5,
+  /** Peur : malus pour tout le duel ; adversaire redoutable (créature, ou Gloire double et 1000 de plus). */
+  fearPenalty: -5,
+  /** Trait célèbre qui contraint le choix d'une intention. */
+  famousAt: 16,
+  /** Enjeux : « pour l'amour » (Gloire ÷10) sauf à outrance ; armes émoussées : dégâts ÷2. */
+  stakes: ["outrance", "firstBlood", "firstFall", "blunted"],
+  loveStakes: ["firstBlood", "firstFall", "blunted"],
+  /** Fausse merci et achèvement d'un chevalier rendu : perte d'Honneur. */
+  dishonor: 1
+};
+
+/* -------------------------------------------- */
 /*  Phase d'hiver (Livre du joueur, chap. 14)   */
 /* -------------------------------------------- */
 

@@ -3,6 +3,7 @@ import { formatValue } from "../rules/resolution.mjs";
 import { rollAttribute, promptTestOptions, rollDamage, signed } from "../dice/tests.mjs";
 import { convertNpcToKnight } from "../documents/followers.mjs";
 import { engage } from "../combat/exchange.mjs";
+import { challenge, duelsEnabled } from "../duel/client.mjs";
 import * as CD from "../combat/dialogs.mjs";
 import { promptHazard } from "../combat/hazards.mjs";
 
@@ -39,6 +40,7 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       openMaster: PnjSheet.#onOpenMaster,
       squireAge: PnjSheet.#onSquireAge,
       engage: PnjSheet.#onEngage,
+      duel: PnjSheet.#onDuel,
       combatDamage: PnjSheet.#onCombatDamage,
       combatHazard: PnjSheet.#onCombatHazard,
       combatMount: PnjSheet.#onCombatMount,
@@ -60,6 +62,7 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const actor = this.document;
+    context.duelsEnabled = duelsEnabled();
     const s = actor.system;
     const editMode = this._editMode && this.isEditable;
     const hp = s.health.hp;
@@ -241,6 +244,8 @@ export class PnjSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const ref = target.dataset.index !== undefined ? `attack:${target.dataset.index}` : null;
     return engage(this.document, { weapon: ref, token: this.token ?? null });
   }
+  /** Défier en duel le jeton ciblé (duel stratégique, à pied). */
+  static #onDuel() { return challenge(this.document, { token: this.token ?? null }); }
   static #onCombatDamage() { return CD.promptDamage(this.document); }
   static #onCombatHazard() { return promptHazard(this.document); }
   static #onCombatMount() { return CD.toggleMounted(this.document); }

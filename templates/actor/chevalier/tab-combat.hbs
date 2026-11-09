@@ -116,6 +116,7 @@
         <span class="pdvf-derived-value">{{system.derived.brawlDamage}}</span>
       </div>
       <button type="button" class="pdvf-choose pdvf-engage-main" data-action="engage" data-tooltip="{{localize 'PDVF.Combat.EngageTip'}}"><i class="fa-solid fa-swords" aria-hidden="true"></i> {{localize "PDVF.Combat.EngageTarget"}}</button>
+      {{#if duelsEnabled}}<button type="button" class="pdvf-choose pdvf-engage-main pdvf-duel-main" data-action="duel" data-tooltip="{{localize 'PDVF.Duel.ChallengeTip'}}"><i class="fa-solid fa-hand-fist" aria-hidden="true"></i> {{localize "PDVF.Duel.Challenge"}}</button>{{/if}}
     </section>
 
     <section class="pdvf-gear-section">

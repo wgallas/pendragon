@@ -14,6 +14,7 @@ import { gearView, attackNotes } from "./gear-view.mjs";
 import { attackProfiles, conflictsWith } from "../rules/equipment.mjs";
 import { giveStartingEquipment, hasGear, GEAR_TYPES } from "../documents/equipment.mjs";
 import { engage } from "../combat/exchange.mjs";
+import { challenge, duelsEnabled } from "../duel/client.mjs";
 import * as CD from "../combat/dialogs.mjs";
 import { promptHazard } from "../combat/hazards.mjs";
 import { domainsOf, domainGlory, domainIncome, newDomainData } from "../documents/domains.mjs";
@@ -95,6 +96,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       gearDelete: ChevalierSheet.#onGearDelete,
       startingGear: ChevalierSheet.#onStartingGear,
       engage: ChevalierSheet.#onEngage,
+      duel: ChevalierSheet.#onDuel,
       combatDamage: ChevalierSheet.#onCombatDamage,
       combatHazard: ChevalierSheet.#onCombatHazard,
       combatWeek: ChevalierSheet.#onCombatWeek,
@@ -138,6 +140,7 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const actor = this.document;
+    context.duelsEnabled = duelsEnabled();
     const system = actor.system;
     const editMode = this._editMode && this.isEditable;
     const year = game.settings.get(SYSTEM_ID, "currentYear");
@@ -687,6 +690,8 @@ export class ChevalierSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
 
+  /** Défier en duel le jeton ciblé (duel stratégique, à pied). */
+  static #onDuel() { return challenge(this.document, { token: this.token ?? null }); }
   static #onCombatDamage() { return CD.promptDamage(this.document); }
   static #onCombatHazard() { return promptHazard(this.document); }
   static #onCombatWeek() { return CD.promptWeek(this.document); }

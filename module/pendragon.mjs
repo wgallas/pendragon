@@ -46,6 +46,8 @@ import { ensureBattlefield } from "./battle/scene.mjs";
 import { BANNER_SETTING } from "./battle/banner.mjs";
 import * as combatExchange from "./combat/exchange.mjs";
 import * as combatDamage from "./combat/damage.mjs";
+import * as duelEngine from "./duel/engine.mjs";
+import * as duelClient from "./duel/client.mjs";
 import { registerStatuses, setStatus, STATUS } from "./combat/status.mjs";
 
 Hooks.once("init", () => {
@@ -58,6 +60,7 @@ Hooks.once("init", () => {
     config: PDVF, newDay: newDayForAll, followers, importAdversaries: ensureAdversaries, importEncounters: ensureEncounters, importEquipment: ensureEquipment,
     tests, rules, openCreationWizard, battle: { engine: battleEngine, client: battleClient },
     domains, combat: { engage: combatExchange.engage, receiveDamage: combatDamage.receiveDamage, stats: combatDamage.combatStats },
+    duel: { engine: duelEngine, challenge: duelClient.challenge, openPanel: duelClient.openPanel },
     winter: { engine: winterEngine, openPanel: winterGm.openWinterPanel, start: winterGm.startWinter, close: winterGm.closeWinter, open: openWinterWizard }
   };
 
@@ -159,6 +162,21 @@ Hooks.once("init", () => {
     onChange: () => {
       for (const app of foundry.applications.instances?.values?.() ?? []) {
         if (app instanceof BatailleSheet && app.rendered) app.render();
+      }
+    }
+  });
+
+  // Duel stratégique : bouton « Défier en duel » à côté de « Engager » (le combat ordinaire reste l'échange)
+  game.settings.register(SYSTEM_ID, "duelsEnabled", {
+    name: "PDVF.Settings.duelsEnabled.name",
+    hint: "PDVF.Settings.duelsEnabled.hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: () => {
+      for (const app of foundry.applications.instances?.values?.() ?? []) {
+        if ((app instanceof ChevalierSheet || app instanceof PnjSheet) && app.rendered) app.render();
       }
     }
   });
@@ -269,6 +287,7 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/item/bataille/effects.hbs`,
     `systems/${SYSTEM_ID}/templates/item/bataille/card-edit.hbs`,
     `systems/${SYSTEM_ID}/templates/item/bataille/simple.hbs`,
+    `systems/${SYSTEM_ID}/templates/duel/panel.hbs`,
     `systems/${SYSTEM_ID}/templates/item/bataille/event-edit.hbs`
   ]);
 });
@@ -293,6 +312,7 @@ Hooks.once("ready", async () => {
   game.socket.on(huntEngine.SOCKET, huntEngine.onSocket);
   game.socket.on(winterEngine.SOCKET, winterGm.onWinterSocket);
   game.socket.on(battleEngine.SOCKET, combatExchange.onCombatSocket);
+  game.socket.on(duelEngine.SOCKET, duelEngine.onSocket);
   winterGm.openOwnWizards();
   await ensureAdversaries();
   await ensureEncounters();
@@ -306,6 +326,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => tests.onRenderChatMessage(m
 Hooks.on("renderChatMessageHTML", (message, html) => battleClient.onRenderChatMessage(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => combatExchange.onRenderCombatCard(message, html));
 Hooks.on("renderChatMessageHTML", (message, html) => tournamentClient.onRenderChatMessage(message, html));
+Hooks.on("renderChatMessageHTML", (message, html) => duelClient.onRenderChatMessage(message, html));
+Hooks.on("updateChatMessage", (message) => duelClient.onUpdateMessage(message));
 
 // Domaines : rang du chevalier et Gloire du titre quand il en reçoit un
 Hooks.on("createItem", (item, options, userId) => domains.onDomainCreated(item, options, userId));

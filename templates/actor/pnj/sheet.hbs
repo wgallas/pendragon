@@ -185,6 +185,7 @@
           {{#if combat.unconscious}}<span class="pdvf-state-badge">{{localize "PDVF.Combat.UnconsciousBadge"}}</span>{{/if}}
           {{#if combat.dying}}<span class="pdvf-state-badge dying">{{localize "PDVF.Combat.DyingBadge"}}</span>{{/if}}
           <button type="button" class="pdvf-state-btn" data-action="engage"><i class="fa-solid fa-swords" aria-hidden="true"></i> {{localize "PDVF.Combat.EngageTarget"}}</button>
+          {{#if duelsEnabled}}<button type="button" class="pdvf-state-btn" data-action="duel" data-tooltip="{{localize 'PDVF.Duel.ChallengeTip'}}"><i class="fa-solid fa-hand-fist" aria-hidden="true"></i> {{localize "PDVF.Duel.Challenge"}}</button>{{/if}}
           <button type="button" class="pdvf-state-btn" data-action="combatDamage"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{localize "PDVF.Combat.Receive"}}</button>
           <button type="button" class="pdvf-state-btn" data-action="combatHazard" data-tooltip="{{localize 'PDVF.Hazard.ButtonTip'}}"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{localize "PDVF.Hazard.Button"}}</button>
         </div>

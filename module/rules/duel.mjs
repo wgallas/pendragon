@@ -1,7 +1,8 @@
 /**
  * Duel stratégique (variante du système, pas une règle du livre) : combat à pied d'un contre un,
  * en passes. Chaque passe : lecture (Vigilance opposée, cartes retournées), choix d'une intention,
- * test opposé de la compétence d'arme, effet de l'intention du vainqueur ou geste.
+ * test opposé de la compétence d'arme ; le vainqueur frappe (prise s'il prend l'intention adverse) ou fait un geste.
+ * Effets réglés par simulation pour que les cinq intentions se vaillent (10 novembre 2026).
  * Module pur, sans Foundry, pour être testé seul. Réglages dans PDVF.duel.
  */
 import { compareOpposed, OUTCOME } from "./resolution.mjs";
@@ -88,9 +89,17 @@ export function revealRandom(n, random = Math.random, pool = INTENTS) {
   return out;
 }
 
-/** Intentions qui infligent des dégâts quand elles frappent. */
+/** Posture neutre (souffler, reprendre son arme) : ni prise ni preneuse, ne frappe pas. */
+export const NEUTRAL = "none";
+
+/** Toute intention qui gagne frappe ; la posture neutre ne frappe pas. */
 export function strikes(intent) {
-  return ["attack", "feint", "close"].includes(intent);
+  return INTENTS.includes(intent);
+}
+
+/** L'intention du vainqueur prend-elle celle du perdant ? */
+export function takes(intent, loserIntent) {
+  return !!intent && TAKES[intent] === loserIntent;
 }
 
 /**
@@ -110,19 +119,20 @@ export function passResult(ra, rb) {
 }
 
 /**
- * Coup porté par le vainqueur selon son intention : null si l'intention ne frappe pas.
- * Bouclier ou parade : sur un succès partiel du perdant, ou toujours s'il s'est mis en Défendre,
- * sauf contre une Feinte (qui les écarte) et un coup d'Entrer.
+ * Coup porté par le vainqueur : null s'il ne frappe pas (posture neutre, ou Entrer pour désarmer / renverser).
+ * Coup normal : dégâts de l'arme ; bouclier ou parade du perdant sur un succès partiel, ou toujours
+ * s'il s'est mis en Défendre. Prise (l'intention du vainqueur prend celle du perdant) : +priseDice D6,
+ * sans bouclier ni parade. Critique : +4D6.
  * @param {string} intent           intention du vainqueur
  * @param {string} loserIntent
- * @param {object} p { partial, critical, closeOption }  closeOption : strike | disarm | knockdown
+ * @param {object} p { partial, critical, closeOption, priseDice }  closeOption : strike | disarm | knockdown
  */
-export function strikeOf(intent, loserIntent, { partial = false, critical = false, closeOption = "strike" } = {}) {
+export function strikeOf(intent, loserIntent, { partial = false, critical = false, closeOption = "strike", priseDice = 1 } = {}) {
   if (intent === "close" && closeOption !== "strike") return null;
   if (!strikes(intent)) return null;
-  let shield = partial || loserIntent === "defend";
-  if (intent === "feint" || intent === "close") shield = false;
-  return { extraDice: (critical ? 4 : 0) + (intent === "close" ? 1 : 0), shield };
+  const prise = takes(intent, loserIntent);
+  const shield = prise ? false : (partial || loserIntent === "defend");
+  return { extraDice: (critical ? 4 : 0) + (prise ? priseDice : 0), shield, prise };
 }
 
 /** Le chevalier est-il à la moitié de ses points de vie ou moins ? */

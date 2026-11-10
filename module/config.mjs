@@ -692,6 +692,8 @@ PDVF.battle = {
 PDVF.duel = {
   /** Modificateur de l'intention prise par celle de l'adversaire. */
   cyclePenalty: -5,
+  /** Prise (le vainqueur prend l'intention du perdant) : D6 en plus, sans bouclier ni parade. */
+  priseDice: 1,
   /** Cartes de l'adversaire retournées par la lecture (critique, réussite gagnante, réussite qui perd). */
   readingCards: { critical: 3, win: 2, partial: 1 },
   /** Lier gagné : cartes vues à la passe suivante (lecture remportée d'office). */

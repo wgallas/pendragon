@@ -133,7 +133,7 @@ export function duelView(message, user) {
       canWeapon: mine && ["mounted", "choose"].includes(st.phase) && !me.choice,
       cards, seen, seeCount: me.see.length, opponentPlay, states,
       choiceLabel: me.choice ? (mine ? L(`PDVF.Duel.Intent.${me.choice}`) : L("PDVF.Duel.Chosen")) : "",
-      canChoose, waitingFirst, canRest: canChoose && !me.forced, canRearm: canChoose && disarmed && !me.forced,
+      canChoose, waitingFirst, canRest: canChoose && !me.forced && !me.grudge, canRearm: canChoose && disarmed && !me.forced && !me.grudge,
       canFalseMercy: canChoose && !me.falseMercy, canSurrender: mine && ["choose", "winner", "mounted"].includes(st.phase),
       canInvoke: mine && actor?.type === "chevalier" && ["choose", "mounted"].includes(st.phase),
       isKnight: actor?.type === "chevalier"
@@ -153,7 +153,8 @@ export function duelView(message, user) {
     acceptWeapons: b.weaponChoices,
     winner: p ? {
       name: winnerSide.name, mine: E.controls(user, winnerSide), side: p.winner, intent: L(`PDVF.Duel.Intent.${winnerIntent}`),
-      isClose: winnerIntent === "close", effectLabel: L(`PDVF.Duel.EffectOf.${winnerIntent}`),
+      isClose: winnerIntent === "close", prise: !!p.prise,
+      effectLabel: L(p.prise ? "PDVF.Duel.Effect.prise" : "PDVF.Duel.Effect.strike") + (winnerIntent === "bind" ? L("PDVF.Duel.Effect.bind") : ""),
       traits: D.PROVOKABLE.map(k => ({ value: k, label: `${L(`PDVF.Trait.${k.split(".")[1]}.${k.split(".")[2]}`)} → ${L(`PDVF.Duel.Intent.${D.PROVOKE[k]}`)}` }))
     } : null,
     surrender: st.surrender ? { name: st[st.surrender.side].name, honorable: st.surrender.honorable, mine: E.controls(user, st[OTHER[st.surrender.side]]), side: OTHER[st.surrender.side] } : null,

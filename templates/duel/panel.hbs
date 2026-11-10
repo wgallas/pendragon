@@ -30,11 +30,11 @@
 
   {{#if winner}}
     <section class="pdvf-duel-section pdvf-duel-winner">
-      <p><strong>{{winner.name}}</strong> — {{localize "PDVF.Duel.WinsWith"}} {{winner.intent}}.</p>
+      <p><strong>{{winner.name}}</strong> — {{localize "PDVF.Duel.WinsWith"}} {{winner.intent}}.{{#if winner.prise}} <span class="pdvf-tag">{{localize "PDVF.Duel.PriseTag"}}</span>{{/if}}</p>
       {{#if winner.mine}}
       <div class="pdvf-step-actions">
         {{#if winner.isClose}}
-        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="strike">{{localize "PDVF.Duel.Close.strike"}}</button>
+        <button type="button" class="pdvf-btn pdvf-btn-primary" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="strike">{{winner.effectLabel}}</button>
         <button type="button" class="pdvf-btn" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="disarm">{{localize "PDVF.Duel.Close.disarm"}}</button>
         <button type="button" class="pdvf-btn" data-action="duelOp" data-op="effect" data-side="{{winner.side}}" data-close="knockdown">{{localize "PDVF.Duel.Close.knockdown"}}</button>
         {{else}}

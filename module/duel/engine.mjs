@@ -526,7 +526,12 @@ async function resolvePasse(ctx) {
   if (pr.kind === "victory") {
     const w = pr.winner;
     ctx.lines.push(F("PDVF.Duel.Line.Winner", { name: sideName(st, w), intent: L(`PDVF.Duel.Intent.${st[w].choice}`) }));
-    st.pending = { winner: w, partial: pr.loserPartial, critical: pr.critical, brawl };
+    if (st[w].choice === D.NEUTRAL) {
+      ctx.lines.push(F("PDVF.Duel.Line.Neutral", { name: sideName(st, w) }));
+      flushCard(ctx, F("PDVF.Duel.PasseN", { passe: st.passe }), "", ctx.undo);
+      return afterPasse(ctx, hits);
+    }
+    st.pending = { winner: w, partial: pr.loserPartial, critical: pr.critical, brawl, prise: D.takes(st[w].choice, st[w === "a" ? "b" : "a"].choice) };
     st.phase = "winner";
     flushCard(ctx, F("PDVF.Duel.PasseN", { passe: st.passe }), "", ctx.undo);
     return;
@@ -600,9 +605,11 @@ const ACTIONS = {
     if (st.phase !== "choose" || me.choice) return false;
     if (st.first && st.first !== side && !other.choice) { ui.notifications.warn(L("PDVF.Duel.Notify.WaitFirst")); return false; }
     const actor = sideActor(me);
-    if (mode === "rest" || mode === "rearm") intent = "defend";
+    if (mode && !["rest", "rearm"].includes(mode)) return false;
+    if (mode) intent = D.NEUTRAL;
     if (mode === "rearm" && !hasStatus(actor, STATUS.disarmed)) return false;
-    if (!D.INTENTS.includes(intent)) return false;
+    if (!mode && !D.INTENTS.includes(intent)) return false;
+    if (mode && me.grudge) { ui.notifications.warn(L("PDVF.Duel.Notify.Grudge")); return false; }
     if (me.forced && intent !== me.forced) { ui.notifications.warn(F("PDVF.Duel.Notify.Forced", { intent: L(`PDVF.Duel.Intent.${me.forced}`) })); return false; }
     if (me.grudge && intent === "defend") { ui.notifications.warn(L("PDVF.Duel.Notify.Grudge")); return false; }
     if (me.blocked.includes(intent)) return false;
@@ -650,11 +657,6 @@ const ACTIONS = {
         st[loserSide].forcedNext = D.PROVOKE[acts];
         ctx.lines.push(F("PDVF.Duel.Line.Provoked", { name: loser.name, trait: traitLabel(acts), intent: L(`PDVF.Duel.Intent.${D.PROVOKE[acts]}`) }));
       } else ctx.lines.push(F("PDVF.Duel.Line.NotProvoked", { name: loser.name }));
-    } else if (intent === "bind") {
-      st.bindNext = side;
-      ctx.lines.push(F("PDVF.Duel.Line.Bind", { name: sideName(st, side), target: loser.name }));
-    } else if (intent === "defend") {
-      ctx.lines.push(F("PDVF.Duel.Line.Defend", { name: sideName(st, side) }));
     } else if (intent === "close" && close === "disarm") {
       await setStatus(loser, STATUS.disarmed, true);
       ctx.lines.push(F("PDVF.Duel.Line.Disarm", { name: sideName(st, side), target: loser.name }));
@@ -663,10 +665,15 @@ const ACTIONS = {
       await setStatus(loser, STATUS.prone, true);
       ctx.lines.push(F("PDVF.Duel.Line.Knockdown", { name: sideName(st, side), target: loser.name }));
     } else {
-      const s = D.strikeOf(intent, st[loserSide].choice, { partial: p.partial, critical: p.critical, closeOption: "strike" });
+      const s = D.strikeOf(intent, st[loserSide].choice, { partial: p.partial, critical: p.critical, closeOption: "strike", priseDice: C().priseDice });
       if (s) {
+        if (s.prise) ctx.lines.push(F("PDVF.Duel.Line.Prise", { name: sideName(st, side), intent: L(`PDVF.Duel.Intent.${intent}`), taken: L(`PDVF.Duel.Intent.${st[loserSide].choice}`) }));
         const out = await strike(ctx, side, loserSide, { extraDice: s.extraDice, shield: s.shield, brawl: p.brawl });
         hits[loserSide] = out.real > 0;
+      }
+      if (intent === "bind") {
+        st.bindNext = side;
+        ctx.lines.push(F("PDVF.Duel.Line.Bind", { name: sideName(st, side), target: loser.name }));
       }
     }
     st.pending = null;

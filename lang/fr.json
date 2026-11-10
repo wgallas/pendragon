@@ -55,7 +55,7 @@
       },
       "duelsEnabled": {
         "name": "Duels stratégiques",
-        "hint": "Ajoute « Défier en duel » à côté de « Engager » : un duel à pied d'un contre un, en passes (lecture de l'adversaire, intentions en cycle, gestes, enjeu annoncé). Les combats ordinaires restent l'échange habituel."
+        "hint": "Ajoute « Défier en duel » à côté de « Engager » : un duel à pied d'un contre un, en passes (lecture de l'adversaire, cinq intentions en cycle, prises, gestes, enjeu annoncé). Les combats ordinaires restent l'échange habituel."
       }
     },
     "Tab": {
@@ -4368,7 +4368,8 @@
         "defend": "Défendre",
         "close": "Entrer",
         "bind": "Lier",
-        "feint": "Feindre"
+        "feint": "Feindre",
+        "none": "Posture neutre"
       },
       "IntentTrait": {
         "attack": "coche Téméraire",
@@ -4377,24 +4378,17 @@
         "bind": "coche Méfiant",
         "feint": "coche Trompeur"
       },
-      "TakesTip": "Prend {takes} (−5 à l'adversaire) ; {trait}.",
-      "EffectOf": {
-        "attack": "Frapper",
-        "defend": "Tenir sa garde (sans dégâts)",
-        "bind": "Lier la lame (lecture suivante gagnée)",
-        "feint": "Frapper sans bouclier ni parade"
-      },
+      "TakesTip": "Prend {takes} : l'adversaire a −5, et si vous gagnez la passe vous portez une prise (+1D6, sans bouclier ni parade) ; {trait}.",
       "Close": {
-        "strike": "Frapper (+1D6, sans bouclier)",
         "disarm": "Désarmer",
         "knockdown": "Renverser"
       },
-      "OrGesture": "Ou, au lieu de l'effet :",
+      "OrGesture": "Ou, au lieu de frapper :",
       "Provoke": "Provoquer",
       "ProvokeTrait": "Trait à provoquer",
       "ProvokeTip": "L'adversaire teste ce trait (puis l'opposé s'il échoue) ; le trait qui l'emporte lui impose son intention à la passe suivante. Couard, à la moitié de ses PV ou moins : il se rend.",
       "WinsWith": "remporte la passe avec",
-      "WinnerDecides": "Le vainqueur choisit l'effet de son intention ou un geste.",
+      "WinnerDecides": "Le vainqueur frappe, ou fait un geste à la place.",
       "FirstChooses": "{name} a mal lu son adversaire et choisit le premier.",
       "Simultaneous": "Choix simultanés.",
       "MyCards": "Mes intentions",
@@ -4409,9 +4403,9 @@
       "OpponentChose": "L'adversaire a fait son choix.",
       "WaitFirst": "Attendez le choix de votre adversaire.",
       "Rest": "Souffler",
-      "RestTip": "Vous vous mettez en garde (Défendre) pour reprendre haleine : le malus de souffle disparaît à la fin de la passe ; coche Paresseux.",
+      "RestTip": "Posture neutre : ni prise ni preneuse, vous ne frappez pas. Le malus de souffle disparaît à la fin de la passe ; coche Paresseux.",
       "Rearm": "Reprendre son arme",
-      "RearmTip": "Vous vous mettez en garde (Défendre) en ramassant votre arme.",
+      "RearmTip": "Posture neutre : ni prise ni preneuse, vous ne frappez pas. Vous reprenez votre arme à la fin de la passe, sauf échec critique.",
       "FalseMercy": "Fausse merci",
       "FalseMercyTip": "Une fois par duel : feindre de se rendre pour frapper en traître (−1 Honneur, coche Trompeur). Un adversaire Méfiant la déjoue.",
       "Surrender": "Se rendre",
@@ -4497,8 +4491,7 @@
         "Provoked": "{name} cède à son tempérament ({trait}) : il jouera {intent}.",
         "NotProvoked": "{name} garde la tête froide.",
         "Mercy": "{name} demande merci.",
-        "Bind": "{name} lie la lame de {target}.",
-        "Defend": "{name} tient sa garde.",
+        "Bind": "{name} tient la lame de {target} : il gagnera la lecture suivante.",
         "Disarm": "{name} désarme {target}.",
         "Knockdown": "{name} renverse {target}.",
         "Rested": "{name} a repris son souffle.",
@@ -4518,7 +4511,9 @@
         "BattleKill": "Victoire inscrite pour {name} dans « {battle} ».",
         "Glory": "{name} gagne {glory} points de Gloire (adversaire à {value}).",
         "Captive": "{captive} est le captif de {name} : la rançon se règle à l'hiver.",
-        "Spoils": "Les armes et le cheval du vaincu reviennent de droit au vainqueur ; les lui rendre coche Généreux."
+        "Spoils": "Les armes et le cheval du vaincu reviennent de droit au vainqueur ; les lui rendre coche Généreux.",
+        "Prise": "Prise ! {intent} prend {taken} : {name} frappe à +1D6, sans bouclier ni parade.",
+        "Neutral": "{name} gagne la passe, mais ne frappe pas (posture neutre)."
       },
       "Log": {
         "Start": "Duel de {a} contre {b} ({stakes}).",
@@ -4529,9 +4524,15 @@
       "Notify": {
         "AlreadyDueling": "L'un des deux est déjà engagé dans un duel.",
         "Forced": "Vous êtes provoqué : vous devez jouer {intent}.",
-        "Grudge": "La rancune vous interdit de vous mettre en garde.",
+        "Grudge": "La rancune vous interdit de vous mettre en garde, de souffler ou de reprendre votre arme.",
         "WaitFirst": "Votre adversaire choisit le premier."
-      }
+      },
+      "Effect": {
+        "strike": "Frapper",
+        "prise": "Porter la prise (+1D6, sans bouclier ni parade)",
+        "bind": " et tenir la lame"
+      },
+      "PriseTag": "prise"
     }
   }
 }
